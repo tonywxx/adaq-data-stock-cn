@@ -1,0 +1,6 @@
+{
+  "records": [
+    { "ccyPair": "USD/CNY", "bidPrc": 7.21, "askPrc": 7.24, "midprice": 7.225, "time": "2024-01-18 09:30:00" },
+    { "ccyPair": "EUR/CNY", "bidPrc": 7.71, "askPrc": 7.76, "midprice": 7.735, "time": "2024-01-18 09:30:00" }
+  ]
+}

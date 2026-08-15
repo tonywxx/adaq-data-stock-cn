@@ -1,0 +1,36 @@
+{
+  "Result": {
+    "calendarInfo": [
+      {
+        "date": "2025-11-26",
+        "total": 2,
+        "list": [
+          {
+            "date": "2025-11-26",
+            "time": "21:30",
+            "title": "美国当周初请失业金人数",
+            "star": 3,
+            "formerVal": "21.5",
+            "pubVal": "21.3",
+            "region": "美国",
+            "indicateVal": "21.2",
+            "country": "美国",
+            "timePeriod": "至11月21日"
+          },
+          {
+            "date": "2025-11-26",
+            "time": "23:00",
+            "title": "美国11月密歇根大学消费者信心指数",
+            "star": 2,
+            "formerVal": "55.0",
+            "pubVal": "56.0",
+            "region": "美国",
+            "indicateVal": "55.5",
+            "country": "美国",
+            "timePeriod": "11月"
+          }
+        ]
+      }
+    ]
+  }
+}

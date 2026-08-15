@@ -4,6 +4,7 @@ use crate::core::client::Client;
 use crate::core::error::Result;
 
 pub mod eastmoney;
+pub mod extra;
 
 /// Canonical real-time FX spot quote (normalized, source-agnostic).
 #[derive(Debug, Clone, serde::Serialize)]

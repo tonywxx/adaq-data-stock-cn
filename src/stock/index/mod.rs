@@ -2,6 +2,8 @@ use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
 pub mod eastmoney;
+pub mod extra;
+pub mod more;
 pub mod sina;
 
 /// Canonical, source-agnostic real-time index spot quote (ADR-0001 / ADR-0010).

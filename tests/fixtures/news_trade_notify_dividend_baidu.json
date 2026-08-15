@@ -1,0 +1,24 @@
+{
+  "Result": {
+    "calendarInfo": [
+      {
+        "date": "2025-11-26",
+        "total": 1,
+        "list": [
+          {
+            "code": "000001",
+            "market": "SZ",
+            "exchange": "SZ",
+            "name": "平安银行",
+            "diviDate": "2025-11-26",
+            "date": "2025-11-26",
+            "diviCash": "0.5",
+            "shareDivide": "0",
+            "transfer": "0",
+            "physical": "-"
+          }
+        ]
+      }
+    ]
+  }
+}

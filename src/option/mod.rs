@@ -4,6 +4,7 @@
 //! daily/minute history and Sina real-time/daily option quotes.
 
 pub mod eastmoney;
+pub mod extra;
 pub mod sina;
 
 pub use eastmoney::{option_daily, option_minute};

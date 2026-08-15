@@ -1,0 +1,34 @@
+{
+  "result": [
+    {
+      "ROWNUM_": null,
+      "opDate": "20230922",
+      "rqchl": null,
+      "rqmcl": 735951864,
+      "rqyl": 7214266710,
+      "rqylje": 56778317878,
+      "rw": null,
+      "rzche": 31445977477,
+      "rzmre": 30926857859,
+      "rzrqjyzl": 858380764024,
+      "rzye": 801602446146,
+      "securityAbbr": null,
+      "stockCode": null
+    },
+    {
+      "ROWNUM_": null,
+      "opDate": "20230921",
+      "rqchl": null,
+      "rqmcl": 628790638,
+      "rqyl": 7218682429,
+      "rqylje": 55808293282,
+      "rw": null,
+      "rzche": 20994993757,
+      "rzmre": 21463901693,
+      "rzrqjyzl": 857929859046,
+      "rzye": 802121565764,
+      "securityAbbr": null,
+      "stockCode": null
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "result": [
+    {
+      "TRADE_DATE": "2024-06-26",
+      "SECURITY_ID": "10003720",
+      "CONTRACT_ID": "510050C2401M03000",
+      "CONTRACT_SYMBOL": "50ETF购1月3000",
+      "DELTA_VALUE": "0.5123",
+      "THETA_VALUE": "-0.0123",
+      "GAMMA_VALUE": "0.0456",
+      "VEGA_VALUE": "0.0234",
+      "RHO_VALUE": "0.0012",
+      "IMPLC_VOLATLTY": "0.1876"
+    },
+    {
+      "TRADE_DATE": "2024-06-26",
+      "SECURITY_ID": "10003721",
+      "CONTRACT_ID": "510050P2401M03000",
+      "CONTRACT_SYMBOL": "50ETF沽1月3000",
+      "DELTA_VALUE": "-0.4877",
+      "THETA_VALUE": "-0.0111",
+      "GAMMA_VALUE": "0.0444",
+      "VEGA_VALUE": "0.0222",
+      "RHO_VALUE": "-0.0011",
+      "IMPLC_VOLATLTY": "0.1923"
+    }
+  ]
+}

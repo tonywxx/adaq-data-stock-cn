@@ -1,0 +1,10 @@
+{
+  "status": 1,
+  "data": {
+    "table1": [
+      { "Irank": 1, "MovieName": "影片甲", "BoxOffice": 1200000, "BoxOfficeMoM": -5.2, "TotalBoxOffice": 50000000, "AvgBoxOffice": 45.5, "AvgShowAudienceCount": 30, "ReleaseDay": 10 },
+      { "Irank": 2, "MovieName": "影片乙", "BoxOffice": 900000, "BoxOfficeMoM": 2.1, "TotalBoxOffice": 30000000, "AvgBoxOffice": 40.0, "AvgShowAudienceCount": 25, "ReleaseDay": 5 }
+    ],
+    "table2": [ { "TotalPage": 1 } ]
+  }
+}

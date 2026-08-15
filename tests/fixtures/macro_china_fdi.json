@@ -1,0 +1,25 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "ACTUAL_FOREIGN": 120.0,
+        "ACTUAL_FOREIGN_SAME": -15.0,
+        "ACTUAL_FOREIGN_SEQUENTIAL": 10.0,
+        "ACTUAL_FOREIGN_ACCUMULATE": 360.0,
+        "FOREIGN_ACCUMULATE_SAME": -10.0
+      },
+      {
+        "REPORT_DATE": "2024-02-29",
+        "TIME": "2024-02",
+        "ACTUAL_FOREIGN": 109.0,
+        "ACTUAL_FOREIGN_SAME": -12.0,
+        "ACTUAL_FOREIGN_SEQUENTIAL": 5.0,
+        "ACTUAL_FOREIGN_ACCUMULATE": 240.0,
+        "FOREIGN_ACCUMULATE_SAME": -8.0
+      }
+    ],
+    "pages": 1
+  }
+}

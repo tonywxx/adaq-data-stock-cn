@@ -1,0 +1,32 @@
+{
+  "result": [
+    {
+      "SECURITY_CODE": "510050",
+      "SECURITY_ABBR": "华夏上证50ETF",
+      "CONTRACT_VOLUME": "12",
+      "TOTAL_MONEY": "1,234,567.89",
+      "TOTAL_VOLUME": "56,789",
+      "CALL_VOLUME": "32,123",
+      "PUT_VOLUME": "24,666",
+      "CP_RATE": "0.7689",
+      "LEAVES_QTY": "1,234,567",
+      "LEAVES_CALL_QTY": "700,000",
+      "LEAVES_PUT_QTY": "534,567",
+      "TRADE_DATE": "2024-06-26"
+    },
+    {
+      "SECURITY_CODE": "510300",
+      "SECURITY_ABBR": "华泰柏瑞沪深300ETF",
+      "CONTRACT_VOLUME": "15",
+      "TOTAL_MONEY": "2,345,678.00",
+      "TOTAL_VOLUME": "98,765",
+      "CALL_VOLUME": "55,000",
+      "PUT_VOLUME": "43,765",
+      "CP_RATE": "0.7957",
+      "LEAVES_QTY": "2,000,000",
+      "LEAVES_CALL_QTY": "1,200,000",
+      "LEAVES_PUT_QTY": "800,000",
+      "TRADE_DATE": "2024-06-26"
+    }
+  ]
+}

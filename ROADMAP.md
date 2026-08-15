@@ -51,12 +51,45 @@
 | 9 | 基金 `fund`(东财) | ✅ DONE | 4 | 4 ✅ |
 | 10 | A股基本面 `stock::fundamental`(东财) | ✅ DONE | 4 | 4 ✅ |
 | 11 | 跨市场 `stock::cross` 港股/美股(东财) | ✅ DONE | 4 | 4 ✅ |
+| 12 | 新浪日线 `stock::daily_sina`(纯 Rust MD5 签名逆向) | ✅ DONE | 1 | 1 ✅ |
+| 13 | 板块 `board`(东财行业/概念) | ✅ DONE | 4 | 4 ✅ |
+| 14 | 资讯 `news`(百度财经日历 / 东方财富个股新闻 / OwnThink NLP) | ✅ DONE | 7 | 7 ✅ |
+| 15 | LPR `lpr`(央行授权行) | ✅ DONE | 1 | 1 ✅ |
+| 16 | 交易日历 `calendar`(新浪 `tool_trade_date` 纯 Rust 位打包解码) | ✅ DONE | 1 | 1 ✅ |
+| 17 | 杂项 `stock::extra`(股东户数 / 分红 / 人气榜) | ✅ DONE | 3 | 3 ✅ |
+| 18 | 另类数据 `alt`(油价 / 票房 / 外汇牌价) | ✅ DONE | 9 | 9 ✅ |
+| 19 | A股杂项 `stock::misc`(分钟线 / 新股 / 停牌 / 概况) | ✅ DONE | 5 | 5 ✅ |
+| 20 | 指数扩展 `stock::index::extra`(现货 / 日线 / 成分 / 腾讯日线) | ✅ DONE | 4 | 4 ✅ |
+| 21 | 期货扩展 `futures::extra`(新浪日线 / 外盘 / 库存) | ✅ DONE | 4 | 4 ✅ |
+| 22 | 基金扩展 `fund::extra`(名单 / 估值 / 历史 / 货币 / ETF分类) | ✅ DONE | 5 | 5 ✅ |
+| 23 | 外汇扩展 `forex::extra`(中行牌价 / 中行历史 / 人民币掉期) | ✅ DONE | 3 | 3 ✅ |
+| 24 | 数字货币扩展 `crypto::extra`(Binance/OKX 历史 / 现货 / 信息) | ✅ DONE | 4 | 4 ✅ |
+| 25 | A股资金流 / 沪深港通 `stock::flow` | ✅ DONE | 5 | 5 ✅ |
+| 26 | A股个股信息 / 主营构成 / 板块 `stock::holder` | ✅ DONE | 3 | 3 ✅ |
+| 27 | 融资融券 / 业绩报表 `stock::margin` | ✅ DONE | 3 | 3 ✅ |
+| 28 | 债券扩展 `bond::extra`(可转债 / 回购) | ✅ DONE | 4 | 4 ✅ |
+| 29 | 宏观扩展 `economic::extra`(房价 / LPR / 景气 / 税收 / 物价 / FDI) | ✅ DONE | 6 | 6 ✅ |
+| 30 | 期货主力 / 合约列表 `futures::main`(新浪) | ✅ DONE | 2 | 2 ✅ |
+| 31 | 期权扩展 `option::extra`(东财 / 新浪 / 上交所) | ✅ DONE | 6 | 6 ✅ |
+| 32 | 基金扩展2 `fund::more`(规模 / 分红 / 经理 / 持仓结构) | ✅ DONE | 6 | 6 ✅ |
+| 33 | A股更多 `stock::more`(ST / 高低价 / 破净 / 账户 / 涨停池) | ✅ DONE | 5 | 5 ✅ |
+| 34 | 指数更多 `stock::index::more`(全球现货 / 全球历史 / 中证 / 国证 PMI) | ✅ DONE | 5 | 5 ✅ |
+| 35 | 宏观第二批 `economic::macro2`(PMI / 固投 / 工业 / 消费 / 美国 CPI / 美国 PHS) | ✅ DONE | 6 | 6 ✅ |
+| 36 | 金属 / 外盘 `coin`(LME 实时 / SHFE 排名 / 外盘历史 / 国内期货历史 / 合约映射) | ✅ DONE | 5 | 5 ✅ |
 
-**累计**:11 个领域、45 个公开函数、50 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计**:36 个领域、152 个公开函数、175 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+
+> 注:第 25-30 行领域数与函数数合计为 96 + 23 = 119;`stock::holder` 与 `stock::margin` 均含 `stock_yjbb_em` 同名实现,已统一保留 `stock::margin` 版本,`stock::holder` 中移除重复实现。
+> 第 31-36 行新增 33 个函数 / 33 个离线解析测试,其中 `coin` 为新增顶层领域(金属 + 内外盘期货历史 / 排名),统一复用东财 `push2his` kline 解析;`coin_foreign_hist` 与 `coin_futures_hist` 共用 `parse_kline`,kline 字段布局对齐 akshare(`change_pct`=p[8]、`change`=p[9]、`open_interest`=p[12]、`position_chg`=p[13])。
+
+### 已推迟 / 部分(DEFERRED / PARTIAL)
+- 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点:`stock_dividend`(cninfo `Accept-Enckey`)、`air`/`weather`/`epidemic`/`food`/`fortune`(纯页面抓取)、`futures_spot`(JS 签名)、`index_stock_info`(HTML 抓取)等,已在 `docs/MAPPING.md` 对应条目下标注跳过原因。
+- `stock_dividend` 与 `stock_rank_em` 已实现联网路径但未纳入离线 fixtures 比对,待补 fixtures。
+- 部分 akshare 函数在本 checkout 中已更名 / 重构(如 `fund_name`→`fund_open_fund_name_em`、`futures_zh_daily` 已有 Eastmoney 版),已就近对齐实现。
 
 ### 已推迟(DEFERRED)
-- `stock_zh_a_daily`(新浪日线):需 JS 签名,留待纯 Rust 签名逆向(ADR-0005)。
-- 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点(已在 `docs/MAPPING.md` 对应条目下标注跳过原因)。
+- 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点(已在 `docs/MAPPING.md` 对应条目下标注跳过原因),如 `air`(JS 签名)、`epidemic`、`food`、`weather`、`fortune` 等纯页面抓取类。
+- `stock_dividend`(cninfo,需 `Accept-Enckey` JS 鉴权)与 `stock_rank_em`(JSON-POST)已实现联网路径但未纳入离线 fixtures 比对,待补 fixtures。
 
 ### 下一步候选
 - 继续补齐长尾包:`news` / `nlp` / `event` / `lpr` / `stock_fundamental`(财务)等。

@@ -1,0 +1,10 @@
+{
+  "status": 1,
+  "data": {
+    "table1": [
+      { "Irank": 1, "MovieName": "影片甲", "BoxOffice": 1500000, "BoxOfficePercent": 25.3, "ReleaseDay": 3, "TotalBoxOffice": 20000000 },
+      { "Irank": 2, "MovieName": "影片乙", "BoxOffice": 800000, "BoxOfficePercent": 13.1, "ReleaseDay": 10, "TotalBoxOffice": 30800000 }
+    ],
+    "table2": [ { "TotalPage": 1 } ]
+  }
+}

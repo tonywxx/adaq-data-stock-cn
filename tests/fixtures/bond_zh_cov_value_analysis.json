@@ -1,0 +1,36 @@
+{
+  "result": {
+    "data": [
+      {
+        "DATE": "2019-01-24 00:00:00",
+        "ZCODE": "113527",
+        "SECURITYVARIETYCODE": "1001746879",
+        "SWAPVALUE": 98.1951871658,
+        "PUREBONDVALUE": 89.7223766891,
+        "PUREBONDOR": 11.45491648,
+        "SWAPOR": 1.8379850238,
+        "FCLOSE": 98.5,
+        "SWAPPRICE": null,
+        "USWAPTVOL": null,
+        "USWAPTRATE": null,
+        "SYFE": null,
+        "SECUCODE": "113527.SH"
+      },
+      {
+        "DATE": "2019-01-25 00:00:00",
+        "ZCODE": "113527",
+        "SECURITYVARIETYCODE": "1001746879",
+        "SWAPVALUE": 98.7000000000,
+        "PUREBONDVALUE": 89.8100000000,
+        "PUREBONDOR": 9.91000000,
+        "SWAPOR": 1.21000000,
+        "FCLOSE": 99.9,
+        "SWAPPRICE": null,
+        "USWAPTVOL": null,
+        "USWAPTRATE": null,
+        "SYFE": null,
+        "SECUCODE": "113527.SH"
+      }
+    ]
+  }
+}

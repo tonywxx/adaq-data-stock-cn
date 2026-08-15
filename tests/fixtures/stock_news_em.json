@@ -1,0 +1,24 @@
+{
+  "result": {
+    "cmsArticleWebOld": [
+      {
+        "date": "2025-12-23 17:15:00",
+        "mediaName": "东方财富",
+        "code": "603777",
+        "title": "某某公司<em>利好</em>公告",
+        "content": "正文内容<em>重点</em>。",
+        "image": "",
+        "url": ""
+      },
+      {
+        "date": "2025-12-22 09:00:00",
+        "mediaName": "证券时报",
+        "code": "603777",
+        "title": "另一条新闻",
+        "content": "内容二",
+        "image": "",
+        "url": ""
+      }
+    ]
+  }
+}

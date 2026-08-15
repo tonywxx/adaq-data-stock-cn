@@ -1,0 +1,10 @@
+{
+  "status": 1,
+  "data": {
+    "table1": [
+      { "Irank": 1, "MovieName": "影片甲", "BoxOffice": 3200000, "BoxOfficePercent": 18.4, "AvgBoxOffice": 42.0, "AvgShowAudienceCount": 28, "ReleaseDate": "2024-01-05", "ReleaseDay": 12 },
+      { "Irank": 2, "MovieName": "影片乙", "BoxOffice": 2100000, "BoxOfficePercent": 12.0, "AvgBoxOffice": 39.0, "AvgShowAudienceCount": 24, "ReleaseDate": "2024-01-12", "ReleaseDay": 5 }
+    ],
+    "table2": [ { "TotalPage": 1 } ]
+  }
+}

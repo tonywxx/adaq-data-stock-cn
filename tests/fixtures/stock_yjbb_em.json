@@ -1,0 +1,48 @@
+{
+  "result": {
+    "pages": 1975,
+    "count": 5923,
+    "data": [
+      {
+        "SECURITY_CODE": "000637",
+        "SECURITY_NAME_ABBR": "茂化实华",
+        "SECUCODE": "000637.SZ",
+        "ORG_CODE": "10005574",
+        "REPORTDATE": "2022-03-31 00:00:00",
+        "NOTICE_DATE": "2022-04-29 00:00:00",
+        "PUBLISHNAME": "炼化及贸易",
+        "BASIC_EPS": -0.02,
+        "TOTAL_OPERATE_INCOME": 1912733727.04,
+        "PARENT_NETPROFIT": -7538271.02,
+        "WEIGHTAVG_ROE": -0.73,
+        "YSTZ": 85.297401124,
+        "SJLTZ": -163.71,
+        "BPS": 1.980019333115,
+        "MGJYXJJE": 0.648621629431,
+        "XSMLL": 3.1894251765,
+        "YSHZ": 2.1536,
+        "SJLHZ": -116.1014
+      },
+      {
+        "SECURITY_CODE": "603843",
+        "SECURITY_NAME_ABBR": "*ST正平",
+        "SECUCODE": "603843.SH",
+        "ORG_CODE": "10362022",
+        "REPORTDATE": "2022-03-31 00:00:00",
+        "NOTICE_DATE": "2022-04-29 00:00:00",
+        "PUBLISHNAME": "基础建设",
+        "BASIC_EPS": -0.01,
+        "TOTAL_OPERATE_INCOME": 338491765.81,
+        "PARENT_NETPROFIT": -6778588.78,
+        "WEIGHTAVG_ROE": -0.36,
+        "YSTZ": -65.6694320868,
+        "SJLTZ": -194.08,
+        "BPS": 2.663397610591,
+        "MGJYXJJE": -0.270706821649,
+        "XSMLL": 14.510036335,
+        "YSHZ": -84.358,
+        "SJLHZ": -124.0132
+      }
+    ]
+  }
+}

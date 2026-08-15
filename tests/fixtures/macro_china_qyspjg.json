@@ -1,0 +1,39 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "BASE": 100.2,
+        "BASE_SAME": -1.5,
+        "BASE_SEQUENTIAL": 0.3,
+        "FARM_BASE": 101.1,
+        "FARM_BASE_SAME": 0.5,
+        "FARM_BASE_SEQUENTIAL": 0.2,
+        "MINERAL_BASE": 99.8,
+        "MINERAL_BASE_SAME": 2.3,
+        "MINERAL_BASE_SEQUENTIAL": -0.4,
+        "ENERGY_BASE": 102.0,
+        "ENERGY_BASE_SAME": -3.1,
+        "ENERGY_BASE_SEQUENTIAL": -0.8
+      },
+      {
+        "REPORT_DATE": "2024-02-29",
+        "TIME": "2024-02",
+        "BASE": 99.9,
+        "BASE_SAME": -1.8,
+        "BASE_SEQUENTIAL": -0.1,
+        "FARM_BASE": 100.9,
+        "FARM_BASE_SAME": 0.3,
+        "FARM_BASE_SEQUENTIAL": -0.1,
+        "MINERAL_BASE": 100.2,
+        "MINERAL_BASE_SAME": 1.9,
+        "MINERAL_BASE_SEQUENTIAL": 0.1,
+        "ENERGY_BASE": 102.8,
+        "ENERGY_BASE_SAME": -2.7,
+        "ENERGY_BASE_SEQUENTIAL": 0.2
+      }
+    ],
+    "pages": 1
+  }
+}

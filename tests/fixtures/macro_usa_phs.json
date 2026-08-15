@@ -1,0 +1,21 @@
+{
+  "result": {
+    "data": [
+      {
+        "INDICATOR_ID": "EMG00342249",
+        "REPORT_DATE": "2024-03-01",
+        "PUBLISH_DATE": "2024-04-29",
+        "VALUE": -0.2,
+        "PRE_VALUE": 1.0
+      },
+      {
+        "INDICATOR_ID": "EMG00342249",
+        "REPORT_DATE": "2024-02-01",
+        "PUBLISH_DATE": "2024-03-27",
+        "VALUE": 1.0,
+        "PRE_VALUE": -4.0
+      }
+    ],
+    "pages": 1
+  }
+}

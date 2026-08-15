@@ -1,0 +1,6 @@
+{
+  "records": [
+    { "ccyPair": "AUD/USD", "bidPrc": 0.66, "askPrc": 0.67, "midprice": 0.665, "time": "2024-01-18 09:30:00" },
+    { "ccyPair": "GBP/USD", "bidPrc": 1.27, "askPrc": 1.28, "midprice": 1.275, "time": "2024-01-18 09:30:00" }
+  ]
+}

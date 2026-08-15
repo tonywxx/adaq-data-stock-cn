@@ -1,0 +1,29 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "CITY": "北京",
+        "FIRST_COMHOUSE_SAME": -0.7,
+        "FIRST_COMHOUSE_SEQUENTIAL": 0.0,
+        "FIRST_COMHOUSE_BASE": 105.3,
+        "SECOND_HOUSE_SAME": -6.4,
+        "SECOND_HOUSE_SEQUENTIAL": -0.9,
+        "SECOND_HOUSE_BASE": 106.2,
+        "REPORT_DAY": "2024-03-31"
+      },
+      {
+        "REPORT_DATE": "2024-03-31",
+        "CITY": "上海",
+        "FIRST_COMHOUSE_SAME": 0.4,
+        "FIRST_COMHOUSE_SEQUENTIAL": 0.5,
+        "FIRST_COMHOUSE_BASE": 105.8,
+        "SECOND_HOUSE_SAME": -4.6,
+        "SECOND_HOUSE_SEQUENTIAL": -0.4,
+        "SECOND_HOUSE_BASE": 105.1,
+        "REPORT_DAY": "2024-03-31"
+      }
+    ],
+    "pages": 1
+  }
+}

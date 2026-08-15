@@ -12,6 +12,7 @@
 
 pub mod bitcoin_cme;
 pub mod bitcoin_hold;
+pub mod extra;
 pub mod js_spot;
 
 pub use bitcoin_cme::{crypto_bitcoin_cme, CryptoCme};

@@ -1,0 +1,32 @@
+{
+  "result": {
+    "data": [
+      {
+        "STATISTICS_DATE": "2024-01",
+        "NEW_NUMBER": 12.34,
+        "NEW_NUMBER_RATIO": 5.6,
+        "NEW_NUMBER_SAME": 3.2,
+        "END_NUMBER": 22000.5,
+        "END_A_NUMBER": 21000.3,
+        "END_B_NUMBER": 1000.2,
+        "SH_INDEX": 2950.12,
+        "SH_INDEX_PCT": 0.85,
+        "TOTAL_MARKET_CAP": 800000.0,
+        "AVG_MARKET_CAP": 36.36
+      },
+      {
+        "STATISTICS_DATE": "2023-12",
+        "NEW_NUMBER": 10.1,
+        "NEW_NUMBER_RATIO": 2.1,
+        "NEW_NUMBER_SAME": 1.1,
+        "END_NUMBER": 21800.0,
+        "END_A_NUMBER": 20800.0,
+        "END_B_NUMBER": 1000.0,
+        "SH_INDEX": 2920.0,
+        "SH_INDEX_PCT": -0.5,
+        "TOTAL_MARKET_CAP": 790000.0,
+        "AVG_MARKET_CAP": 36.2
+      }
+    ]
+  }
+}

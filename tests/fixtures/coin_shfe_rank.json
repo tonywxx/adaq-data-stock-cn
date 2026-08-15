@@ -1,0 +1,34 @@
+{
+  "o_cursor": [
+    {
+      "RANK": "1",
+      "CJ1": "12345",
+      "CJ1_CHG": "100",
+      "CJ2": "23456",
+      "CJ2_CHG": "-50",
+      "CJ3": "34567",
+      "CJ3_CHG": "200",
+      "PARTICIPANTABBR1": "永安期货",
+      "PARTICIPANTABBR2": "中信期货",
+      "PARTICIPANTABBR3": "国泰君安",
+      "PRODUCTNAME": "铜",
+      "INSTRUMENTID": "cu2410",
+      "PRODUCTSORTNO": "1"
+    },
+    {
+      "RANK": "2",
+      "CJ1": "11111",
+      "CJ1_CHG": "20",
+      "CJ2": "22222",
+      "CJ2_CHG": "30",
+      "CJ3": "33333",
+      "CJ3_CHG": "40",
+      "PARTICIPANTABBR1": "华泰期货",
+      "PARTICIPANTABBR2": "海通期货",
+      "PARTICIPANTABBR3": "广发期货",
+      "PRODUCTNAME": "铜",
+      "INSTRUMENTID": "cu2410",
+      "PRODUCTSORTNO": "1"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "result": {
+    "data": [
+      {"SECURITY_CODE":"A","TRADE_DATE":"2024-01-02","ON_WARRANT_NUM":12345,"ADDCHANGE":-100},
+      {"SECURITY_CODE":"A","TRADE_DATE":"2024-01-03","ON_WARRANT_NUM":12245,"ADDCHANGE":-100}
+    ]
+  }
+}

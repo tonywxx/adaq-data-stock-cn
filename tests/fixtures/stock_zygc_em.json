@@ -1,0 +1,49 @@
+{
+  "zygcfx": [
+    {
+      "SECUCODE": "688041.SH",
+      "SECURITY_CODE": "688041",
+      "REPORT_DATE": "2024-03-31",
+      "MAINOP_TYPE": "1",
+      "ITEM_NAME": "工业",
+      "MAIN_BUSINESS_INCOME": "120.5",
+      "MBI_RATIO": "0.8234",
+      "MAIN_BUSINESS_COST": "66.1",
+      "MBC_RATIO": "0.8012",
+      "MAIN_BUSINESS_RPOFIT": "54.4",
+      "MBR_RATIO": "0.8567",
+      "GROSS_RPOFIT_RATIO": "0.4521",
+      "RANK": "1"
+    },
+    {
+      "SECUCODE": "688041.SH",
+      "SECURITY_CODE": "688041",
+      "REPORT_DATE": "2024-03-31",
+      "MAINOP_TYPE": "2",
+      "ITEM_NAME": "产品A",
+      "MAIN_BUSINESS_INCOME": "80.2",
+      "MBI_RATIO": "0.5482",
+      "MAIN_BUSINESS_COST": "44.3",
+      "MBC_RATIO": "0.5371",
+      "MAIN_BUSINESS_RPOFIT": "35.9",
+      "MBR_RATIO": "0.5652",
+      "GROSS_RPOFIT_RATIO": "0.4476",
+      "RANK": "2"
+    },
+    {
+      "SECUCODE": "688041.SH",
+      "SECURITY_CODE": "688041",
+      "REPORT_DATE": "2024-03-31",
+      "MAINOP_TYPE": "3",
+      "ITEM_NAME": "境内",
+      "MAIN_BUSINESS_INCOME": "130.0",
+      "MBI_RATIO": "0.8883",
+      "MAIN_BUSINESS_COST": "71.5",
+      "MBC_RATIO": "0.8669",
+      "MAIN_BUSINESS_RPOFIT": "58.5",
+      "MBR_RATIO": "0.9210",
+      "GROSS_RPOFIT_RATIO": "0.4500",
+      "RANK": "3"
+    }
+  ]
+}

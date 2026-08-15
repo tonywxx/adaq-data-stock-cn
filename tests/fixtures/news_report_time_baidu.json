@@ -1,0 +1,22 @@
+{
+  "Result": {
+    "calendarInfo": [
+      {
+        "date": "2025-11-26",
+        "total": 1,
+        "list": [
+          {
+            "code": "300750",
+            "name": "宁德时代",
+            "exchange": "SZ",
+            "reportType": "三季报",
+            "time": "2025-11-26 19:00",
+            "marketValue": "1.2万亿",
+            "capitalization": "1.2万亿",
+            "date": "2025-11-26"
+          }
+        ]
+      }
+    ]
+  }
+}

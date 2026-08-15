@@ -1,0 +1,26 @@
+{
+  "Result": {
+    "calendarInfo": [
+      {
+        "date": "2025-11-26",
+        "total": 1,
+        "list": [
+          {
+            "code": "600000",
+            "name": "浦发银行",
+            "exchange": "SH",
+            "start": "2025-11-26 09:30",
+            "reason": "重大事项",
+            "marketValue": "3000亿",
+            "date": "2025-11-26",
+            "time": "09:30",
+            "type": "股票",
+            "market": "主板",
+            "isSkip": false,
+            "end": "2025-11-27 09:30"
+          }
+        ]
+      }
+    ]
+  }
+}

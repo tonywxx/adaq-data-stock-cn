@@ -1,0 +1,36 @@
+[
+  {
+    "metadata": {
+      "catalogid": "1837_xxpl",
+      "name": "融资融券交易总量",
+      "subname": "2024-04-11",
+      "tabkey": "tab1",
+      "cols": {
+        "jrrzmr": "融资买入额<br>(亿元)",
+        "jrrzye": "融资余额<br>(亿元)",
+        "jrrjmc": "融券卖出量<br>(亿股/亿份)",
+        "jrrjyl": "融券余量<br>(亿股/亿份)",
+        "jrrjye": "融券余额<br>(亿元)",
+        "jrrzrjye": "融资融券余额<br>(亿元)"
+      }
+    },
+    "data": [
+      {
+        "jrrzmr": "321.08",
+        "jrrzye": "7,077.67",
+        "jrrjmc": "0.28",
+        "jrrjyl": "24.34",
+        "jrrjye": "157.30",
+        "jrrzrjye": "7,234.97"
+      },
+      {
+        "jrrzmr": "305.50",
+        "jrrzye": "7,050.12",
+        "jrrjmc": "0.25",
+        "jrrjyl": "24.10",
+        "jrrjye": "155.80",
+        "jrrzrjye": "7,205.92"
+      }
+    ]
+  }
+]

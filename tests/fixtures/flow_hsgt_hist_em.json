@@ -1,0 +1,38 @@
+{
+  "result": {
+    "data": [
+      {
+        "TRADE_DATE": "2024-01-02T00:00:00",
+        "MUTUAL_TYPE": "005",
+        "FUND_INFLOW": 50000000,
+        "NET_DEAL_AMT": 30000000,
+        "QUOTA_BALANCE": 45000000,
+        "ACCUM_DEAL_AMT": 1500000000000,
+        "BUY_AMT": 80000000,
+        "SELL_AMT": 50000000,
+        "LEAD_STOCKS_CODE": "600519",
+        "LEAD_STOCKS_NAME": "贵州茅台",
+        "LS_CHANGE_RATE": 2.34,
+        "INDEX_CLOSE_PRICE": 2950.12,
+        "INDEX_CHANGE_RATE": 0.85,
+        "HOLD_MARKET_CAP": 250000000000
+      },
+      {
+        "TRADE_DATE": "2024-01-03T00:00:00",
+        "MUTUAL_TYPE": "005",
+        "FUND_INFLOW": -20000000,
+        "NET_DEAL_AMT": -10000000,
+        "QUOTA_BALANCE": 46000000,
+        "ACCUM_DEAL_AMT": 1490000000000,
+        "BUY_AMT": 60000000,
+        "SELL_AMT": 70000000,
+        "LEAD_STOCKS_CODE": "000858",
+        "LEAD_STOCKS_NAME": "五粮液",
+        "LS_CHANGE_RATE": -1.20,
+        "INDEX_CLOSE_PRICE": 2960.30,
+        "INDEX_CHANGE_RATE": -0.10,
+        "HOLD_MARKET_CAP": 248000000000
+      }
+    ]
+  }
+}

@@ -1,6 +1,12 @@
 pub mod cross;
+pub mod daily_sina;
+pub mod extra;
 pub mod hist;
+pub mod holder;
 pub mod index;
+pub mod margin;
+pub mod misc;
+pub mod more;
 pub mod intraday;
 pub mod spot;
 pub mod fundamental;

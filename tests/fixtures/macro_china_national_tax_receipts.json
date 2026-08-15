@@ -1,0 +1,21 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "TAX_INCOME": 53823.0,
+        "TAX_INCOME_SAME": -4.0,
+        "TAX_INCOME_SEQUENTIAL": 0.0
+      },
+      {
+        "REPORT_DATE": "2023-12-31",
+        "TIME": "2023-12",
+        "TAX_INCOME": 51799.0,
+        "TAX_INCOME_SAME": -2.0,
+        "TAX_INCOME_SEQUENTIAL": -5.0
+      }
+    ],
+    "pages": 1
+  }
+}

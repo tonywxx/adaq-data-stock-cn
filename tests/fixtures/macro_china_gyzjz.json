@@ -1,0 +1,19 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "BASE_SAME": 4.5,
+        "BASE_ACCUMULATE": 6.1
+      },
+      {
+        "REPORT_DATE": "2024-02-29",
+        "TIME": "2024-02",
+        "BASE_SAME": 7.0,
+        "BASE_ACCUMULATE": 7.0
+      }
+    ],
+    "pages": 1
+  }
+}

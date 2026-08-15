@@ -1,0 +1,10 @@
+{
+  "status": 1,
+  "data": {
+    "table1": [
+      { "Irank": 1, "MovieName": "影片甲", "GenreMain": "剧情", "TotalBoxOffice": 450000000, "AvgBoxOffice": 45.0, "AvgShowAudienceCount": 30, "Country": "中国", "ReleaseDate": "2024-02-10" },
+      { "Irank": 2, "MovieName": "影片丙", "GenreMain": "喜剧", "TotalBoxOffice": 300000000, "AvgBoxOffice": 41.0, "AvgShowAudienceCount": 26, "Country": "美国", "ReleaseDate": "2024-05-01" }
+    ],
+    "table2": [ { "TotalPage": 1 } ]
+  }
+}

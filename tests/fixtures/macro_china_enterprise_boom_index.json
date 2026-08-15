@@ -1,0 +1,27 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "BOOM_INDEX": 120.3,
+        "FAITH_INDEX": 115.8,
+        "BOOM_INDEX_SAME": 1.9,
+        "BOOM_INDEX_SEQUENTIAL": 0.5,
+        "FAITH_INDEX_SAME": 1.2,
+        "FAITH_INDEX_SEQUENTIAL": -2.1
+      },
+      {
+        "REPORT_DATE": "2023-12-31",
+        "TIME": "2023-12",
+        "BOOM_INDEX": 119.8,
+        "FAITH_INDEX": 117.9,
+        "BOOM_INDEX_SAME": 2.0,
+        "BOOM_INDEX_SEQUENTIAL": -0.3,
+        "FAITH_INDEX_SAME": 1.5,
+        "FAITH_INDEX_SEQUENTIAL": -1.0
+      }
+    ],
+    "pages": 1
+  }
+}

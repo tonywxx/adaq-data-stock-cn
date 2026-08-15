@@ -1,0 +1,25 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "RETAIL_TOTAL": 39010.0,
+        "RETAIL_TOTAL_SAME": 3.1,
+        "RETAIL_TOTAL_SEQUENTIAL": 0.5,
+        "RETAIL_TOTAL_ACCUMULATE": 120327.0,
+        "RETAIL_ACCUMULATE_SAME": 4.7
+      },
+      {
+        "REPORT_DATE": "2024-02-29",
+        "TIME": "2024-02",
+        "RETAIL_TOTAL": 8137.0,
+        "RETAIL_TOTAL_SAME": 5.5,
+        "RETAIL_TOTAL_SEQUENTIAL": null,
+        "RETAIL_TOTAL_ACCUMULATE": 81370.0,
+        "RETAIL_ACCUMULATE_SAME": 5.5
+      }
+    ],
+    "pages": 1
+  }
+}

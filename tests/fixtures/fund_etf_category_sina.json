@@ -1,0 +1,32 @@
+[
+  {
+    "symbol": "sh510050",
+    "name": "华夏上证50ETF",
+    "trade": "2.85",
+    "pricechange": "0.03",
+    "changepercent": "1.05",
+    "buy": "2.84",
+    "sell": "2.86",
+    "settlement": "2.82",
+    "open": "2.83",
+    "high": "2.88",
+    "low": "2.81",
+    "volume": "12345678",
+    "amount": "35123456"
+  },
+  {
+    "symbol": "sz159915",
+    "name": "易方达创业板ETF",
+    "trade": "1.92",
+    "pricechange": "-0.01",
+    "changepercent": "-0.52",
+    "buy": "1.91",
+    "sell": "1.93",
+    "settlement": "1.93",
+    "open": "1.94",
+    "high": "1.95",
+    "low": "1.90",
+    "volume": "9876543",
+    "amount": "18934567"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "records": [
+    {
+      "ccyPair": "USD/CNY",
+      "label_1W": 12.5,
+      "label_1M": 50.3,
+      "label_3M": 145.2,
+      "label_6M": 280.4,
+      "label_9M": 410.1,
+      "label_1Y": 535.6,
+      "time": "2024-01-02 10:00:00"
+    },
+    {
+      "ccyPair": "EUR/CNY",
+      "label_1W": 15.2,
+      "label_1M": 62.1,
+      "label_3M": 178.5,
+      "label_6M": 345.3,
+      "label_9M": 502.4,
+      "label_1Y": 658.2,
+      "time": "2024-01-02 10:00:00"
+    }
+  ]
+}

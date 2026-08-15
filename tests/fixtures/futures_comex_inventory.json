@@ -1,0 +1,8 @@
+{
+  "result": {
+    "data": [
+      {"REPORT_DATE":"2024-01-02","STORAGE_TON":12345.6,"STORAGE_OUNCE":398765.4},
+      {"REPORT_DATE":"2024-01-03","STORAGE_TON":12300.1,"STORAGE_OUNCE":397000.0}
+    ]
+  }
+}

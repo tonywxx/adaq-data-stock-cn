@@ -1,0 +1,6 @@
+[
+  {"name":"PVC连续","symbol":"V0","code":"V0","shortname":"聚氯乙烯连续","exchange":"dce","trade":"6055","position":"530000"},
+  {"name":"PVC2309","symbol":"V2309","code":"V2309","trade":"6000","position":"10000"},
+  {"name":"豆粕连续","symbol":"M0","code":"M0","shortname":"豆粕连续","exchange":"dce","trade":"3500","position":"2000000"},
+  {"name":"聚丙烯连续","symbol":"PP0","code":"PP0","shortname":"聚丙烯连续","exchange":"dce","trade":"7200","position":"400000"}
+]
