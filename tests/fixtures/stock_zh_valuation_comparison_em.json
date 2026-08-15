@@ -1,0 +1,56 @@
+{
+  "result": {
+    "data": [
+      {
+        "PAIMING": "1/20",
+        "CORRE_SECURITY_CODE": "000895",
+        "CORRE_SECURITY_NAME": "双汇发展",
+        "PEG": "1.23",
+        "PE_TTM": "15.6",
+        "PE_1Y": "14.2",
+        "PE_2Y": "13.1",
+        "PE_3Y": "12.0",
+        "PS": "1.8",
+        "PS_TTM": "1.7",
+        "PS_1Y": "1.6",
+        "PS_2Y": "1.5",
+        "PS_3Y": "1.4",
+        "PB": "4.5",
+        "PB_MRQ": "4.4",
+        "PCE": "11.2",
+        "PCE_TTM": "10.9",
+        "PCF": "12.3",
+        "PCF_TTM": "12.0",
+        "QYBS": "9.8",
+        "REPORT_DATE": "2024-09-30",
+        "SECUCODE": "000895.SZ",
+        "TOTAL_COUNT": "20"
+      },
+      {
+        "PAIMING": "2/20",
+        "CORRE_SECURITY_CODE": "603288",
+        "CORRE_SECURITY_NAME": "海天味业",
+        "PEG": "2.10",
+        "PE_TTM": "30.1",
+        "PE_1Y": "27.5",
+        "PE_2Y": "25.0",
+        "PE_3Y": "23.0",
+        "PS": "8.0",
+        "PS_TTM": "7.8",
+        "PS_1Y": "7.5",
+        "PS_2Y": "7.2",
+        "PS_3Y": "7.0",
+        "PB": "9.2",
+        "PB_MRQ": "9.0",
+        "PCE": "20.0",
+        "PCE_TTM": "19.5",
+        "PCF": "21.0",
+        "PCF_TTM": "20.5",
+        "QYBS": "18.0",
+        "REPORT_DATE": "2024-09-30",
+        "SECUCODE": "603288.SH",
+        "TOTAL_COUNT": "20"
+      }
+    ]
+  }
+}

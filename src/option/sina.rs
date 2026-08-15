@@ -1,161 +1,138 @@
-use crate::core::client::{Client, SOURCE_SINA};
+//! Sina option-market endpoints (akshare `option_finance_sina.py`).
+//!
+//! Ports of akshare Sina option functions that are pure HTTP (JSON/JSONP,
+//! no HTML scraping, JS signing, tokens or cookies).
+//!
+//! Only the CFFEX index-option **daily** dayline is ported here: it is a pure
+//! JSONP endpoint and is not already covered by `src/option/extra.rs`.
+//!
+//! Deferred (see report): the CFFEX list functions scrape HTML via
+//! `BeautifulSoup` (not pure HTTP); the CFFEX spot functions are already
+//! ported as `option_cffex_spot_sina` in `extra.rs`; the `option_sina.py`
+//! functions have no source file in akshare.
+
+use serde_json::Value;
+
+use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
-/// Real-time spot quote for a single SSE/SZSE option from Sina's `hq.sinajs.cn`.
-#[derive(Debug, Clone, serde::Serialize)]
-pub struct OptionSinaSpotRow {
-    pub code: String,
-    pub name: String,
-    pub price: Option<f64>,
-    pub pct_change: Option<f64>,
-    pub open: Option<f64>,
-    pub high: Option<f64>,
-    pub low: Option<f64>,
-    pub pre_close: Option<f64>,
-    pub open_interest: Option<f64>,
-    pub source: &'static str,
-}
+/// Sina source identifier (defined locally; mirrors `core::client::SOURCE_SINA`).
+const SOURCE_SINA: &str = "sina";
 
-/// Daily history for a CFFEX option contract from Sina's `FutureOptionAllService`.
+// ---------------------------------------------------------------------------
+// Sina: CFFEX index-option daily dayline (akshare `option_cffex_*_daily_sina`)
+// ---------------------------------------------------------------------------
+
+/// A single daily OHLCV bar for a CFFEX index-option contract (Sina).
+///
+/// Mirrors akshare `option_cffex_sz50_daily_sina` / `option_cffex_hs300_daily_sina`
+/// / `option_cffex_zz1000_daily_sina`, which share one upstream endpoint
+/// (`FutureOptionAllService.getOptionDayline`) differing only by the contract
+/// `symbol` (e.g. `"ho2303P2350"`, `"io2202P4350"`, `"mo2208P6200"`).
 #[derive(Debug, Clone, serde::Serialize)]
-pub struct OptionCffexDailyRow {
-    pub symbol: String,
-    pub date: String,
+pub struct CffexOptionDailyRow {
+    /// 日期 (date)
+    pub date: Option<String>,
+    /// 开盘价 (open)
     pub open: Option<f64>,
+    /// 最高价 (high)
     pub high: Option<f64>,
+    /// 最低价 (low)
     pub low: Option<f64>,
+    /// 收盘价 (close)
     pub close: Option<f64>,
+    /// 成交量 (volume)
     pub volume: Option<f64>,
     pub source: &'static str,
 }
 
-/// Real-time option spot from Sina (`option_sse_spot_price_sina`).
+/// Daily OHLCV history for a CFFEX index-option contract from Sina's
+/// `FutureOptionAllService.getOptionDayline`
+/// (akshare `option_cffex_*_daily_sina`, `option_finance_sina.py:296`).
 ///
-/// Sina requires a `Referer` header on `hq.sinajs.cn`; it is attached via the
-/// `headers` arg to [`Client::get_text`].
-pub async fn option_sina_spot(client: &Client, symbol: &str) -> Result<Vec<OptionSinaSpotRow>> {
-    let url = format!("https://hq.sinajs.cn/list=CON_OP_{symbol}");
-    let headers = [("Referer", "https://vip.stock.finance.sina.com.cn/")];
-    let text = client
-        .get_text(SOURCE_SINA, "option_sina_spot", &url, &[], Some(&headers))
-        .await?;
-    parse_spot(&text)
-}
-
-/// Daily history of a CFFEX option contract from Sina (`option_cffex_hs300_daily_sina`).
-///
-/// The endpoint is a JSONP envelope (`var _<symbol>YYYY_M_D=[...]`); we strip the
-/// wrapper and parse the inner array of `[open, high, low, close, volume, date]`.
-pub async fn option_cffex_daily(client: &Client, symbol: &str) -> Result<Vec<OptionCffexDailyRow>> {
-    let (y, m, d) = today_ymd();
+/// `symbol` is the full contract code, e.g. `"ho2303P2350"` (上证50),
+/// `"io2202P4350"` (沪深300) or `"mo2208P6200"` (中证1000). The upstream
+/// response is JSONP-wrapped (`var <callback>=[...]`), so the wrapper is
+/// stripped before parsing.
+pub async fn option_cffex_daily(client: &Client, symbol: &str) -> Result<Vec<CffexOptionDailyRow>> {
     let url = format!(
-        "https://stock.finance.sina.com.cn/futures/api/jsonp.php/var%20_{symbol}{y}_{m}_{d}=/FutureOptionAllService.getOptionDayline"
+        "https://stock.finance.sina.com.cn/futures/api/jsonp.php/var%20_{symbol}=/FutureOptionAllService.getOptionDayline"
     );
     let params = [("symbol", symbol)];
     let text = client
         .get_text(SOURCE_SINA, "option_cffex_daily", &url, &params, None)
         .await?;
-    parse_cffex_daily(&text, symbol)
+    let v = dayline_to_value(&text)?;
+    parse_cffex_daily(&v)
 }
 
-pub(crate) fn parse_spot(text: &str) -> Result<Vec<OptionSinaSpotRow>> {
-    let code = match text.find("hq_str_") {
-        Some(start) => {
-            let rest = &text[start + "hq_str_".len()..];
-            let end = rest.find('=').unwrap_or(rest.len());
-            rest[..end].to_string()
-        }
-        None => String::new(),
-    };
-    let (open_q, close_q) = (text.find('"'), text.rfind('"'));
-    let body = match (open_q, close_q) {
-        (Some(o), Some(c)) if c > o => &text[o + 1..c],
-        _ => return Ok(Vec::new()),
-    };
-    let parts: Vec<&str> = body.split(',').collect();
-    if parts.len() < 43 {
-        return Err(Error::UpstreamChanged {
+/// Extract the JSON array from a Sina JSONP dayline response
+/// (`var <callback>=[...];`), returning it as a `Value`.
+fn dayline_to_value(text: &str) -> Result<Value> {
+    let body = text.trim();
+    let start = body
+        .find('[')
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_SINA,
-            message: format!("spot has {} fields, expected >= 43", parts.len()),
-        });
-    }
-    let f = |i: usize| parse_f64(parts[i]);
-    Ok(vec![OptionSinaSpotRow {
-        code,
-        name: parts[37].to_string(),
-        price: f(2),
-        pct_change: f(6),
-        open: f(9),
-        high: f(39),
-        low: f(40),
-        pre_close: f(8),
-        open_interest: f(5),
-        source: SOURCE_SINA,
-    }])
+            message: "dayline response missing '['".into(),
+        })?;
+    let end = body
+        .rfind(']')
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_SINA,
+            message: "dayline response missing ']'".into(),
+        })?;
+    serde_json::from_str(&body[start..=end]).map_err(Error::Json)
 }
 
-pub(crate) fn parse_cffex_daily(text: &str, symbol: &str) -> Result<Vec<OptionCffexDailyRow>> {
-    let (open, close) = (text.find('['), text.rfind(']'));
-    let body = match (open, close) {
-        (Some(o), Some(c)) if c > o => &text[o..=c],
-        _ => {
-            return Err(Error::UpstreamChanged {
-                origin: SOURCE_SINA,
-                message: "cffex daily response not wrapped in []".into(),
-            })
-        }
-    };
-    let arr: Vec<Vec<serde_json::Value>> = serde_json::from_str(body).map_err(|e| Error::Parse {
-        endpoint: "option_cffex_daily",
-        message: e.to_string(),
+pub(crate) fn parse_cffex_daily(resp: &Value) -> Result<Vec<CffexOptionDailyRow>> {
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "dayline payload is not an array".into(),
     })?;
     let mut out = Vec::with_capacity(arr.len());
-    for row in arr {
-        if row.len() < 6 {
-            continue;
-        }
-        let num = |v: &serde_json::Value| v.as_str().and_then(parse_f64).or_else(|| v.as_f64());
-        out.push(OptionCffexDailyRow {
-            symbol: symbol.to_string(),
-            date: row[5].as_str().unwrap_or_default().to_string(),
-            open: num(&row[0]),
-            high: num(&row[1]),
-            low: num(&row[2]),
-            close: num(&row[3]),
-            volume: num(&row[4]),
+    for item in arr {
+        out.push(CffexOptionDailyRow {
+            date: fstr(item, "date"),
+            open: fnum(item, "open"),
+            high: fnum(item, "high"),
+            low: fnum(item, "low"),
+            close: fnum(item, "close"),
+            volume: fnum(item, "volume"),
             source: SOURCE_SINA,
         });
     }
     Ok(out)
 }
 
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
+// ---------------------------------------------------------------------------
+// Shared helpers
+// ---------------------------------------------------------------------------
+
+/// Extract a `String` field (missing => `None`).
+fn fstr(item: &Value, k: &str) -> Option<String> {
+    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
+}
+
+/// Extract an `f64` from a field that may be a number or a numeric string
+/// (`trim().parse`).
+fn fnum(item: &Value, k: &str) -> Option<f64> {
+    match item.get(k) {
+        Some(Value::Number(n)) => n.as_f64(),
+        Some(Value::String(s)) => s.trim().parse::<f64>().ok(),
+        _ => None,
     }
 }
 
-/// Current local date as (year, month, day) without external crates
-/// (Hinnant's `civil_from_days`, days since Unix epoch).
-fn today_ymd() -> (i64, u32, u32) {
-    let secs = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_secs() as i64)
-        .unwrap_or(0);
-    let z = secs / 86_400 + 719_468;
-    let era = if z >= 0 { z / 146_097 } else { (z - 146_096) / 146_097 };
-    let doe = z - era * 146_097;
-    let yoe = (doe - doe / 1_460 + doe / 36_524 - doe / 146_096) / 365;
-    let y = yoe + era * 400;
-    let dofy = doe - (365 * yoe + yoe / 4 - yoe / 100);
-    let mp = (5 * dofy + 2) / 153;
-    let d = dofy - (153 * mp + 2) / 5 + 1;
-    let m = if mp < 10 { mp + 3 } else { mp - 9 };
-    let y = if m <= 2 { y + 1 } else { y };
-    (y, m as u32, d as u32)
+/// Extract an `i64` from a field (numeric or numeric string). Currently unused
+/// by the ported parsers; retained for parity with sibling modules.
+#[allow(dead_code)]
+fn inum(v: Option<&Value>) -> Option<i64> {
+    match v {
+        Some(Value::Number(n)) => n.as_i64(),
+        Some(Value::String(s)) => s.trim().parse::<i64>().ok(),
+        _ => None,
+    }
 }
 
 #[cfg(test)]
@@ -163,46 +140,27 @@ mod tests {
     use super::*;
     use std::path::PathBuf;
 
-    #[test]
-    fn parses_sina_spot_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/option_sina_spot.json");
-        let txt = std::fs::read_to_string(path).unwrap();
-        // Fixture wraps the raw Sina text in a {"text": "..."} envelope.
-        let v: serde_json::Value = serde_json::from_str(&txt).unwrap();
-        let body = v.get("text").and_then(|t| t.as_str()).unwrap();
-        let rows = parse_spot(body).unwrap();
-        assert_eq!(rows.len(), 1);
-        assert_eq!(rows[0].code, "CON_OP_10003720");
-        assert_eq!(rows[0].name, "50ETF购1月3000");
-        assert_eq!(rows[0].price, Some(0.1234));
-        assert_eq!(rows[0].pct_change, Some(2.31));
-        assert_eq!(rows[0].open, Some(0.1210));
-        assert_eq!(rows[0].high, Some(0.1330));
-        assert_eq!(rows[0].low, Some(0.1200));
-        assert_eq!(rows[0].pre_close, Some(0.1205));
-        assert_eq!(rows[0].open_interest, Some(98765.0));
-        assert_eq!(rows[0].source, "sina");
+    fn fixture(name: &str) -> Value {
+        let p = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures")
+            .join(name);
+        serde_json::from_str(&std::fs::read_to_string(p).unwrap()).unwrap()
     }
 
     #[test]
-    fn parses_cffex_daily_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/option_cffex_daily.json");
-        let txt = std::fs::read_to_string(path).unwrap();
-        let v: serde_json::Value = serde_json::from_str(&txt).unwrap();
-        let body = v.get("text").and_then(|t| t.as_str()).unwrap();
-        let rows = parse_cffex_daily(body, "io2202P4350").unwrap();
+    fn parses_option_cffex_daily_fixture() {
+        let v = fixture("option_cffex_daily.json");
+        let rows = parse_cffex_daily(&v).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].symbol, "io2202P4350");
-        assert_eq!(rows[0].date, "2022-01-04");
+        assert_eq!(rows[0].date, Some("2024-03-01".to_string()));
         assert_eq!(rows[0].open, Some(0.0500));
-        assert_eq!(rows[0].high, Some(0.0600));
-        assert_eq!(rows[0].low, Some(0.0400));
-        assert_eq!(rows[0].close, Some(0.0550));
-        assert_eq!(rows[0].volume, Some(1234.0));
+        assert_eq!(rows[0].high, Some(0.0520));
+        assert_eq!(rows[0].low, Some(0.0490));
+        assert_eq!(rows[0].close, Some(0.0510));
+        assert_eq!(rows[0].volume, Some(12_345.0));
+        assert_eq!(rows[1].date, Some("2024-03-04".to_string()));
+        assert_eq!(rows[1].close, Some(0.0540));
+        assert_eq!(rows[1].volume, Some(23_456.0));
         assert_eq!(rows[0].source, "sina");
-        assert_eq!(rows[1].date, "2022-01-05");
-        assert_eq!(rows[1].close, Some(0.0580));
     }
 }

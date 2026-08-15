@@ -465,3 +465,57 @@
 | `amac_fund_account_info` | `src/fund/amac.rs::amac_fund_account_info` | AMAC | `akshare/fund/fund_amac.py:629` | DONE |
 | `amac_futures_info` | `src/fund/amac.rs::amac_futures_info` | AMAC | `akshare/fund/fund_amac.py:737` | DONE |
 | `amac_manager_cancelled_info` | `src/fund/amac.rs::amac_manager_cancelled_info` | AMAC | `akshare/fund/fund_amac.py:792` | DONE |
+
+## 美国宏观(economic::macro_usa,Jin10 公开 JSON)
+
+全部函数走 `cdn.jin10.com` 明文 JSON,无需 JS/签名/Token。其余 Jin10 端点(datacenter-api.jin10.com)需 `x-csrf-token` 鉴权,已在对应条目下标注 DEFERRED。
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `macro_usa_rig_count` | `src/economic/macro_usa.rs::macro_usa_rig_count` | Jin10 | `akshare/economic/macro_usa.py:466` | DONE |
+| `macro_usa_crude_inner` | `src/economic/macro_usa.rs::macro_usa_crude_inner` | Jin10 | `akshare/economic/macro_usa.py:961` | DONE |
+| `macro_usa_cftc_nc_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_nc_holding` | Jin10 | `akshare/economic/macro_usa.py:997` | DONE |
+| `macro_usa_cftc_c_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_c_holding` | Jin10 | `akshare/economic/macro_usa.py:1026` | DONE |
+| `macro_usa_cftc_merchant_currency_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_merchant_currency_holding` | Jin10 | `akshare/economic/macro_usa.py:1055` | DONE |
+| `macro_usa_cftc_merchant_goods_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_merchant_goods_holding` | Jin10 | `akshare/economic/macro_usa.py:1084` | DONE |
+| `macro_usa_cme_merchant_goods_holding` | `src/economic/macro_usa.rs::macro_usa_cme_merchant_goods_holding` | Jin10 | `akshare/economic/macro_usa.py:1113` | DONE |
+
+> `macro_usa_cpi_yoy` / `macro_usa_phs` 等其余 Jin10 函数因 `datacenter-api.jin10.com` 鉴权(需 `x-csrf-token`)而 DEFERRED;约 40 个宏观函数待补。
+
+## 中债指数(bond::cbond,中债登 yield.chinabond.com.cn)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `bond_new_composite_index_cbond` | `src/bond/cbond.rs::bond_new_composite_index_cbond` | 中债登 | `akshare/bond/bond_cbond.py:130` | DONE |
+| `bond_composite_index_cbond` | `src/bond/cbond.rs::bond_composite_index_cbond` | 中债登 | `akshare/bond/bond_cbond.py:214` | DONE |
+| `bond_treasury_index_cbond` | `src/bond/cbond.rs::bond_treasury_index_cbond` | 中债登 | `akshare/bond/bond_cbond.py:72` | DONE |
+| `bond_index_general_cbond` | `src/bond/cbond.rs::bond_index_general_cbond` | 中债登 | `akshare/bond/bond_cbond.py:28` | DONE |
+
+> `bond_available_index_cbond`(`bond_cbond.py:14`)为本地 `INDEX_MAPPING` 常量构造 DataFrame,无 HTTP,不纳入;`bond_china_yield`/`bond_spot_*` 在 `bond_china.py`(HTML 解析);`bond_euro.py`/`bond_usa.py` 在本 checkout 中 ABSENT → DEFERRED。
+
+## 限售股解禁(stock::restricted,东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_restricted_release_summary_em` | `src/stock/restricted.rs::stock_restricted_release_summary_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:14` | DONE |
+| `stock_restricted_release_detail_em` | `src/stock/restricted.rs::stock_restricted_release_detail_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:106` | DONE |
+| `stock_restricted_release_queue_em` | `src/stock/restricted.rs::stock_restricted_release_queue_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:209` | DONE |
+| `stock_restricted_release_stockholder_em` | `src/stock/restricted.rs::stock_restricted_release_stockholder_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:301` | DONE |
+
+## 估值指标(stock::indicator,百度/东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_zh_valuation_baidu` | `src/stock/indicator.rs::stock_zh_valuation_baidu` | 百度股市通 | `akshare/stock_feature/stock_zh_valuation_baidu.py:13` | DONE |
+| `stock_zh_valuation_comparison_em` | `src/stock/indicator.rs::stock_zh_valuation_comparison_em` | 东财 | `akshare/stock/stock_zh_comparison_em.py:72` | DONE |
+| `stock_value_em` | `src/stock/indicator.rs::stock_value_em` | 东财 | `akshare/stock_feature/stock_value_em.py:14` | DONE |
+
+> `stock_industry_pe_ratio_cninfo`(`stock_industry_pe_cninfo.py`)为 HTML 抓取 → DEFERRED。
+
+## 期权-新浪(option::sina,Sina)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `option_cffex_daily` | `src/option/sina.rs::option_cffex_daily` | 新浪 | `akshare/option_finance_sina.py`(`option_cffex_*_daily_sina`) | DONE |
+
+> `option_cffex_*_daily_sina` 系列(sz50/hs300/zz1000)共享同一上游 JSONP 端点,已统一为 `option_cffex_daily(symbol)`;`option_cffex_spot_sina` 已在 `option/extra.rs` 实现;`option_sina.py` 在本 checkout 中 ABSENT,CFFEX 列表函数为 HTML 抓取 → DEFERRED。

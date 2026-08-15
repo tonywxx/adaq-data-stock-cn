@@ -1,0 +1,36 @@
+{
+  "result": {
+    "data": [
+      {
+        "TRADE_DATE": "2024-09-30T00:00:00",
+        "CLOSE_PRICE": "25.30",
+        "CHANGE_RATE": "-1.20",
+        "TOTAL_MARKET_CAP": "1234567890.12",
+        "NOTLIMITED_MARKETCAP_A": "1200000000.00",
+        "TOTAL_SHARES": "500000000",
+        "FREE_SHARES_A": "480000000",
+        "PE_TTM": "30.5",
+        "PE_LAR": "32.1",
+        "PB_MRQ": "5.2",
+        "PEG_CAR": "1.05",
+        "PCF_OCF_TTM": "22.3",
+        "PS_TTM": "6.1"
+      },
+      {
+        "TRADE_DATE": "2024-09-27T00:00:00",
+        "CLOSE_PRICE": "25.60",
+        "CHANGE_RATE": "0.50",
+        "TOTAL_MARKET_CAP": "1240000000.00",
+        "NOTLIMITED_MARKETCAP_A": "1210000000.00",
+        "TOTAL_SHARES": "500000000",
+        "FREE_SHARES_A": "480000000",
+        "PE_TTM": "30.9",
+        "PE_LAR": "32.5",
+        "PB_MRQ": "5.3",
+        "PEG_CAR": "1.06",
+        "PCF_OCF_TTM": "22.6",
+        "PS_TTM": "6.2"
+      }
+    ]
+  }
+}

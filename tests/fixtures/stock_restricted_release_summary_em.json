@@ -1,0 +1,25 @@
+{
+  "result": {
+    "data": [
+      {
+        "FREE_DATE": "2022-11-08",
+        "LIFT_STOCKS_NUM": 12,
+        "LIFT_SHARES": 100.0,
+        "ACTUAL_LIFT_SHARES": 80.0,
+        "ACTUAL_LIFT_MARKET_CAP": 5000.0,
+        "INDEX_VALUE": 3700.0,
+        "INDEX_CHANGE_PCT": 1.2
+      },
+      {
+        "FREE_DATE": "2022-11-09",
+        "LIFT_STOCKS_NUM": 5,
+        "LIFT_SHARES": 50.0,
+        "ACTUAL_LIFT_SHARES": 40.0,
+        "ACTUAL_LIFT_MARKET_CAP": 2500.0,
+        "INDEX_VALUE": 3680.0,
+        "INDEX_CHANGE_PCT": -0.5
+      }
+    ],
+    "pages": 1
+  }
+}

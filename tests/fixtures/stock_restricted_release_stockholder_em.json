@@ -1,0 +1,27 @@
+{
+  "result": {
+    "data": [
+      {
+        "LIMITED_HOLDER_NAME": "张三",
+        "ADD_LISTING_SHARES": 100.0,
+        "ACTUAL_LISTED_SHARES": 90.0,
+        "ADD_LISTING_CAP": 800.0,
+        "LOCK_MONTH": 12,
+        "RESIDUAL_LIMITED_SHARES": 10.0,
+        "FREE_SHARES_TYPE": "首发原股东限售股份",
+        "PLAN_FEATURE": "已实施"
+      },
+      {
+        "LIMITED_HOLDER_NAME": "李四",
+        "ADD_LISTING_SHARES": 50.0,
+        "ACTUAL_LISTED_SHARES": 45.0,
+        "ADD_LISTING_CAP": 400.0,
+        "LOCK_MONTH": 24,
+        "RESIDUAL_LIMITED_SHARES": 5.0,
+        "FREE_SHARES_TYPE": "股权激励限售股份",
+        "PLAN_FEATURE": "已实施"
+      }
+    ],
+    "pages": 1
+  }
+}

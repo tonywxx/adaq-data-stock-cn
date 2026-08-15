@@ -8,4 +8,4 @@ pub mod extra;
 pub mod sina;
 
 pub use eastmoney::{option_daily, option_minute};
-pub use sina::{option_cffex_daily, option_sina_spot};
+pub use sina::option_cffex_daily;

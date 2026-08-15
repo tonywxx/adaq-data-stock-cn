@@ -1,0 +1,39 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "600000",
+        "SECURITY_NAME_ABBR": "浦发银行",
+        "FREE_DATE": "2022-12-02",
+        "CURRENT_FREE_SHARES": 10.0,
+        "ABLE_FREE_SHARES": 9.0,
+        "LIFT_MARKET_CAP": 100.0,
+        "FREE_RATIO": 1.5,
+        "NEW": 7.0,
+        "B20_ADJCHRATE": 2.0,
+        "A20_ADJCHRATE": 3.0,
+        "FREE_SHARES_TYPE": "首发原股东限售股份",
+        "TOTAL_RATIO": 0.5,
+        "NON_FREE_SHARES": 20.0,
+        "BATCH_HOLDER_NUM": 3
+      },
+      {
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "FREE_DATE": "2022-12-03",
+        "CURRENT_FREE_SHARES": 5.0,
+        "ABLE_FREE_SHARES": 4.0,
+        "LIFT_MARKET_CAP": 50.0,
+        "FREE_RATIO": 0.8,
+        "NEW": 12.0,
+        "B20_ADJCHRATE": -1.0,
+        "A20_ADJCHRATE": 4.0,
+        "FREE_SHARES_TYPE": "股权激励限售股份",
+        "TOTAL_RATIO": 0.2,
+        "NON_FREE_SHARES": 10.0,
+        "BATCH_HOLDER_NUM": 1
+      }
+    ],
+    "pages": 1
+  }
+}

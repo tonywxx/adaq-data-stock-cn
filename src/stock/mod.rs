@@ -12,3 +12,5 @@ pub mod spot;
 pub mod fundamental;
 pub mod gdfx;
 pub mod lhb;
+pub mod restricted;
+pub mod indicator;

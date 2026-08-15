@@ -1,0 +1,35 @@
+{
+  "result": {
+    "data": [
+      {
+        "FREE_DATE": "2022-12-02",
+        "BATCH_HOLDER_NUM": 3,
+        "ABLE_FREE_SHARES": 9.0,
+        "CURRENT_FREE_SHARES": 10.0,
+        "NON_FREE_SHARES": 20.0,
+        "LIFT_MARKET_CAP": 100.0,
+        "TOTAL_RATIO": 0.5,
+        "FREE_RATIO": 1.5,
+        "NEW": 7.0,
+        "FREE_SHARES_TYPE": "首发原股东限售股份",
+        "B20_ADJCHRATE": 2.0,
+        "A20_ADJCHRATE": 3.0
+      },
+      {
+        "FREE_DATE": "2022-12-03",
+        "BATCH_HOLDER_NUM": 1,
+        "ABLE_FREE_SHARES": 4.0,
+        "CURRENT_FREE_SHARES": 5.0,
+        "NON_FREE_SHARES": 10.0,
+        "LIFT_MARKET_CAP": 50.0,
+        "TOTAL_RATIO": 0.2,
+        "FREE_RATIO": 0.8,
+        "NEW": 12.0,
+        "FREE_SHARES_TYPE": "股权激励限售股份",
+        "B20_ADJCHRATE": -1.0,
+        "A20_ADJCHRATE": 4.0
+      }
+    ],
+    "pages": 1
+  }
+}
