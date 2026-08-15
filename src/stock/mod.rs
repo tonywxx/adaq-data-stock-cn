@@ -10,3 +10,5 @@ pub mod more;
 pub mod intraday;
 pub mod spot;
 pub mod fundamental;
+pub mod gdfx;
+pub mod lhb;

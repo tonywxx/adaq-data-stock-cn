@@ -1,0 +1,40 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "600036",
+        "SECURITY_NAME_ABBR": "招商银行",
+        "CLOSE_PRICE": 35.2,
+        "CHANGE_RATE": 1.2,
+        "AMOUNT": 800000000.0,
+        "ONLIST_TIMES": 8.0,
+        "BUY_AMT": 600000000.0,
+        "BUY_TIMES": 10.0,
+        "SELL_AMT": 400000000.0,
+        "SELL_TIMES": 6.0,
+        "NET_BUY_AMT": -5000000.0,
+        "M1_CLOSE_ADJCHRATE": 2.0,
+        "M3_CLOSE_ADJCHRATE": -1.5,
+        "M6_CLOSE_ADJCHRATE": 3.0,
+        "Y1_CLOSE_ADJCHRATE": 5.0
+      },
+      {
+        "SECURITY_CODE": "000333",
+        "SECURITY_NAME_ABBR": "美的集团",
+        "CLOSE_PRICE": 65.0,
+        "CHANGE_RATE": -0.8,
+        "AMOUNT": 300000000.0,
+        "ONLIST_TIMES": 2.0,
+        "BUY_AMT": 2000000.0,
+        "BUY_TIMES": 3.0,
+        "SELL_AMT": 1800000.0,
+        "SELL_TIMES": 2.0,
+        "NET_BUY_AMT": 200000.0,
+        "M1_CLOSE_ADJCHRATE": 1.0,
+        "M3_CLOSE_ADJCHRATE": 2.0,
+        "M6_CLOSE_ADJCHRATE": 4.0,
+        "Y1_CLOSE_ADJCHRATE": 6.0
+      }
+    ]
+  }
+}

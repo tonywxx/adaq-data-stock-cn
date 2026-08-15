@@ -1,0 +1,23 @@
+{
+  "content": [
+    {
+      "managerName": "北京某私募管理有限公司",
+      "artificialPersonName": "赵六",
+      "primaryInvestType": "私募证券投资基金",
+      "registerProvince": "北京市",
+      "registerNo": "P1000001",
+      "establishDate": 1380000000000,
+      "registerDate": 1390000000000
+    },
+    {
+      "managerName": "深圳某股权投资管理有限公司",
+      "artificialPersonName": "孙七",
+      "primaryInvestType": "股权投资基金",
+      "registerProvince": "深圳市",
+      "registerNo": "P1000002",
+      "establishDate": 1400000000000,
+      "registerDate": 1410000000000
+    }
+  ],
+  "totalPages": 1
+}

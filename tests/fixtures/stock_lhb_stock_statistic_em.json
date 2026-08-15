@@ -1,0 +1,48 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "LATEST_TDATE": "2024-04-15",
+        "CLOSE_PRICE": 11.2,
+        "CHANGE_RATE": 1.5,
+        "BILLBOARD_TIMES": 5.0,
+        "BILLBOARD_NET_AMT": 60000000.0,
+        "BILLBOARD_BUY_AMT": 300000000.0,
+        "BILLBOARD_SELL_AMT": 240000000.0,
+        "BILLBOARD_DEAL_AMT": 540000000.0,
+        "BUY_ORG_TIMES": 2.0,
+        "SELL_ORG_TIMES": 1.0,
+        "INST_BUY_NET_AMT": 123456.0,
+        "INST_BUY_AMT": 200000.0,
+        "INST_SELL_AMT": 76544.0,
+        "M1_CLOSE_ADJCHRATE": 2.0,
+        "M3_CLOSE_ADJCHRATE": 5.0,
+        "M6_CLOSE_ADJCHRATE": 8.0,
+        "Y1_CLOSE_ADJCHRATE": 12.0
+      },
+      {
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "LATEST_TDATE": "2024-04-14",
+        "CLOSE_PRICE": 1680.0,
+        "CHANGE_RATE": -0.5,
+        "BILLBOARD_TIMES": 3.0,
+        "BILLBOARD_NET_AMT": null,
+        "BILLBOARD_BUY_AMT": 100000000.0,
+        "BILLBOARD_SELL_AMT": 95000000.0,
+        "BILLBOARD_DEAL_AMT": 195000000.0,
+        "BUY_ORG_TIMES": null,
+        "SELL_ORG_TIMES": 0.0,
+        "INST_BUY_NET_AMT": null,
+        "INST_BUY_AMT": null,
+        "INST_SELL_AMT": null,
+        "M1_CLOSE_ADJCHRATE": 2.3,
+        "M3_CLOSE_ADJCHRATE": 4.4,
+        "M6_CLOSE_ADJCHRATE": 7.7,
+        "Y1_CLOSE_ADJCHRATE": 10.1
+      }
+    ]
+  }
+}

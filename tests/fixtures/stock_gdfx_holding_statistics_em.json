@@ -1,0 +1,4 @@
+{"result":{"data":[
+  {"HOLDER_NAME":"中国证券金融股份有限公司","HOLDER_TYPE":"国有法人","STATISTICS_TIMES":15,"D10_AVG":2.0,"D10_MAX":3.5,"D10_MIN":0.8,"D30_AVG":3.5,"D30_MAX":5.1,"D30_MIN":1.2,"D60_AVG":2.0,"D60_MAX":4.0,"D60_MIN":-0.5,"HOLD_STOCKS":"600000,000001"},
+  {"HOLDER_NAME":"中央汇金资产管理有限责任公司","HOLDER_TYPE":"国有法人","STATISTICS_TIMES":3,"D10_AVG":1.0}
+]}}

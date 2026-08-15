@@ -1,0 +1,21 @@
+{
+  "content": [
+    {
+      "productCode": "S60001",
+      "productName": "招商私募投资基金",
+      "mgrName": "招商资管",
+      "trustee": "招商银行",
+      "foundDate": 1610000000000,
+      "registeredDate": 1620000000000
+    },
+    {
+      "productCode": "S60002",
+      "productName": "广发私募投资基金",
+      "mgrName": "广发资管",
+      "trustee": "广发银行",
+      "foundDate": 1600000000000,
+      "registeredDate": 1610000000000
+    }
+  ],
+  "totalPages": 1
+}

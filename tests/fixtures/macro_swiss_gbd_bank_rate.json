@@ -1,0 +1,26 @@
+{
+  "result": {
+    "data": [
+      {
+        "COUNTRY": "Switzerland",
+        "INDICATOR_ID": "EMG00341606",
+        "INDICATOR_NAME": "SNB policy rate",
+        "REPORT_DATE": "2024-03-01",
+        "REPORT_DATE_CH": "2024年03月",
+        "PUBLISH_DATE": "2024-04-10",
+        "VALUE": 3.5,
+        "PRE_VALUE": 3.2
+      },
+      {
+        "COUNTRY": "Switzerland",
+        "INDICATOR_ID": "EMG00341606",
+        "INDICATOR_NAME": "SNB policy rate",
+        "REPORT_DATE": "2024-02-01",
+        "REPORT_DATE_CH": "2024年02月",
+        "PUBLISH_DATE": "2024-03-10",
+        "VALUE": 3.2,
+        "PRE_VALUE": 3.0
+      }
+    ]
+  }
+}

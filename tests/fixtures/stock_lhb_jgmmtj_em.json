@@ -1,0 +1,40 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_NAME_ABBR": "宁德时代",
+        "SECURITY_CODE": "300750",
+        "TRADE_DATE": "2024-04-17",
+        "CLOSE_PRICE": 195.5,
+        "CHANGE_RATE": 8.2,
+        "BUY_ORG_NUM": 3.0,
+        "SELL_ORG_NUM": 1.0,
+        "ORG_BUY_AMT": 1500000000.0,
+        "ORG_SELL_AMT": 512345679.0,
+        "ORG_NET_BUY_AMT": 987654321.0,
+        "ACCUM_AMOUNT": 8000000000.0,
+        "ORG_NET_BUY_RATIO": 12.3,
+        "TURNOVERRATE": 3.1,
+        "FREE_MARKET_CAP": 800000000000.0,
+        "EXPLANATION": "机构榜"
+      },
+      {
+        "SECURITY_NAME_ABBR": "比亚迪",
+        "SECURITY_CODE": "002594",
+        "TRADE_DATE": "2024-04-17",
+        "CLOSE_PRICE": 240.0,
+        "CHANGE_RATE": -3.5,
+        "BUY_ORG_NUM": null,
+        "SELL_ORG_NUM": 2.0,
+        "ORG_BUY_AMT": null,
+        "ORG_SELL_AMT": 300000000.0,
+        "ORG_NET_BUY_AMT": -300000000.0,
+        "ACCUM_AMOUNT": 5000000000.0,
+        "ORG_NET_BUY_RATIO": -6.0,
+        "TURNOVERRATE": 2.0,
+        "FREE_MARKET_CAP": 600000000000.0,
+        "EXPLANATION": "机构卖出榜"
+      }
+    ]
+  }
+}

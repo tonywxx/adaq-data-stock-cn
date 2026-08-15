@@ -1,0 +1,19 @@
+{
+  "content": [
+    {
+      "orgName": "某已注销私募公司",
+      "orgCode": "91310000XXXX",
+      "orgSignDate": 1450000000000,
+      "cancelDate": 1680000000000,
+      "status": 300
+    },
+    {
+      "orgName": "某主动注销私募公司",
+      "orgCode": "91310000YYYY",
+      "orgSignDate": 1440000000000,
+      "cancelDate": 1670000000000,
+      "status": 100
+    }
+  ],
+  "totalPages": 1
+}

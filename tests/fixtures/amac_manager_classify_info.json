@@ -1,0 +1,33 @@
+{
+  "content": [
+    {
+      "managerName": "上海某私募管理有限公司",
+      "artificialPersonName": "周八",
+      "primaryInvestType": "私募证券投资基金",
+      "registerNo": "P1001001",
+      "registerProvince": "上海市",
+      "officeAdrAgg": "上海市浦东新区",
+      "establishDate": 1420000000000,
+      "registerDate": 1430000000000,
+      "fundCount": 12,
+      "memberType": "观察会员",
+      "hasSpecialTips": false,
+      "hasCreditTips": true
+    },
+    {
+      "managerName": "广州某私募管理有限公司",
+      "artificialPersonName": "吴九",
+      "primaryInvestType": "股权投资基金",
+      "registerNo": "P1001002",
+      "registerProvince": "广东省",
+      "officeAdrAgg": "广州市天河区",
+      "establishDate": 1440000000000,
+      "registerDate": 1450000000000,
+      "fundCount": 8,
+      "memberType": "普通会员",
+      "hasSpecialTips": false,
+      "hasCreditTips": false
+    }
+  ],
+  "totalPages": 1
+}

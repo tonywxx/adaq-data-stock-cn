@@ -1,0 +1,54 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "600519",
+        "SECUCODE": "600519.SH",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "TRADE_DATE": "2023-04-03",
+        "EXPLAIN": "今日涨幅偏离值达7%",
+        "CLOSE_PRICE": 1700.0,
+        "CHANGE_RATE": 10.0,
+        "BILLBOARD_NET_AMT": -123456789.0,
+        "BILLBOARD_BUY_AMT": 500000000.0,
+        "BILLBOARD_SELL_AMT": 623456789.0,
+        "BILLBOARD_DEAL_AMT": 1123456789.0,
+        "ACCUM_AMOUNT": 5000000000.0,
+        "DEAL_NET_RATIO": -2.4,
+        "DEAL_AMOUNT_RATIO": 22.4,
+        "TURNOVERRATE": 1.5,
+        "FREE_MARKET_CAP": 2100000000000.0,
+        "EXPLANATION": "日涨幅偏离值达7%",
+        "D1_CLOSE_ADJCHRATE": 3.1,
+        "D2_CLOSE_ADJCHRATE": 5.2,
+        "D5_CLOSE_ADJCHRATE": 9.8,
+        "D10_CLOSE_ADJCHRATE": 15.4,
+        "SECURITY_TYPE_CODE": "A"
+      },
+      {
+        "SECURITY_CODE": "000001",
+        "SECUCODE": "000001.SZ",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "TRADE_DATE": "2023-04-03",
+        "EXPLAIN": "今日跌幅偏离值达7%",
+        "CLOSE_PRICE": null,
+        "CHANGE_RATE": -9.5,
+        "BILLBOARD_NET_AMT": 12345678.0,
+        "BILLBOARD_BUY_AMT": 200000000.0,
+        "BILLBOARD_SELL_AMT": 187654322.0,
+        "BILLBOARD_DEAL_AMT": 387654322.0,
+        "ACCUM_AMOUNT": 3000000000.0,
+        "DEAL_NET_RATIO": 0.4,
+        "DEAL_AMOUNT_RATIO": 12.9,
+        "TURNOVERRATE": 1.1,
+        "FREE_MARKET_CAP": 250000000000.0,
+        "EXPLANATION": "日跌幅偏离值达7%",
+        "D1_CLOSE_ADJCHRATE": -2.0,
+        "D2_CLOSE_ADJCHRATE": -3.5,
+        "D5_CLOSE_ADJCHRATE": 1.0,
+        "D10_CLOSE_ADJCHRATE": 4.2,
+        "SECURITY_TYPE_CODE": "A"
+      }
+    ]
+  }
+}

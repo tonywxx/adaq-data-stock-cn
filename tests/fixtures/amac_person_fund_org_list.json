@@ -1,0 +1,23 @@
+{
+  "content": [
+    {
+      "orgName": "华夏基金管理有限公司",
+      "orgType": "gmjjglgs",
+      "workerTotalNum": 800,
+      "operNum": 750,
+      "salesmanNum": 30,
+      "investmentManagerNum": 60,
+      "fundManagerNum": 55
+    },
+    {
+      "orgName": "南方基金管理股份有限公司",
+      "orgType": "gmjjglgs",
+      "workerTotalNum": 720,
+      "operNum": 700,
+      "salesmanNum": 20,
+      "investmentManagerNum": 50,
+      "fundManagerNum": 48
+    }
+  ],
+  "totalPages": 1
+}

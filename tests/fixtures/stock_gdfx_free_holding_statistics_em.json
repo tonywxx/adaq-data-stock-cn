@@ -1,0 +1,4 @@
+{"result":{"data":[
+  {"HOLDER_NAME":"香港中央结算有限公司","HOLDER_TYPE":"境外法人","STATISTICS_TIMES":12,"D10_AVG":2.35,"D10_MAX":3.0,"D10_MIN":1.0,"D30_AVG":4.0,"D30_MAX":5.0,"D30_MIN":2.0,"D60_AVG":1.5,"D60_MAX":3.0,"D60_MIN":-1.5,"HOLD_STOCKS":"600000,000001"},
+  {"HOLDER_NAME":"中国证券金融股份有限公司","HOLDER_TYPE":"基金","STATISTICS_TIMES":8,"D10_AVG":1.1,"D10_MAX":2.0,"D10_MIN":0.5}
+]}}

@@ -1,0 +1,24 @@
+{
+  "result": {
+    "data": [
+      {
+        "OPERATEDEPT_NAME": "国泰君安上海江苏路",
+        "TYPE": "机构",
+        "BUY_AMT": 150000000.0,
+        "BUY_AMT_RATIO": 0.23,
+        "SELL_AMT": 100000000.0,
+        "SELL_AMT_RATIO": 0.15,
+        "NET_AMT": 50000000.0
+      },
+      {
+        "OPERATEDEPT_NAME": "银河证券北京中关村",
+        "TYPE": "游资",
+        "BUY_AMT": 80000000.0,
+        "BUY_AMT_RATIO": 0.12,
+        "SELL_AMT": 90000000.0,
+        "SELL_AMT_RATIO": null,
+        "NET_AMT": -10000000.0
+      }
+    ]
+  }
+}

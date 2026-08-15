@@ -1,0 +1,23 @@
+{
+  "content": [
+    {
+      "managerName": "中国证券投资基金业协会",
+      "memberBehalf": "张三",
+      "memberType": "普通会员",
+      "memberCode": "AMAC001",
+      "memberDate": 1700000000000,
+      "primaryInvestType": "私募",
+      "markStar": "0"
+    },
+    {
+      "managerName": "某资产管理有限公司",
+      "memberBehalf": "王五",
+      "memberType": "联席会员",
+      "memberCode": "AMAC002",
+      "memberDate": 1690000000000,
+      "primaryInvestType": "公募",
+      "markStar": "1"
+    }
+  ],
+  "totalPages": 1
+}

@@ -76,11 +76,17 @@
 | 34 | 指数更多 `stock::index::more`(全球现货 / 全球历史 / 中证 / 国证 PMI) | ✅ DONE | 5 | 5 ✅ |
 | 35 | 宏观第二批 `economic::macro2`(PMI / 固投 / 工业 / 消费 / 美国 CPI / 美国 PHS) | ✅ DONE | 6 | 6 ✅ |
 | 36 | 金属 / 外盘 `coin`(LME 实时 / SHFE 排名 / 外盘历史 / 国内期货历史 / 合约映射) | ✅ DONE | 5 | 5 ✅ |
+| 37 | 国际宏观 `economic::macro_intl`(英 / 加 / 澳 / 日 / 德 / 瑞士 / 香港,东财 datacenter) | ✅ DONE | 60 | 60 ✅ |
+| 38 | 指数 Caixin `index::cx`(财新趋势指数) | ✅ DONE | 16 | 16 ✅ |
+| 39 | A股股东分析 `stock::gdfx`(东财限售 / 持股 / 十大股东) | ✅ DONE | 12 | 12 ✅ |
+| 40 | A股龙虎榜 `stock::lhb`(东财每日 / 机构 / 营业部) | ✅ DONE | 10 | 10 ✅ |
+| 41 | 基金业协会 `fund::amac`(AMAC 会员 / 产品 / 管理人) | ✅ DONE | 12 | 12 ✅ |
 
-**累计**:36 个领域、152 个公开函数、175 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计**:41 个领域、270 个公开函数、286 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
 
 > 注:第 25-30 行领域数与函数数合计为 96 + 23 = 119;`stock::holder` 与 `stock::margin` 均含 `stock_yjbb_em` 同名实现,已统一保留 `stock::margin` 版本,`stock::holder` 中移除重复实现。
 > 第 31-36 行新增 33 个函数 / 33 个离线解析测试,其中 `coin` 为新增顶层领域(金属 + 内外盘期货历史 / 排名),统一复用东财 `push2his` kline 解析;`coin_foreign_hist` 与 `coin_futures_hist` 共用 `parse_kline`,kline 字段布局对齐 akshare(`change_pct`=p[8]、`change`=p[9]、`open_interest`=p[12]、`position_chg`=p[13])。
+> 第 37-41 行新增 110 个函数 / 110 个离线解析测试:`macro_intl` 原由三个 worker 分别按 UK/CA/AU 与 JP/DE 与 新兴市场经济体 落地,因 akshare 本 checkout(1.18.89)缺失 `macro_india/singapore/korea/brazil/mexico/turkey/russia/france/italy/...` 等文件,三个实现相互重叠,已合并为单一 `macro_intl` 模块(英/加/澳/日/德/瑞士/香港),删除重复子集 `macro_ukca`/`macro_jpde`/`macro_eu`。`index::cx` 与既有 `stock::index::more::index_pmi_cx` 通过 `category` 参数存在表面重叠,但对外函数名不同,均保留。
 
 ### 已推迟 / 部分(DEFERRED / PARTIAL)
 - 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点:`stock_dividend`(cninfo `Accept-Enckey`)、`air`/`weather`/`epidemic`/`food`/`fortune`(纯页面抓取)、`futures_spot`(JS 签名)、`index_stock_info`(HTML 抓取)等,已在 `docs/MAPPING.md` 对应条目下标注跳过原因。

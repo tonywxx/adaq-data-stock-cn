@@ -3,6 +3,7 @@
 pub mod china;
 pub mod extra;
 pub mod macro2;
+pub mod macro_intl;
 
 pub use china::{
     macro_china_cpi, macro_china_gdp, macro_china_money_supply, macro_china_ppi, ChinaCpi,

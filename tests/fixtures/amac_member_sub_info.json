@@ -1,0 +1,21 @@
+{
+  "content": [
+    {
+      "managerName": "中信证券私募子公司",
+      "memberBehalf": "李四",
+      "memberType": "特别会员",
+      "memberCode": "MEM001",
+      "memberDate": 1350000000000,
+      "primaryInvestType": "证券子公司"
+    },
+    {
+      "managerName": "国君证券私募子公司",
+      "memberBehalf": "郑十",
+      "memberType": "特别会员",
+      "memberCode": "MEM002",
+      "memberDate": 1360000000000,
+      "primaryInvestType": "证券子公司"
+    }
+  ],
+  "totalPages": 1
+}

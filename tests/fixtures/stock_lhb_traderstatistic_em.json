@@ -1,0 +1,24 @@
+{
+  "result": {
+    "data": [
+      {
+        "OPERATEDEPT_NAME": "东方财富拉萨团结路",
+        "AMOUNT": 567890123.0,
+        "SALES_ONLIST_TIMES": 45.0,
+        "ACT_BUY": 300000000.0,
+        "TOTAL_BUYER_SALESTIMES": 50.0,
+        "ACT_SELL": 267890123.0,
+        "TOTAL_SELLER_SALESTIMES": 40.0
+      },
+      {
+        "OPERATEDEPT_NAME": "华泰证券深圳益田路",
+        "AMOUNT": 123450000.0,
+        "SALES_ONLIST_TIMES": 10.0,
+        "ACT_BUY": 80000000.0,
+        "TOTAL_BUYER_SALESTIMES": 12.0,
+        "ACT_SELL": 100000.0,
+        "TOTAL_SELLER_SALESTIMES": 8.0
+      }
+    ]
+  }
+}

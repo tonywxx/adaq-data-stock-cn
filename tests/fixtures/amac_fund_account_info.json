@@ -1,0 +1,17 @@
+{
+  "content": [
+    {
+      "registerDate": 1640000000000,
+      "registerCode": "F70001",
+      "name": "易方达集合资管计划",
+      "manager": "易方达基金"
+    },
+    {
+      "registerDate": 1630000000000,
+      "registerCode": "F70002",
+      "name": "南方基金资管产品",
+      "manager": "南方基金"
+    }
+  ],
+  "totalPages": 1
+}

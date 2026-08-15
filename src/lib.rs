@@ -14,6 +14,7 @@ pub mod lpr;
 pub mod news;
 pub mod option;
 pub mod fund;
+pub mod index;
 pub mod rate;
 
 pub use core::client::Client;

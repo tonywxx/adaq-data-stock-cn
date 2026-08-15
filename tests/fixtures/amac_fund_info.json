@@ -1,0 +1,23 @@
+{
+  "content": [
+    {
+      "fundName": "聚宽一号私募证券投资基金",
+      "managerName": "聚宽投资",
+      "managerType": "私募证券投资基金管理人",
+      "workingState": "正在运作",
+      "putOnRecordDate": 1590000000000,
+      "establishDate": 1600000000000,
+      "mandatorName": "招商证券"
+    },
+    {
+      "fundName": "九坤量化私募证券投资基金",
+      "managerName": "九坤投资",
+      "managerType": "私募证券投资基金管理人",
+      "workingState": "正在运作",
+      "putOnRecordDate": 1580000000000,
+      "establishDate": 1570000000000,
+      "mandatorName": "中信证券"
+    }
+  ],
+  "totalPages": 1
+}

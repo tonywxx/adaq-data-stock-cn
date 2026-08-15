@@ -330,3 +330,138 @@
 | `futures_foreign_hist`(→ `coin_foreign_hist`,本库走东财 push2his) | `src/coin/mod.rs::coin_foreign_hist` | 东财 | `akshare/futures/futures_foreign.py:20` | DONE |
 | `futures_hist_em`(→ `coin_futures_hist`) | `src/coin/mod.rs::coin_futures_hist` | 东财 | `akshare/futures/futures_hist_em.py:91` | DONE |
 | `futures_rule_em`(→ `coin_futures_symbol_map`) | `src/coin/mod.rs::coin_futures_symbol_map` | 东财 | `akshare/futures/futures_rule_em.py:14` | DONE |
+
+## 国际宏观(economic::macro_intl,东财 datacenter)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `macro_uk_halifax_monthly` | `src/economic/macro_intl.rs::macro_uk_halifax_monthly` | 东财 | `akshare/economic/macro_uk.py:70` | DONE |
+| `macro_uk_halifax_yearly` | `src/economic/macro_intl.rs::macro_uk_halifax_yearly` | 东财 | `akshare/economic/macro_uk.py:82` | DONE |
+| `macro_uk_trade` | `src/economic/macro_intl.rs::macro_uk_trade` | 东财 | `akshare/economic/macro_uk.py:94` | DONE |
+| `macro_uk_bank_rate` | `src/economic/macro_intl.rs::macro_uk_bank_rate` | 东财 | `akshare/economic/macro_uk.py:106` | DONE |
+| `macro_uk_core_cpi_yearly` | `src/economic/macro_intl.rs::macro_uk_core_cpi_yearly` | 东财 | `akshare/economic/macro_uk.py:118` | DONE |
+| `macro_uk_core_cpi_monthly` | `src/economic/macro_intl.rs::macro_uk_core_cpi_monthly` | 东财 | `akshare/economic/macro_uk.py:130` | DONE |
+| `macro_uk_cpi_yearly` | `src/economic/macro_intl.rs::macro_uk_cpi_yearly` | 东财 | `akshare/economic/macro_uk.py:142` | DONE |
+| `macro_uk_cpi_monthly` | `src/economic/macro_intl.rs::macro_uk_cpi_monthly` | 东财 | `akshare/economic/macro_uk.py:154` | DONE |
+| `macro_uk_retail_monthly` | `src/economic/macro_intl.rs::macro_uk_retail_monthly` | 东财 | `akshare/economic/macro_uk.py:166` | DONE |
+| `macro_uk_retail_yearly` | `src/economic/macro_intl.rs::macro_uk_retail_yearly` | 东财 | `akshare/economic/macro_uk.py:178` | DONE |
+| `macro_uk_rightmove_yearly` | `src/economic/macro_intl.rs::macro_uk_rightmove_yearly` | 东财 | `akshare/economic/macro_uk.py:190` | DONE |
+| `macro_uk_rightmove_monthly` | `src/economic/macro_intl.rs::macro_uk_rightmove_monthly` | 东财 | `akshare/economic/macro_uk.py:202` | DONE |
+| `macro_uk_gdp_quarterly` | `src/economic/macro_intl.rs::macro_uk_gdp_quarterly` | 东财 | `akshare/economic/macro_uk.py:214` | DONE |
+| `macro_uk_gdp_yearly` | `src/economic/macro_intl.rs::macro_uk_gdp_yearly` | 东财 | `akshare/economic/macro_uk.py:226` | DONE |
+| `macro_uk_unemployment_rate` | `src/economic/macro_intl.rs::macro_uk_unemployment_rate` | 东财 | `akshare/economic/macro_uk.py:238` | DONE |
+| `macro_canada_new_house_rate` | `src/economic/macro_intl.rs::macro_canada_new_house_rate` | 东财 | `akshare/economic/macro_canada.py:14` | DONE |
+| `macro_canada_unemployment_rate` | `src/economic/macro_intl.rs::macro_canada_unemployment_rate` | 东财 | `akshare/economic/macro_canada.py:65` | DONE |
+| `macro_canada_trade` | `src/economic/macro_intl.rs::macro_canada_trade` | 东财 | `akshare/economic/macro_canada.py:116` | DONE |
+| `macro_canada_retail_rate_monthly` | `src/economic/macro_intl.rs::macro_canada_retail_rate_monthly` | 东财 | `akshare/economic/macro_canada.py:167` | DONE |
+| `macro_canada_bank_rate` | `src/economic/macro_intl.rs::macro_canada_bank_rate` | 东财 | `akshare/economic/macro_canada.py:218` | DONE |
+| `macro_canada_core_cpi_yearly` | `src/economic/macro_intl.rs::macro_canada_core_cpi_yearly` | 东财 | `akshare/economic/macro_canada.py:269` | DONE |
+| `macro_canada_core_cpi_monthly` | `src/economic/macro_intl.rs::macro_canada_core_cpi_monthly` | 东财 | `akshare/economic/macro_canada.py:320` | DONE |
+| `macro_canada_cpi_yearly` | `src/economic/macro_intl.rs::macro_canada_cpi_yearly` | 东财 | `akshare/economic/macro_canada.py:371` | DONE |
+| `macro_canada_cpi_monthly` | `src/economic/macro_intl.rs::macro_canada_cpi_monthly` | 东财 | `akshare/economic/macro_canada.py:422` | DONE |
+| `macro_canada_gdp_monthly` | `src/economic/macro_intl.rs::macro_canada_gdp_monthly` | 东财 | `akshare/economic/macro_canada.py:473` | DONE |
+| `macro_australia_retail_rate_monthly` | `src/economic/macro_intl.rs::macro_australia_retail_rate_monthly` | 东财 | `akshare/economic/macro_australia.py:14` | DONE |
+| `macro_australia_trade` | `src/economic/macro_intl.rs::macro_australia_trade` | 东财 | `akshare/economic/macro_australia.py:65` | DONE |
+| `macro_australia_unemployment_rate` | `src/economic/macro_intl.rs::macro_australia_unemployment_rate` | 东财 | `akshare/economic/macro_australia.py:116` | DONE |
+| `macro_australia_ppi_quarterly` | `src/economic/macro_intl.rs::macro_australia_ppi_quarterly` | 东财 | `akshare/economic/macro_australia.py:167` | DONE |
+| `macro_australia_cpi_quarterly` | `src/economic/macro_intl.rs::macro_australia_cpi_quarterly` | 东财 | `akshare/economic/macro_australia.py:218` | DONE |
+| `macro_australia_cpi_yearly` | `src/economic/macro_intl.rs::macro_australia_cpi_yearly` | 东财 | `akshare/economic/macro_australia.py:269` | DONE |
+| `macro_australia_bank_rate` | `src/economic/macro_intl.rs::macro_australia_bank_rate` | 东财 | `akshare/economic/macro_australia.py:320` | DONE |
+| `macro_japan_bank_rate` | `src/economic/macro_intl.rs::macro_japan_bank_rate` | 东财 | `akshare/economic/macro_japan.py:70` | DONE |
+| `macro_japan_cpi_yearly` | `src/economic/macro_intl.rs::macro_japan_cpi_yearly` | 东财 | `akshare/economic/macro_japan.py:82` | DONE |
+| `macro_japan_core_cpi_yearly` | `src/economic/macro_intl.rs::macro_japan_core_cpi_yearly` | 东财 | `akshare/economic/macro_japan.py:94` | DONE |
+| `macro_japan_unemployment_rate` | `src/economic/macro_intl.rs::macro_japan_unemployment_rate` | 东财 | `akshare/economic/macro_japan.py:106` | DONE |
+| `macro_japan_head_indicator` | `src/economic/macro_intl.rs::macro_japan_head_indicator` | 东财 | `akshare/economic/macro_japan.py:118` | DONE |
+| `macro_germany_ifo` | `src/economic/macro_intl.rs::macro_germany_ifo` | 东财 | `akshare/economic/macro_germany.py:69` | DONE |
+| `macro_germany_cpi_monthly` | `src/economic/macro_intl.rs::macro_germany_cpi_monthly` | 东财 | `akshare/economic/macro_germany.py:81` | DONE |
+| `macro_germany_cpi_yearly` | `src/economic/macro_intl.rs::macro_germany_cpi_yearly` | 东财 | `akshare/economic/macro_germany.py:93` | DONE |
+| `macro_germany_trade_adjusted` | `src/economic/macro_intl.rs::macro_germany_trade_adjusted` | 东财 | `akshare/economic/macro_germany.py:105` | DONE |
+| `macro_germany_gdp` | `src/economic/macro_intl.rs::macro_germany_gdp` | 东财 | `akshare/economic/macro_germany.py:117` | DONE |
+| `macro_germany_retail_sale_monthly` | `src/economic/macro_intl.rs::macro_germany_retail_sale_monthly` | 东财 | `akshare/economic/macro_germany.py:129` | DONE |
+| `macro_germany_retail_sale_yearly` | `src/economic/macro_intl.rs::macro_germany_retail_sale_yearly` | 东财 | `akshare/economic/macro_germany.py:141` | DONE |
+| `macro_germany_zew` | `src/economic/macro_intl.rs::macro_germany_zew` | 东财 | `akshare/economic/macro_germany.py:153` | DONE |
+| `macro_swiss_svme` | `src/economic/macro_intl.rs::macro_swiss_svme` | 东财 | `akshare/economic/macro_swiss.py:70` | DONE |
+| `macro_swiss_trade` | `src/economic/macro_intl.rs::macro_swiss_trade` | 东财 | `akshare/economic/macro_swiss.py:82` | DONE |
+| `macro_swiss_cpi_yearly` | `src/economic/macro_intl.rs::macro_swiss_cpi_yearly` | 东财 | `akshare/economic/macro_swiss.py:94` | DONE |
+| `macro_swiss_gdp_quarterly` | `src/economic/macro_intl.rs::macro_swiss_gdp_quarterly` | 东财 | `akshare/economic/macro_swiss.py:106` | DONE |
+| `macro_swiss_gbd_yearly` | `src/economic/macro_intl.rs::macro_swiss_gbd_yearly` | 东财 | `akshare/economic/macro_swiss.py:118` | DONE |
+| `macro_swiss_gbd_bank_rate` | `src/economic/macro_intl.rs::macro_swiss_gbd_bank_rate` | 东财 | `akshare/economic/macro_swiss.py:130` | DONE |
+| `macro_china_hk_cpi` | `src/economic/macro_intl.rs::macro_china_hk_cpi` | 东财 | `akshare/economic/macro_china_hk.py:69` | DONE |
+| `macro_china_hk_cpi_ratio` | `src/economic/macro_intl.rs::macro_china_hk_cpi_ratio` | 东财 | `akshare/economic/macro_china_hk.py:80` | DONE |
+| `macro_china_hk_rate_of_unemployment` | `src/economic/macro_intl.rs::macro_china_hk_rate_of_unemployment` | 东财 | `akshare/economic/macro_china_hk.py:91` | DONE |
+| `macro_china_hk_gbp` | `src/economic/macro_intl.rs::macro_china_hk_gbp` | 东财 | `akshare/economic/macro_china_hk.py:102` | DONE |
+| `macro_china_hk_gbp_ratio` | `src/economic/macro_intl.rs::macro_china_hk_gbp_ratio` | 东财 | `akshare/economic/macro_china_hk.py:113` | DONE |
+| `macro_china_hk_building_volume` | `src/economic/macro_intl.rs::macro_china_hk_building_volume` | 东财 | `akshare/economic/macro_china_hk.py:124` | DONE |
+| `macro_china_hk_building_amount` | `src/economic/macro_intl.rs::macro_china_hk_building_amount` | 东财 | `akshare/economic/macro_china_hk.py:135` | DONE |
+| `macro_china_hk_trade_diff_ratio` | `src/economic/macro_intl.rs::macro_china_hk_trade_diff_ratio` | 东财 | `akshare/economic/macro_china_hk.py:146` | DONE |
+| `macro_china_hk_ppi` | `src/economic/macro_intl.rs::macro_china_hk_ppi` | 东财 | `akshare/economic/macro_china_hk.py:157` | DONE |
+
+## 指数 Caixin(index::cx,财新)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `index_dei_cx` | `src/index/cx.rs::index_dei_cx` | 财新 | `akshare/index/index_cx.py:97` | DONE |
+| `index_ii_cx` | `src/index/cx.rs::index_ii_cx` | 财新 | `akshare/index/index_cx.py:125` | DONE |
+| `index_si_cx` | `src/index/cx.rs::index_si_cx` | 财新 | `akshare/index/index_cx.py:153` | DONE |
+| `index_fi_cx` | `src/index/cx.rs::index_fi_cx` | 财新 | `akshare/index/index_cx.py:181` | DONE |
+| `index_bi_cx` | `src/index/cx.rs::index_bi_cx` | 财新 | `akshare/index/index_cx.py:209` | DONE |
+| `index_nei_cx` | `src/index/cx.rs::index_nei_cx` | 财新 | `akshare/index/index_cx.py:237` | DONE |
+| `index_li_cx` | `src/index/cx.rs::index_li_cx` | 财新 | `akshare/index/index_cx.py:265` | DONE |
+| `index_ci_cx` | `src/index/cx.rs::index_ci_cx` | 财新 | `akshare/index/index_cx.py:293` | DONE |
+| `index_ti_cx` | `src/index/cx.rs::index_ti_cx` | 财新 | `akshare/index/index_cx.py:321` | DONE |
+| `index_neaw_cx` | `src/index/cx.rs::index_neaw_cx` | 财新 | `akshare/index/index_cx.py:349` | DONE |
+| `index_awpr_cx` | `src/index/cx.rs::index_awpr_cx` | 财新 | `akshare/index/index_cx.py:377` | DONE |
+| `index_cci_cx` | `src/index/cx.rs::index_cci_cx` | 财新 | `akshare/index/index_cx.py:405` | DONE |
+| `index_qli_cx` | `src/index/cx.rs::index_qli_cx` | 财新 | `akshare/index/index_cx.py:437` | DONE |
+| `index_ai_cx` | `src/index/cx.rs::index_ai_cx` | 财新 | `akshare/index/index_cx.py:469` | DONE |
+| `index_bei_cx` | `src/index/cx.rs::index_bei_cx` | 财新 | `akshare/index/index_cx.py:501` | DONE |
+| `index_neei_cx` | `src/index/cx.rs::index_neei_cx` | 财新 | `akshare/index/index_cx.py:533` | DONE |
+
+## A股股东分析(stock::gdfx,东财)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_gdfx_free_holding_statistics_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_statistics_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:15` | DONE |
+| `stock_gdfx_holding_statistics_em` | `src/stock/gdfx.rs::stock_gdfx_holding_statistics_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:119` | DONE |
+| `stock_gdfx_free_holding_change_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_change_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:222` | DONE |
+| `stock_gdfx_holding_change_em` | `src/stock/gdfx.rs::stock_gdfx_holding_change_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:313` | DONE |
+| `stock_gdfx_free_top_10_em` | `src/stock/gdfx.rs::stock_gdfx_free_top_10_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:393` | DONE |
+| `stock_gdfx_top_10_em` | `src/stock/gdfx.rs::stock_gdfx_top_10_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:452` | DONE |
+| `stock_gdfx_free_holding_detail_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_detail_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:505` | DONE |
+| `stock_gdfx_holding_detail_em` | `src/stock/gdfx.rs::stock_gdfx_holding_detail_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:595` | DONE |
+| `stock_gdfx_free_holding_analyse_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_analyse_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:691` | DONE |
+| `stock_gdfx_holding_analyse_em` | `src/stock/gdfx.rs::stock_gdfx_holding_analyse_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:789` | DONE |
+| `stock_gdfx_free_holding_teamwork_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_teamwork_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:892` | DONE |
+| `stock_gdfx_holding_teamwork_em` | `src/stock/gdfx.rs::stock_gdfx_holding_teamwork_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:955` | DONE |
+
+## A股龙虎榜(stock::lhb,东财)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_lhb_detail_em` | `src/stock/lhb.rs::stock_lhb_detail_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:14` | DONE |
+| `stock_lhb_stock_statistic_em` | `src/stock/lhb.rs::stock_lhb_stock_statistic_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:137` | DONE |
+| `stock_lhb_jgmmtj_em` | `src/stock/lhb.rs::stock_lhb_jgmmtj_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:226` | DONE |
+| `stock_lhb_jgstatistic_em` | `src/stock/lhb.rs::stock_lhb_jgstatistic_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:335` | DONE |
+| `stock_lhb_hyyyb_em` | `src/stock/lhb.rs::stock_lhb_hyyyb_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:433` | DONE |
+| `stock_lhb_yybph_em` | `src/stock/lhb.rs::stock_lhb_yybph_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:512` | DONE |
+| `stock_lhb_traderstatistic_em` | `src/stock/lhb.rs::stock_lhb_traderstatistic_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:648` | DONE |
+| `stock_lhb_stock_detail_date_em` | `src/stock/lhb.rs::stock_lhb_stock_detail_date_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:723` | DONE |
+| `stock_lhb_stock_detail_em` | `src/stock/lhb.rs::stock_lhb_stock_detail_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:766` | DONE |
+| `stock_lhb_yyb_detail_em` | `src/stock/lhb.rs::stock_lhb_yyb_detail_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:904` | DONE |
+
+## 基金业协会(fund::amac,AMAC)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `amac_member_info` | `src/fund/amac.rs::amac_member_info` | AMAC | `akshare/fund/fund_amac.py:44` | DONE |
+| `amac_person_fund_org_list` | `src/fund/amac.rs::amac_person_fund_org_list` | AMAC | `akshare/fund/fund_amac.py:96` | DONE |
+| `amac_manager_info` | `src/fund/amac.rs::amac_manager_info` | AMAC | `akshare/fund/fund_amac.py:240` | DONE |
+| `amac_manager_classify_info` | `src/fund/amac.rs::amac_manager_classify_info` | AMAC | `akshare/fund/fund_amac.py:294` | DONE |
+| `amac_member_sub_info` | `src/fund/amac.rs::amac_member_sub_info` | AMAC | `akshare/fund/fund_amac.py:365` | DONE |
+| `amac_fund_info` | `src/fund/amac.rs::amac_fund_info` | AMAC | `akshare/fund/fund_amac.py:415` | DONE |
+| `amac_securities_info` | `src/fund/amac.rs::amac_securities_info` | AMAC | `akshare/fund/fund_amac.py:476` | DONE |
+| `amac_aoin_info` | `src/fund/amac.rs::amac_aoin_info` | AMAC | `akshare/fund/fund_amac.py:530` | DONE |
+| `amac_fund_sub_info` | `src/fund/amac.rs::amac_fund_sub_info` | AMAC | `akshare/fund/fund_amac.py:577` | DONE |
+| `amac_fund_account_info` | `src/fund/amac.rs::amac_fund_account_info` | AMAC | `akshare/fund/fund_amac.py:629` | DONE |
+| `amac_futures_info` | `src/fund/amac.rs::amac_futures_info` | AMAC | `akshare/fund/fund_amac.py:737` | DONE |
+| `amac_manager_cancelled_info` | `src/fund/amac.rs::amac_manager_cancelled_info` | AMAC | `akshare/fund/fund_amac.py:792` | DONE |

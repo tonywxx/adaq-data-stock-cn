@@ -1,0 +1,29 @@
+{
+  "content": [
+    {
+      "mpiName": "永安期货资管一号",
+      "mpiProductCode": "F80001",
+      "aoiName": "永安期货",
+      "mpiTrustee": "中国银行",
+      "mpiCreateDate": 1630000000000,
+      "tzlx": "混合类",
+      "sfjgh": "否",
+      "registeredDate": 1650000000000,
+      "dueDate": 1700000000000,
+      "fundStatus": "正常"
+    },
+    {
+      "mpiName": "中信期货资管二号",
+      "mpiProductCode": "F80002",
+      "aoiName": "中信期货",
+      "mpiTrustee": "工商银行",
+      "mpiCreateDate": 1620000000000,
+      "tzlx": "固定收益类",
+      "sfjgh": "是",
+      "registeredDate": 1640000000000,
+      "dueDate": 1690000000000,
+      "fundStatus": "正常"
+    }
+  ],
+  "totalPages": 1
+}

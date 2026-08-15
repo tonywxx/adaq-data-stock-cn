@@ -1,0 +1,19 @@
+{
+  "content": [
+    {
+      "code": "AOIN001",
+      "name": "中信直投基金",
+      "aoinName": "中信直接投资子公司",
+      "managerName": "中信证券",
+      "createDate": 1500000000000
+    },
+    {
+      "code": "AOIN002",
+      "name": "华泰直投基金",
+      "aoinName": "华泰直接投资子公司",
+      "managerName": "华泰证券",
+      "createDate": 1510000000000
+    }
+  ],
+  "totalPages": 1
+}

@@ -1,0 +1,46 @@
+{
+  "result": {
+    "data": [
+      {
+        "OPERATEDEPT_CODE": "10188715",
+        "OPERATEDEPT_NAME": "华泰证券深圳益田路",
+        "ORG_NAME_ABBR": "华泰深圳益田路",
+        "TRADE_DATE": "2024-04-01",
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "CHANGE_RATE": 1.5,
+        "ACT_BUY": 50000000.0,
+        "ACT_SELL": 52000000.0,
+        "NET_AMT": -2000000.0,
+        "EXPLANATION": "日涨幅偏离值达7%",
+        "D1_CLOSE_ADJCHRATE": 1.2,
+        "D2_CLOSE_ADJCHRATE": 2.3,
+        "D3_CLOSE_ADJCHRATE": 3.1,
+        "D5_CLOSE_ADJCHRATE": 4.5,
+        "D10_CLOSE_ADJCHRATE": 6.0,
+        "D20_CLOSE_ADJCHRATE": 8.0,
+        "D30_CLOSE_ADJCHRATE": 9.5
+      },
+      {
+        "OPERATEDEPT_CODE": "10188888",
+        "OPERATEDEPT_NAME": "中信证券上海分公司",
+        "ORG_NAME_ABBR": "中信上海分公司",
+        "TRADE_DATE": "2024-04-01",
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "CHANGE_RATE": -0.5,
+        "ACT_BUY": 30000000.0,
+        "ACT_SELL": 28000000.0,
+        "NET_AMT": 2000000.0,
+        "EXPLANATION": "日跌幅偏离值达7%",
+        "D1_CLOSE_ADJCHRATE": -1.0,
+        "D2_CLOSE_ADJCHRATE": -1.5,
+        "D3_CLOSE_ADJCHRATE": -2.0,
+        "D5_CLOSE_ADJCHRATE": 0.5,
+        "D10_CLOSE_ADJCHRATE": 1.5,
+        "D20_CLOSE_ADJCHRATE": 2.0,
+        "D30_CLOSE_ADJCHRATE": null
+      }
+    ]
+  }
+}
