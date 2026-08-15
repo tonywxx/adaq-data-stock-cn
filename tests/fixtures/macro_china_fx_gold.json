@@ -1,0 +1,27 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年03月",
+        "GOLD_RESERVES": 2264.0,
+        "GOLD_RESERVES_SAME": 1.5,
+        "GOLD_RESERVES_SEQUENTIAL": 0.3,
+        "FOREX": 32454.0,
+        "FOREX_SAME": 2.1,
+        "FOREX_SEQUENTIAL": null
+      },
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年02月",
+        "GOLD_RESERVES": 2250.0,
+        "GOLD_RESERVES_SAME": 1.3,
+        "GOLD_RESERVES_SEQUENTIAL": 0.2,
+        "FOREX": 32100.0,
+        "FOREX_SAME": 2.0,
+        "FOREX_SEQUENTIAL": 1.2
+      }
+    ],
+    "pages": 1
+  }
+}

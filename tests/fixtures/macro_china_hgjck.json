@@ -1,0 +1,35 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年03月",
+        "EXIT_BASE": 3000.0,
+        "IMPORT_BASE": 2500.0,
+        "EXIT_BASE_SAME": 5.0,
+        "IMPORT_BASE_SAME": 4.0,
+        "EXIT_BASE_SEQUENTIAL": 2.0,
+        "IMPORT_BASE_SEQUENTIAL": 1.5,
+        "EXIT_ACCUMULATE": 9000.0,
+        "IMPORT_ACCUMULATE": 7500.0,
+        "EXIT_ACCUMULATE_SAME": 6.0,
+        "IMPORT_ACCUMULATE_SAME": null
+      },
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年02月",
+        "EXIT_BASE": 2900.0,
+        "IMPORT_BASE": 2400.0,
+        "EXIT_BASE_SAME": 4.8,
+        "IMPORT_BASE_SAME": 3.9,
+        "EXIT_BASE_SEQUENTIAL": 1.8,
+        "IMPORT_BASE_SEQUENTIAL": 1.4,
+        "EXIT_ACCUMULATE": 8800.0,
+        "IMPORT_ACCUMULATE": 7400.0,
+        "EXIT_ACCUMULATE_SAME": 5.8,
+        "IMPORT_ACCUMULATE_SAME": 5.5
+      }
+    ],
+    "pages": 1
+  }
+}

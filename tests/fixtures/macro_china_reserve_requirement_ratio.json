@@ -1,0 +1,35 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "-",
+        "PUBLISH_DATE": "2024-03-01",
+        "TRADE_DATE": "2024-03-15",
+        "INTEREST_RATE_BB": 10.5,
+        "INTEREST_RATE_BA": 10.0,
+        "CHANGE_RATE_B": -0.5,
+        "INTEREST_RATE_SB": 8.5,
+        "INTEREST_RATE_SA": 8.0,
+        "CHANGE_RATE_S": -0.5,
+        "NEXT_SH_RATE": 1.2,
+        "NEXT_SZ_RATE": 1.0,
+        "REMARK": null
+      },
+      {
+        "REPORT_DATE": "-",
+        "PUBLISH_DATE": "2024-02-01",
+        "TRADE_DATE": "2024-02-15",
+        "INTEREST_RATE_BB": 11.0,
+        "INTEREST_RATE_BA": 10.5,
+        "CHANGE_RATE_B": -0.5,
+        "INTEREST_RATE_SB": 9.0,
+        "INTEREST_RATE_SA": 8.5,
+        "CHANGE_RATE_S": -0.5,
+        "NEXT_SH_RATE": 0.8,
+        "NEXT_SZ_RATE": 0.6,
+        "REMARK": "定向降准"
+      }
+    ],
+    "pages": 1
+  }
+}

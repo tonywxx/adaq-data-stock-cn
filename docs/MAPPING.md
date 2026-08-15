@@ -593,3 +593,108 @@
 | `stock_ipo_review_em` | `src/stock/fundamental/registration.rs::stock_ipo_review_em` | 东财 | `akshare/stock_fundamental/stock_ipo_review.py:18` | DONE |
 | `stock_ipo_tutor_em` | `src/stock/fundamental/registration.rs::stock_ipo_tutor_em` | 东财 | `akshare/stock_fundamental/stock_ipo_tutor.py:18` | DONE |
 | `stock_profit_forecast_em` | `src/stock/fundamental/registration.rs::stock_profit_forecast_em` | 东财 | `akshare/stock_fundamental/stock_profit_forecast_em.py:15` | DONE |
+
+## 中国宏观扩展(economic::macro_china2,东方财富 datacenter)
+
+取 `akshare/economic/macro_china.py` 中 25 个东财 `datacenter-web` `RPT_*` 纯 HTTP 函数。Jin10 `reportType` 令牌门控(`macro_china_gdp_yearly`/`cpi_yearly`/`ppi_yearly`/`cx_pmi_yearly`/`non_man_pmi`/`fx_reserves_yearly`/`m2_yearly`/`exports_yoy`/`imports_yoy`/`trade_balance`/`industrial_production_yoy` 等)与 Sina `MacPage_Service.get_pagedata`(~10 个)均 DEFERRED;`macro_china_gdp`/`cpi`/`money_supply`/`ppi` 已在 `economic::china` 移植。
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `macro_china_bank_financing` | `src/economic/macro_china2.rs::macro_china_bank_financing` | 东财 | `akshare/economic/macro_china.py:1241` | DONE |
+| `macro_china_insurance_income` | `src/economic/macro_china2.rs::macro_china_insurance_income` | 东财 | `akshare/economic/macro_china.py:1287` | DONE |
+| `macro_china_mobile_number` | `src/economic/macro_china2.rs::macro_china_mobile_number` | 东财 | `akshare/economic/macro_china.py:1333` | DONE |
+| `macro_china_vegetable_basket` | `src/economic/macro_china2.rs::macro_china_vegetable_basket` | 东财 | `akshare/economic/macro_china.py:1380` | DONE |
+| `macro_china_agricultural_product` | `src/economic/macro_china2.rs::macro_china_agricultural_product` | 东财 | `akshare/economic/macro_china.py:1435` | DONE |
+| `macro_china_agricultural_index` | `src/economic/macro_china2.rs::macro_china_agricultural_index` | 东财 | `akshare/economic/macro_china.py:1490` | DONE |
+| `macro_china_energy_index` | `src/economic/macro_china2.rs::macro_china_energy_index` | 东财 | `akshare/economic/macro_china.py:1545` | DONE |
+| `macro_china_commodity_price_index` | `src/economic/macro_china2.rs::macro_china_commodity_price_index` | 东财 | `akshare/economic/macro_china.py:1600` | DONE |
+| `macro_global_sox_index` | `src/economic/macro_china2.rs::macro_global_sox_index` | 东财 | `akshare/economic/macro_china.py:1655` | DONE |
+| `macro_china_yw_electronic_index` | `src/economic/macro_china2.rs::macro_china_yw_electronic_index` | 东财 | `akshare/economic/macro_china.py:1710` | DONE |
+| `macro_china_construction_index` | `src/economic/macro_china2.rs::macro_china_construction_index` | 东财 | `akshare/economic/macro_china.py:1765` | DONE |
+| `macro_china_construction_price_index` | `src/economic/macro_china2.rs::macro_china_construction_price_index` | 东财 | `akshare/economic/macro_china.py:1823` | DONE |
+| `macro_china_lpi_index` | `src/economic/macro_china2.rs::macro_china_lpi_index` | 东财 | `akshare/economic/macro_china.py:1878` | DONE |
+| `macro_china_bdti_index` | `src/economic/macro_china2.rs::macro_china_bdti_index` | 东财 | `akshare/economic/macro_china.py:1933` | DONE |
+| `macro_china_bsi_index` | `src/economic/macro_china2.rs::macro_china_bsi_index` | 东财 | `akshare/economic/macro_china.py:1988` | DONE |
+| `macro_china_new_financial_credit` | `src/economic/macro_china2.rs::macro_china_new_financial_credit` | 东财 | `akshare/economic/macro_china.py:2142` | DONE |
+| `macro_china_fx_gold` | `src/economic/macro_china2.rs::macro_china_fx_gold` | 东财 | `akshare/economic/macro_china.py:2190` | DONE |
+| `macro_china_stock_market_cap` | `src/economic/macro_china2.rs::macro_china_stock_market_cap` | 东财 | `akshare/economic/macro_china.py:2256` | DONE |
+| `macro_china_hgjck` | `src/economic/macro_china2.rs::macro_china_hgjck` | 东财 | `akshare/economic/macro_china.py:2723` | DONE |
+| `macro_china_czsr` | `src/economic/macro_china2.rs::macro_china_czsr` | 东财 | `akshare/economic/macro_china.py:2814` | DONE |
+| `macro_china_whxd` | `src/economic/macro_china2.rs::macro_china_whxd` | 东财 | `akshare/economic/macro_china.py:2867` | DONE |
+| `macro_china_wbck` | `src/economic/macro_china2.rs::macro_china_wbck` | 东财 | `akshare/economic/macro_china.py:2917` | DONE |
+| `macro_china_xfzxx` | `src/economic/macro_china2.rs::macro_china_xfzxx` | 东财 | `akshare/economic/macro_china.py:2966` | DONE |
+| `macro_china_reserve_requirement_ratio` | `src/economic/macro_china2.rs::macro_china_reserve_requirement_ratio` | 东财 | `akshare/economic/macro_china.py:3096` | DONE |
+| `macro_china_real_estate` | `src/economic/macro_china2.rs::macro_china_real_estate` | 东财 | `akshare/economic/macro_china.py:3699` | DONE |
+
+## 期权波动率(index::qvix,optbbs 纯 CSV)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `index_option_50etf_qvix` | `src/index/qvix.rs::index_option_50etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:28` | DONE |
+| `index_option_50etf_min_qvix` | `src/index/qvix.rs::index_option_50etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:51` | DONE |
+| `index_option_300etf_qvix` | `src/index/qvix.rs::index_option_300etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:68` | DONE |
+| `index_option_300etf_min_qvix` | `src/index/qvix.rs::index_option_300etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:91` | DONE |
+| `index_option_500etf_qvix` | `src/index/qvix.rs::index_option_500etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:108` | DONE |
+| `index_option_500etf_min_qvix` | `src/index/qvix.rs::index_option_500etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:131` | DONE |
+| `index_option_cyb_qvix` | `src/index/qvix.rs::index_option_cyb_qvix` | optbbs | `akshare/index/index_option_qvix.py:148` | DONE |
+| `index_option_cyb_min_qvix` | `src/index/qvix.rs::index_option_cyb_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:171` | DONE |
+| `index_option_kcb_qvix` | `src/index/qvix.rs::index_option_kcb_qvix` | optbbs | `akshare/index/index_option_qvix.py:188` | DONE |
+| `index_option_kcb_min_qvix` | `src/index/qvix.rs::index_option_kcb_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:211` | DONE |
+| `index_option_100etf_qvix` | `src/index/qvix.rs::index_option_100etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:228` | DONE |
+| `index_option_100etf_min_qvix` | `src/index/qvix.rs::index_option_100etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:251` | DONE |
+| `index_option_300index_qvix` | `src/index/qvix.rs::index_option_300index_qvix` | optbbs | `akshare/index/index_option_qvix.py:268` | DONE |
+| `index_option_300index_min_qvix` | `src/index/qvix.rs::index_option_300index_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:291` | DONE |
+| `index_option_1000index_qvix` | `src/index/qvix.rs::index_option_1000index_qvix` | optbbs | `akshare/index/index_option_qvix.py:308` | DONE |
+| `index_option_1000index_min_qvix` | `src/index/qvix.rs::index_option_1000index_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:331` | DONE |
+| `index_option_50index_qvix` | `src/index/qvix.rs::index_option_50index_qvix` | optbbs | `akshare/index/index_option_qvix.py:348` | DONE |
+| `index_option_50index_min_qvix` | `src/index/qvix.rs::index_option_50index_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:371` | DONE |
+
+## 上交所期权(option::sse,新浪 JSONP)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `option_sse_list_sina` | `src/option/sse.rs::option_sse_list_sina` | 新浪 | `akshare/option/option_finance_sina.py:422` | DONE |
+| `option_sse_expire_day_sina` | `src/option/sse.rs::option_sse_expire_day_sina` | 新浪 | `akshare/option/option_finance_sina.py:441` | DONE |
+| `option_sse_codes_sina` | `src/option/sse.rs::option_sse_codes_sina` | 新浪 | `akshare/option/option_finance_sina.py:477` | DONE |
+| `option_sse_spot_price_sina` | `src/option/sse.rs::option_sse_spot_price_sina` | 新浪 | `akshare/option/option_finance_sina.py:542` | DONE |
+| `option_sse_underlying_spot_price_sina` | `src/option/sse.rs::option_sse_underlying_spot_price_sina` | 新浪 | `akshare/option/option_finance_sina.py:621` | DONE |
+| `option_sse_greeks_sina` | `src/option/sse.rs::option_sse_greeks_sina` | 新浪 | `akshare/option/option_finance_sina.py:686` | DONE |
+| `option_sse_minute_sina` | `src/option/sse.rs::option_sse_minute_sina` | 新浪 | `akshare/option/option_finance_sina.py:732` | DONE |
+| `option_sse_daily_sina` | `src/option/sse.rs::option_sse_daily_sina` | 新浪 | `akshare/option/option_finance_sina.py:776` | DONE |
+| `option_finance_minute_sina` | `src/option/sse.rs::option_finance_minute_sina` | 新浪 | `akshare/option/option_finance_sina.py:816` | DONE |
+| `option_minute_em` | `src/option/sse.rs::option_minute_em` | 东财 | `akshare/option/option_finance_sina.py:865` | DONE |
+
+> CFFEX 列表(`option_cffex_*_list_sina`)为 HTML 抓取 → DEFERRED;已统一的 `option_cffex_*_spot_sina`/`_daily_sina` 不重复移植;`option_minute_em` 入参为 `secid`(调用方自行经 `option_current_em` 解析)。
+
+## 三大报表(stock::financial_three,东方财富 emweb/datacenter)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_balance_sheet_by_yearly_em` | `src/stock/financial_three.rs::stock_balance_sheet_by_yearly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:84` | DONE |
+| `stock_profit_sheet_by_yearly_em` | `src/stock/financial_three.rs::stock_profit_sheet_by_yearly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:191` | DONE |
+| `stock_profit_sheet_by_quarterly_em` | `src/stock/financial_three.rs::stock_profit_sheet_by_quarterly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:240` | DONE |
+| `stock_cash_flow_sheet_by_yearly_em` | `src/stock/financial_three.rs::stock_cash_flow_sheet_by_yearly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:342` | DONE |
+| `stock_cash_flow_sheet_by_quarterly_em` | `src/stock/financial_three.rs::stock_cash_flow_sheet_by_quarterly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:393` | DONE |
+| `stock_balance_sheet_by_report_delisted_em` | `src/stock/financial_three.rs::stock_balance_sheet_by_report_delisted_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:474` | DONE |
+| `stock_profit_sheet_by_report_delisted_em` | `src/stock/financial_three.rs::stock_profit_sheet_by_report_delisted_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:507` | DONE |
+| `stock_cash_flow_sheet_by_report_delisted_em` | `src/stock/financial_three.rs::stock_cash_flow_sheet_by_report_delisted_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:540` | DONE |
+
+> 归一化为 `(项目,报告期,值)` 行;私有 emweb HTML helper `_stock_balance_sheet_by_report_ctype_em` 及依赖它的三个非退市 `*_by_report_em` DEFERRED;`stock::fundamental::eastmoney` 的 `*_by_report_em` 来自不同文件,无重复。
+
+## 财务(同花顺/港股/美股)(stock::fundamental::finance_more)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_financial_debt_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_debt_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:58` | DONE |
+| `stock_financial_benefit_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_benefit_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:92` | DONE |
+| `stock_financial_cash_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_cash_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:130` | DONE |
+| `stock_financial_abstract_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_abstract_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:194` | DONE |
+| `stock_financial_debt_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_debt_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:291` | DONE |
+| `stock_financial_benefit_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_benefit_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:380` | DONE |
+| `stock_financial_cash_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_cash_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:477` | DONE |
+| `stock_financial_hk_report_em` | `src/stock/fundamental/finance_more.rs::stock_financial_hk_report_em` | 东财 | `akshare/stock_fundamental/stock_finance_hk_em.py:13` | DONE |
+| `stock_financial_hk_analysis_indicator_em` | `src/stock/fundamental/finance_more.rs::stock_financial_hk_analysis_indicator_em` | 东财 | `akshare/stock_fundamental/stock_finance_hk_em.py:108` | DONE |
+| `stock_financial_us_report_em` | `src/stock/fundamental/finance_more.rs::stock_financial_us_report_em` | 东财 | `akshare/stock_fundamental/stock_finance_us_em.py:110` | DONE |
+| `stock_financial_us_analysis_indicator_em` | `src/stock/fundamental/finance_more.rs::stock_financial_us_analysis_indicator_em` | 东财 | `akshare/stock_fundamental/stock_finance_us_em.py:158` | DONE |
+
+> `stock_financial_abstract_ths` / `stock_management_change_ths` / `stock_shareholder_change_ths` 为同花顺 `.phtml` HTML 抓取 → DEFERRED。

@@ -4,6 +4,7 @@ pub mod china;
 pub mod extra;
 pub mod macro2;
 pub mod macro_intl;
+pub mod macro_china2;
 pub mod macro_usa;
 
 pub use china::{

@@ -1,0 +1,25 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年03月",
+        "BASE": 20000.0,
+        "BASE_SAME": 3.5,
+        "BASE_SEQUENTIAL": null,
+        "BASE_ACCUMULATE": 60000.0,
+        "ACCUMULATE_SAME": 4.0
+      },
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年02月",
+        "BASE": 19000.0,
+        "BASE_SAME": 3.2,
+        "BASE_SEQUENTIAL": 1.5,
+        "BASE_ACCUMULATE": 58000.0,
+        "ACCUMULATE_SAME": 3.8
+      }
+    ],
+    "pages": 1
+  }
+}

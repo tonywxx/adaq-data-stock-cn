@@ -1,0 +1,39 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024-03-15",
+        "TOTAL_SHARES_SH": 100.0,
+        "TOTAL_MARKE_SH": 45000.0,
+        "DEAL_AMOUNT_SH": 5000.0,
+        "VOLUME_SH": 300.0,
+        "HIGH_INDEX_SH": 3100.0,
+        "LOW_INDEX_SH": 2900.0,
+        "TOTAL_SZARES_SZ": 80.0,
+        "TOTAL_MARKE_SZ": 32000.0,
+        "DEAL_AMOUNT_SZ": 4000.0,
+        "VOLUME_SZ": 250.0,
+        "HIGH_INDEX_SZ": 1100.0,
+        "LOW_INDEX_SZ": null
+      },
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024-02-15",
+        "TOTAL_SHARES_SH": 99.0,
+        "TOTAL_MARKE_SH": 44000.0,
+        "DEAL_AMOUNT_SH": 4800.0,
+        "VOLUME_SH": 290.0,
+        "HIGH_INDEX_SH": 3050.0,
+        "LOW_INDEX_SH": 2850.0,
+        "TOTAL_SZARES_SZ": 79.0,
+        "TOTAL_MARKE_SZ": 31500.0,
+        "DEAL_AMOUNT_SZ": 3900.0,
+        "VOLUME_SZ": 245.0,
+        "HIGH_INDEX_SZ": 1080.0,
+        "LOW_INDEX_SZ": 1000.0
+      }
+    ],
+    "pages": 1
+  }
+}

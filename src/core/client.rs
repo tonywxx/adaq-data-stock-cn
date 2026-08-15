@@ -166,6 +166,43 @@ impl Client {
         Ok(value)
     }
 
+    /// Fetch a JSON endpoint with optional per-request `headers` (e.g. Sina's
+    /// `Referer`), layered on top of the client's default `User-Agent`. Same
+    /// retry/backoff, rate limiting, concurrency cap and caching as [`get_json`].
+    pub async fn get_json_with_headers(
+        &self,
+        source: &'static str,
+        endpoint: &'static str,
+        url: &str,
+        params: &[(&str, &str)],
+        headers: Option<&[(&str, &str)]>,
+    ) -> Result<Value> {
+        let key = self.cache_key(source, endpoint, params);
+        if let Some(cache) = &self.cache {
+            let p = self.cache_path(&key);
+            if let (Ok(data), Ok(meta)) = (std::fs::read(&p), std::fs::metadata(&p))
+                && let Ok(modified) = meta.modified()
+                && modified.elapsed().map(|e| e < cache.ttl).unwrap_or(false)
+                && let Ok(v) = serde_json::from_slice::<Value>(&data)
+            {
+                return Ok(v);
+            }
+        }
+
+        let resp = self
+            .fetch_with_retry(source, reqwest::Method::GET, url, params, headers)
+            .await?;
+        let value: Value = resp.json().await.map_err(Error::Http)?;
+
+        if let Some(_cache) = &self.cache {
+            let p = self.cache_path(&key);
+            if let Ok(bytes) = serde_json::to_vec(&value) {
+                let _ = std::fs::write(p, bytes);
+            }
+        }
+        Ok(value)
+    }
+
     /// Fetch a text endpoint (for sources that return non-JSON / lenient JSON). Same resilience as [`get_json`].
     ///
     /// `headers` lets a caller attach per-request headers (e.g. Sina's `Referer`),

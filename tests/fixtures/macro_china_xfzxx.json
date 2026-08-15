@@ -1,0 +1,33 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年03月",
+        "CONSUMERS_FAITH_INDEX": 110.0,
+        "FAITH_INDEX_SAME": 1.0,
+        "FAITH_INDEX_SEQUENTIAL": 0.2,
+        "CONSUMERS_ASTIS_INDEX": 105.0,
+        "ASTIS_INDEX_SAME": 0.8,
+        "ASTIS_INDEX_SEQUENTIAL": 0.1,
+        "CONSUMERS_EXPECT_INDEX": null,
+        "EXPECT_INDEX_SAME": 1.1,
+        "EXPECT_INDEX_SEQUENTIAL": 0.3
+      },
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年02月",
+        "CONSUMERS_FAITH_INDEX": 109.0,
+        "FAITH_INDEX_SAME": 0.9,
+        "FAITH_INDEX_SEQUENTIAL": 0.1,
+        "CONSUMERS_ASTIS_INDEX": 104.0,
+        "ASTIS_INDEX_SAME": 0.7,
+        "ASTIS_INDEX_SEQUENTIAL": 0.1,
+        "CONSUMERS_EXPECT_INDEX": 112.0,
+        "EXPECT_INDEX_SAME": 1.0,
+        "EXPECT_INDEX_SEQUENTIAL": 0.2
+      }
+    ],
+    "pages": 1
+  }
+}

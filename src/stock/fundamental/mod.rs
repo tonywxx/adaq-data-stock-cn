@@ -6,6 +6,7 @@
 
 pub mod eastmoney;
 pub mod registration;
+pub mod finance_more;
 
 pub use eastmoney::{
     stock_balance_sheet_by_report_em, stock_cash_flow_sheet_by_report_em,

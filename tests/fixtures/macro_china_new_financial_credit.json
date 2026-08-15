@@ -1,0 +1,25 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年03月",
+        "RMB_LOAN": 12000.5,
+        "RMB_LOAN_SAME": 5.2,
+        "RMB_LOAN_SEQUENTIAL": null,
+        "RMB_LOAN_ACCUMULATE": 35000.0,
+        "LOAN_ACCUMULATE_SAME": 6.1
+      },
+      {
+        "REPORT_DATE": "-",
+        "TIME": "2024年02月",
+        "RMB_LOAN": 11000.0,
+        "RMB_LOAN_SAME": 4.8,
+        "RMB_LOAN_SEQUENTIAL": 1.0,
+        "RMB_LOAN_ACCUMULATE": 32000.0,
+        "LOAN_ACCUMULATE_SAME": 5.5
+      }
+    ],
+    "pages": 1
+  }
+}

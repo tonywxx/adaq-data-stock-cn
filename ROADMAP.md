@@ -92,14 +92,20 @@
 | 50 | 股权质押 `stock::gpzy`(东财 datacenter:概况/质押比例/分布统计/行业) | ✅ DONE | 7 | 7 ✅ |
 | 51 | 可转债 `bond::cov`(新浪/东财:现货/日线/分钟/前复权分钟/资料) | ✅ DONE | 5 | 6 ✅ |
 | 52 | 发行与申购 `stock::fundamental::registration`(东财 datacenter:注册制/IPO/盈利预测) | ✅ DONE | 11 | 12 ✅ |
+| 53 | 中国宏观扩展 `economic::macro_china2`(东财 datacenter:银行/保险/农产品/指数/房地产等 25 项) | ✅ DONE | 25 | 25 ✅ |
+| 54 | 期权波动率 `index::qvix`(optbbs 纯 CSV:50ETF/300ETF/500ETF/创业板/科创/100ETF/指数 日/分钟) | ✅ DONE | 18 | 2 ✅ |
+| 55 | 上交所期权 `option::sse`(新浪 JSONP:列表/到期/代码/行情/Greeks/分钟/日线) | ✅ DONE | 10 | 10 ✅ |
+| 56 | 三大报表 `stock::financial_three`(东财 emweb/datacenter:资产负债/利润/现金流 年/季/退市) | ✅ DONE | 8 | 8 ✅ |
+| 57 | 财务(同花顺/港股/美股) `stock::fundamental::finance_more`(10jqka + 东财) | ✅ DONE | 11 | 11 ✅ |
 
-**累计**:52 个领域、327 个公开函数、345 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计**:57 个领域、399 个公开函数、401 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
 
 > 注:第 25-30 行领域数与函数数合计为 96 + 23 = 119;`stock::holder` 与 `stock::margin` 均含 `stock_yjbb_em` 同名实现,已统一保留 `stock::margin` 版本,`stock::holder` 中移除重复实现。
 > 第 31-36 行新增 33 个函数 / 33 个离线解析测试,其中 `coin` 为新增顶层领域(金属 + 内外盘期货历史 / 排名),统一复用东财 `push2his` kline 解析;`coin_foreign_hist` 与 `coin_futures_hist` 共用 `parse_kline`,kline 字段布局对齐 akshare(`change_pct`=p[8]、`change`=p[9]、`open_interest`=p[12]、`position_chg`=p[13])。
 > 第 37-41 行新增 110 个函数 / 110 个离线解析测试:`macro_intl` 原由三个 worker 分别按 UK/CA/AU 与 JP/DE 与 新兴市场经济体 落地,因 akshare 本 checkout(1.18.89)缺失 `macro_india/singapore/korea/brazil/mexico/turkey/russia/france/italy/...` 等文件,三个实现相互重叠,已合并为单一 `macro_intl` 模块(英/加/澳/日/德/瑞士/香港),删除重复子集 `macro_ukca`/`macro_jpde`/`macro_eu`。`index::cx` 与既有 `stock::index::more::index_pmi_cx` 通过 `category` 参数存在表面重叠,但对外函数名不同,均保留。
 > 第 42-46 行新增 19 个函数 / 19 个离线解析测试:`macro_usa` 走 Jin10 公开 `cdn.jin10.com` 明文 JSON(`datacenter-api.jin10.com` 需 `x-csrf-token`,其余宏观函数暂 DEFERRED);`cbond` 走中债登 POST(fixture 断言按 serde_json 默认 BTreeMap 的键字典序升序对齐);`option::sina` 仅落地 `option_cffex_daily`(统一 `option_cffex_*_daily_sina`),并修正 `option/mod.rs` 误重导出本 checkout 不存在的 `option_sina_spot`;`index/funddb.rs` 因上游源文件 ABSENT 未创建。
 > 第 47-52 行新增 38 个函数 / 40 个离线解析测试(由 research agent-11 的调研确定剩余 ~805 未移植函数中 ~600 可行的纯 HTTP 子集,本波取东财 datacenter / 新浪 JSON 族):`stock::dzjy`(大宗交易)、`stock::financial`(三大财务报表,归一化为 `(证券,项目,报告期,值)` 行)、`stock::sy`(市盈率/市净率)、`stock::gpzy`(股权质押)、`bond::cov`(可转债现货/日线/分钟/资料,`daily` 因新浪需 JS 解密改用东财 push2his 同列结构)、`stock::fundamental::registration`(注册制各板块 + IPO 申报/审核/辅导 + 盈利预测)。其中 `stock_zcfz_*`/`stock_lrb_*`/`stock_xjll_*` 与既有 `stock::fundamental::eastmoney` 的 `*_by_report_em` 来自不同 akshare 文件,无重复;`bond_cov_comparison`/`bond_zh_cov`/`bond_zh_cov_value_analysis` 已在 `bond::eastmoney` 移植,本波跳过。
+> 第 53-57 行新增 72 个函数 / 56 个离线解析测试(续 research agent-11 的 3 批计划):`economic::macro_china2` 取 `macro_china.py` 中 25 个东财 datacenter `RPT_*` 函数(Jin10 `reportType` 令牌门控与 Sina `MacPage` 共 ~25 个 DEFERRED);`index::qvix` 取 optbbs.com 纯 CSV 的 18 个 ETF/指数波动率(日/分钟);`option::sse` 取新浪 JSONP 的 10 个上交所期权函数(CFFEX 列表 HTML 抓取与已统一的 spot/daily 跳过);`stock::financial_three` 取 `stock_three_report_em.py` 的 8 个年/季/退市报表(emweb HTML helper DEFERRED);`stock::fundamental::finance_more` 取 10jqka `stock_finance_ths` 7 个 + 港股/美股东财 datacenter 各 2 个(共 11,THS 三个 HTML `.phtml` 抓取 DEFERRED)。`qvix` 仅 2 个测试(日/分钟共用解析器),其余按函数数一一对应。
 
 ### 已推迟 / 部分(DEFERRED / PARTIAL)
 - 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点:`stock_dividend`(cninfo `Accept-Enckey`)、`air`/`weather`/`epidemic`/`food`/`fortune`(纯页面抓取)、`futures_spot`(JS 签名)、`index_stock_info`(HTML 抓取)等,已在 `docs/MAPPING.md` 对应条目下标注跳过原因。

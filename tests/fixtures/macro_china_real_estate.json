@@ -1,0 +1,27 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-15",
+        "INDICATOR_VALUE": 1234.5,
+        "CHANGE_RATE": 1.2,
+        "CHANGERATE_3M": 2.3,
+        "CHANGERATE_6M": 3.4,
+        "CHANGERATE_1Y": 4.5,
+        "CHANGERATE_2Y": 5.6,
+        "CHANGERATE_3Y": null
+      },
+      {
+        "REPORT_DATE": "2024-02-15",
+        "INDICATOR_VALUE": 1200.0,
+        "CHANGE_RATE": -0.5,
+        "CHANGERATE_3M": 2.0,
+        "CHANGERATE_6M": 3.1,
+        "CHANGERATE_1Y": 4.2,
+        "CHANGERATE_2Y": 5.3,
+        "CHANGERATE_3Y": 6.7
+      }
+    ],
+    "pages": 1
+  }
+}
