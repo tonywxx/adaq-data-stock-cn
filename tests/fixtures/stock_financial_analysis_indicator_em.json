@@ -1,0 +1,34 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "301389.SZ",
+        "SECURITY_CODE": "301389",
+        "SECURITY_NAME_ABBR": "普利制药",
+        "ORG_CODE": "Q00383400",
+        "REPORT_DATE": "2024-03-31T00:00:00",
+        "REPORT_TYPE": "1",
+        "REPORT_DATE_NAME": "2024-03-31",
+        "BASIC_EPS": "1.23",
+        "WEIGHTAVG_ROE": "12.34",
+        "GROSS_MARGIN": "55.67",
+        "NET_PROFIT_YOY": "8.90",
+        "TOTAL_INCOME_YOY": "15.20"
+      },
+      {
+        "SECUCODE": "301389.SZ",
+        "SECURITY_CODE": "301389",
+        "SECURITY_NAME_ABBR": "普利制药",
+        "ORG_CODE": "Q00383400",
+        "REPORT_DATE": "2023-12-31T00:00:00",
+        "REPORT_TYPE": "1",
+        "REPORT_DATE_NAME": "2023-12-31",
+        "BASIC_EPS": "4.56",
+        "WEIGHTAVG_ROE": "20.11",
+        "GROSS_MARGIN": "58.20",
+        "NET_PROFIT_YOY": "10.05",
+        "TOTAL_INCOME_YOY": "18.44"
+      }
+    ]
+  }
+}

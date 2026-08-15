@@ -1,0 +1,42 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "600519.SH",
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "ORG_CODE": "Q00132400",
+        "REPORT_DATE": "2024-03-31T00:00:00",
+        "REPORT_TYPE": "1",
+        "REPORT_DATE_NAME": "2024-03-31",
+        "TOTAL_OPERATE_INCOME": "46470614350.29",
+        "OPERATE_INCOME": "46470614350.29",
+        "OPERATE_COST": "6931131067.68",
+        "OPERATE_PROFIT": "31941168315.23",
+        "SUM_INCOME": "31956562922.44",
+        "PARENT_NETPROFIT": "24065276197.00",
+        "BASIC_EPS": "19.16",
+        "DILUTE_EPS": "19.16",
+        "WEIGHTAVG_ROE": "10.2883"
+      },
+      {
+        "SECUCODE": "600519.SH",
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "ORG_CODE": "Q00132400",
+        "REPORT_DATE": "2023-12-31T00:00:00",
+        "REPORT_TYPE": "1",
+        "REPORT_DATE_NAME": "2023-12-31",
+        "TOTAL_OPERATE_INCOME": "147694045648.51",
+        "OPERATE_INCOME": "147694045648.51",
+        "OPERATE_COST": "23638881353.05",
+        "OPERATE_PROFIT": "103708867046.28",
+        "SUM_INCOME": "103926568807.65",
+        "PARENT_NETPROFIT": "74734007919.00",
+        "BASIC_EPS": "59.49",
+        "DILUTE_EPS": "59.49",
+        "WEIGHTAVG_ROE": "34.1929"
+      }
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "status": 200,
+  "data": {
+    "keys": [
+      "代码",
+      "公司",
+      "国家地区",
+      "市值",
+      "比特币占比公司市值",
+      "持仓成本",
+      "持仓占比",
+      "持仓量",
+      "当日持仓市值",
+      "报告日期",
+      "购买公告/文件",
+      "filings_url",
+      "分类",
+      "倍数",
+      "cost_basis_prefix",
+      "公司中文名"
+    ],
+    "values": [
+      [
+        "MSTR:NADQ",
+        "MicroStrategy",
+        "美国",
+        null,
+        null,
+        null,
+        "0.725",
+        "152333",
+        "4624823786.68",
+        "2023-07-13",
+        "Filing",
+        "https://example.com/mstr.pdf",
+        "上市公司",
+        null,
+        null,
+        null
+      ],
+      [
+        "MARA:NADQ",
+        "Marathon Digital Holdings Inc",
+        "美国",
+        null,
+        null,
+        null,
+        "0.06",
+        "12538",
+        "380653178.48",
+        "2023-07-13",
+        "Filing",
+        "https://example.com/mara.pdf",
+        "上市公司",
+        null,
+        null,
+        "美国加密货币挖矿公司"
+      ],
+      [
+        "",
+        "Phantom Holdings",
+        "美国",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "2023-07-13",
+        "Filing",
+        "https://example.com/phantom.pdf",
+        "上市公司",
+        null,
+        null,
+        null
+      ]
+    ]
+  }
+}

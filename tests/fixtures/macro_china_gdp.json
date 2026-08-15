@@ -1,0 +1,31 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "DOMESTICL_PRODUCT_BASE": 296299.0,
+        "FIRST_PRODUCT_BASE": 11574.0,
+        "SECOND_PRODUCT_BASE": 109846.0,
+        "THIRD_PRODUCT_BASE": 174879.0,
+        "SUM_SAME": 5.3,
+        "FIRST_SAME": 3.3,
+        "SECOND_SAME": 6.0,
+        "THIRD_SAME": 5.0
+      },
+      {
+        "REPORT_DATE": "2023-12-31",
+        "TIME": "2023-12",
+        "DOMESTICL_PRODUCT_BASE": 1294271.0,
+        "FIRST_PRODUCT_BASE": 89755.0,
+        "SECOND_PRODUCT_BASE": 482589.0,
+        "THIRD_PRODUCT_BASE": 721927.0,
+        "SUM_SAME": 5.2,
+        "FIRST_SAME": 4.1,
+        "SECOND_SAME": 4.4,
+        "THIRD_SAME": 5.8
+      }
+    ],
+    "pages": 1
+  }
+}

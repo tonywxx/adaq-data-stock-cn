@@ -1,0 +1,23 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-01",
+        "IR_RATE": 1.85,
+        "CHANGE_RATE": -0.05,
+        "INDICATOR_ID": "001",
+        "MARKET_CODE": "001",
+        "CURRENCY_CODE": "CNY"
+      },
+      {
+        "REPORT_DATE": "2024-03-04",
+        "IR_RATE": 1.83,
+        "CHANGE_RATE": -0.02,
+        "INDICATOR_ID": "001",
+        "MARKET_CODE": "001",
+        "CURRENCY_CODE": "CNY"
+      }
+    ]
+  }
+}

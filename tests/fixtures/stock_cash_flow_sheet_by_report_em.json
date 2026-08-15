@@ -1,0 +1,34 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "600519.SH",
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "ORG_CODE": "Q00132400",
+        "REPORT_DATE": "2024-03-31T00:00:00",
+        "REPORT_TYPE": "1",
+        "REPORT_DATE_NAME": "2024-03-31",
+        "CASH_RECEIVE_SALE": "54440094154.42",
+        "NET_OPERATE_CASH_FLOW": "9190492745.11",
+        "NET_INVEST_CASH_FLOW": "-512191292.28",
+        "NET_FINANCE_CASH_FLOW": "-4444246328.40",
+        "CASH_END_PERIOD": "150639980825.28"
+      },
+      {
+        "SECUCODE": "600519.SH",
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "ORG_CODE": "Q00132400",
+        "REPORT_DATE": "2023-12-31T00:00:00",
+        "REPORT_TYPE": "1",
+        "REPORT_DATE_NAME": "2023-12-31",
+        "CASH_RECEIVE_SALE": "163654159143.42",
+        "NET_OPERATE_CASH_FLOW": "66593004063.36",
+        "NET_INVEST_CASH_FLOW": "-1722924539.84",
+        "NET_FINANCE_CASH_FLOW": "-5888573858.19",
+        "CASH_END_PERIOD": "150639980825.28"
+      }
+    ]
+  }
+}

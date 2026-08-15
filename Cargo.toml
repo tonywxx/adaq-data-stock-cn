@@ -1,0 +1,33 @@
+[package]
+name = "adaq-data-stock-cn"
+version = "0.1.0"
+edition = "2024"
+description = "Rust reimplementation of akshare for Chinese A-share market data — the data layer for the AdaQ quant platform"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/tony/adaq-data-stock-cn"
+keywords = ["akshare", "stock", "a-share", "quant", "china"]
+categories = ["finance", "api-bindings"]
+
+[dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "net"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", features = ["serde"] }
+csv = "1"
+thiserror = "1"
+sha2 = "0.10"
+
+arrow = { version = "53", default-features = false, features = ["json"], optional = true }
+parquet = { version = "53", default-features = false, features = ["async", "zstd"], optional = true }
+
+[features]
+default = []
+parquet = ["dep:arrow", "dep:parquet"]
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"

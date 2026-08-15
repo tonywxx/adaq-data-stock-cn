@@ -1,0 +1,27 @@
+{
+  "status": 200,
+  "data": [
+    {
+      "bourse": "Bitfinex(香港)",
+      "currency_pair": "LTCUSD",
+      "price": 67.465,
+      "up_down": "0.59",
+      "up_down_rate": "0.87",
+      "hightest_price": 68.867,
+      "lowest_price": 66.259,
+      "volume": "6893.13",
+      "reported_at": "2023-10-02 22:45:09"
+    },
+    {
+      "bourse": "Bitstamp(美国)",
+      "currency_pair": "BTCUSD",
+      "price": 28309,
+      "up_down": 1192,
+      "up_down_rate": "4.40",
+      "hightest_price": 28592,
+      "lowest_price": 27044,
+      "volume": "2667.55",
+      "reported_at": "2023-10-02 22:45:09"
+    }
+  ]
+}

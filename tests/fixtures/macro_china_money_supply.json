@@ -1,0 +1,33 @@
+{
+  "result": {
+    "data": [
+      {
+        "REPORT_DATE": "2024-03-31",
+        "TIME": "2024-03",
+        "BASIC_CURRENCY": 3047952.0,
+        "BASIC_CURRENCY_SAME": 8.3,
+        "BASIC_CURRENCY_SEQUENTIAL": 1.2,
+        "CURRENCY": 685383.0,
+        "CURRENCY_SAME": 1.1,
+        "CURRENCY_SEQUENTIAL": 0.5,
+        "FREE_CASH": 117210.0,
+        "FREE_CASH_SAME": 11.0,
+        "FREE_CASH_SEQUENTIAL": 2.3
+      },
+      {
+        "REPORT_DATE": "2024-02-29",
+        "TIME": "2024-02",
+        "BASIC_CURRENCY": 2995572.0,
+        "BASIC_CURRENCY_SAME": 8.7,
+        "BASIC_CURRENCY_SEQUENTIAL": 0.4,
+        "CURRENCY": 665916.0,
+        "CURRENCY_SAME": 1.0,
+        "CURRENCY_SEQUENTIAL": -1.8,
+        "FREE_CASH": 121008.0,
+        "FREE_CASH_SAME": 12.5,
+        "FREE_CASH_SEQUENTIAL": 3.1
+      }
+    ],
+    "pages": 1
+  }
+}
