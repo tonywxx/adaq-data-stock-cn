@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "TRADE_DATE": "2023-04-03",
+        "SZ_INDEX": 3280.5,
+        "SZ_CHANGE_RATE": -1.2,
+        "BLOCKTRADE_DEAL_AMT": 580000000.0,
+        "PREMIUM_DEAL_AMT": 120000000.0,
+        "PREMIUM_RATIO": 0.2069,
+        "DISCOUNT_DEAL_AMT": 460000000.0,
+        "DISCOUNT_RATIO": 0.7931
+      },
+      {
+        "TRADE_DATE": "2023-04-04",
+        "SZ_INDEX": 3300.0,
+        "SZ_CHANGE_RATE": 0.6,
+        "BLOCKTRADE_DEAL_AMT": 300000000.0,
+        "PREMIUM_DEAL_AMT": null,
+        "PREMIUM_RATIO": null,
+        "DISCOUNT_DEAL_AMT": 300000000.0,
+        "DISCOUNT_RATIO": 1.0
+      }
+    ]
+  }
+}

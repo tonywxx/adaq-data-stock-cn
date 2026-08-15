@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "OPERATEDEPT_CODE": "10188715",
+        "OPERATEDEPT_NAME": "华泰证券深圳益田路",
+        "ONLIST_DATE": "2023-04-03",
+        "STOCK_DETAILS": "600519,000001",
+        "BUYER_NUM": 8.0,
+        "SELLER_NUM": 3.0,
+        "TOTAL_BUYAMT": 800000000.0,
+        "TOTAL_SELLAMT": 300000000.0,
+        "TOTAL_NETAMT": 500000000.0,
+        "N_DATE": "-3"
+      },
+      {
+        "OPERATEDEPT_CODE": "10220422",
+        "OPERATEDEPT_NAME": "中信证券上海分公司",
+        "ONLIST_DATE": "2023-04-02",
+        "STOCK_DETAILS": "300750",
+        "BUYER_NUM": 2.0,
+        "SELLER_NUM": 5.0,
+        "TOTAL_BUYAMT": 200000000.0,
+        "TOTAL_SELLAMT": 500000000.0,
+        "TOTAL_NETAMT": -300000000.0,
+        "N_DATE": "-3"
+      }
+    ]
+  }
+}

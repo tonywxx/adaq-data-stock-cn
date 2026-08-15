@@ -1,0 +1,39 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "300888",
+        "STATE": "已问询",
+        "REG_ADDRESS": "广东省深圳市",
+        "INFO_CODE": "1234567890",
+        "CSRC_INDUSTRY": "软件",
+        "ACCEPT_DATE": "2023-02-15",
+        "DECLARE_ORG": "深圳某软件股份有限公司",
+        "PREDICT_LISTING_MARKET": "创业板",
+        "LAW_FIRM": "上海市方达律师事务所",
+        "ACCOUNT_FIRM": "安永华明会计师事务所",
+        "ORG_CODE": "ORG001",
+        "UPDATE_DATE": "2023-05-10",
+        "RECOMMEND_ORG": "中信证券",
+        "IS_REGISTRATION": "1"
+      },
+      {
+        "SECURITY_CODE": "300999",
+        "STATE": "中止",
+        "REG_ADDRESS": "广东省广州市",
+        "INFO_CODE": null,
+        "CSRC_INDUSTRY": "专用设备",
+        "ACCEPT_DATE": null,
+        "DECLARE_ORG": "广州某设备有限公司",
+        "PREDICT_LISTING_MARKET": "创业板",
+        "LAW_FIRM": null,
+        "ACCOUNT_FIRM": "立信会计师事务所",
+        "ORG_CODE": "ORG002",
+        "UPDATE_DATE": "2023-06-20",
+        "RECOMMEND_ORG": "华泰联合证券",
+        "IS_REGISTRATION": "0"
+      }
+    ]
+  }
+}

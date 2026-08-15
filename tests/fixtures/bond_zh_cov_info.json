@@ -1,0 +1,20 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "123121",
+        "SECURITY_NAME_ABBR": "XYZ转债",
+        "CONVERT_STOCK_CODE": "300123",
+        "SECURITY_SHORT_NAME": "XYZ股份",
+        "RATING": "AA",
+        "TRANSFER_PRICE": 35.59,
+        "TRANSFER_VALUE": 98.19,
+        "CURRENT_BOND_PRICE": 100.0,
+        "TRANSFER_PREMIUM_RATIO": 1.83,
+        "ACTUAL_ISSUE_SCALE": 6.0,
+        "PUBLIC_START_DATE": "2021-01-01 00:00:00",
+        "LISTING_DATE": "2021-02-01 00:00:00"
+      }
+    ]
+  }
+}

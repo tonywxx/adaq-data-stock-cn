@@ -1,0 +1,28 @@
+{
+  "result": {
+    "data": [
+      {
+        "TRADE_DATE": "2024-09-06",
+        "PLEDGE_RATIO": 12.34,
+        "PLEDGE_COMPANY_NUM": 2500,
+        "PLEDGE_NUM": 5000,
+        "PLEDGE_TOTAL_SHARES": 6000000000,
+        "PLEDGE_TOTAL_MARKETCAP": 50000000000,
+        "CSI300_POINT": 3200.5,
+        "CHANGE_RATE": -1.23
+      },
+      {
+        "TRADE_DATE": "2024-08-30",
+        "PLEDGE_RATIO": 12.5,
+        "PLEDGE_COMPANY_NUM": 2490,
+        "PLEDGE_NUM": 4980,
+        "PLEDGE_TOTAL_SHARES": 5900000000,
+        "PLEDGE_TOTAL_MARKETCAP": 49000000000,
+        "CSI300_POINT": null,
+        "CHANGE_RATE": 0.45
+      }
+    ],
+    "pages": 1,
+    "count": 2
+  }
+}

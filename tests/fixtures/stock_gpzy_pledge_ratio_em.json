@@ -1,0 +1,36 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "TRADE_DATE": "2024-09-06",
+        "INDUSTRY": "白酒",
+        "PLEDGE_RATIO": 1.23,
+        "PLEDGE_SHARES": 1234567,
+        "PLEDGE_MARKETCAP": 2000000000,
+        "PLEDGE_NUM": 3,
+        "UNRESTRICTED_PLEDGE_SHARES": 1000000,
+        "RESTRICTED_PLEDGE_SHARES": 234567,
+        "YEAR_CHANGE_RATE": -5.6,
+        "INDUSTRY_CODE": "BK0001"
+      },
+      {
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "TRADE_DATE": "2024-09-06",
+        "INDUSTRY": "银行",
+        "PLEDGE_RATIO": 2.34,
+        "PLEDGE_SHARES": null,
+        "PLEDGE_MARKETCAP": 1500000000,
+        "PLEDGE_NUM": 5,
+        "UNRESTRICTED_PLEDGE_SHARES": 800000,
+        "RESTRICTED_PLEDGE_SHARES": 0,
+        "YEAR_CHANGE_RATE": 3.2,
+        "INDUSTRY_CODE": "BK0002"
+      }
+    ],
+    "pages": 1,
+    "count": 2
+  }
+}

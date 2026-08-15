@@ -1,0 +1,39 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "688981",
+        "STATE": "已问询",
+        "REG_ADDRESS": "上海市",
+        "INFO_CODE": "1234567890",
+        "CSRC_INDUSTRY": "计算机",
+        "ACCEPT_DATE": "2023-03-01",
+        "DECLARE_ORG": "中芯国际集成电路制造有限公司",
+        "PREDICT_LISTING_MARKET": "科创板",
+        "LAW_FIRM": "上海市方达律师事务所",
+        "ACCOUNT_FIRM": "安永华明会计师事务所",
+        "ORG_CODE": "ORG001",
+        "UPDATE_DATE": "2023-05-10",
+        "RECOMMEND_ORG": "中信证券",
+        "IS_REGISTRATION": "1"
+      },
+      {
+        "SECURITY_CODE": "688999",
+        "STATE": "中止",
+        "REG_ADDRESS": "江苏省苏州市",
+        "INFO_CODE": null,
+        "CSRC_INDUSTRY": "专用设备",
+        "ACCEPT_DATE": null,
+        "DECLARE_ORG": "苏州某半导体有限公司",
+        "PREDICT_LISTING_MARKET": "科创板",
+        "LAW_FIRM": null,
+        "ACCOUNT_FIRM": "立信会计师事务所",
+        "ORG_CODE": "ORG002",
+        "UPDATE_DATE": "2023-06-20",
+        "RECOMMEND_ORG": "华泰联合证券",
+        "IS_REGISTRATION": "0"
+      }
+    ]
+  }
+}

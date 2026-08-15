@@ -1,0 +1,35 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "DECLARE_ORG": "贵州茅台酒股份有限公司",
+        "STATE": "辅导验收",
+        "REG_ADDRESS": "贵州省仁怀市",
+        "RECOMMEND_ORG": "中金公司",
+        "LAW_FIRM": "国浩律师(上海)事务所",
+        "ACCOUNT_FIRM": "普华永道中天会计师事务所",
+        "PREDICT_LISTING_MARKET": "沪主板",
+        "END_DATE": "2023-07-01",
+        "INFO_CODE": "9876543210",
+        "SECURITY_CODE": "600519",
+        "IS_SUBMIT": "1",
+        "IS_REGISTER": "0"
+      },
+      {
+        "DECLARE_ORG": "某申报企业",
+        "STATE": "已受理",
+        "REG_ADDRESS": "浙江省杭州市",
+        "RECOMMEND_ORG": "中信建投",
+        "LAW_FIRM": null,
+        "ACCOUNT_FIRM": "天健会计师事务所",
+        "PREDICT_LISTING_MARKET": "科创板",
+        "END_DATE": null,
+        "INFO_CODE": null,
+        "SECURITY_CODE": "688000",
+        "IS_SUBMIT": "1",
+        "IS_REGISTER": "1"
+      }
+    ]
+  }
+}

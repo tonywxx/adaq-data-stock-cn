@@ -1,0 +1,32 @@
+[
+  {
+    "symbol": "sh010107",
+    "code": "010107",
+    "name": "21国债(7)",
+    "trade": "101.23",
+    "pricechange": "0.12",
+    "changepercent": "0.118",
+    "open": "101.10",
+    "high": "101.30",
+    "low": "101.05",
+    "settlement": "101.11",
+    "volume": "123456",
+    "amount": "12500000",
+    "turnoverratio": "0.05"
+  },
+  {
+    "symbol": "sz123000",
+    "code": "123000",
+    "name": "某某转债",
+    "trade": "115.50",
+    "pricechange": "-1.20",
+    "changepercent": "-1.03",
+    "open": "116.00",
+    "high": "116.50",
+    "low": "115.00",
+    "settlement": "116.70",
+    "volume": "234567",
+    "amount": "27000000",
+    "turnoverratio": "0.80"
+  }
+]

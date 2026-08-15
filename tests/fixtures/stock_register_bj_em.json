@@ -1,0 +1,39 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "920001",
+        "STATE": "已问询",
+        "REG_ADDRESS": "北京市",
+        "INFO_CODE": "1234567890",
+        "CSRC_INDUSTRY": "信息技术",
+        "ACCEPT_DATE": "2023-01-20",
+        "DECLARE_ORG": "北京某科技公司",
+        "PREDICT_LISTING_MARKET": "北交所",
+        "LAW_FIRM": "北京市君合律师事务所",
+        "ACCOUNT_FIRM": "安永华明会计师事务所",
+        "ORG_CODE": "ORG001",
+        "UPDATE_DATE": "2023-05-10",
+        "RECOMMEND_ORG": "中信证券",
+        "IS_REGISTRATION": "1"
+      },
+      {
+        "SECURITY_CODE": "920002",
+        "STATE": "中止",
+        "REG_ADDRESS": "天津市",
+        "INFO_CODE": null,
+        "CSRC_INDUSTRY": "专用设备",
+        "ACCEPT_DATE": null,
+        "DECLARE_ORG": "天津某制造有限公司",
+        "PREDICT_LISTING_MARKET": "北交所",
+        "LAW_FIRM": null,
+        "ACCOUNT_FIRM": "立信会计师事务所",
+        "ORG_CODE": "ORG002",
+        "UPDATE_DATE": "2023-06-20",
+        "RECOMMEND_ORG": "华泰联合证券",
+        "IS_REGISTRATION": "0"
+      }
+    ]
+  }
+}

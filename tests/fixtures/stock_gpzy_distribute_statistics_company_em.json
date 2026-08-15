@@ -1,0 +1,26 @@
+{
+  "result": {
+    "data": [
+      {
+        "ORG_NAME": "中信证券",
+        "PLEDGE_COMPANY_NUM": 120,
+        "PLEDGE_NUM": 300,
+        "PLEDGE_SHARES": 50000000,
+        "RATIO_BELOW_WARNING": 60.0,
+        "RATIO_WARNING_TO_CLOSE": 30.0,
+        "RATIO_ABOVE_CLOSE": 10.0
+      },
+      {
+        "ORG_NAME": "华泰证券",
+        "PLEDGE_COMPANY_NUM": 100,
+        "PLEDGE_NUM": 250,
+        "PLEDGE_SHARES": null,
+        "RATIO_BELOW_WARNING": 55.0,
+        "RATIO_WARNING_TO_CLOSE": 35.0,
+        "RATIO_ABOVE_CLOSE": 10.0
+      }
+    ],
+    "pages": 1,
+    "count": 2
+  }
+}

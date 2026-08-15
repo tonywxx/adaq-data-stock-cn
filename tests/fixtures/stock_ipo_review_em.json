@@ -1,0 +1,35 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "ORG_NAME": "常州某智能制造股份有限公司",
+        "SECURITY_NAME_ABBR": "常州智能",
+        "SECURITY_CODE": "601000",
+        "TRADE_MARKET": "沪主板",
+        "REVIEW_DATE": "2023-08-15",
+        "REVIEW_STATE": "通过",
+        "REVIEW_MEMBER": "发审委委员A,委员B",
+        "LEAD_UNDERWRITER": "国泰君安",
+        "ISSUE_NUM": "50000000",
+        "FINANCE_AMT_UPPER": "2500000000",
+        "NOTICE_DATE": "2023-08-10",
+        "LISTING_DATE": "2023-09-20"
+      },
+      {
+        "ORG_NAME": "深圳某电子股份有限公司",
+        "SECURITY_NAME_ABBR": "深圳电子",
+        "SECURITY_CODE": "003000",
+        "TRADE_MARKET": "深主板",
+        "REVIEW_DATE": "2023-09-01",
+        "REVIEW_STATE": "未通过",
+        "REVIEW_MEMBER": null,
+        "LEAD_UNDERWRITER": "招商证券",
+        "ISSUE_NUM": null,
+        "FINANCE_AMT_UPPER": "1200000000",
+        "NOTICE_DATE": "2023-08-28",
+        "LISTING_DATE": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "result": {
+    "data": [
+      {
+        "ORG_NAME": "中国银行",
+        "PLEDGE_COMPANY_NUM": 200,
+        "PLEDGE_NUM": 600,
+        "PLEDGE_SHARES": 90000000,
+        "RATIO_BELOW_WARNING": 70.0,
+        "RATIO_WARNING_TO_CLOSE": 25.0,
+        "RATIO_ABOVE_CLOSE": 5.0
+      },
+      {
+        "ORG_NAME": "工商银行",
+        "PLEDGE_COMPANY_NUM": 180,
+        "PLEDGE_NUM": 550,
+        "PLEDGE_SHARES": 85000000,
+        "RATIO_BELOW_WARNING": null,
+        "RATIO_WARNING_TO_CLOSE": 26.0,
+        "RATIO_ABOVE_CLOSE": 4.0
+      }
+    ],
+    "pages": 1,
+    "count": 2
+  }
+}

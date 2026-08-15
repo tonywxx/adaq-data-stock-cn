@@ -1,0 +1,15 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "KCB_LB": "KCB_LB_VALUE_1",
+        "ORG_NAME": "北京达标企业有限公司"
+      },
+      {
+        "KCB_LB": "KCB_LB_VALUE_2",
+        "ORG_NAME": null
+      }
+    ]
+  }
+}

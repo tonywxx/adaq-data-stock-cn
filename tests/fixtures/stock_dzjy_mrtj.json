@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "TRADE_DATE": "2022-01-05",
+        "SECURITY_CODE": "600519",
+        "SECUCODE": "600519.SH",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "CHANGE_RATE": -2.0,
+        "CLOSE_PRICE": 1800.0,
+        "AVERAGE_PRICE": 1750.0,
+        "PREMIUM_RATIO": -2.78,
+        "DEAL_NUM": 1.0,
+        "VOLUME": 10000.0,
+        "DEAL_AMT": 17500000.0,
+        "TURNOVERRATE": 0.0008,
+        "D1_CLOSE_ADJCHRATE": 1.5,
+        "D5_CLOSE_ADJCHRATE": 3.2,
+        "D10_CLOSE_ADJCHRATE": 5.0,
+        "D20_CLOSE_ADJCHRATE": 8.1
+      },
+      {
+        "TRADE_DATE": "2022-01-05",
+        "SECURITY_CODE": "000001",
+        "SECUCODE": "000001.SZ",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "CHANGE_RATE": 1.0,
+        "CLOSE_PRICE": 15.0,
+        "AVERAGE_PRICE": 14.8,
+        "PREMIUM_RATIO": -1.33,
+        "DEAL_NUM": 2.0,
+        "VOLUME": 200000.0,
+        "DEAL_AMT": 2960000.0,
+        "TURNOVERRATE": 0.001,
+        "D1_CLOSE_ADJCHRATE": null,
+        "D5_CLOSE_ADJCHRATE": null,
+        "D10_CLOSE_ADJCHRATE": null,
+        "D20_CLOSE_ADJCHRATE": null
+      }
+    ]
+  }
+}

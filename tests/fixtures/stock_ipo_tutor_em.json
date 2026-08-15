@@ -1,0 +1,29 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "TUTOR_OBJECT": "江苏某生物医药股份有限公司",
+        "ORG_CODE": "ORG_T1",
+        "TUTOR_ORG_CODE": "T1",
+        "TUTOR_ORG": "中信证券",
+        "TUTOR_PROCESS_STATE": "辅导备案",
+        "REPORT_TYPE": "辅导备案报告",
+        "DISPATCH_ORG": "江苏证监局",
+        "REPORT_TITLE": "关于江苏某生物医药股份有限公司首次公开发行股票并上市辅导备案的报告",
+        "RECORD_DATE": "2023-10-01"
+      },
+      {
+        "TUTOR_OBJECT": "安徽某新材料股份有限公司",
+        "ORG_CODE": "ORG_T2",
+        "TUTOR_ORG_CODE": "T2",
+        "TUTOR_ORG": "国元证券",
+        "TUTOR_PROCESS_STATE": "辅导验收",
+        "REPORT_TYPE": null,
+        "DISPATCH_ORG": "安徽证监局",
+        "REPORT_TITLE": "辅导工作总结报告",
+        "RECORD_DATE": null
+      }
+    ]
+  }
+}

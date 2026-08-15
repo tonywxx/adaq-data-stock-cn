@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "300750",
+        "SECUCODE": "300750.SZ",
+        "SECURITY_NAME_ABBR": "宁德时代",
+        "CLOSE_PRICE": 450.0,
+        "CHANGE_RATE": 3.1,
+        "TRADE_DATE": "2023-04-03",
+        "DEAL_AMT": 900000000.0,
+        "PREMIUM_RATIO": -1.2,
+        "SUM_TURNOVERRATE": 0.05,
+        "DEAL_NUM": 10.0,
+        "PREMIUM_TIMES": 4.0,
+        "DISCOUNT_TIMES": 6.0,
+        "D1_AVG_ADJCHRATE": 1.2,
+        "D5_AVG_ADJCHRATE": 2.5,
+        "D10_AVG_ADJCHRATE": 4.0,
+        "D20_AVG_ADJCHRATE": 7.0,
+        "DATE_TYPE_CODE": "3"
+      },
+      {
+        "SECURITY_CODE": "600036",
+        "SECUCODE": "600036.SH",
+        "SECURITY_NAME_ABBR": "招商银行",
+        "CLOSE_PRICE": 38.0,
+        "CHANGE_RATE": -0.5,
+        "TRADE_DATE": "2023-04-02",
+        "DEAL_AMT": 500000000.0,
+        "PREMIUM_RATIO": 0.0,
+        "SUM_TURNOVERRATE": 0.02,
+        "DEAL_NUM": 5.0,
+        "PREMIUM_TIMES": 2.0,
+        "DISCOUNT_TIMES": 3.0,
+        "D1_AVG_ADJCHRATE": null,
+        "D5_AVG_ADJCHRATE": null,
+        "D10_AVG_ADJCHRATE": null,
+        "D20_AVG_ADJCHRATE": null,
+        "DATE_TYPE_CODE": "3"
+      }
+    ]
+  }
+}

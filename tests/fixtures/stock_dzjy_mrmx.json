@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "TRADE_DATE": "2022-01-04",
+        "SECURITY_CODE": "511990",
+        "SECUCODE": "511990.SH",
+        "SECURITY_NAME_ABBR": "华宝添益",
+        "CHANGE_RATE": null,
+        "CLOSE_PRICE": null,
+        "DEAL_PRICE": 100.01,
+        "PREMIUM_RATIO": null,
+        "DEAL_VOLUME": 500000.0,
+        "DEAL_AMT": 50005000.0,
+        "TURNOVER_RATE": null,
+        "BUYER_NAME": "机构席位",
+        "SELLER_NAME": "中信证券",
+        "CHANGE_RATE_1DAYS": null,
+        "CHANGE_RATE_5DAYS": null,
+        "CHANGE_RATE_10DAYS": null,
+        "CHANGE_RATE_20DAYS": null,
+        "BUYER_CODE": "B001",
+        "SELLER_CODE": "S002"
+      },
+      {
+        "TRADE_DATE": "2022-01-04",
+        "SECURITY_CODE": "511880",
+        "SECUCODE": "511880.SH",
+        "SECURITY_NAME_ABBR": "银华日利",
+        "CHANGE_RATE": null,
+        "CLOSE_PRICE": null,
+        "DEAL_PRICE": 101.0,
+        "PREMIUM_RATIO": null,
+        "DEAL_VOLUME": 100000.0,
+        "DEAL_AMT": 10100000.0,
+        "TURNOVER_RATE": null,
+        "BUYER_NAME": "国泰君安",
+        "SELLER_NAME": "华泰证券",
+        "CHANGE_RATE_1DAYS": null,
+        "CHANGE_RATE_5DAYS": null,
+        "CHANGE_RATE_10DAYS": null,
+        "CHANGE_RATE_20DAYS": null,
+        "BUYER_CODE": "B003",
+        "SELLER_CODE": "S004"
+      }
+    ]
+  }
+}

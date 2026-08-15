@@ -1,0 +1,13 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "WEB_RESPREDICT": "{\"SECURITY_CODE\":\"600519\",\"SECURITY_NAME_ABBR\":\"贵州茅台\",\"RATING_ORG_NUM\":\"35\",\"NUM_BUY\":\"20\",\"NUM_ADD\":\"10\",\"NUM_NEUTRAL\":\"3\",\"NUM_REDUCE\":\"1\",\"NUM_SALE\":\"1\",\"PREDICT_EPS1\":\"59.8\",\"PREDICT_EPS2\":\"67.2\",\"PREDICT_EPS3\":\"74.1\",\"PREDICT_EPS4\":\"81.5\"}"
+      },
+      {
+        "WEB_RESPREDICT": "{\"SECURITY_CODE\":\"000001\",\"SECURITY_NAME_ABBR\":\"平安银行\",\"RATING_ORG_NUM\":\"28\",\"NUM_BUY\":null,\"NUM_ADD\":\"15\",\"NUM_NEUTRAL\":\"8\",\"NUM_REDUCE\":\"3\",\"NUM_SALE\":null,\"PREDICT_EPS1\":\"2.3\",\"PREDICT_EPS2\":null,\"PREDICT_EPS3\":\"2.6\",\"PREDICT_EPS4\":\"2.8\"}"
+      }
+    ]
+  }
+}

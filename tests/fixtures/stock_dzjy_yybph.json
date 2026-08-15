@@ -1,0 +1,44 @@
+{
+  "success": true,
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "OPERATEDEPT_CODE": "10188715",
+        "OPERATEDEPT_NAME": "华泰证券深圳益田路",
+        "D1_BUYER_NUM": 12.0,
+        "D1_AVERAGE_INCREASE": 3.2,
+        "D1_RISE_PROBABILITY": 0.75,
+        "D5_BUYER_NUM": 50.0,
+        "D5_AVERAGE_INCREASE": 2.1,
+        "D5_RISE_PROBABILITY": 0.65,
+        "D10_BUYER_NUM": 90.0,
+        "D10_AVERAGE_INCREASE": 1.5,
+        "D10_RISE_PROBABILITY": 0.6,
+        "D20_BUYER_NUM": 120.0,
+        "D20_AVERAGE_INCREASE": 0.8,
+        "D20_RISE_PROBABILITY": 0.55,
+        "N_DATE": "-90",
+        "RELATED_ORG_CODE": null
+      },
+      {
+        "OPERATEDEPT_CODE": "10220422",
+        "OPERATEDEPT_NAME": "中信证券上海分公司",
+        "D1_BUYER_NUM": 5.0,
+        "D1_AVERAGE_INCREASE": -0.5,
+        "D1_RISE_PROBABILITY": 0.4,
+        "D5_BUYER_NUM": 20.0,
+        "D5_AVERAGE_INCREASE": -1.2,
+        "D5_RISE_PROBABILITY": 0.35,
+        "D10_BUYER_NUM": 40.0,
+        "D10_AVERAGE_INCREASE": -2.0,
+        "D10_RISE_PROBABILITY": 0.3,
+        "D20_BUYER_NUM": 60.0,
+        "D20_AVERAGE_INCREASE": -3.1,
+        "D20_RISE_PROBABILITY": 0.25,
+        "N_DATE": "-90",
+        "RELATED_ORG_CODE": null
+      }
+    ]
+  }
+}

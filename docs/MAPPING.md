@@ -519,3 +519,77 @@
 | `option_cffex_daily` | `src/option/sina.rs::option_cffex_daily` | 新浪 | `akshare/option_finance_sina.py`(`option_cffex_*_daily_sina`) | DONE |
 
 > `option_cffex_*_daily_sina` 系列(sz50/hs300/zz1000)共享同一上游 JSONP 端点,已统一为 `option_cffex_daily(symbol)`;`option_cffex_spot_sina` 已在 `option/extra.rs` 实现;`option_sina.py` 在本 checkout 中 ABSENT,CFFEX 列表函数为 HTML 抓取 → DEFERRED。
+
+## 大宗交易(stock::dzjy,东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_dzjy_sctj` | `src/stock/dzjy.rs::stock_dzjy_sctj` | 东财 | `akshare/stock/stock_dzjy_em.py:13` | DONE |
+| `stock_dzjy_mrmx` | `src/stock/dzjy.rs::stock_dzjy_mrmx` | 东财 | `akshare/stock/stock_dzjy_em.py:72` | DONE |
+| `stock_dzjy_mrtj` | `src/stock/dzjy.rs::stock_dzjy_mrtj` | 东财 | `akshare/stock/stock_dzjy_em.py:213` | DONE |
+| `stock_dzjy_hygtj` | `src/stock/dzjy.rs::stock_dzjy_hygtj` | 东财 | `akshare/stock/stock_dzjy_em.py:295` | DONE |
+| `stock_dzjy_hyyybtj` | `src/stock/dzjy.rs::stock_dzjy_hyyybtj` | 东财 | `akshare/stock/stock_dzjy_em.py:402` | DONE |
+| `stock_dzjy_yybph` | `src/stock/dzjy.rs::stock_dzjy_yybph` | 东财 | `akshare/stock/stock_dzjy_em.py:484` | DONE |
+
+## 财务报表(stock::financial,东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_zcfz_em` | `src/stock/financial.rs::stock_zcfz_em` | 东财 | `akshare/stock_feature/stock_report_em.py:20` | DONE |
+| `stock_zcfz_bj_em` | `src/stock/financial.rs::stock_zcfz_bj_em` | 东财 | `akshare/stock_feature/stock_report_em.py:161` | DONE |
+| `stock_lrb_em` | `src/stock/financial.rs::stock_lrb_em` | 东财 | `akshare/stock_feature/stock_report_em.py:302` | DONE |
+| `stock_xjll_em` | `src/stock/financial.rs::stock_xjll_em` | 东财 | `akshare/stock_feature/stock_report_em.py:438` | DONE |
+
+> 归一化为 `(证券,项目,报告期,值)` 行,适配动态报告期列;`stock::fundamental::eastmoney` 的 `*_by_report_em` 来自 `stock_three_report_em.py`,与此处不同文件,无重复。
+
+## 市盈率(stock::sy,东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_sy_profile_em` | `src/stock/sy.rs::stock_sy_profile_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:19` | DONE |
+| `stock_sy_yq_em` | `src/stock/sy.rs::stock_sy_yq_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:84` | DONE |
+| `stock_sy_jz_em` | `src/stock/sy.rs::stock_sy_jz_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:193` | DONE |
+| `stock_sy_em` | `src/stock/sy.rs::stock_sy_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:294` | DONE |
+| `stock_sy_hy_em` | `src/stock/sy.rs::stock_sy_hy_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:386` | DONE |
+
+## 股权质押(stock::gpzy,东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_gpzy_profile_em` | `src/stock/gpzy.rs::stock_gpzy_profile_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:21` | DONE |
+| `stock_gpzy_pledge_ratio_em` | `src/stock/gpzy.rs::stock_gpzy_pledge_ratio_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:88` | DONE |
+| `stock_gpzy_pledge_ratio_detail_em` | `src/stock/gpzy.rs::stock_gpzy_pledge_ratio_detail_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:304` | DONE |
+| `stock_gpzy_individual_pledge_ratio_detail_em` | `src/stock/gpzy.rs::stock_gpzy_individual_pledge_ratio_detail_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:308` | DONE |
+| `stock_gpzy_distribute_statistics_company_em` | `src/stock/gpzy.rs::stock_gpzy_distribute_statistics_company_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:312` | DONE |
+| `stock_gpzy_distribute_statistics_bank_em` | `src/stock/gpzy.rs::stock_gpzy_distribute_statistics_bank_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:381` | DONE |
+| `stock_gpzy_industry_data_em` | `src/stock/gpzy.rs::stock_gpzy_industry_data_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:450` | DONE |
+
+> 私有 helper `_get_page_num_*` / `_stock_gpzy_pledge_ratio_detail_em` 已内联;`bond_cov_comparison` 等已在 `bond::eastmoney` 移植,本模块仅取未移植的 5 个可转债函数。
+
+## 可转债(bond::cov,新浪 / 东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `bond_zh_hs_cov_spot` | `src/bond/cov.rs::bond_zh_hs_cov_spot` | 新浪 | `akshare/bond/bond_zh_cov.py:46` | DONE |
+| `bond_zh_hs_cov_daily` | `src/bond/cov.rs::bond_zh_hs_cov_daily` | 东财(push2his) | `akshare/bond/bond_zh_cov.py:65` | DONE |
+| `bond_zh_hs_cov_min` | `src/bond/cov.rs::bond_zh_hs_cov_min` | 东财 | `akshare/bond/bond_zh_cov.py:131` | DONE |
+| `bond_zh_hs_cov_pre_min` | `src/bond/cov.rs::bond_zh_hs_cov_pre_min` | 东财 | `akshare/bond/bond_zh_cov.py:264` | DONE |
+| `bond_zh_cov_info` | `src/bond/cov.rs::bond_zh_cov_info` | 东财 | `akshare/bond/bond_zh_cov.py:542` | DONE |
+
+> `bond_zh_hs_cov_daily` 上游新浪 `klc_kl.js` 需 `py_mini_racer` JS 解密,纯 Rust 不可移植,故改用东财 `push2his` `data.klines`(列结构一致);`bond_zh_cov`/`bond_cov_comparison`/`bond_zh_cov_value_analysis` 已在 `bond::eastmoney` 移植,跳过。
+
+## 发行与申购(stock::fundamental::registration,东方财富)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_register_all_em` | `src/stock/fundamental/registration.rs::stock_register_all_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:16` | DONE |
+| `stock_register_kcb_em` | `src/stock/fundamental/registration.rs::stock_register_kcb_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:89` | DONE |
+| `stock_register_cyb_em` | `src/stock/fundamental/registration.rs::stock_register_cyb_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:163` | DONE |
+| `stock_register_bj_em` | `src/stock/fundamental/registration.rs::stock_register_bj_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:237` | DONE |
+| `stock_register_sh_em` | `src/stock/fundamental/registration.rs::stock_register_sh_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:311` | DONE |
+| `stock_register_sz_em` | `src/stock/fundamental/registration.rs::stock_register_sz_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:385` | DONE |
+| `stock_register_db_em` | `src/stock/fundamental/registration.rs::stock_register_db_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:459` | DONE |
+| `stock_ipo_declare_em` | `src/stock/fundamental/registration.rs::stock_ipo_declare_em` | 东财 | `akshare/stock_fundamental/stock_ipo_declare.py:16` | DONE |
+| `stock_ipo_review_em` | `src/stock/fundamental/registration.rs::stock_ipo_review_em` | 东财 | `akshare/stock_fundamental/stock_ipo_review.py:18` | DONE |
+| `stock_ipo_tutor_em` | `src/stock/fundamental/registration.rs::stock_ipo_tutor_em` | 东财 | `akshare/stock_fundamental/stock_ipo_tutor.py:18` | DONE |
+| `stock_profit_forecast_em` | `src/stock/fundamental/registration.rs::stock_profit_forecast_em` | 东财 | `akshare/stock_fundamental/stock_profit_forecast_em.py:15` | DONE |

@@ -8,6 +8,7 @@ pub mod chinamoney;
 pub mod eastmoney;
 pub mod extra;
 pub mod cbond;
+pub mod cov;
 
 pub use chinamoney::*;
 pub use eastmoney::*;

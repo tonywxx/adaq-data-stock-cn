@@ -1,0 +1,28 @@
+{
+  "result": {
+    "data": [
+      {
+        "INDUSTRY_CODE": "BK0003",
+        "INDUSTRY": "房地产",
+        "TRADE_DATE": "2024-09-06",
+        "AVERAGE_PLEDGE_RATIO": 15.6,
+        "ORG_NUM": 100,
+        "PLEDGE_TOTAL_NUM": 500,
+        "TOTAL_PLEDGE_SHARES": 3000000000,
+        "PLEDGE_TOTAL_MARKETCAP": 25000000000
+      },
+      {
+        "INDUSTRY_CODE": "BK0004",
+        "INDUSTRY": "医药生物",
+        "TRADE_DATE": "2024-09-06",
+        "AVERAGE_PLEDGE_RATIO": 8.2,
+        "ORG_NUM": 80,
+        "PLEDGE_TOTAL_NUM": 400,
+        "TOTAL_PLEDGE_SHARES": 2000000000,
+        "PLEDGE_TOTAL_MARKETCAP": null
+      }
+    ],
+    "pages": 1,
+    "count": 2
+  }
+}

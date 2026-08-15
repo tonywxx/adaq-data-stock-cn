@@ -5,6 +5,7 @@
 //! (no JS signing, no HTML scrape — see `eastmoney.rs`).
 
 pub mod eastmoney;
+pub mod registration;
 
 pub use eastmoney::{
     stock_balance_sheet_by_report_em, stock_cash_flow_sheet_by_report_em,

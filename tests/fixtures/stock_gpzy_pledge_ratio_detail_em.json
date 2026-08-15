@@ -1,0 +1,40 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "603132",
+        "SECURITY_NAME_ABBR": "某某股份",
+        "HOLDER_NAME": "张三",
+        "PLEDGE_SHARES": 1000000,
+        "PLEDGE_HOLD_RATIO": 12.3,
+        "PLEDGE_TOTAL_RATIO": 1.5,
+        "PLEDGE_ORG": "中信证券",
+        "LATEST_PRICE": 15.6,
+        "PLEDGE_PRICE": 16.0,
+        "CLOSE_LINE": 12.0,
+        "PLEDGE_START_DATE": "2024-01-01",
+        "PLEDGE_END_DATE": "2025-01-01",
+        "STATUS": "履约中",
+        "NOTICE_DATE": "2024-01-02"
+      },
+      {
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "HOLDER_NAME": "李四",
+        "PLEDGE_SHARES": null,
+        "PLEDGE_HOLD_RATIO": 5.0,
+        "PLEDGE_TOTAL_RATIO": 0.8,
+        "PLEDGE_ORG": "中国银行",
+        "LATEST_PRICE": null,
+        "PLEDGE_PRICE": 10.0,
+        "CLOSE_LINE": 8.0,
+        "PLEDGE_START_DATE": "2024-02-01",
+        "PLEDGE_END_DATE": "2025-02-01",
+        "STATUS": "已解押",
+        "NOTICE_DATE": "2024-02-02"
+      }
+    ],
+    "pages": 1,
+    "count": 2
+  }
+}
