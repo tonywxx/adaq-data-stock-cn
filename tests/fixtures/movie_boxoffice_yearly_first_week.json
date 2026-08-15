@@ -1,0 +1,29 @@
+{
+  "status": 1,
+  "des": "success",
+  "data": {
+    "table1": [
+      {
+        "Irank": "1",
+        "MovieName": "影片甲",
+        "GenreMain": "剧情",
+        "WeekBoxOffice": "123456",
+        "WeekBoxPercent": "12.3",
+        "AvgShowAudienceCount": "30.5",
+        "Country": "中国",
+        "ReleaseDate": "2020-01-01"
+      },
+      {
+        "Irank": "2",
+        "MovieName": "影片乙",
+        "GenreMain": "喜剧",
+        "WeekBoxOffice": "654321",
+        "WeekBoxPercent": "8.1",
+        "AvgShowAudienceCount": "25.0",
+        "Country": "美国",
+        "ReleaseDate": "2020-02-15"
+      }
+    ],
+    "table2": [{ "TotalPage": 1 }]
+  }
+}

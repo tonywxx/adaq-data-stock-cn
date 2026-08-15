@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "swindexcode": "801030",
+      "bargaindate": "2024-10-25",
+      "openindex": 3420.1,
+      "maxindex": 3460.5,
+      "minindex": 3400.0,
+      "closeindex": 3456.78,
+      "hike": "0.01",
+      "markup": "0.0123",
+      "bargainamount": 123456789,
+      "bargainsum": null
+    },
+    {
+      "swindexcode": "801030",
+      "bargaindate": "2024-10-24",
+      "openindex": 3400.0,
+      "maxindex": 3430.0,
+      "minindex": 3380.0,
+      "closeindex": 3400.0,
+      "hike": "0.00",
+      "markup": "0.0000",
+      "bargainamount": 120000000,
+      "bargainsum": 500000.5
+    }
+  ]
+}

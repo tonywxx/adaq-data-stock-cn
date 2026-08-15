@@ -16,6 +16,8 @@ pub mod option;
 pub mod fund;
 pub mod index;
 pub mod rate;
+pub mod spot;
+pub mod other;
 
 pub use core::client::Client;
 pub use core::error::{Error, Result};

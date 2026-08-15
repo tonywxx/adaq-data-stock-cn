@@ -1,0 +1,26 @@
+{
+  "vol": {
+    "data": [
+      { "contractId": "1", "memberId": "0008", "abbr": "中信期货", "todayQty": 2940, "qtySub": -2409 },
+      { "contractId": "2", "memberId": "0097", "abbr": "国海良时", "todayQty": 1013, "qtySub": 1012 },
+      { "contractId": "3", "memberId": "0006", "abbr": "永安期货", "todayQty": 956, "qtySub": 216 },
+      { "contractId": "4", "memberId": "9999", "abbr": "合计", "todayQty": 5000, "qtySub": 0 }
+    ]
+  },
+  "long": {
+    "data": [
+      { "contractId": "1", "memberId": "0016", "abbr": "国泰君安期货", "todayQty": 4350, "qtySub": -100 },
+      { "contractId": "2", "memberId": "0008", "abbr": "中信期货", "todayQty": 3000, "qtySub": -50 },
+      { "contractId": "3", "memberId": "0006", "abbr": "永安期货", "todayQty": 2500, "qtySub": 100 },
+      { "contractId": "4", "memberId": "9999", "abbr": "合计", "todayQty": 9000, "qtySub": 0 }
+    ]
+  },
+  "short": {
+    "data": [
+      { "contractId": "1", "memberId": "0016", "abbr": "国泰君安期货", "todayQty": 9308, "qtySub": 50 },
+      { "contractId": "2", "memberId": "0062", "abbr": "国贸期货", "todayQty": 8000, "qtySub": -30 },
+      { "contractId": "3", "memberId": "0006", "abbr": "永安期货", "todayQty": 7000, "qtySub": 20 },
+      { "contractId": "4", "memberId": "9999", "abbr": "合计", "todayQty": 20000, "qtySub": 0 }
+    ]
+  }
+}

@@ -15,6 +15,7 @@ pub mod lof;
 pub mod more;
 pub mod open_fund;
 pub mod amac;
+pub mod em;
 
 pub use etf::{fund_etf_hist_em, fund_etf_spot_em, EtfHistRow, EtfSpotRow};
 pub use lof::{fund_lof_spot_em, LofSpotRow};

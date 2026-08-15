@@ -1,0 +1,6 @@
+{
+  "data": [
+    {"variety":"工业硅期权","delivMonth":"si2411","open":"8000","high":"8100","low":"7900","close":"8050","lastClear":"8000","clearPrice":"8040","diff":"50","diff1":"40","delta":"0.5","volumn":"1,000","openInterest":"2,000","diffI":"100","turnover":"80.5","matchQtySum":"0","impliedVolatility":"0.30"},
+    {"variety":"碳酸锂期权","delivMonth":"lc2411","open":"90000","high":"91000","low":"89000","close":"90500","lastClear":"90000","clearPrice":"90400","diff":"500","diff1":"400","delta":"0.5","volumn":"500","openInterest":"1,000","diffI":"50","turnover":"45.0","matchQtySum":"0","impliedVolatility":"0.35"}
+  ]
+}

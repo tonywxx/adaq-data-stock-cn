@@ -1,0 +1,26 @@
+{
+  "status": 1,
+  "des": "success",
+  "data": {
+    "table1": [
+      {
+        "Irank": "1",
+        "CinemaName": "影院甲",
+        "BoxOffice": "98765",
+        "ShowCount": "20",
+        "AvgShowAudienceCount": "45.2",
+        "AvgBoxOffice": "35.0",
+        "Attendance": "12.3"
+      },
+      {
+        "Irank": "2",
+        "CinemaName": "影院乙",
+        "BoxOffice": "54321",
+        "ShowCount": "15",
+        "AvgShowAudienceCount": "30.0",
+        "AvgBoxOffice": "33.0",
+        "Attendance": "9.8"
+      }
+    ]
+  }
+}

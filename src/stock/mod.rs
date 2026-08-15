@@ -19,3 +19,4 @@ pub mod financial;
 pub mod sy;
 pub mod gpzy;
 pub mod financial_three;
+pub mod stock_hist_em;

@@ -698,3 +698,144 @@
 | `stock_financial_us_analysis_indicator_em` | `src/stock/fundamental/finance_more.rs::stock_financial_us_analysis_indicator_em` | 东财 | `akshare/stock_fundamental/stock_finance_us_em.py:158` | DONE |
 
 > `stock_financial_abstract_ths` / `stock_management_change_ths` / `stock_shareholder_change_ths` 为同花顺 `.phtml` HTML 抓取 → DEFERRED。
+
+## A股实时行情 spot/min (`stock::stock_hist_em`,东财 push2)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `stock_zh_a_spot_em` | `src/stock/stock_hist_em.rs::stock_zh_a_spot_em` | 东财 push2 clist | `stock_feature/stock_hist_em.py:15` | DONE |
+| `stock_sh_a_spot_em` | `src/stock/stock_hist_em.rs::stock_sh_a_spot_em` | 东财 push2 clist | `:124` | DONE |
+| `stock_sz_a_spot_em` | `src/stock/stock_hist_em.rs::stock_sz_a_spot_em` | 东财 push2 clist | `:232` | DONE |
+| `stock_bj_a_spot_em` | `src/stock/stock_hist_em.rs::stock_bj_a_spot_em` | 东财 push2 clist | `:340` | DONE |
+| `stock_new_a_spot_em` | `src/stock/stock_hist_em.rs::stock_new_a_spot_em` | 东财 push2 clist | `:448` | DONE |
+| `stock_cy_a_spot_em` | `src/stock/stock_hist_em.rs::stock_cy_a_spot_em` | 东财 push2 clist | `:561` | DONE |
+| `stock_kc_a_spot_em` | `src/stock/stock_hist_em.rs::stock_kc_a_spot_em` | 东财 push2 clist | `:670` | DONE |
+| `stock_zh_ab_comparison_em` | `src/stock/stock_hist_em.rs::stock_zh_ab_comparison_em` | 东财 push2 clist | `:779` | DONE |
+| `stock_zh_b_spot_em` | `src/stock/stock_hist_em.rs::stock_zh_b_spot_em` | 东财 push2 clist | `:844` | DONE |
+| `stock_zh_a_hist_pre_min_em` | `src/stock/stock_hist_em.rs::stock_zh_a_hist_pre_min_em` | 东财 push2 trends2 | `:1170` | DONE |
+| `stock_hk_main_board_spot_em` | `src/stock/stock_hist_em.rs::stock_hk_main_board_spot_em` | 东财 push2 clist | `:1310` | DONE |
+| `stock_hk_hist_min_em` | `src/stock/stock_hist_em.rs::stock_hk_hist_min_em` | 东财 push2 trends2/kline | `:1467` | DONE |
+| `stock_us_hist_min_em` | `src/stock/stock_hist_em.rs::stock_us_hist_min_em` | 东财 push2 trends2 | `:1758` | DONE |
+
+> 注:`stock_zh_a_hist` / `stock_hk_hist` / `stock_us_hist` / `stock_zh_a_hist_min_em` 已在 `stock::hist` / `stock::spot` 移植,本批不重复。
+
+## 基金列表/净值/规模 (`fund::em`,东方财富)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `fund_purchase_em` | `src/fund/em.rs::fund_purchase_em` | 东财 `Fund_JJJZ_Data.aspx` | `fund/fund_em.py:151` | DONE |
+| `fund_info_index_em` | `src/fund/em.rs::fund_info_index_em` | 东财 `GetRankList` | `:234` | DONE |
+| `fund_open_fund_daily_em` | `src/fund/em.rs::fund_open_fund_daily_em` | 东财 `Fund_JJJZ_Data.aspx` | `:386` | DONE |
+| `fund_money_fund_info_em` | `src/fund/em.rs::fund_money_fund_info_em` | 东财 `f10/lsjz` | `:741` | DONE |
+| `fund_financial_fund_daily_em` | `src/fund/em.rs::fund_financial_fund_daily_em` | 东财 `GetLCJJJZ` | `:800` | DONE |
+| `fund_financial_fund_info_em` | `src/fund/em.rs::fund_financial_fund_info_em` | 东财 `f10/lsjz` | `:873` | DONE |
+| `fund_graded_fund_daily_em` | `src/fund/em.rs::fund_graded_fund_daily_em` | 东财 `Fund_JJJZ_Data.aspx` | `:938` | DONE |
+| `fund_graded_fund_info_em` | `src/fund/em.rs::fund_graded_fund_info_em` | 东财 `f10/lsjz` | `:1008` | DONE |
+| `fund_etf_fund_info_em` | `src/fund/em.rs::fund_etf_fund_info_em` | 东财 `f10/lsjz` | `:1097` | DONE |
+| `fund_value_estimation_em` | `src/fund/em.rs::fund_value_estimation_em` | 东财 `GetFundGZList` | `:1161` | DONE |
+| `fund_hk_fund_hist_em` | `src/fund/em.rs::fund_hk_fund_hist_em` | 东财海外 `OpenApiHander.ashx` | `:1260` | DONE |
+
+> DEFERRED:`fund_money_fund_daily_em`(:707)、`fund_etf_fund_daily_em`(:1064) 为 gb2312 `pd.read_html` 抓取;`fund_open_fund_info_em`(:452) 已在 `fund::open_fund` 移植。
+
+## 各国央行利率 (`economic::macro_bank`,金十)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `macro_bank_usa_interest_rate` | `src/economic/macro_bank.rs::macro_bank_usa_interest_rate` | 金十 `datacenter-api` | `economic/macro_bank.py:101` | DONE |
+| `macro_bank_euro_interest_rate` | `src/economic/macro_bank.rs::macro_bank_euro_interest_rate` | 金十 | `:112` | DONE |
+| `macro_bank_newzealand_interest_rate` | `src/economic/macro_bank.rs::macro_bank_newzealand_interest_rate` | 金十 | `:124` | DONE |
+| `macro_bank_china_interest_rate` | `src/economic/macro_bank.rs::macro_bank_china_interest_rate` | 金十 | `:136` | DONE |
+| `macro_bank_switzerland_interest_rate` | `src/economic/macro_bank.rs::macro_bank_switzerland_interest_rate` | 金十 | `:148` | DONE |
+| `macro_bank_english_interest_rate` | `src/economic/macro_bank.rs::macro_bank_english_interest_rate` | 金十 | `:160` | DONE |
+| `macro_bank_australia_interest_rate` | `src/economic/macro_bank.rs::macro_bank_australia_interest_rate` | 金十 | `:172` | DONE |
+| `macro_bank_japan_interest_rate` | `src/economic/macro_bank.rs::macro_bank_japan_interest_rate` | 金十 | `:184` | DONE |
+| `macro_bank_russia_interest_rate` | `src/economic/macro_bank.rs::macro_bank_russia_interest_rate` | 金十 | `:196` | DONE |
+| `macro_bank_india_interest_rate` | `src/economic/macro_bank.rs::macro_bank_india_interest_rate` | 金十 | `:208` | DONE |
+| `macro_bank_brazil_interest_rate` | `src/economic/macro_bank.rs::macro_bank_brazil_interest_rate` | 金十 | `:220` | DONE |
+
+## 宏观 NBS 中国 + 欧元区 (`economic::macro_nbs_euro`,金十)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `macro_euro_gdp_yoy` | `src/economic/macro_nbs_euro.rs::macro_euro_gdp_yoy` | 金十 `reports/list_v2` | `economic/macro_euro.py:24` | DONE |
+| `macro_euro_cpi_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_cpi_mom` | 金十 | `:81` | DONE |
+| `macro_euro_cpi_yoy` | `src/economic/macro_nbs_euro.rs::macro_euro_cpi_yoy` | 金十 | `:137` | DONE |
+| `macro_euro_ppi_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_ppi_mom` | 金十 | `:196` | DONE |
+| `macro_euro_retail_sales_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_retail_sales_mom` | 金十 | `:254` | DONE |
+| `macro_euro_employment_change_qoq` | `src/economic/macro_nbs_euro.rs::macro_euro_employment_change_qoq` | 金十 | `:313` | DONE |
+| `macro_euro_unemployment_rate_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_unemployment_rate_mom` | 金十 | `:369` | DONE |
+| `macro_euro_trade_balance` | `src/economic/macro_nbs_euro.rs::macro_euro_trade_balance` | 金十 | `:428` | DONE |
+| `macro_euro_current_account_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_current_account_mom` | 金十 | `:487` | DONE |
+| `macro_euro_industrial_production_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_industrial_production_mom` | 金十 | `:546` | DONE |
+| `macro_euro_manufacturing_pmi` | `src/economic/macro_nbs_euro.rs::macro_euro_manufacturing_pmi` | 金十 | `:605` | DONE |
+| `macro_euro_services_pmi` | `src/economic/macro_nbs_euro.rs::macro_euro_services_pmi` | 金十 | `:664` | DONE |
+| `macro_euro_zew_economic_sentiment` | `src/economic/macro_nbs_euro.rs::macro_euro_zew_economic_sentiment` | 金十 | `:723` | DONE |
+| `macro_euro_sentix_investor_confidence` | `src/economic/macro_nbs_euro.rs::macro_euro_sentix_investor_confidence` | 金十 | `:781` | DONE |
+
+> DEFERRED:`macro_china_nbs_nation`(:517)、`macro_china_nbs_region`(:566) 需 `curl_cffi` 会话预热 + 多步目录树导航;`macro_euro_lme_holding`(:839)、`macro_euro_lme_stock`(:870) 为 LME 嵌套字符串元组 `eval` 解析。
+
+## 申万研究指数 (`index::research_sw`,申万研究 API)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `index_hist_sw` | `src/index/research_sw.rs::index_hist_sw` | 申万 `index_publish/trend` | `index/index_research_sw.py:29` | DONE |
+| `index_min_sw` | `src/index/research_sw.rs::index_min_sw` | 申万 `details/timelines` | `:93` | DONE |
+| `index_component_sw` | `src/index/research_sw.rs::index_component_sw` | 申万 `component_stocks` | `:139` | DONE |
+| `index_realtime_sw` | `src/index/research_sw.rs::index_realtime_sw` | 申万 `current` | `:241` | DONE |
+| `index_analysis_daily_sw` | `src/index/research_sw.rs::index_analysis_daily_sw` | 申万 `index_analysis_report` | `:319` | DONE |
+| `index_analysis_week_month_sw` | `src/index/research_sw.rs::index_analysis_week_month_sw` | 申万 `week_month_datetime` | `:397` | DONE |
+| `index_analysis_weekly_sw` | `src/index/research_sw.rs::index_analysis_weekly_sw` | 申万 `index_analysis_reports` | `:423` | DONE |
+| `index_analysis_monthly_sw` | `src/index/research_sw.rs::index_analysis_monthly_sw` | 申万 `index_analysis_reports` | `:498` | DONE |
+
+> DEFERRED:`index_realtime_sw` 的 `大类风格指数`/`金创指数` 子路径为 JSON-body POST(`Client` 仅支持 GET / form POST),`market表征`/`一级行业`/`二级行业`/`风格指数` 4 个 symbol 全落地。
+
+## 商品期权 (`option::commodity`,交易所)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `option_hist_shfe` | `src/option/commodity.rs::option_hist_shfe` | 上期所 `tradedata/option` JSON | `option/option_commodity.py:365` | DONE |
+| `option_vol_shfe` | `src/option/commodity.rs::option_vol_shfe` | 上期所 JSON | `:445` | DONE |
+| `option_hist_gfex` | `src/option/commodity.rs::option_hist_gfex` | 广期所 POST | `:504` | DONE |
+| `option_vol_gfex` | `src/option/commodity.rs::option_vol_gfex` | 广期所 POST | `:593` | DONE |
+
+> DEFERRED:`option_hist_dce`(:32) 为 DCE JSON-body POST(`Client` 无此能力);`option_hist_czce`(:187) 为 `|` 分隔 `pd.read_table` HTML 抓取。
+
+## 期货持仓排名 (`futures::cot`,交易所)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `get_shfe_rank_table` | `src/futures/cot.rs::get_shfe_rank_table` | 上期所 `pm{date}.dat` JSON | `futures/cot.py:275` | DONE |
+| `futures_gfex_position_rank` | `src/futures/cot.rs::futures_gfex_position_rank` | 广期所 JSON(3 POST) | `:1292` | DONE |
+
+> DEFERRED:`get_rank_sum_daily`(:56)、`get_rank_sum`(:110)、`get_rank_table_czce`(:408,Excel)、`get_dce_rank_table`(:566,Excel/HTML)、`get_cffex_rank_table`(:716,GBK CSV 无 charset)、`futures_dce_position_rank`(:818,ZIP)、`futures_dce_position_rank_other`(:1052,HTML) 依赖 Excel/HTML/ZIP/GBK 解析,均跳过。
+
+## 上海黄金交易所 (`spot::sge`,SGE)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `spot_symbol_table_sge` | `src/spot/sge.rs::spot_symbol_table_sge` | SGE 静态表 | `spot/spot_sge.py:17` | DONE |
+| `spot_quotations_sge` | `src/spot/sge.rs::spot_quotations_sge` | SGE `graph/quotations` | `:50` | DONE |
+| `spot_hist_sge` | `src/spot/sge.rs::spot_hist_sge` | SGE `graph/Dailyhq` | `:109` | DONE |
+| `spot_golden_benchmark_sge` | `src/spot/sge.rs::spot_golden_benchmark_sge` | SGE `graph/DayilyJzj` | `:163` | DONE |
+| `spot_silver_benchmark_sge` | `src/spot/sge.rs::spot_silver_benchmark_sge` | SGE `graph/DayilyShsilverJzj` | `:194` | DONE |
+
+## 乘联会汽车 (`other::car_cpca`,CPCA)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `car_market_total_cpca` | `src/other/car_cpca.rs::car_market_total_cpca` | CPCA `chartlist` | `other/other_car_cpca.py:13` | DONE |
+| `car_market_man_rank_cpca` | `src/other/car_cpca.rs::car_market_man_rank_cpca` | CPCA `chartlist` | `:391` | DONE |
+| `car_market_cate_cpca` | `src/other/car_cpca.rs::car_market_cate_cpca` | CPCA `chartlist` | `:646` | DONE |
+| `car_market_country_cpca` | `src/other/car_cpca.rs::car_market_country_cpca` | CPCA `chartlist` | `:665` | DONE |
+| `car_market_segment_cpca` | `src/other/car_cpca.rs::car_market_segment_cpca` | CPCA `chartlist` | `:685` | DONE |
+| `car_market_fuel_cpca` | `src/other/car_cpca.rs::car_market_fuel_cpca` | CPCA `chartlist` | `:722` | DONE |
+
+## 艺恩票房 (`alt::movie_yien`,endata)
+
+| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `get_current_week` | `src/alt/movie_yien.rs::get_current_week` | 纯日期 helper | `movie/movie_yien.py:50` | DONE |
+| `movie_boxoffice_yearly_first_week` | `src/alt/movie_yien.rs::movie_boxoffice_yearly_first_week` | 艺恩 POST | `:502` | DONE |
+| `movie_boxoffice_cinema_daily` | `src/alt/movie_yien.rs::movie_boxoffice_cinema_daily` | 艺恩 POST | `:581` | DONE |
+
+> DEFERRED:`decrypt`(:65) 需 `py_mini_racer` JS;`movie_boxoffice_weekly`(:340)、`movie_boxoffice_cinema_weekly`(:642) 上游权限错误;`movie_boxoffice_realtime/_daily/_monthly/_yearly` 已在 `alt::movie` 移植,不重复。

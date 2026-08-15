@@ -1,0 +1,19 @@
+{
+  "data": {
+    "count": 2,
+    "results": [
+      {
+        "stockcode": "600000",
+        "stockname": "浦发银行",
+        "newweight": 5.5,
+        "beginningdate": "2024-01-01"
+      },
+      {
+        "stockcode": "600036",
+        "stockname": "招商银行",
+        "newweight": null,
+        "beginningdate": "2024-01-01"
+      }
+    ]
+  }
+}

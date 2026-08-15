@@ -97,8 +97,20 @@
 | 55 | 上交所期权 `option::sse`(新浪 JSONP:列表/到期/代码/行情/Greeks/分钟/日线) | ✅ DONE | 10 | 10 ✅ |
 | 56 | 三大报表 `stock::financial_three`(东财 emweb/datacenter:资产负债/利润/现金流 年/季/退市) | ✅ DONE | 8 | 8 ✅ |
 | 57 | 财务(同花顺/港股/美股) `stock::fundamental::finance_more`(10jqka + 东财) | ✅ DONE | 11 | 11 ✅ |
+| 58 | A股实时行情 spot/min(东财 push2 clist/trends2/kline) `stock::stock_hist_em` | ✅ DONE | 13 | 13 ✅ |
+| 59 | 基金列表/净值/规模(EM:申购/指数/开放/货币/理财/分级/ETF/估值/港股) `fund::em` | ✅ DONE | 11 | 12 ✅ |
+| 60 | 各国央行利率(金十 `datacenter-api` 纯 JSON) `economic::macro_bank` | ✅ DONE | 11 | 1 ✅ |
+| 61 | 宏观 NBS 中国 + 欧元区(Jin10 `reports/list_v2`) `economic::macro_nbs_euro` | ✅ DONE | 14 | 2 ✅ |
+| 62 | 申万研究指数(申万研究 API:hist/min/component/realtime/analysis) `index::research_sw` | ✅ DONE | 8 | 8 ✅ |
+| 63 | 商品期权(东财/郑商所 JSON + GFEX POST) `option::commodity` | ✅ DONE | 4 | 4 ✅ |
+| 64 | 期货持仓排名(SHFE/GFEX JSON) `futures::cot` | ✅ DONE | 2 | 2 ✅ |
+| 65 | 上海黄金交易所 `spot::sge`(SGE 行情/历史/基准价,新增顶层领域) | ✅ DONE | 5 | 5 ✅ |
+| 66 | 乘联会汽车 `other::car_cpca`(CPCA chartlist JSON,新增顶层领域) | ✅ DONE | 6 | 7 ✅ |
+| 67 | 艺恩票房 `alt::movie_yien`(endata POST JSON) | ✅ DONE | 3 | 2 ✅ |
 
-**累计**:57 个领域、399 个公开函数、401 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计**:67 个领域、476 个公开函数、466 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+
+> 第 58-67 行新增 77 个函数 / 65 个离线解析测试(由 lead 直接 dispatch 9 个并行 worker 落地,覆盖 research agent-11 3 批计划剩余的纯 HTTP 长尾):`stock::stock_hist_em`(沪深京 A/北交/港股主板/AB 比价/美股 实时 spot 与 分钟趋势,东财 push2,无 DEFERRED);`fund::em`(EM 申购/指数/开放/货币/理财/分级/ETF 净值与日列表,`fund_money_fund_daily_em` 与 `fund_etf_fund_daily_em` 为 gb2312 `pd.read_html` 抓取 → DEFERRED,`fund_open_fund_info_em` 已在 `fund::open_fund` 移植故跳过);`economic::macro_bank` 与 `economic::macro_nbs_euro` 走金十纯 JSON(`macro_china_nbs_nation`/`macro_china_nbs_region` 需 `curl_cffi` 会话预热多步导航、`macro_euro_lme_holding`/`macro_euro_lme_stock` 为嵌套元组字符串 `eval` → DEFERRED);`index::research_sw` 走申万研究 API(`index_realtime_sw` 的 大类风格/金创 子路径为 JSON-body POST,`Client` 无此能力 → 该 2 symbol DEFERRED,其余 GET 全落地);`option::commodity`(DCE 为 JSON-body POST、CZCE 为 `|` 分隔 `pd.read_table` HTML → 2 个 DEFERRED,SHFE/GFEX 4 个落地);`futures::cot`(CZCE/DCE/CFFEX 为 Excel/HTML/ZIP 抓取、聚合器依赖这些 → 7 个 DEFERRED,SHFE/GFEX 2 个落地);`spot::sge` 与 `other::car_cpca` 全落地(纯 JSON);`alt::movie_yien`(`decrypt` 需 `py_mini_racer` JS、`movie_boxoffice_weekly`/`movie_boxoffice_cinema_weekly` 上游权限错误 → 3 个 DEFERRED,其余已在 `alt::movie` 移植故跳过)。
 
 > 注:第 25-30 行领域数与函数数合计为 96 + 23 = 119;`stock::holder` 与 `stock::margin` 均含 `stock_yjbb_em` 同名实现,已统一保留 `stock::margin` 版本,`stock::holder` 中移除重复实现。
 > 第 31-36 行新增 33 个函数 / 33 个离线解析测试,其中 `coin` 为新增顶层领域(金属 + 内外盘期货历史 / 排名),统一复用东财 `push2his` kline 解析;`coin_foreign_hist` 与 `coin_futures_hist` 共用 `parse_kline`,kline 字段布局对齐 akshare(`change_pct`=p[8]、`change`=p[9]、`open_interest`=p[12]、`position_chg`=p[13])。
