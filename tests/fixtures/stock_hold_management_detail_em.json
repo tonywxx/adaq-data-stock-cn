@@ -1,0 +1,38 @@
+[
+  {
+    "CHANGE_DATE": "2024-03-01",
+    "SECURITY_CODE": "300750",
+    "SECURITY_NAME": "宁德时代",
+    "PERSON_NAME": "张三",
+    "CHANGE_SHARES": -50000,
+    "AVERAGE_PRICE": 185.5,
+    "CHANGE_AMOUNT": -9275000,
+    "CHANGE_REASON": "个人资金需求",
+    "CHANGE_RATIO": -0.02,
+    "CHANGE_AFTER_HOLDNUM": 1200000,
+    "HOLD_TYPE": "A股",
+    "DSE_PERSON_NAME": "李四",
+    "POSITION_NAME": "董事长",
+    "PERSON_DSE_RELATION": "本人",
+    "BEGIN_HOLD_NUM": 1250000,
+    "END_HOLD_NUM": 1200000
+  },
+  {
+    "CHANGE_DATE": "2024-03-05",
+    "SECURITY_CODE": "000333",
+    "SECURITY_NAME": "美的集团",
+    "PERSON_NAME": "王五",
+    "CHANGE_SHARES": 20000,
+    "AVERAGE_PRICE": 65.0,
+    "CHANGE_AMOUNT": 1300000,
+    "CHANGE_REASON": "股权激励",
+    "CHANGE_RATIO": 0.03,
+    "CHANGE_AFTER_HOLDNUM": 800000,
+    "HOLD_TYPE": "A股",
+    "DSE_PERSON_NAME": "赵六",
+    "POSITION_NAME": "董事",
+    "PERSON_DSE_RELATION": "一致行动人",
+    "BEGIN_HOLD_NUM": 780000,
+    "END_HOLD_NUM": 800000
+  }
+]

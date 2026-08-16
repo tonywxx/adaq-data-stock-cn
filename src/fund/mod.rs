@@ -15,6 +15,7 @@ pub mod etf;
 pub mod extra;
 pub mod lof;
 pub mod more;
+pub mod more2;
 pub mod open_fund;
 
 pub use etf::{EtfHistRow, EtfSpotRow, fund_etf_hist_em, fund_etf_spot_em};

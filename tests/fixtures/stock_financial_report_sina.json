@@ -1,0 +1,30 @@
+{
+  "result": {
+    "data": {
+      "report_date": [{"date_value": "2024-03-31"}, {"date_value": "2023-12-31"}],
+      "report_list": {
+        "2024-03-31": {
+          "data": [
+            {"item_title": "货币资金", "item_value": "1,234,567.89"},
+            {"item_title": "应收账款", "item_value": ""}
+          ],
+          "data_source": "新浪财经",
+          "is_audit": "是",
+          "publish_date": "2024-04-30",
+          "rCurrency": "人民币",
+          "rType": "年报",
+          "update_time": 1714521600
+        },
+        "2023-12-31": {
+          "data": [{"item_title": "货币资金", "item_value": "987,654.32"}],
+          "data_source": "新浪财经",
+          "is_audit": "是",
+          "publish_date": "2024-03-30",
+          "rCurrency": "人民币",
+          "rType": "年报",
+          "update_time": 1709443200
+        }
+      }
+    }
+  }
+}

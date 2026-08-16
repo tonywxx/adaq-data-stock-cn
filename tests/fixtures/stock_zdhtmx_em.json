@@ -1,0 +1,32 @@
+[
+  {
+    "CONTRACTNAME": "某重大供货合同",
+    "COUNTERPARTY": "某客户",
+    "DIM_RDATE": "2023-08-19",
+    "SIGNATORY": "上市公司A",
+    "SIGNATORYREL": "全资子公司",
+    "SIGNDATE": "2023-08-10",
+    "AMOUNTS": 5000000000,
+    "SECURITYCODE": "600900",
+    "SECURITYSHORTNAME": "长江电力",
+    "CONTRACTTYPENAME": "供货合同",
+    "SNDYYSR": 32000000000,
+    "OPERATEREVE": 58000000000,
+    "ZSNDYYSRBL": 15.3
+  },
+  {
+    "CONTRACTNAME": "某重大工程合同",
+    "COUNTERPARTY": "某政府单位",
+    "DIM_RDATE": "2023-09-01",
+    "SIGNATORY": "上市公司B",
+    "SIGNATORYREL": "控股子公司",
+    "SIGNDATE": "2023-08-25",
+    "AMOUNTS": 3200000000,
+    "SECURITYCODE": "601668",
+    "SECURITYSHORTNAME": "中国建筑",
+    "CONTRACTTYPENAME": "工程建设",
+    "SNDYYSR": 180000000000,
+    "OPERATEREVE": 210000000000,
+    "ZSNDYYSRBL": 1.5
+  }
+]

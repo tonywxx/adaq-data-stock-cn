@@ -21,6 +21,7 @@ pub mod lhb;
 pub mod margin;
 pub mod misc;
 pub mod more;
+pub mod more2;
 pub mod restricted;
 pub mod spot;
 pub mod stock_hist_em;

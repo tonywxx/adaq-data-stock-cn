@@ -1168,3 +1168,54 @@
 | `index_global_spot_em` / `index_global_hist_em` | `src/index/index_more.rs` | `index_global_em.py` | DONE(东财 push2 / push2his,全球指数 ÷100) |
 | `index_value_name` / `index_vix` / `index_institute_*` | _(不存在)_ | `index_*.py` | 本 checkout 无此文件(包已重组),无需移植 |
 | `index_sw` / `index_drewry` / `index_stock_zh_csindex` / `index_stock_us_sina` / `stock_hk_index_daily_sina` / `index_research_fund_sw` | `src/index/index_more.rs` | `index_*.py` | DEFERRED(HTML/Excel/JS 签名) |
+
+## A股长尾 `stock::more2`(Wave 5)
+
+| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
+| --- | --- | --- | --- |
+| `stock_zh_ah_spot_em` | `src/stock/more2.rs::stock_zh_ah_spot_em` | `stock/stock_zh_ah_spot_em.py` | DONE(东财 AH 实时,`datacenter-web`) |
+| `stock_hsgt_sh_hk_spot_em` | `src/stock/more2.rs::stock_hsgt_sh_hk_spot_em` | `stock/stock_hsgt_em.py` | DONE(沪港通港股实时,`datacenter-web`) |
+| `stock_zh_kcb_report_em` | `src/stock/more2.rs::stock_zh_kcb_report_em` | `stock/stock_kcb_report_em.py` | DONE(科创板报告,分页 `from_page..=to_page`) |
+| `stock_repurchase_em` | `src/stock/more2.rs::stock_repurchase_em` | `stock/stock_repurchase_em.py` | DONE(回购,`datacenter-web`) |
+| `stock_gsrl_gsdt_em` | `src/stock/more2.rs::stock_gsrl_gsdt_em` | `stock/stock_gsrl_gsdt_em.py` | DONE(限售股解禁明细,`datacenter-web`) |
+| `stock_zh_a_new_em` | `src/stock/more2.rs::stock_zh_a_new_em` | `stock/stock_zh_a_new_em.py` | DONE(新股,`datacenter-web`) |
+| `stock_hold_management_detail_em` | `src/stock/more2.rs::stock_hold_management_detail_em` | `stock/stock_hold_management_em.py` | DONE(持仓管理明细,`datacenter-web`) |
+| `stock_yysj_em` | `src/stock/more2.rs::stock_yysj_em` | `stock/stock_yysj_em.py` | DONE(预约披露时间,`datacenter-web`) |
+| `stock_jgdy_detail_em` | `src/stock/more2.rs::stock_jgdy_detail_em` | `stock/stock_jgdy_em.py` | DONE(机构调研明细,`datacenter-web`) |
+| `stock_gddh_em` | `src/stock/more2.rs::stock_gddh_em` | `stock/stock_gddh_em.py` | DONE(股东大会,`datacenter-web`) |
+| `stock_qsjy_em` | `src/stock/more2.rs::stock_qsjy_em` | `stock/stock_qsjy_em.py` | DONE(千股跌停,`datacenter-web`) |
+| `stock_qbzf_em` | `src/stock/more2.rs::stock_qbzf_em` | `stock/stock_qbzf_em.py` | DONE(全市场涨停,`datacenter-web`) |
+| `stock_zdhtmx_em` | `src/stock/more2.rs::stock_zdhtmx_em` | `stock/stock_zdhtmx_em.py` | DONE(龙虎榜明细,`datacenter-web`) |
+| `stock_zh_scale_comparison_em` | `src/stock/more2.rs::stock_zh_scale_comparison_em` | `stock/stock_zh_a_gdhs_em.py` | DONE(市值规模比较,`datacenter-web`) |
+| `stock_zh_a_gdhs_detail_em` | `src/stock/more2.rs::stock_zh_a_gdhs_detail_em` | `stock/stock_zh_a_gdhs_em.py` | DONE(股东户数明细,`datacenter-web`) |
+
+## 基金长尾 `fund::more2`(Wave 5)
+
+| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
+| --- | --- | --- | --- |
+| `fund_etf_hist_min_em` | `src/fund/more2.rs::fund_etf_hist_min_em` | `fund/fund_etf_em.py` | DONE(东财 push2his trends2/kline 分钟) |
+| `fund_lof_hist_min_em` | `src/fund/more2.rs::fund_lof_hist_min_em` | `fund/fund_lof_em.py` | DONE(东财 push2his 分钟) |
+| `fund_money_rank_em` | `src/fund/more2.rs::fund_money_rank_em` | `fund/fund_rank_em.py` | DONE(货币基金排名,`datacenter-web`) |
+| `fund_lcx_rank_em` | `src/fund/more2.rs::fund_lcx_rank_em` | `fund/fund_rank_em.py` | DONE(理财基金排名,`datacenter-web`) |
+| `fund_new_found_em` | `src/fund/more2.rs::fund_new_found_em` | `fund/fund_init_em.py` | DONE(新成立基金,`datacenter-web`) |
+| `fund_announcement_dividend_em` | `src/fund/more2.rs::fund_announcement_dividend_em` | `fund/fund_announcement_em.py` | DONE(分红公告,`datacenter-web`) |
+| `fund_announcement_report_em` | `src/fund/more2.rs::fund_announcement_report_em` | `fund/fund_announcement_em.py` | DONE(定期报告公告,`datacenter-web`) |
+| `fund_announcement_personnel_em` | `src/fund/more2.rs::fund_announcement_personnel_em` | `fund/fund_announcement_em.py` | DONE(人事变动公告,`datacenter-web`) |
+| `fund_etf_scale_sse` | `src/fund/more2.rs::fund_etf_scale_sse` | `fund/fund_etf_sse.py` | DONE(上交所 ETF 份额/规模,`datacenter-web`) |
+| `fund_cf_em` | `src/fund/more2.rs::fund_cf_em` | `fund/fund_fhsp_em.py` | DONE(基金拆分折算,`var jjcf_data` 三层包裹解析) |
+| `fund_fh_rank_em` | `src/fund/more2.rs::fund_fh_rank_em` | `fund/fund_fhsp_em.py` | DONE(累计分红排名,`var fhph_data` 三层包裹解析) |
+| `fund_scale_open_sina` | `src/fund/more2.rs::fund_scale_open_sina` | `fund/fund_scale_sina.py` | DONE(开放式规模,新浪 JSONP) |
+| `fund_scale_close_sina` | `src/fund/more2.rs::fund_scale_close_sina` | `fund/fund_scale_sina.py` | DONE(封闭式规模,新浪 JSONP) |
+| `fund_scale_structured_sina` | `src/fund/more2.rs::fund_scale_structured_sina` | `fund/fund_scale_sina.py` | DONE(分级子基金规模,新浪 JSONP) |
+| `fund_etf_category_ths` | `src/fund/more2.rs::fund_etf_category_ths` | `fund/fund_etf_ths.py` | DONE(同花顺 ETF 分类净值,`datacenter-web`) |
+| `fund_etf_spot_ths` | `src/fund/more2.rs::fund_etf_spot_ths` | `fund/fund_etf_ths.py` | DONE(同花顺 ETF 实时,`datacenter-web`) |
+
+## A股基本面长尾 `stock::fundamental::more`(Wave 5)
+
+| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
+| --- | --- | --- | --- |
+| `stock_financial_report_sina` | `src/stock/fundamental/more.rs::stock_financial_report_sina` | `stock_fundamental/stock_finance_sina.py:24` | DONE(新浪三大报表,`report_list` 字典序) |
+| `stock_financial_abstract` | `src/stock/fundamental/more.rs::stock_financial_abstract` | `stock_fundamental/stock_finance_sina.py:94` | DONE(新浪关键指标,`report_list` 字典序) |
+| `stock_zh_a_gbjg_em` | `src/stock/fundamental/more.rs::stock_zh_a_gbjg_em` | `stock_fundamental/stock_gbjg_em.py:62` | DONE(东财股本结构,`RPT_F10_EH_EQUITY`) |
+| `stock_report_fund_hold` | `src/stock/fundamental/more.rs::stock_report_fund_hold` | `stock/stock_fund_hold.py:13` | DONE(东财基金持仓,`zlsj/list`) |
+| `stock_report_fund_hold_detail` | `src/stock/fundamental/more.rs::stock_report_fund_hold_detail` | `stock/stock_fund_hold.py:110` | DONE(东财基金持仓明细,`zlsj/list`) |

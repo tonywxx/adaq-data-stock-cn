@@ -1,0 +1,30 @@
+[
+  {
+    "SECURITY_CODE": "002415",
+    "SECURITY_NAME_ABBR": "海康威视",
+    "CLOSE_PRICE": 32.5,
+    "CHANGE_RATE": -1.2,
+    "RECEIVE_OBJECT": "易方达基金",
+    "ORG_TYPE": "基金公司",
+    "INVESTIGATORS": "机构调研组",
+    "RECEPTIONIST": "董秘",
+    "RECEIVE_WAY_EXPLAIN": "现场会议",
+    "RECEIVE_PLACE": "杭州",
+    "RECEIVE_START_DATE": "2024-12-12",
+    "NOTICE_DATE": "2024-12-15"
+  },
+  {
+    "SECURITY_CODE": "300750",
+    "SECURITY_NAME_ABBR": "宁德时代",
+    "CLOSE_PRICE": 185.0,
+    "CHANGE_RATE": 2.3,
+    "RECEIVE_OBJECT": "中信证券",
+    "ORG_TYPE": "证券公司",
+    "INVESTIGATORS": "研究部",
+    "RECEPTIONIST": "IR总监",
+    "RECEIVE_WAY_EXPLAIN": "电话会议",
+    "RECEIVE_PLACE": "宁德",
+    "RECEIVE_START_DATE": "2024-12-13",
+    "NOTICE_DATE": "2024-12-16"
+  }
+]

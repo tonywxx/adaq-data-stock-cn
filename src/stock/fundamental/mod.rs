@@ -7,6 +7,7 @@
 pub mod eastmoney;
 pub mod finance_more;
 pub mod registration;
+pub mod more;
 
 pub use eastmoney::{
     BalanceSheetRow, CashFlowSheetRow, FinancialIndicatorRow, ProfitSheetRow,

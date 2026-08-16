@@ -1,0 +1,20 @@
+[
+  {
+    "SECURITY_CODE": "600519",
+    "SECURITY_NAME_ABBR": "贵州茅台",
+    "FIRST_APPOINT_DATE": "2024-03-31",
+    "FIRST_CHANGE_DATE": "2024-04-10",
+    "SECOND_CHANGE_DATE": null,
+    "THIRD_CHANGE_DATE": null,
+    "ACTUAL_PUBLISH_DATE": "2024-04-03"
+  },
+  {
+    "SECURITY_CODE": "000001",
+    "SECURITY_NAME_ABBR": "平安银行",
+    "FIRST_APPOINT_DATE": "2024-04-15",
+    "FIRST_CHANGE_DATE": null,
+    "SECOND_CHANGE_DATE": "2024-04-20",
+    "THIRD_CHANGE_DATE": null,
+    "ACTUAL_PUBLISH_DATE": null
+  }
+]

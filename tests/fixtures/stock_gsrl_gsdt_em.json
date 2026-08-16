@@ -1,0 +1,16 @@
+[
+  {
+    "SECURITY_CODE": "600000",
+    "SECURITY_NAME_ABBR": "浦发银行",
+    "EVENT_TYPE": "业绩说明会",
+    "EVENT_CONTENT": "召开2024年半年度业绩说明会",
+    "TRADE_DATE": "2024-08-20"
+  },
+  {
+    "SECURITY_CODE": "600036",
+    "SECURITY_NAME_ABBR": "招商银行",
+    "EVENT_TYPE": "股东大会",
+    "EVENT_CONTENT": "2023年年度股东大会",
+    "TRADE_DATE": "2024-05-20"
+  }
+]

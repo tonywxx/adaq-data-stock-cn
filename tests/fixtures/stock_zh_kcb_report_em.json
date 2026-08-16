@@ -1,0 +1,15 @@
+[
+  {
+    "codes": [{"stock_code": "688001", "short_name": "华兴源创"}],
+    "title": "关于2024年半年度报告的公告",
+    "columns": [{"column_name": "年报"}],
+    "notice_date": "2024-08-20",
+    "art_code": "ABC123"
+  },
+  {
+    "codes": [{"stock_code": "688002", "short_name": "睿创微纳"}],
+    "title": "关于召开会议的通知",
+    "notice_date": "2024-08-21",
+    "art_code": "DEF456"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "result": {
+    "data": {
+      "report_list": {
+        "2024-03-31": {
+          "data": [
+            {"item_title": "每股收益", "item_value": "1.23"},
+            {"item_title": "净资产收益率", "item_value": ""}
+          ]
+        },
+        "2023-12-31": {
+          "data": [{"item_title": "每股收益", "item_value": "1.10"}]
+        }
+      }
+    }
+  }
+}
