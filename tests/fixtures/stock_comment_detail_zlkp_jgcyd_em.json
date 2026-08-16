@@ -1,0 +1,15 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "TRADE_DATE": "2026-08-14 00:00:00",
+        "ORG_PARTICIPATE": 0.3928764
+      },
+      {
+        "TRADE_DATE": "2026-08-13 00:00:00",
+        "ORG_PARTICIPATE": 0.12345
+      }
+    ]
+  }
+}

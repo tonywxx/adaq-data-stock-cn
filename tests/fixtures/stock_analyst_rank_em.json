@@ -1,0 +1,32 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "ANALYST_CODE": "11000213851",
+        "ANALYST_NAME": "任志强",
+        "ORG_NAME": "华福证券",
+        "YEAR": "2024",
+        "INDEX_VALUE": 6424.01,
+        "YEAR_YIELD": 135.17,
+        "YIELD_3": 57.0,
+        "YIELD_6": 89.0,
+        "YIELD_12": 135.17,
+        "SECURITY_COUNT": 12,
+        "SECURITY_NAME_ABBR": "寒武纪",
+        "SECURITY_CODE": "688256",
+        "INDUSTRY_CODE": "EM0101",
+        "INDUSTRY_NAME": "电子",
+        "TRADE_DATE": "2024-12-31 00:00:00"
+      },
+      {
+        "ANALYST_CODE": "11000213852",
+        "ANALYST_NAME": "王伟",
+        "ORG_NAME": "中信证券",
+        "YEAR": "2024",
+        "INDEX_VALUE": 6102.5,
+        "YEAR_YIELD": 120.4
+      }
+    ]
+  }
+}

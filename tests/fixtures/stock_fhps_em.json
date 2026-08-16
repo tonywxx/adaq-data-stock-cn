@@ -1,0 +1,34 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "600323",
+        "SECURITY_NAME_ABBR": "瀚蓝环境",
+        "BONUS_IT_RATIO": 0.0,
+        "BONUS_RATIO": 0.0,
+        "IT_RATIO": 0.0,
+        "PRETAX_BONUS_RMB": 4.8,
+        "DIVIDENT_RATIO": 0.02194787,
+        "BASIC_EPS": 1.75,
+        "BVPS": 8.2,
+        "PER_CAPITAL_RESERVE": 3.1,
+        "PER_UNASSIGN_PROFIT": 4.0,
+        "PNP_YOY_RATIO": 12.5,
+        "TOTAL_SHARES": 815347146.0,
+        "PLAN_NOTICE_DATE": "2024-03-20 00:00:00",
+        "EQUITY_RECORD_DATE": "2024-05-10 00:00:00",
+        "EX_DIVIDEND_DATE": "2024-05-13 00:00:00",
+        "ASSIGN_PROGRESS": "实施分配",
+        "NOTICE_DATE": "2024-05-08 00:00:00"
+      },
+      {
+        "SECURITY_CODE": "600000",
+        "SECURITY_NAME_ABBR": "浦发银行",
+        "PRETAX_BONUS_RMB": 3.2,
+        "DIVIDENT_RATIO": 0.045,
+        "ASSIGN_PROGRESS": "实施分配"
+      }
+    ]
+  }
+}

@@ -33,6 +33,14 @@ pub mod qhkc;
 pub mod reits;
 pub mod video;
 
+// --- wave-3 new top-level domains (akshare long-tail ports) ---
+pub mod stock_feature;
+pub mod energy;
+pub mod registry;
+pub mod datasets;
+pub mod cal;
+pub mod pro;
+
 pub use core::client::Client;
 pub use core::convert;
 pub use core::error::{Error, Result};

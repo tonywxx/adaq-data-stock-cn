@@ -1064,3 +1064,56 @@
 | --- | --- | --- | --- |
 | `stock_esg_hz_sina` / `stock_esg_msci_sina` / `stock_esg_zd_sina` / `stock_esg_rft_sina` / `stock_esg_rate_sina` | `src/stock/esg_comment_hot.rs` | 新浪 ESG | DONE |
 | `stock_comment_em` / `stock_comment_detail_scrd_focus_em` / `stock_comment_detail_zhpj_lspf_em` / `stock_comment_detail_scrd_desire_em` | `src/stock/esg_comment_hot.rs` | 东财 ESG 评论 | DONE |
+
+## 已实现波动率 `cal`(Wave 3)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `volatility_yz_rv` | `src/cal/mod.rs` | `cal/rv.py:92` | DONE(纯 Yang-Zhang RV 计算,无 I/O) |
+| `rv_from_stock_zh_a_hist_min_em` | `src/cal/mod.rs` | `cal/rv.py:13` | DONE(包装 `stock::misc::stock_zh_a_hist_min_em`) |
+| `rv_from_futures_zh_minute_sina` | _(未移植)_ | `cal/rv.py:61` | DEFERRED(依赖未移植的 `futures_zh_minute_sina`) |
+
+## 股票特征 `stock_feature`(Wave 3)
+
+`stock_feature` 在本库为自定义顶层域,映射 akshare `stock_feature/*` 与 `stock/*` 的指标类子模块。
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_analyst_rank_em` / `stock_analyst_detail_em` | `src/stock_feature/indicators_a.rs` | `stock_analyst_em.py` | DONE |
+| `stock_comment_detail_zlkp_jgcyd_em` | `src/stock_feature/indicators_a.rs` | `stock_comment_em.py` | DONE |
+| `stock_concept_cons_futu` | `src/stock_feature/indicators_a.rs` | `stock_concept_futu.py` | DONE(仅特朗普概念股纯 JSON 路径;其余 HTML 路径 DEFERRED) |
+| `stock_dxsyl_em` | `src/stock_feature/indicators_a.rs` | `stock_dxsyl_em.py` | DONE |
+| `stock_fhps_em` / `stock_fhps_detail_em` | `src/stock_feature/indicators_a.rs` | `stock_fhps_em.py` | DONE |
+| `stock_changes_em` / `stock_board_change_em` | `src/stock_feature/indicators_a.rs` | `stock_pankou_em.py` | DONE |
+| `get_cookie_csrf` / `get_token_lg` / `stock_a_all_pb` / `stock_a_congestion_lg` / `stock_a_gxl_lg` / `stock_a_ttm_lyr` / `stock_buffett_index_lg` / `stock_ebs_lg` | `src/stock_feature/indicators_b.rs` | `stock_a_indicator.py` / `stock_*_lg.py` | DEFERRED(乐股 token + cookie-csrf / `py_mini_racer` JS) |
+| `stock_board_concept_index_ths` / `_info_ths` / `_name_ths` / `_summary_ths` / `stock_board_industry_index_ths` / `_info_ths` / `_name_ths` / `_summary_ths` | `src/stock_feature/indicators_b.rs` | `stock_board_*_ths.py` | DEFERRED(THS `py_mini_racer` JS 签名 + HTML 抓取) |
+| `stock_classify_board` / `stock_classify_sina` | `src/stock_feature/indicators_b.rs` | `stock_classify_sina.py` | DEFERRED(JSON 内嵌 `<font>` HTML 经 BeautifulSoup 解析) |
+| `stock_cyq_em` | `src/stock_feature/indicators_b.rs` | `stock_cyq_em.py` | DEFERRED(`py_mini_racer` JS 引擎计算筹码分布) |
+| `stock_fund_flow_big_deal` | `src/stock_feature/indicators_b.rs` | `stock_fund_flow.py` | DEFERRED(THS `py_mini_racer` JS + HTML 抓取) |
+| `stock_fhps_detail_ths` | `src/stock_feature/indicators_b.rs` | `stock_fhps_ths.py` | DEFERRED(`pd.read_html` + THS) |
+| 融资融券 / 研报 族(`stock_margin_em.*`、`stock_research_report_em.*` 等) | `src/stock_feature/margin_research.rs` | `stock_margin_em.py` / `stock_research_report_em.py` | 未移植(后续 `stock` 专注波次;多为东财 datacenter JSON,可行) |
+| 涨停板池 族(`stock_zt_pool_em` / `stock_zt_pool_sina` / `stock_zt_pool_previous` / `stock_zt_pool_strong` / `stock_zt_pool_sub_new` / `stock_zt_pool_dt` / `stock_zt_pool_hist` 等) | `src/stock_feature/board_zt.rs` | `stock_zt_pool_em.py` / `stock_zt_pool_sina.py` / `stock_zt_pool_hist.py` | 未移植(后续 `stock` 专注波次;多为东财 datacenter / 新浪 JSON,可行) |
+
+## 碳排放 `energy`(Wave 3)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `energy_carbon_domestic` / `energy_carbon_bj` / `energy_carbon_sz` / `energy_carbon_eu` / `energy_carbon_hb` / `energy_carbon_gz` | `src/energy/mod.rs` | `energy/energy_carbon.py` | DEFERRED(全部 `pd.read_html` / BeautifulSoup 多页爬取 + `demjson` JS 解码,无纯 JSON API) |
+
+## 接口检索 `registry`(Wave 3)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `interface_info` / `list_categories` / `search` | `src/registry/mod.rs` | `registry.py` | DEFERRED(akshare 内部 `interfaces.json` 注册表元数据检索,非行情 API,无网络 I/O) |
+
+## 资源加载 `datasets`(Wave 3)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `get_ths_js` / `get_crypto_info_csv` / `get_registry_json` | `src/datasets/mod.rs` | `datasets.py` | DEFERRED(akshare 包内 `importlib.resources` 资源路径解析器,非数据 API) |
+
+## Tushare Pro 桥 `pro`(Wave 3)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `pro_api` | `src/pro/mod.rs` | `pro/__init__.py` | DEFERRED(第三方 Tushare token/session 封装,需用户令牌,Schema 无界) |

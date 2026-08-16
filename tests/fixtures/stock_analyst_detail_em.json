@@ -1,0 +1,31 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "INTO_DATE": "2024-01-10 00:00:00",
+        "CHANGE_DATE": "2024-03-01 00:00:00",
+        "RATING_NAME": "买入",
+        "DEAL_PRICE": 1685.0,
+        "CLOSE_PRICE": 1720.5,
+        "CHANGE_RATIO": 2.1,
+        "TRADE_DATE": "2024-03-01 00:00:00",
+        "INDEX_HVALUE": 6424.01
+      },
+      {
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "INTO_DATE": "2024-02-20 00:00:00",
+        "CHANGE_DATE": "2024-04-10 00:00:00",
+        "RATING_NAME": "增持",
+        "DEAL_PRICE": 11.2,
+        "CLOSE_PRICE": 11.8,
+        "CHANGE_RATIO": -1.4,
+        "TRADE_DATE": "2024-04-10 00:00:00",
+        "INDEX_HVALUE": 6300.0
+      }
+    ]
+  }
+}

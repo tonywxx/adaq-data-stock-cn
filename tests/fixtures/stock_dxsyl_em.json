@@ -1,0 +1,35 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "600519",
+        "f14": "贵州茅台",
+        "ISSUE_PRICE": 1234.0,
+        "LATELY_PRICE": 1700.0,
+        "ONLINE_ISSUE_LWR": 0.034,
+        "ONLINE_VA_SHARES": 800000000.0,
+        "ONLINE_VA_NUM": 12000000.0,
+        "ONLINE_ES_MULTIPLE": 2941.0,
+        "OFFLINE_VAP_RATIO": 0.012,
+        "OFFLINE_VATS": 400000000.0,
+        "OFFLINE_VAP_OBJECT": 5000.0,
+        "OFFLINE_VAS_MULTIPLE": 1234.0,
+        "ISSUE_NUM": 100000000.0,
+        "LD_OPEN_PREMIUM": 38.0,
+        "LD_CLOSE_CHANGE": 40.2,
+        "LISTING_DATE": "2024-09-01 00:00:00"
+      },
+      {
+        "SECURITY_CODE": "300750",
+        "f14": "宁德时代",
+        "ISSUE_PRICE": 25.14,
+        "LATELY_PRICE": 180.0,
+        "ONLINE_ISSUE_LWR": 0.078,
+        "ISSUE_NUM": 217243700.0,
+        "LD_CLOSE_CHANGE": 45.6,
+        "LISTING_DATE": "2024-10-12 00:00:00"
+      }
+    ]
+  }
+}

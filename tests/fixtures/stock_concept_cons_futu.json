@@ -1,0 +1,24 @@
+{
+  "data": {
+    "list": [
+      {
+        "stockCode": "NMAX",
+        "name": "Newsmax",
+        "price": "10.87",
+        "change": "1.38",
+        "changeRatio": "+14.54%",
+        "tradeVolumn": "5.95M",
+        "tradeTrunover": "65.85M"
+      },
+      {
+        "stockCode": "DJT",
+        "name": "Trump Media & Technology",
+        "price": "32.10",
+        "change": "-0.45",
+        "changeRatio": "-1.38%",
+        "tradeVolumn": "2.31M",
+        "tradeTrunover": "74.20M"
+      }
+    ]
+  }
+}

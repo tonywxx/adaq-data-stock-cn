@@ -1,0 +1,36 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "REPORT_DATE": "2023-12-31 00:00:00",
+        "PUBLISH_DATE": "2024-04-12 00:00:00",
+        "BONUS_IT_RATIO": 0.5,
+        "BONUS_RATIO": 0.0,
+        "IT_RATIO": 0.5,
+        "PRETAX_BONUS_RMB": 4.8,
+        "IMPL_PLAN_PROFILE": "10派4.80元",
+        "DIVIDENT_RATIO": 0.02194787,
+        "BASIC_EPS": 1.75,
+        "BVPS": 8.2,
+        "PER_CAPITAL_RESERVE": 3.1,
+        "PER_UNASSIGN_PROFIT": 4.0,
+        "PNP_YOY_RATIO": 12.5,
+        "TOTAL_SHARES": 815347146.0,
+        "PLAN_NOTICE_DATE": "2024-03-20 00:00:00",
+        "EQUITY_RECORD_DATE": "2024-05-10 00:00:00",
+        "EX_DIVIDEND_DATE": "2024-05-13 00:00:00",
+        "ASSIGN_PROGRESS": "实施分配",
+        "NOTICE_DATE": "2024-05-08 00:00:00"
+      },
+      {
+        "REPORT_DATE": "2022-12-31 00:00:00",
+        "PUBLISH_DATE": "2023-04-11 00:00:00",
+        "PRETAX_BONUS_RMB": 4.2,
+        "IMPL_PLAN_PROFILE": "10派4.20元",
+        "DIVIDENT_RATIO": 0.0198,
+        "ASSIGN_PROGRESS": "实施分配"
+      }
+    ]
+  }
+}
