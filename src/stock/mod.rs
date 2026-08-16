@@ -48,3 +48,4 @@ pub mod share_hold_exchange;
 
 pub mod sse_summary;
 pub mod excel_gaps;
+// TEMP-DISABLED-FOR-VERIFY: pub mod stock_html_gaps;

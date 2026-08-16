@@ -1,0 +1,480 @@
+
+<style>
+	table { border-collapse:collapse; }
+	caption { font-family:华文中宋; font-size:14pt; font-weight:bold; vertical-align:middle; text-align: left;padding-bottom:10px; }
+	.title_cn { font-size: 13pt; line-height: 13pt;padding-bottom:5px; }
+	.title_en { font-size: 12pt; line-height: 12pt; }
+
+	th { padding: 2px; font-family:Tahoma,Verdana,Arial,Helvetica; font-size:9pt; font-weight:bold; }
+	td { padding: 1px; font-family:Tahoma,Verdana,Arial,Helvetica; font-size:9pt; vertical-align:middle; }
+
+	.center              { vertical-align:middle; text-align:center; }
+	.top_line            { border-top:1px black solid; }
+	.top_line_bold       { border-top:3px black solid; }
+	.bottom_line         { border-bottom:1px black solid; }
+	.bottom_line_bold    { border-bottom:3px black solid; }
+	.separator           { border:none; width:0px; }
+                         
+	td.c1                { text-align:left;  width:72px;}
+	td.c2                { text-align:left;  width:155px;}
+	td.c3                { text-align:right; width:45px;  padding-right:30px;}
+	td.c4                { text-align:right; width:120px; padding-right:20px;}
+	td.c5                { text-align:right; width:45px; }
+	td.c6                { text-align:right; width:120px; padding-right:10px;}
+	td.c7                { text-align:right; width:45px; }
+	td.c8                { text-align:right; width:100px;  padding-right:20px;}
+	td.c9                { text-align:right; width:45px; }
+	
+	tr.t1_top_row    td  { padding-top:5px }
+	tr.t1_bottom_row td  { border-bottom:3px black solid; }
+
+	tr.t2_top_row    td  { padding-top:5px }
+	tr.t2_bottom_row td  { border-bottom:3px black solid; }
+
+</style>
+<table>
+  <caption>
+    <div class="title_cn">股票行业成交数据</div>
+    <div class="title_en">TRANSACTION DATA BY SECTOR STOCKS  - (2026.07)</div>
+  </caption>
+  <tr>
+    <th class="top_line_bold" colspan="2"> &nbsp;</br>2026年7月份 </th>
+    <th class="top_line_bold bottom_line"> 交易</br>天数 </th>
+    <th class="top_line_bold bottom_line" colspan="2"> 成交金额</br>Turnover in Value </th>
+    <th class="top_line_bold bottom_line" colspan="2"> 成交股数</br>Turnover in Volume </th>
+    <th class="top_line_bold bottom_line" colspan="2"> 成交笔数</br>No. of Deals </th>
+  </tr>
+  <tr>
+    <th class="bottom_line" colspan="2"> July ,2026</br>&nbsp; </th>
+    <th class="bottom_line"> Trading</br>Days </th>
+    <th class="bottom_line"> 人民币元</br>RMB Yuan </th>
+    <th class="bottom_line"> 占总计</br>％ </th>
+    <th class="bottom_line"> 股    数</br>Share </th>
+    <th class="bottom_line"> 占总计</br>％ </th>
+    <th class="bottom_line"> 笔</br>No. </th>
+    <th class="bottom_line"> 占总计</br>％ </th>
+  </tr>
+<tr class="t1_top_row">            <td class="c1">合计</td>
+           <td class="c2">Total</td>
+           <td class="c3">23</td>
+           <td class="c4">32,796,933,764,930</td>
+           <td class="c5">100.00</td>
+           <td class="c6">1,641,976,447,479</td>
+           <td class="c7">100.00</td>
+           <td class="c8">2,160,002,663</td>
+           <td class="c9">100.00</td>
+      </tr>
+ <tr>            <td class="c1">农林牧渔</td>
+           <td class="c2">Agriculture</td>
+           <td class="c3">23</td>
+           <td class="c4">169,093,118,079</td>
+           <td class="c5">0.52</td>
+           <td class="c6">17,426,877,667</td>
+           <td class="c7">1.06</td>
+           <td class="c8">15,567,112</td>
+           <td class="c9">0.72</td>
+      </tr>
+ <tr>            <td class="c1">采矿业</td>
+           <td class="c2">Mining</td>
+           <td class="c3">23</td>
+           <td class="c4">459,121,492,122</td>
+           <td class="c5">1.40</td>
+           <td class="c6">25,944,456,820</td>
+           <td class="c7">1.58</td>
+           <td class="c8">36,542,057</td>
+           <td class="c9">1.69</td>
+      </tr>
+ <tr>            <td class="c1">制造业</td>
+           <td class="c2">Manufacturing</td>
+           <td class="c3">23</td>
+           <td class="c4">26,463,909,750,243</td>
+           <td class="c5">80.69</td>
+           <td class="c6">1,085,780,528,951</td>
+           <td class="c7">66.13</td>
+           <td class="c8">1,602,063,562</td>
+           <td class="c9">74.17</td>
+      </tr>
+ <tr>            <td class="c1">水电煤气</td>
+           <td class="c2">Utilities</td>
+           <td class="c3">23</td>
+           <td class="c4">480,951,482,473</td>
+           <td class="c5">1.47</td>
+           <td class="c6">57,118,865,068</td>
+           <td class="c7">3.48</td>
+           <td class="c8">50,069,600</td>
+           <td class="c9">2.32</td>
+      </tr>
+ <tr>            <td class="c1">建筑业</td>
+           <td class="c2">Construction</td>
+           <td class="c3">23</td>
+           <td class="c4">148,210,005,802</td>
+           <td class="c5">0.45</td>
+           <td class="c6">21,508,225,928</td>
+           <td class="c7">1.31</td>
+           <td class="c8">17,985,936</td>
+           <td class="c9">0.83</td>
+      </tr>
+ <tr>            <td class="c1">批发零售</td>
+           <td class="c2">Wholesale & Retail</td>
+           <td class="c3">23</td>
+           <td class="c4">771,396,905,125</td>
+           <td class="c5">2.35</td>
+           <td class="c6">55,013,985,178</td>
+           <td class="c7">3.35</td>
+           <td class="c8">59,563,166</td>
+           <td class="c9">2.76</td>
+      </tr>
+ <tr>            <td class="c1">运输仓储</td>
+           <td class="c2">Transportation</td>
+           <td class="c3">23</td>
+           <td class="c4">122,552,392,165</td>
+           <td class="c5">0.37</td>
+           <td class="c6">12,634,994,852</td>
+           <td class="c7">0.77</td>
+           <td class="c8">16,788,875</td>
+           <td class="c9">0.78</td>
+      </tr>
+ <tr>            <td class="c1">住宿餐饮</td>
+           <td class="c2">Hotels & Catering</td>
+           <td class="c3">23</td>
+           <td class="c4">7,841,350,385</td>
+           <td class="c5">0.02</td>
+           <td class="c6">1,320,195,922</td>
+           <td class="c7">0.08</td>
+           <td class="c8">1,297,733</td>
+           <td class="c9">0.06</td>
+      </tr>
+ <tr>            <td class="c1">信息技术</td>
+           <td class="c2">IT</td>
+           <td class="c3">23</td>
+           <td class="c4">2,201,947,197,101</td>
+           <td class="c5">6.71</td>
+           <td class="c6">143,219,101,828</td>
+           <td class="c7">8.72</td>
+           <td class="c8">180,518,653</td>
+           <td class="c9">8.36</td>
+      </tr>
+ <tr>            <td class="c1">金融业</td>
+           <td class="c2">Finance</td>
+           <td class="c3">23</td>
+           <td class="c4">619,261,260,941</td>
+           <td class="c5">1.89</td>
+           <td class="c6">47,302,740,327</td>
+           <td class="c7">2.88</td>
+           <td class="c8">38,384,899</td>
+           <td class="c9">1.78</td>
+      </tr>
+ <tr>            <td class="c1">房地产</td>
+           <td class="c2">Real Estate</td>
+           <td class="c3">23</td>
+           <td class="c4">155,913,719,261</td>
+           <td class="c5">0.48</td>
+           <td class="c6">40,420,667,947</td>
+           <td class="c7">2.46</td>
+           <td class="c8">19,104,861</td>
+           <td class="c9">0.88</td>
+      </tr>
+ <tr>            <td class="c1">商务服务</td>
+           <td class="c2">Business Support</td>
+           <td class="c3">23</td>
+           <td class="c4">360,895,492,550</td>
+           <td class="c5">1.10</td>
+           <td class="c6">52,677,856,799</td>
+           <td class="c7">3.21</td>
+           <td class="c8">39,751,356</td>
+           <td class="c9">1.84</td>
+      </tr>
+ <tr>            <td class="c1">科研服务</td>
+           <td class="c2">Research & Development</td>
+           <td class="c3">23</td>
+           <td class="c4">372,551,828,811</td>
+           <td class="c5">1.14</td>
+           <td class="c6">17,089,230,082</td>
+           <td class="c7">1.04</td>
+           <td class="c8">30,999,747</td>
+           <td class="c9">1.44</td>
+      </tr>
+ <tr>            <td class="c1">公共环保</td>
+           <td class="c2">Environmental Protection</td>
+           <td class="c3">23</td>
+           <td class="c4">143,552,168,035</td>
+           <td class="c5">0.44</td>
+           <td class="c6">21,776,267,359</td>
+           <td class="c7">1.33</td>
+           <td class="c8">18,662,797</td>
+           <td class="c9">0.86</td>
+      </tr>
+ <tr>            <td class="c1">居民服务</td>
+           <td class="c2">Resident Services</td>
+           <td class="c3">23</td>
+           <td class="c4">3,512,379,098</td>
+           <td class="c5">0.01</td>
+           <td class="c6">126,163,085</td>
+           <td class="c7">0.01</td>
+           <td class="c8">395,343</td>
+           <td class="c9">0.02</td>
+      </tr>
+ <tr>            <td class="c1">教育</td>
+           <td class="c2">Education</td>
+           <td class="c3">23</td>
+           <td class="c4">28,741,360,041</td>
+           <td class="c5">0.09</td>
+           <td class="c6">8,123,079,008</td>
+           <td class="c7">0.49</td>
+           <td class="c8">3,736,798</td>
+           <td class="c9">0.17</td>
+      </tr>
+ <tr>            <td class="c1">卫生</td>
+           <td class="c2">Public Health</td>
+           <td class="c3">23</td>
+           <td class="c4">110,384,845,855</td>
+           <td class="c5">0.34</td>
+           <td class="c6">12,919,089,145</td>
+           <td class="c7">0.79</td>
+           <td class="c8">10,581,942</td>
+           <td class="c9">0.49</td>
+      </tr>
+ <tr>            <td class="c1">文化传播</td>
+           <td class="c2">Media</td>
+           <td class="c3">23</td>
+           <td class="c4">160,615,720,162</td>
+           <td class="c5">0.49</td>
+           <td class="c6">20,634,616,121</td>
+           <td class="c7">1.26</td>
+           <td class="c8">16,538,503</td>
+           <td class="c9">0.77</td>
+      </tr>
+ <tr class="t1_bottom_row">           <td class="c1">综合</td>
+           <td class="c2">Conglomerates</td>
+           <td class="c3">23</td>
+           <td class="c4">16,481,296,683</td>
+           <td class="c5">0.05</td>
+           <td class="c6">939,505,392</td>
+           <td class="c7">0.06</td>
+           <td class="c8">1,449,723</td>
+           <td class="c9">0.07</td>
+      </tr>
+</table>
+<br/>
+<br/>
+<br/>
+<br/>
+<table>
+  <tr>
+    <th class="top_line_bold" colspan="2"> &nbsp;</br>2026年1 - 7月份 </th>
+    <th class="top_line_bold bottom_line"> 交易</br>天数 </th>
+    <th class="top_line_bold bottom_line" colspan="2"> 成交金额</br>Turnover in Value </th>
+    <th class="top_line_bold bottom_line" colspan="2"> 成交股数</br>Turnover in Volume </th>
+    <th class="top_line_bold bottom_line" colspan="2"> 成交笔数</br>No. of Deals </th>
+  </tr>
+  <tr>
+    <th class="bottom_line" colspan="2"> January - July ,2026</br>&nbsp; </th>
+    <th class="bottom_line"> Trading</br>Days </th>
+    <th class="bottom_line"> 人民币元</br>RMB Yuan </th>
+    <th class="bottom_line"> 占总计</br>％ </th>
+    <th class="bottom_line"> 股    数</br>Share </th>
+    <th class="bottom_line"> 占总计</br>％ </th>
+    <th class="bottom_line"> 笔</br>No. </th>
+    <th class="bottom_line"> 占总计</br>％ </th>
+  </tr>
+<tr class="t2_top_row">            <td class=c1>合计</td>
+           <td class=c2>Total</td>
+           <td class=c3>139</td>
+           <td class=c4>208,631,302,211,010</td>
+           <td class=c5>100.00</td>
+           <td class=c6>10,787,393,869,602</td>
+           <td class=c7>100.00</td>
+           <td class=c8>12,955,759,729</td>
+           <td class=c9>100.00</td>
+      </tr>
+ <tr>            <td class=c1>农林牧渔</td>
+           <td class=c2>Agriculture</td>
+           <td class=c3>139</td>
+           <td class=c4>1,114,915,161,665</td>
+           <td class=c5>0.53</td>
+           <td class=c6>123,655,852,886</td>
+           <td class=c7>1.15</td>
+           <td class=c8>94,645,215</td>
+           <td class=c9>0.73</td>
+      </tr>
+ <tr>            <td class=c1>采矿业</td>
+           <td class=c2>Mining</td>
+           <td class=c3>139</td>
+           <td class=c4>3,756,164,233,501</td>
+           <td class=c5>1.80</td>
+           <td class=c6>177,281,859,753</td>
+           <td class=c7>1.64</td>
+           <td class=c8>246,491,625</td>
+           <td class=c9>1.90</td>
+      </tr>
+ <tr>            <td class=c1>制造业</td>
+           <td class=c2>Manufacturing</td>
+           <td class=c3>139</td>
+           <td class=c4>160,979,749,847,223</td>
+           <td class=c5>77.16</td>
+           <td class=c6>6,977,953,003,151</td>
+           <td class=c7>64.69</td>
+           <td class=c8>9,334,012,004</td>
+           <td class=c9>72.05</td>
+      </tr>
+ <tr>            <td class=c1>水电煤气</td>
+           <td class=c2>Utilities</td>
+           <td class=c3>139</td>
+           <td class=c4>3,497,830,305,806</td>
+           <td class=c5>1.68</td>
+           <td class=c6>416,906,425,786</td>
+           <td class=c7>3.86</td>
+           <td class=c8>316,156,452</td>
+           <td class=c9>2.44</td>
+      </tr>
+ <tr>            <td class=c1>建筑业</td>
+           <td class=c2>Construction</td>
+           <td class=c3>139</td>
+           <td class=c4>1,218,731,852,085</td>
+           <td class=c5>0.58</td>
+           <td class=c6>166,672,992,359</td>
+           <td class=c7>1.55</td>
+           <td class=c8>121,326,497</td>
+           <td class=c9>0.94</td>
+      </tr>
+ <tr>            <td class=c1>批发零售</td>
+           <td class=c2>Wholesale & Retail</td>
+           <td class=c3>139</td>
+           <td class=c4>4,816,240,184,369</td>
+           <td class=c5>2.31</td>
+           <td class=c6>363,085,389,577</td>
+           <td class=c7>3.37</td>
+           <td class=c8>360,337,748</td>
+           <td class=c9>2.78</td>
+      </tr>
+ <tr>            <td class=c1>运输仓储</td>
+           <td class=c2>Transportation</td>
+           <td class=c3>139</td>
+           <td class=c4>824,342,530,861</td>
+           <td class=c5>0.40</td>
+           <td class=c6>81,458,609,370</td>
+           <td class=c7>0.76</td>
+           <td class=c8>91,165,230</td>
+           <td class=c9>0.70</td>
+      </tr>
+ <tr>            <td class=c1>住宿餐饮</td>
+           <td class=c2>Hotels & Catering</td>
+           <td class=c3>139</td>
+           <td class=c4>58,841,085,929</td>
+           <td class=c5>0.03</td>
+           <td class=c6>8,751,463,149</td>
+           <td class=c7>0.08</td>
+           <td class=c8>7,156,679</td>
+           <td class=c9>0.06</td>
+      </tr>
+ <tr>            <td class=c1>信息技术</td>
+           <td class=c2>IT</td>
+           <td class=c3>139</td>
+           <td class=c4>17,870,737,231,282</td>
+           <td class=c5>8.57</td>
+           <td class=c6>1,003,427,888,538</td>
+           <td class=c7>9.30</td>
+           <td class=c8>1,236,892,652</td>
+           <td class=c9>9.55</td>
+      </tr>
+ <tr>            <td class=c1>金融业</td>
+           <td class=c2>Finance</td>
+           <td class=c3>139</td>
+           <td class=c4>3,820,399,123,691</td>
+           <td class=c5>1.83</td>
+           <td class=c6>282,728,237,887</td>
+           <td class=c7>2.62</td>
+           <td class=c8>217,088,461</td>
+           <td class=c9>1.68</td>
+      </tr>
+ <tr>            <td class=c1>房地产</td>
+           <td class=c2>Real Estate</td>
+           <td class=c3>139</td>
+           <td class=c4>1,123,383,757,992</td>
+           <td class=c5>0.54</td>
+           <td class=c6>257,139,293,121</td>
+           <td class=c7>2.38</td>
+           <td class=c8>117,606,859</td>
+           <td class=c9>0.91</td>
+      </tr>
+ <tr>            <td class=c1>商务服务</td>
+           <td class=c2>Business Support</td>
+           <td class=c3>139</td>
+           <td class=c4>3,788,969,264,206</td>
+           <td class=c5>1.82</td>
+           <td class=c6>401,721,287,788</td>
+           <td class=c7>3.72</td>
+           <td class=c8>311,447,414</td>
+           <td class=c9>2.40</td>
+      </tr>
+ <tr>            <td class=c1>科研服务</td>
+           <td class=c2>Research & Development</td>
+           <td class=c3>139</td>
+           <td class=c4>1,873,101,813,583</td>
+           <td class=c5>0.90</td>
+           <td class=c6>91,617,225,602</td>
+           <td class=c7>0.85</td>
+           <td class=c8>155,584,810</td>
+           <td class=c9>1.20</td>
+      </tr>
+ <tr>            <td class=c1>公共环保</td>
+           <td class=c2>Environmental Protection</td>
+           <td class=c3>139</td>
+           <td class=c4>1,153,071,028,804</td>
+           <td class=c5>0.55</td>
+           <td class=c6>148,755,920,693</td>
+           <td class=c7>1.38</td>
+           <td class=c8>121,487,299</td>
+           <td class=c9>0.94</td>
+      </tr>
+ <tr>            <td class=c1>居民服务</td>
+           <td class=c2>Resident Services</td>
+           <td class=c3>139</td>
+           <td class=c4>35,305,742,911</td>
+           <td class=c5>0.02</td>
+           <td class=c6>1,318,230,841</td>
+           <td class=c7>0.01</td>
+           <td class=c8>2,985,896</td>
+           <td class=c9>0.02</td>
+      </tr>
+ <tr>            <td class=c1>教育</td>
+           <td class=c2>Education</td>
+           <td class=c3>139</td>
+           <td class=c4>175,361,647,805</td>
+           <td class=c5>0.08</td>
+           <td class=c6>37,759,427,069</td>
+           <td class=c7>0.35</td>
+           <td class=c8>17,787,218</td>
+           <td class=c9>0.14</td>
+      </tr>
+ <tr>            <td class=c1>卫生</td>
+           <td class=c2>Public Health</td>
+           <td class=c3>139</td>
+           <td class=c4>843,882,724,969</td>
+           <td class=c5>0.40</td>
+           <td class=c6>86,701,257,694</td>
+           <td class=c7>0.80</td>
+           <td class=c8>70,084,816</td>
+           <td class=c9>0.54</td>
+      </tr>
+ <tr>            <td class=c1>文化传播</td>
+           <td class=c2>Media</td>
+           <td class=c3>139</td>
+           <td class=c4>1,489,465,359,516</td>
+           <td class=c5>0.71</td>
+           <td class=c6>151,136,126,157</td>
+           <td class=c7>1.40</td>
+           <td class=c8>119,739,641</td>
+           <td class=c9>0.92</td>
+      </tr>
+ <tr class="t2_bottom_row">           <td class=c1>综合</td>
+           <td class=c2>Conglomerates</td>
+           <td class=c3>139</td>
+           <td class=c4>190,809,314,812</td>
+           <td class=c5>0.09</td>
+           <td class=c6>9,323,378,181</td>
+           <td class=c7>0.09</td>
+           <td class=c8>13,763,213</td>
+           <td class=c9>0.11</td>
+      </tr>
+</table>

@@ -1,0 +1,3135 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+<!--   <title>深交所主页</title>   -->
+<script>
+    var title = '<a href="./" class="CurrChnlCls">统计月报</a> ';
+    title = title.substring(title.indexOf('>')+1,title.indexOf('</'));
+    document.write('<title>深圳证券交易所-'+ title +'</title>')
+</script>
+<script>
+  if(location.protocol == 'https:'){
+    document.write('<link href="https://res.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }else{
+    document.write('<link href="http://res.static.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+<meta http-equiv="cache-control" content="max-age=0">
+<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="expires" content="Web, 26 Feb 1997 08:21:57 GMT">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="author" content="www.szse.cn">
+<meta name="description" content="深交所官网">
+<meta name="keywords" content="深交所,深交所官网,深圳证券交易所,交易所,交易所官网,深圳证券交易所官网">
+<meta name="renderer" content=webkit>
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google" value="notranslate"> 
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="screen-orientation" content="portrait">
+<meta name="full-screen" content="yes">
+<meta name="browermode" content="application">
+<meta name="x5-orientation" content="portrait">
+<meta name="HandheldFriendly" content="true">
+<script type="text/javascript">
+	var u = navigator.userAgent;
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;//android终端
+
+	function addElementMeta(name,  content) {
+		var head = document.getElementsByTagName('head')[0];
+		var meta = document.createElement('meta');
+
+		meta.setAttribute('name', name);
+		meta.setAttribute('content', content);
+		head.appendChild(meta);
+	}
+	if(isAndroid) {
+		addElementMeta('x5-fullscreen', 'true');
+		addElementMeta('x5-page-mode', 'app');
+	}
+</script> 
+    <script>
+  (function () {
+    var _versionDate = new Date().getTime();
+    if (location.protocol == 'https:') {
+      var _path = 'https://res.szse.cn';
+    } else {
+      var _path = 'http://res.static.szse.cn';
+    }
+    // _path = _path.replace(".static.", ".");
+    //var _path = 'http://res.szse.cn';
+    //document.write( " <script src='" + _path + "/common/js/first.js?random=" + _versionDate + "'> <\/script> ");
+    var _host = 'http://www.szse.cn';
+    if (location.protocol == 'https:') {
+      _host = 'https://www.szse.cn';
+    }
+
+
+    var backDomain = 'http://www.sse.org.cn'
+    var reg = /([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)\.?(:\d+)?/;
+    if (backDomain && window.location.host.match(reg)[2] === backDomain.match(reg)[2]) {
+      _host = 'http://www.sse.org.cn';
+      _path = 'http://res.static.sse.org.cn';
+      if (location.protocol == 'https:') {
+        _host = 'https://www.sse.org.cn';
+        _path = 'https://res.static.sse.org.cn';
+      }
+
+    }
+
+    _path = _path.replace(".static.", ".");
+
+    document.write(" <script src='" + _host + "/szsePath.js?random=" + _versionDate + "'> <\/script> "
+      + " <script src='" + _path + "/common/js/concatversion.js?random=" + _versionDate + "'> <\/script> ");
+  }());
+</script>
+
+<script>
+
+  function backDomainLinkSwitch(value, type) {
+    var _port = location.port ? (":" + location.port) : "";
+    var reg = /([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)\.?(:\d+)?/;
+    var urlRegx = /(.*)(http:|https:)(\/\/)(([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+))\.?(:\d+)?(.*)/;
+
+    // html字符串替换
+    if (type == 'str') {
+      var strArr = value.split("=");
+      strArr = strArr.map(function (v) {
+        var host = reg.test(v) ? v.match(reg)[0] : null;
+        if (pathObj.szseHosts.indexOf(host) > -1) {
+          if (window.location.protocol == 'https:' && urlRegx.test(v)) {
+            v = v.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+          };
+          if (pathObj.current_host === pathObj.back_host) {
+            v = v.replace(pathObj.main_host, pathObj.back_host);
+          }
+        }
+        return v
+      });
+      value = strArr.join("=");
+      return value;
+    }
+
+    // a标签地址替换
+    if (type === 'A') {
+      var eleA = document.querySelectorAll(value);
+      for (var i = 0; i < eleA.length; i++) {
+        var href = eleA[i].getAttribute("href");
+        var host = reg.test(href) ? href.match(reg)[0] : null;
+        if (href && pathObj.szseHosts.indexOf(host) > -1) {
+          if (window.location.protocol == 'https:') {
+            href = href.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+          };
+          if (pathObj.current_host === pathObj.back_host) {
+            href = href.replace(pathObj.main_host, pathObj.back_host);
+          }
+          eleA[i].setAttribute('href', href);
+        }
+      }
+    }
+
+    // 单链接替换
+    if (type === "link") {
+      if (window.location.protocol == 'https:' && !!value) {
+        value = value.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+      };
+      if (pathObj.current_host === pathObj.back_host) {
+        var host = reg.test(value) ? value.match(reg)[0] : null;
+        if (value && pathObj.szseHosts.indexOf(host) > -1) {
+          value = value.replace(pathObj.main_host, pathObj.back_host);
+        }
+      }
+      return value;
+    }
+
+    // 背景图地址更换
+    if (type === "background") {
+      var eleBg = document.querySelectorAll(value);
+      for (var i = 0; i < eleBg.length; i++) {
+        var href = eleBg[i].style.backgroundImage;
+        if (window.location.protocol == 'https:' && !!href) {
+          href = href.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+        };
+        var host = reg.test(href) ? href.match(reg)[0] : null;
+        if (href && pathObj.szseHosts.indexOf(host) > -1) {
+          if (pathObj.current_host === pathObj.back_host) {
+            href = href.replace(pathObj.main_host, pathObj.back_host);
+          }
+          eleBg[i].style.backgroundImage = href;
+        }
+      }
+    }
+
+  }
+
+</script>
+
+<script>
+   if(document.cookie.indexOf('ft_language=1')>-1){
+    var style = document.createElement('style');
+    style.textContent='body{visibility:hidden;}';
+    document.head.appendChild(style);
+  }
+</script>
+<script>
+    addComCssFile()
+</script>
+    <script>
+    changeVertion('/modules/aboutus_column/introduction/css/journal.css', 'css');    
+    var periodicalArr = []; 
+    </script>
+</head>
+<body>
+<script>
+  navMenuAJAX('/application/publicindex/header/index.html', '/application/publicindex/header/index.html', 'header', 'www');
+</script>
+<div class="g-locationnav">
+    <div class="banner-wrap">
+      <img src="http://res.static.szse.cn/common/images/legalrules-banner.jpg" />
+    </div>
+    <div class="g-container">
+      <div class="g-banner-txt">
+            <h2 class="hidden-xs">统计月报</h2>
+            <p>
+              <img src="http://res.static.szse.cn/common/icon/er-banneradr.png" />位置：<a href="../../" class="CurrChnlCls">市场数据</a>/<a href="../" class="CurrChnlCls">统计资料</a>/<a href="./" class="CurrChnlCls">统计月报</a>
+            </p>
+          </div>
+    </div>
+</div>
+<div class="home-hotnews-wrap">
+    <div class="g-container-wrap">
+        <div class="g-container">
+            <div class="g-sidemenu">
+                
+
+<div class="menu-container">
+	<h2 class="title">市场数据</h2>
+	<div class="side-menu-container">
+		<ul class="side-menu-con">
+           <li class="level1 last" type="0" chnlcode="marketOverview_report">
+
+			            <a href="../../../market/overview/index.html">
+					<div>市场总貌
+					
+					</div>
+				</a>
+				
+	  </li>
+            <li class="level1" type="0" chnlcode="exponent">
+
+			        <a> 
+					<div>深市指数
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level2 last" type="0" chnlcode="exponentPandect">
+
+			            <a href="../../../market/exponent/pandect/index.html">
+					<div>指数总览
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="sample_report">
+
+			            <a href="../../../market/exponent/sample/index.html">
+					<div>指数与样本股
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="11" chnlcode="cnindex_link">
+
+			           <a href="http://www.cnindex.com.cn/" target='_blank'>
+					<div>国证指数系列
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="11" chnlcode="csindex_link">
+
+			           <a href="http://www.csindex.com.cn/" target='_blank'>
+					<div>中证指数系列
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="11" chnlcode="cesc_link">
+
+			           <a href="https://www.cesc.com/sc/index.html" target='_blank'>
+					<div>中华指数系列
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level1" type="0" chnlcode="stockInfo_report">
+
+			        <a> 
+					<div>股票数据
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level2 last" type="0" chnlcode="baseindicator_report">
+
+			            <a href="../../../market/stock/indicator/index.html">
+					<div>基本概况
+					
+					</div>
+				</a>
+				
+	  </li>
+            <li class="level2" type="0" chnlcode="dealSituation">
+
+			        <a> 
+					<div>成交概况
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="dailySurvey">
+
+			            <a href="../../../market/stock/situation/daily/index.html">
+					<div>日度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="weeklySurvey">
+
+			            <a href="../../../market/stock/situation/weekly/index.html">
+					<div>周度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="monthlySurvey">
+
+			            <a href="../../../market/stock/situation/monthly/index.html">
+					<div>月度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="annualSurvey">
+
+			            <a href="../../../market/stock/situation/annual/index.html">
+					<div>年度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+           <li class="level2 last" type="0" chnlcode="active_report">
+
+			            <a href="../../../market/stock/active/index.html">
+					<div>指标排名
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="deal_report">
+
+			            <a href="../../../market/stock/deal/index.html">
+					<div>行业统计
+					
+					</div>
+				</a>
+				
+	  </li>
+            <li class="level2" type="0" chnlcode="stock_CDR">
+
+			        <a> 
+					<div>存托凭证成交
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="cdrDailySurvey_report">
+
+			            <a href="../../../market/stock/CDR/daily/index.html">
+					<div>日度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="cdrWeeklySurvey">
+
+			            <a href="../../../market/stock/CDR/weekly/index.html">
+					<div>周度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="cdrMonthlySurvey">
+
+			            <a href="../../../market/stock/CDR/monthly/index.html">
+					<div>月度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="cdrAnnualSurvey">
+
+			            <a href="../../../market/stock/CDR/annual/index.html">
+					<div>年度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level2" type="0" chnlcode="preferredStockDeal">
+
+			        <a> 
+					<div>优先股成交
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="prefDailySurvey_report">
+
+			            <a href="../../../market/stock/preferred/daily/index.html">
+					<div>日度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="prefWeeklySurvey_report">
+
+			            <a href="../../../market/stock/preferred/weekly/index.html">
+					<div>周度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="prefMonthlySurvey_report">
+
+			            <a href="../../../market/stock/preferred/monthly/index.html">
+					<div>月度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="prefAnnualSurvey_report">
+
+			            <a href="../../../market/stock/preferred/annual/index.html">
+					<div>年度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+           <li class="level2 last" type="0" chnlcode="changename_report">
+
+			            <a href="../../../market/stock/changename/index.html">
+					<div>名称变更
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="suspendTermination_news">
+
+			            <a href="../../../market/stock/suspend/index.html">
+					<div>暂停/终止上市
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level1" type="0" chnlcode="fundData_report">
+
+			        <a> 
+					<div>基金数据
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+            <li class="level2" type="0" chnlcode="fundDealSurvey">
+
+			        <a> 
+					<div>成交概况
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="fundDailySurvey_report">
+
+			            <a href="../../../market/fund/dealSurvey/daily/index.html">
+					<div>日度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="fundWeeklySurvey_report">
+
+			            <a href="../../../market/fund/dealSurvey/weekly/index.html">
+					<div>周度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="fundMonthlySurvey_report">
+
+			            <a href="../../../market/fund/dealSurvey/monthly/index.html">
+					<div>月度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="fundAnnualSurvey_report">
+
+			            <a href="../../../market/fund/dealSurvey/annual/index.html">
+					<div>年度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level2" type="0" chnlcode="fundData_fundvolume">
+
+			        <a> 
+					<div>基金规模
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="fundData_fundvolume_etf">
+
+			            <a href="../../../market/fund/volume/etf/index.html">
+					<div>ETF规模
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="fundData_fundvolume_lof">
+
+			            <a href="../../../market/fund/volume/lof/index.html">
+					<div>LOF规模
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="fundData_fundvolume_reits">
+
+			            <a href="../../../market/fund/volume/reits/index.html">
+					<div>不动产基金规模
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+				</ul>
+	  </li>
+            <li class="level1" type="0" chnlcode="bondData">
+
+			        <a> 
+					<div>债券数据
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+            <li class="level2" type="0" chnlcode="bondData_overview">
+
+			        <a> 
+					<div>成交概况
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="bondDailySurvey_report">
+
+			            <a href="../../../market/bond/overview/daily/index.html">
+					<div>日度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="bondWeeklySurvey_report">
+
+			            <a href="../../../market/bond/overview/weekly/index.html">
+					<div>周度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="bondMonthlySurvey_report">
+
+			            <a href="../../../market/bond/overview/monthly/index.html">
+					<div>月度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="bondAnnualSurvey_report">
+
+			            <a href="../../../market/bond/overview/yearly/index.html">
+					<div>年度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+           <li class="level2 last" type="0" chnlcode="bondData_convertible">
+
+			            <a href="../../../market/bond/convertible/index.html">
+					<div>可转债转股统计
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level1" type="0" chnlcode="optionData">
+
+			        <a> 
+					<div>期权数据
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level2 last" type="0" chnlcode="dayIndex">
+
+			            <a href="../../../market/option/day/index.html">
+					<div>日度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="weekIndex">
+
+			            <a href="../../../market/option/week/index.html">
+					<div>周度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="monthIndex">
+
+			            <a href="../../../market/option/month/index.html">
+					<div>月度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="yearIndex">
+
+			            <a href="../../../market/option/year/index.html">
+					<div>年度概况
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level1" type="0" chnlcode="otherData">
+
+			        <a> 
+					<div>其他数据
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level2 last" type="11" chnlcode="marginOth_link">
+
+			           <a href="http://www.szse.cn/disclosure/margin/margin/index.html" target='_blank'>
+					<div>融资融券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="11" chnlcode="transfer_link">
+
+			           <a href="http://www.szse.cn/disclosure/margin/lended/index.html" target='_blank'>
+					<div>转融通
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="11" chnlcode="szhkOth_link">
+
+			           <a href="http://www.szse.cn/szhk/szhktradeinfo/szdaily/index.html" target='_blank'>
+					<div>深港通
+					
+					</div>
+				</a>
+				
+	  </li>
+            <li class="level2" type="0" chnlcode="stockPledgeRepo">
+
+			        <a> 
+					<div>股票质押回购
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="11" chnlcode="dealInfo_link">
+
+			           <a href="http://www.szse.cn/disclosure/innovate/stock/message/index.html" target='_blank'>
+					<div>交易信息
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="11" chnlcode="rate_link">
+
+			           <a href="http://www.szse.cn/disclosure/innovate/stock/rate/index.html" target='_blank'>
+					<div>平均质押率
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+				</ul>
+	  </li>
+           <li class="level1 last" type="0" chnlcode="trend_report">
+
+			            <a href="../../../market/trend/index.html">
+					<div>行情信息
+					
+					</div>
+				</a>
+				
+	  </li>
+            <li class="level1" type="0" chnlcode="productItem">
+
+			        <a> 
+					<div>产品目录
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+            <li class="level2" type="0" chnlcode="stock_protect">
+
+			        <a> 
+					<div>股票
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="stockList_report">
+
+			            <a href="../../../market/product/stock/list/index.html">
+					<div>股票列表
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="preferredStock_report">
+
+			            <a href="../../../market/product/stock/preferred/index.html">
+					<div>优先股列表
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level2" type="0" chnlcode="bond_report">
+
+			        <a> 
+					<div>债券
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="nationalDebtBonds_report">
+
+			            <a href="../../../market/product/bond/tb/index.html">
+					<div>国债
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="localGovernmentBond_report">
+
+			            <a href="../../../market/product/bond/ltb/index.html">
+					<div>地方政府债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="policyFinancialBond_report">
+
+			            <a href="../../../market/product/bond/fb/index.html">
+					<div>政策性金融债
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="governmentBackedBond_report">
+
+			            <a href="../../../market/product/bond/GB/index.html">
+					<div>政府支持债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="corporateBond_report">
+
+			            <a href="../../../market/product/bond/cb/index.html">
+					<div>公司债券(含企业债券)
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="exchangeableBond_report">
+
+			            <a href="../../../market/product/bond/ccb/index.html">
+					<div>可交换公司债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="privateBond_report">
+
+			            <a href="../../../market/product/bond/ppb/index.html">
+					<div>非公开发行公司债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="privateExchangeableBond_report">
+
+			            <a href="../../../market/product/bond/ppcb/index.html">
+					<div>非公开发行可交换公司债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="convertableBond_report">
+
+			            <a href="../../../market/product/bond/CB/index.html">
+					<div>可转换债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="innovateBond_report">
+
+			            <a href="../../../market/product/bond/innovate/index.html">
+					<div>创新创业可转换债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="secondaryBond_report">
+
+			            <a href="../../../market/product/bond/sb/index.html">
+					<div>证券公司次级债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="shortTermBond_report">
+
+			            <a href="../../../market/product/bond/stb/index.html">
+					<div>证券公司短期债券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="ABS_report">
+
+			            <a href="../../../market/product/bond/ABS/index.html">
+					<div>企业资产支持证券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="REIT_report">
+
+			            <a href="../../../market/product/bond/REIT/index.html">
+					<div>不动产资产支持证券
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="innovativeProducts_report">
+
+			            <a href="../../../market/product/bond/ip/index.html">
+					<div>创新品种
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+            <li class="level2" type="0" chnlcode="fundList_report">
+
+			        <a> 
+					<div>基金
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level3 last" type="0" chnlcode="allFundList_report">
+
+			            <a href="../../../market/product/list/all/index.html">
+					<div>所有基金列表
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="etfList_report">
+
+			            <a href="../../../market/product/list/etfList/index.html">
+					<div>ETF列表
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="lofFundList_report">
+
+			            <a href="../../../market/product/list/lofFundList/index.html">
+					<div>LOF基金列表
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level3 last" type="0" chnlcode="reits_report">
+
+			            <a href="../../../market/product/list/reits/index.html">
+					<div>不动产基金列表
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+           <li class="level2 last" type="0" chnlcode="option_report">
+
+			            <a href="../../../market/product/option/index.html">
+					<div>期权
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="gdrType_report">
+
+			            <a href="../../../market/product/gdr/index.html">
+					<div>互联互通存托凭证
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+           <li class="level1 active" chnlcode="periodical">
+
+			        <a class="dropup">
+					<div>统计资料
+					
+					  <b class="caret"></b>
+					</div>
+				</a>
+				
+				<ul>
+           <li class="level2 active last" chnlcode="month_news">
+
+			            <a href="../../../market/periodical/month/index.html">
+					<div>统计月报
+					
+					</div>
+				</a>
+				
+	  </li>
+           <li class="level2 last" type="0" chnlcode="year_news">
+
+			            <a href="../../../market/periodical/year/index.html">
+					<div>统计年鉴
+					
+					</div>
+				</a>
+				
+	  </li>
+				</ul>
+	  </li>
+           <li class="level1 last" type="0" chnlcode="subjectCount_news">
+
+			            <a href="../../../market/subject/index.html">
+					<div>专题统计
+					
+					</div>
+				</a>
+				
+	  </li>
+		</ul>
+	</div>
+</div>
+
+
+            </div>          
+            
+                <script>                                               
+                    periodicalArr['1'] = {
+                        value:'./t20260806_622028.html',
+                        text:'2026-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['2'] = {
+                        value:'./t20260706_621517.html',
+                        text:'2026-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['3'] = {
+                        value:'./t20260605_620906.html',
+                        text:'2026-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['4'] = {
+                        value:'./t20260511_620438.html',
+                        text:'2026-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['5'] = {
+                        value:'./t20260403_619833.html',
+                        text:'2026-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['6'] = {
+                        value:'./t20260304_619294.html',
+                        text:'2026-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['7'] = {
+                        value:'./t20260204_618927.html',
+                        text:'2026-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['8'] = {
+                        value:'./t20260107_618297.html',
+                        text:'2025-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['9'] = {
+                        value:'./t20251203_617676.html',
+                        text:'2025-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['10'] = {
+                        value:'./t20251106_617088.html',
+                        text:'2025-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['11'] = {
+                        value:'./t20251013_616459.html',
+                        text:'2025-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['12'] = {
+                        value:'./t20250905_615827.html',
+                        text:'2025-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['13'] = {
+                        value:'./t20250805_615341.html',
+                        text:'2025-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['14'] = {
+                        value:'./t20250704_614727.html',
+                        text:'2025-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['15'] = {
+                        value:'./t20250609_613960.html',
+                        text:'2025-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['16'] = {
+                        value:'./t20250513_613468.html',
+                        text:'2025-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['17'] = {
+                        value:'./t20250402_612753.html',
+                        text:'2025-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['18'] = {
+                        value:'./t20250306_612208.html',
+                        text:'2025-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['19'] = {
+                        value:'./t20250205_611796.html',
+                        text:'2025-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['20'] = {
+                        value:'./t20250106_611421.html',
+                        text:'2024-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['21'] = {
+                        value:'./t20241204_610800.html',
+                        text:'2024-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['22'] = {
+                        value:'./t20241105_610380.html',
+                        text:'2024-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['23'] = {
+                        value:'./t20241014_609963.html',
+                        text:'2024-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['24'] = {
+                        value:'./t20240909_609280.html',
+                        text:'2024-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['25'] = {
+                        value:'./t20240807_608544.html',
+                        text:'2024-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['26'] = {
+                        value:'./t20240705_608038.html',
+                        text:'2024-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['27'] = {
+                        value:'./t20240607_607623.html',
+                        text:'2024-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['28'] = {
+                        value:'./t20240513_607186.html',
+                        text:'2024-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['29'] = {
+                        value:'./t20240411_606807.html',
+                        text:'2024-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['30'] = {
+                        value:'./t20240312_606257.html',
+                        text:'2024-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['31'] = {
+                        value:'./t20240207_606015.html',
+                        text:'2024-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['32'] = {
+                        value:'./t20240115_605628.html',
+                        text:'2023-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['33'] = {
+                        value:'./t20231207_604888.html',
+                        text:'2023-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['34'] = {
+                        value:'./t20231109_604553.html',
+                        text:'2023-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['35'] = {
+                        value:'./t20231010_603950.html',
+                        text:'2023-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['36'] = {
+                        value:'./t20230912_603474.html',
+                        text:'2023-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['37'] = {
+                        value:'./t20230808_602544.html',
+                        text:'2023-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['38'] = {
+                        value:'./t20230710_601663.html',
+                        text:'2023-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['39'] = {
+                        value:'./t20230607_601029.html',
+                        text:'2023-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['40'] = {
+                        value:'./t20230509_600312.html',
+                        text:'2023-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['41'] = {
+                        value:'./t20230411_599864.html',
+                        text:'2023-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['42'] = {
+                        value:'./t20230313_599196.html',
+                        text:'2023-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['43'] = {
+                        value:'./t20230202_598541.html',
+                        text:'2023-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['44'] = {
+                        value:'./t20230103_598084.html',
+                        text:'2022-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['45'] = {
+                        value:'./t20221207_597709.html',
+                        text:'2022-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['46'] = {
+                        value:'./t20221104_597180.html',
+                        text:'2022-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['47'] = {
+                        value:'./t20221024_596752.html',
+                        text:'2022-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['48'] = {
+                        value:'./t20220907_595755.html',
+                        text:'2022-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['49'] = {
+                        value:'./t20220803_595221.html',
+                        text:'2022-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['50'] = {
+                        value:'./t20220707_594673.html',
+                        text:'2022-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['51'] = {
+                        value:'./t20220606_593657.html',
+                        text:'2022-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['52'] = {
+                        value:'./t20220511_592810.html',
+                        text:'2022-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['53'] = {
+                        value:'./t20220408_592297.html',
+                        text:'2022-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['54'] = {
+                        value:'./t20220303_591637.html',
+                        text:'2022-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['55'] = {
+                        value:'./t20220211_591196.html',
+                        text:'2022-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['56'] = {
+                        value:'./t20220110_590565.html',
+                        text:'2021-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['57'] = {
+                        value:'./t20211214_590235.html',
+                        text:'2021-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['58'] = {
+                        value:'./t20211105_589478.html',
+                        text:'2021-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['59'] = {
+                        value:'./t20211018_588888.html',
+                        text:'2021-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['60'] = {
+                        value:'./t20210907_588195.html',
+                        text:'2021-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['61'] = {
+                        value:'./t20210805_587471.html',
+                        text:'2021-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['62'] = {
+                        value:'./t20210707_586826.html',
+                        text:'2021-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['63'] = {
+                        value:'./t20210604_586266.html',
+                        text:'2021-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['64'] = {
+                        value:'./t20210513_585897.html',
+                        text:'2021-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['65'] = {
+                        value:'./t20210402_585373.html',
+                        text:'2021-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['66'] = {
+                        value:'./t20210303_584989.html',
+                        text:'2021-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['67'] = {
+                        value:'./t20210203_584651.html',
+                        text:'2021-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['68'] = {
+                        value:'./t20210106_584125.html',
+                        text:'2020-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['69'] = {
+                        value:'./t20201204_583667.html',
+                        text:'2020-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['70'] = {
+                        value:'./t20201104_582899.html',
+                        text:'2020-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['71'] = {
+                        value:'./t20201013_582042.html',
+                        text:'2020-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['72'] = {
+                        value:'./t20200902_581224.html',
+                        text:'2020-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['73'] = {
+                        value:'./t20200813_580543.html',
+                        text:'2020-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['74'] = {
+                        value:'./t20200706_579272.html',
+                        text:'2020-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['75'] = {
+                        value:'./t20200602_578033.html',
+                        text:'2020-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['76'] = {
+                        value:'./t20200508_576915.html',
+                        text:'2020-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['77'] = {
+                        value:'./t20200402_575690.html',
+                        text:'2020-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['78'] = {
+                        value:'./t20200304_574725.html',
+                        text:'2020-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['79'] = {
+                        value:'./t20200204_573960.html',
+                        text:'2020-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['80'] = {
+                        value:'./t20200121_573762.html',
+                        text:'2019-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['81'] = {
+                        value:'./t20191202_572322.html',
+                        text:'2019-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['82'] = {
+                        value:'./t20191107_571814.html',
+                        text:'2019-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['83'] = {
+                        value:'./t20191008_571133.html',
+                        text:'2019-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['84'] = {
+                        value:'./t20190903_570379.html',
+                        text:'2019-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['85'] = {
+                        value:'./t20190801_569166.html',
+                        text:'2019-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['86'] = {
+                        value:'./t20190708_568518.html',
+                        text:'2019-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['87'] = {
+                        value:'./t20190604_567592.html',
+                        text:'2019-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['88'] = {
+                        value:'./t20190508_567016.html',
+                        text:'2019-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['89'] = {
+                        value:'./t20190403_566022.html',
+                        text:'2019-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['90'] = {
+                        value:'./t20190308_565390.html',
+                        text:'2019-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['91'] = {
+                        value:'./t20190213_564700.html',
+                        text:'2019-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['92'] = {
+                        value:'./t20190107_563940.html',
+                        text:'2018-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['93'] = {
+                        value:'./t20181205_563381.html',
+                        text:'2018-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['94'] = {
+                        value:'./t20181106_557377.html',
+                        text:'2018-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['95'] = {
+                        value:'./t20181010_555623.html',
+                        text:'2018-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['96'] = {
+                        value:'./t20180905_554584.html',
+                        text:'2018-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['97'] = {
+                        value:'./t20180807_554044.html',
+                        text:'2018-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['98'] = {
+                        value:'./t20180706_553515.html',
+                        text:'2018-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['99'] = {
+                        value:'./t20180606_539196.html',
+                        text:'2018-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['100'] = {
+                        value:'./t20180521_536592.html',
+                        text:'2018-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['101'] = {
+                        value:'./t20180404_535965.html',
+                        text:'2018-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['102'] = {
+                        value:'./t20180305_535964.html',
+                        text:'2018-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['103'] = {
+                        value:'./t20180222_535963.html',
+                        text:'2018-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['104'] = {
+                        value:'./t20180104_535962.html',
+                        text:'2017-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['105'] = {
+                        value:'./t20171205_535961.html',
+                        text:'2017-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['106'] = {
+                        value:'./t20171102_535960.html',
+                        text:'2017-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['107'] = {
+                        value:'./t20171011_535959.html',
+                        text:'2017-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['108'] = {
+                        value:'./t20170904_535958.html',
+                        text:'2017-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['109'] = {
+                        value:'./t20170801_535957.html',
+                        text:'2017-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['110'] = {
+                        value:'./t20170706_535956.html',
+                        text:'2017-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['111'] = {
+                        value:'./t20170605_535955.html',
+                        text:'2017-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['112'] = {
+                        value:'./t20170504_535954.html',
+                        text:'2017-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['113'] = {
+                        value:'./t20170407_535953.html',
+                        text:'2017-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['114'] = {
+                        value:'./t20170306_535952.html',
+                        text:'2017-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['115'] = {
+                        value:'./t20170207_535951.html',
+                        text:'2017-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['116'] = {
+                        value:'./t20170106_535950.html',
+                        text:'2016-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['117'] = {
+                        value:'./t20161205_535949.html',
+                        text:'2016-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['118'] = {
+                        value:'./t20161104_535948.html',
+                        text:'2016-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['119'] = {
+                        value:'./t20161013_535947.html',
+                        text:'2016-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['120'] = {
+                        value:'./t20160906_535946.html',
+                        text:'2016-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['121'] = {
+                        value:'./t20160805_535945.html',
+                        text:'2016-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['122'] = {
+                        value:'./t20160704_535944.html',
+                        text:'2016-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['123'] = {
+                        value:'./t20160606_535943.html',
+                        text:'2016-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['124'] = {
+                        value:'./t20160505_535942.html',
+                        text:'2016-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['125'] = {
+                        value:'./t20160408_535941.html',
+                        text:'2016-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['126'] = {
+                        value:'./t20160302_535940.html',
+                        text:'2016-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['127'] = {
+                        value:'./t20160202_535939.html',
+                        text:'2016-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['128'] = {
+                        value:'./t20160105_535938.html',
+                        text:'2015-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['129'] = {
+                        value:'./t20151202_535937.html',
+                        text:'2015-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['130'] = {
+                        value:'./t20151104_535936.html',
+                        text:'2015-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['131'] = {
+                        value:'./t20151012_535935.html',
+                        text:'2015-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['132'] = {
+                        value:'./t20150907_535934.html',
+                        text:'2015-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['133'] = {
+                        value:'./t20150805_535933.html',
+                        text:'2015-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['134'] = {
+                        value:'./t20150703_535932.html',
+                        text:'2015-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['135'] = {
+                        value:'./t20150603_535931.html',
+                        text:'2015-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['136'] = {
+                        value:'./t20150507_535930.html',
+                        text:'2015-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['137'] = {
+                        value:'./t20150403_535929.html',
+                        text:'2015-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['138'] = {
+                        value:'./t20150303_535928.html',
+                        text:'2015-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['139'] = {
+                        value:'./t20150204_535927.html',
+                        text:'2015-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['140'] = {
+                        value:'./t20150106_535926.html',
+                        text:'2014-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['141'] = {
+                        value:'./t20141201_535925.html',
+                        text:'2014-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['142'] = {
+                        value:'./t20141104_535924.html',
+                        text:'2014-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['143'] = {
+                        value:'./t20141009_535923.html',
+                        text:'2014-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['144'] = {
+                        value:'./t20140902_535922.html',
+                        text:'2014-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['145'] = {
+                        value:'./t20140801_535921.html',
+                        text:'2014-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['146'] = {
+                        value:'./t20140702_535920.html',
+                        text:'2014-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['147'] = {
+                        value:'./t20140604_535919.html',
+                        text:'2014-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['148'] = {
+                        value:'./t20140508_535918.html',
+                        text:'2014-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['149'] = {
+                        value:'./t20140403_535917.html',
+                        text:'2014-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['150'] = {
+                        value:'./t20140304_535916.html',
+                        text:'2014-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['151'] = {
+                        value:'./t20140207_535915.html',
+                        text:'2014-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['152'] = {
+                        value:'./t20140103_535914.html',
+                        text:'2013-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['153'] = {
+                        value:'./t20131203_535913.html',
+                        text:'2013-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['154'] = {
+                        value:'./t20131104_535912.html',
+                        text:'2013-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['155'] = {
+                        value:'./t20131008_535911.html',
+                        text:'2013-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['156'] = {
+                        value:'./t20130903_535910.html',
+                        text:'2013-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['157'] = {
+                        value:'./t20130805_535909.html',
+                        text:'2013-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['158'] = {
+                        value:'./t20130702_535908.html',
+                        text:'2013-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['159'] = {
+                        value:'./t20130604_535907.html',
+                        text:'2013-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['160'] = {
+                        value:'./t20130502_535906.html',
+                        text:'2013-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['161'] = {
+                        value:'./t20130401_535905.html',
+                        text:'2013-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['162'] = {
+                        value:'./t20130301_535904.html',
+                        text:'2013-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['163'] = {
+                        value:'./t20130201_535903.html',
+                        text:'2013-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['164'] = {
+                        value:'./t20130104_535902.html',
+                        text:'2012-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['165'] = {
+                        value:'./t20121201_535901.html',
+                        text:'2012-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['166'] = {
+                        value:'./t20121101_535900.html',
+                        text:'2012-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['167'] = {
+                        value:'./t20121009_535899.html',
+                        text:'2012-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['168'] = {
+                        value:'./t20120903_535898.html',
+                        text:'2012-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['169'] = {
+                        value:'./t20120801_535897.html',
+                        text:'2012-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['170'] = {
+                        value:'./t20120704_535896.html',
+                        text:'2012-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['171'] = {
+                        value:'./t20120604_535895.html',
+                        text:'2012-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['172'] = {
+                        value:'./t20120502_535894.html',
+                        text:'2012-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['173'] = {
+                        value:'./t20120406_535893.html',
+                        text:'2012-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['174'] = {
+                        value:'./t20120306_535892.html',
+                        text:'2012-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['175'] = {
+                        value:'./t20120201_535891.html',
+                        text:'2012-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['176'] = {
+                        value:'./t20120104_535890.html',
+                        text:'2011-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['177'] = {
+                        value:'./t20111201_535889.html',
+                        text:'2011-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['178'] = {
+                        value:'./t20111102_535888.html',
+                        text:'2011-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['179'] = {
+                        value:'./t20111010_535887.html',
+                        text:'2011-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['180'] = {
+                        value:'./t20110901_535886.html',
+                        text:'2011-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['181'] = {
+                        value:'./t20110801_535885.html',
+                        text:'2011-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['182'] = {
+                        value:'./t20110704_535884.html',
+                        text:'2011-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['183'] = {
+                        value:'./t20110601_535883.html',
+                        text:'2011-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['184'] = {
+                        value:'./t20110503_535882.html',
+                        text:'2011-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['185'] = {
+                        value:'./t20110407_535881.html',
+                        text:'2011-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['186'] = {
+                        value:'./t20110301_535880.html',
+                        text:'2011-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['187'] = {
+                        value:'./t20110201_535879.html',
+                        text:'2011-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['188'] = {
+                        value:'./t20110104_535878.html',
+                        text:'2010-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['189'] = {
+                        value:'./t20101203_535877.html',
+                        text:'2010-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['190'] = {
+                        value:'./t20101102_535876.html',
+                        text:'2010-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['191'] = {
+                        value:'./t20101008_535875.html',
+                        text:'2010-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['192'] = {
+                        value:'./t20100903_535874.html',
+                        text:'2010-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['193'] = {
+                        value:'./t20100802_535873.html',
+                        text:'2010-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['194'] = {
+                        value:'./t20100702_535872.html',
+                        text:'2010-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['195'] = {
+                        value:'./t20100603_535871.html',
+                        text:'2010-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['196'] = {
+                        value:'./t20100504_535870.html',
+                        text:'2010-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['197'] = {
+                        value:'./t20100407_535869.html',
+                        text:'2010-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['198'] = {
+                        value:'./t20100303_535868.html',
+                        text:'2010-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['199'] = {
+                        value:'./t20100201_535867.html',
+                        text:'2010-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['200'] = {
+                        value:'./t20100104_535866.html',
+                        text:'2009-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['201'] = {
+                        value:'./t20091204_535865.html',
+                        text:'2009-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['202'] = {
+                        value:'./t20091106_535864.html',
+                        text:'2009-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['203'] = {
+                        value:'./t20091009_535863.html',
+                        text:'2009-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['204'] = {
+                        value:'./t20090902_535862.html',
+                        text:'2009-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['205'] = {
+                        value:'./t20090804_535861.html',
+                        text:'2009-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['206'] = {
+                        value:'./t20090702_535860.html',
+                        text:'2009-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['207'] = {
+                        value:'./t20090602_535859.html',
+                        text:'2009-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['208'] = {
+                        value:'./t20090504_535858.html',
+                        text:'2009-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['209'] = {
+                        value:'./t20090402_535857.html',
+                        text:'2009-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['210'] = {
+                        value:'./t20090302_535856.html',
+                        text:'2009-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['211'] = {
+                        value:'./t20090202_535855.html',
+                        text:'2009-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['212'] = {
+                        value:'./t20090105_535854.html',
+                        text:'2008-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['213'] = {
+                        value:'./t20081208_535853.html',
+                        text:'2008-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['214'] = {
+                        value:'./t20081104_535852.html',
+                        text:'2008-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['215'] = {
+                        value:'./t20081006_535851.html',
+                        text:'2008-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['216'] = {
+                        value:'./t20080905_535850.html',
+                        text:'2008-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['217'] = {
+                        value:'./t20080805_535849.html',
+                        text:'2008-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['218'] = {
+                        value:'./t20080702_535848.html',
+                        text:'2008-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['219'] = {
+                        value:'./t20080602_535847.html',
+                        text:'2008-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['220'] = {
+                        value:'./t20080506_535846.html',
+                        text:'2008-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['221'] = {
+                        value:'./t20080403_535845.html',
+                        text:'2008-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['222'] = {
+                        value:'./t20080304_535844.html',
+                        text:'2008-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['223'] = {
+                        value:'./t20080204_535843.html',
+                        text:'2008-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['224'] = {
+                        value:'./t20080103_535842.html',
+                        text:'2007-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['225'] = {
+                        value:'./t20071205_535841.html',
+                        text:'2007-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['226'] = {
+                        value:'./t20071102_535840.html',
+                        text:'2007-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['227'] = {
+                        value:'./t20071010_535839.html',
+                        text:'2007-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['228'] = {
+                        value:'./t20070904_535838.html',
+                        text:'2007-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['229'] = {
+                        value:'./t20070807_535837.html',
+                        text:'2007-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['230'] = {
+                        value:'./t20070704_535836.html',
+                        text:'2007-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['231'] = {
+                        value:'./t20070604_535835.html',
+                        text:'2007-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['232'] = {
+                        value:'./t20070509_535834.html',
+                        text:'2007-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['233'] = {
+                        value:'./t20070409_535833.html',
+                        text:'2007-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['234'] = {
+                        value:'./t20070306_535832.html',
+                        text:'2007-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['235'] = {
+                        value:'./t20070206_535831.html',
+                        text:'2007-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['236'] = {
+                        value:'./t20070104_535830.html',
+                        text:'2006-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['237'] = {
+                        value:'./t20061204_535829.html',
+                        text:'2006-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['238'] = {
+                        value:'./t20061106_535828.html',
+                        text:'2006-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['239'] = {
+                        value:'./t20061011_535827.html',
+                        text:'2006-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['240'] = {
+                        value:'./t20060905_535826.html',
+                        text:'2006-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['241'] = {
+                        value:'./t20060803_535825.html',
+                        text:'2006-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['242'] = {
+                        value:'./t20060704_535824.html',
+                        text:'2006-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['243'] = {
+                        value:'./t20060606_535823.html',
+                        text:'2006-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['244'] = {
+                        value:'./t20060515_535822.html',
+                        text:'2006-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['245'] = {
+                        value:'./t20060404_535821.html',
+                        text:'2006-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['246'] = {
+                        value:'./t20060303_535820.html',
+                        text:'2006-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['247'] = {
+                        value:'./t20060206_535819.html',
+                        text:'2006-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['248'] = {
+                        value:'./t20060106_535818.html',
+                        text:'2005-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['249'] = {
+                        value:'./t20051202_535817.html',
+                        text:'2005-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['250'] = {
+                        value:'./t20051103_535816.html',
+                        text:'2005-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['251'] = {
+                        value:'./t20051013_535815.html',
+                        text:'2005-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['252'] = {
+                        value:'./t20050905_535814.html',
+                        text:'2005-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['253'] = {
+                        value:'./t20050804_535813.html',
+                        text:'2005-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['254'] = {
+                        value:'./t20050705_535812.html',
+                        text:'2005-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['255'] = {
+                        value:'./t20050606_535811.html',
+                        text:'2005-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['256'] = {
+                        value:'./t20050510_535810.html',
+                        text:'2005-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['257'] = {
+                        value:'./t20050406_535809.html',
+                        text:'2005-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['258'] = {
+                        value:'./t20050308_535808.html',
+                        text:'2005-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['259'] = {
+                        value:'./t20050204_535807.html',
+                        text:'2005-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['260'] = {
+                        value:'./t20050106_535806.html',
+                        text:'2004-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['261'] = {
+                        value:'./t20050105_535805.html',
+                        text:'2004-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['262'] = {
+                        value:'./t20041229_535804.html',
+                        text:'2004-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['263'] = {
+                        value:'./t20041229_535803.html',
+                        text:'2004-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['264'] = {
+                        value:'./t20041229_535802.html',
+                        text:'2004-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['265'] = {
+                        value:'./t20041229_535801.html',
+                        text:'2004-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['266'] = {
+                        value:'./t20041229_535800.html',
+                        text:'2004-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['267'] = {
+                        value:'./t20041229_535799.html',
+                        text:'2004-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['268'] = {
+                        value:'./t20041229_535798.html',
+                        text:'2004-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['269'] = {
+                        value:'./t20041229_535797.html',
+                        text:'2004-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['270'] = {
+                        value:'./t20041229_535796.html',
+                        text:'2004-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['271'] = {
+                        value:'./t20041229_535795.html',
+                        text:'2004-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['272'] = {
+                        value:'./t20041229_535794.html',
+                        text:'2003-12'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['273'] = {
+                        value:'./t20041229_535793.html',
+                        text:'2003-11'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['274'] = {
+                        value:'./t20041229_535792.html',
+                        text:'2003-10'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['275'] = {
+                        value:'./t20041229_535791.html',
+                        text:'2003-09'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['276'] = {
+                        value:'./t20041229_535790.html',
+                        text:'2003-08'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['277'] = {
+                        value:'./t20041229_535789.html',
+                        text:'2003-07'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['278'] = {
+                        value:'./t20041229_535788.html',
+                        text:'2003-06'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['279'] = {
+                        value:'./t20041229_535787.html',
+                        text:'2003-05'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['280'] = {
+                        value:'./t20041229_535786.html',
+                        text:'2003-04'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['281'] = {
+                        value:'./t20041229_535785.html',
+                        text:'2003-03'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['282'] = {
+                        value:'./t20041229_535784.html',
+                        text:'2003-02'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['283'] = {
+                        value:'./t20041229_535783.html',
+                        text:'2003-01'
+                    };                           
+                </script>                        
+            
+                <script>                                               
+                    periodicalArr['284'] = {
+                        value:'./t20041229_535782.html',
+                        text:'2002-12'
+                    };                           
+                </script>                        
+            
+            <div class="g-content">
+                <div class="g-conbox ">
+                    <div class="g-contitle">
+                        <h2 class="title title-month-report ellipsis"></h2>   
+                        <div class="dropTime">
+                            <select class="periodicalSelect"></select>
+                        </div>                     
+                    </div>                    
+                    <div class="periodicalContent"></div>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+</div>
+<script>
+  changeVertion('/common/js/toggleBig5.js', 'js');
+  navMenuAJAX('/application/publicindex/footer/index.html','/application/publicindex/footer/index.html', 'footer','www');
+  addComJsFile();
+</script>
+<script>
+    periodicalArr.shift();
+
+    var periodicalCur = periodicalArr[0];
+    
+    var periodicalContent = $(".periodicalContent");    
+    var detailTitle = $(".title-month-report");
+    var gTitle = $(".g-contitle");   
+    
+    //开始选中默认值
+    buidHtml(periodicalCur.value);
+
+    var defaultOptions = {
+        data:periodicalArr,
+        selectFirst:true,
+        onSelected: function(e,value){           
+            buidHtml(value.value);
+        }
+    };
+    var plugin= new s.ui.controls.Selectex($('.periodicalSelect'), defaultOptions);
+    plugin.getApi().setValue(periodicalCur.value);
+
+    function buidHtml(url){
+      $.ajax({
+          type: 'get',
+          async:true,
+          url: url,
+          cache: false,
+          contentType:'application/json',
+          dataType: 'html',
+          success: function(data) {
+              var dataHeader = $(data).find('.des-header .title').html();
+              var dataContent = $(data).find('.des-content').html();
+              detailTitle.html(dataHeader);
+              if ($(dataContent).filter('.g-contitle').html() !== undefined) {
+                  var b =$('<div>');
+                  b.html(dataContent);
+                  b.find(".g-contitle").remove();
+                  var filterHtml = b.html();
+                  periodicalContent.html(filterHtml);
+              }else{
+                  periodicalContent.html(dataContent);
+              }
+              backDomainLinkSwitch(".g-conbox a", "A");
+          },
+          error: function() {
+          }
+      });
+    }
+</script>
+</body>
+</html>

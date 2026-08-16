@@ -140,7 +140,9 @@
 | 97 | 港股个股人气榜 `stock::hot_rank` 补齐 4 个函数(东财 emappdata JSON-body POST,`marketType=000003`):`stock_hk_hot_rank_em`(POST `getAllCurrHkUsList` + push2 `116.` 前缀实时价)、`stock_hk_hot_rank_detail_em`/`stock_hk_hot_rank_detail_realtime_em`/`stock_hk_hot_rank_latest_em`(POST `getHisHkUsList`/`getCurrentHkUsList`/`getCurrentHkUsLatest`) | ✅ DONE | 4 | 4 ✅ |
 | 98 | 涨停板池 siblings + 两融账户 `stock_feature::board_zt` + `stock_feature::margin_research`(东财 push2ex 5 个涨停/跌停股池 + datacenter `RPTA_WEB_MARGIN_DAILYTRADE` 两融账户统计;补齐 wave-92 预置的空叶子模块) | ✅ DONE | 6 | 6 ✅ |
 
-**累计**:98 个批次、639 个公开(已落地)函数、692 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计(2026-08-16 复核)**:1102 个 akshare 对外公开 API 中,**787 个已实现** Rust `pub fn`(其中 781 个为功能性 DONE、6 个为返回 `Err` 的 JS 解密桩函数,归入 DEFERRED);**299 个 DEFERRED/PARTIAL**;**16 个 INTERNAL**(akshare 内部辅助,非对外数据端点);**6 个未跟踪**(异常类 `APIError`/`AkshareException` 等,对应本库 `core::error::Error`,无需移植)。`cargo build` / `cargo test`(992 passed, 19 ignored) / `cargo clippy` 全绿。
+
+> 复核方法:以本地 `akshare/__init__.py` 的 `__all__`(1102 个对外名)为权威口径,与 `docs/MAPPING.md` 逐行对账,并用 `grep` 校验 `src/` 中每个 `pub fn` 是否真实存在。发现 MAPPING 原 950 个 DONE 标记中有 169 个为**虚标**(无对应 `pub fn`,仅出现在 `deferred_more.rs` 等注释/清单中),已统一更正为 `DEFERRED` 并标注 `NOT IMPLEMENTED`。更正后 MAPPING 与 `src/` 实现完全一致(781 DONE 全部有实现,0 虚标)。
 
 > 第 80-91 行新增 12 个叶子模块(在既有 `economic` / `index` / `stock` 顶层域下),共 78 个公开函数、88 个离线解析测试(由 lead 预置模块骨架后 dispatch 12 个并行 worker 落地)。其中 `economic::macro_usa_more` 整模块因 Jin10 `datacenter-api` 需 `x-csrf-token` 会话鉴权,全部 40 个美国宏观函数 DEFERRED;`stock::fund_flow` 与 `stock::board` 的解析器被多个对外函数复用,故测试数高于函数数。
 
@@ -187,3 +189,44 @@
 - 继续补齐长尾包:`news` / `nlp` / `event` / `lpr` / `stock_fundamental`(财务)等。
 - 为 `rate_interbank` 等增加多源 fallback(目前为单源)。
 - 实现 `scripts/sync-akshare`(ADR-0012 的对标更新机制)。
+
+---
+
+## 完整度审计(2026-08-16)
+
+目标:按设计(ADR-0008 范围对齐、ADR-0005 令牌/JS 策略)完全重构 akshare 的所有对外 API。口径以本地 `akshare` checkout 的 `__all__`(1102 个公开函数)为权威。
+
+### 口径与现状
+
+| 类别 | 数量 | 说明 |
+|---|---|---|
+| akshare 对外公开 API 总数 | 1102 | `akshare/__init__.py` `__all__` |
+| 已实现(有 `pub fn`) | 787 | 781 功能性 DONE + 6 个 JS 解密桩(返回 `Err`,记 DEFERRED) |
+| DEFERRED / PARTIAL | 299 | 见下「推迟原因分布」 |
+| INTERNAL | 16 | akshare 内部辅助函数,非对外数据端点,无需移植 |
+| 未跟踪(异常类) | 6 | `APIError`/`AkshareException`/`DataParsingError`/`InvalidParameterError`/`NetworkError`/`RateLimitError`,对应本库 `core::error::Error` |
+
+功能性 DONE 占公开 API 的 **70.9%**(781 / 1102)。
+
+### 推迟原因分布(299 个 DEFERRED)
+
+| 原因 | 数量 | 是否设计内推迟(ADR) |
+|---|---|---|
+| JS 引擎 / 签名解密(`py_mini_racer` / `hexin-v` / `jm.js` / CYQ) | ~106 | 是(ADR-0005):需 JS 引擎或逐端点纯 Rust 逆向 |
+| 第三方令牌 / 会话(`xq_a_token` / Jin10 `x-csrf-token` / `lg`·`eniu` / 艺恩权限) | ~12 | 是(ADR-0005):令牌门控 |
+| HTML 表抓取(`pd.read_html` / BeautifulSoup,无 JSON 端点) | ~9 | 部分可行:可用 `scraper` 补(见 `air_html_gaps` 等先例) |
+| 反爬令牌(`acs-token` / `_pcc` / huiyan) | 少量 | 是:anti-bot |
+| NBS 目录动态解析 / ZIP·Excel·`demjson` | 少量 | 部分可行 |
+
+> 注:上述 ~106 个 JS 引擎类推迟是「完全重构」的主要剩余障碍。按当前设计(ADR-0005)**保持推迟**,除非接受嵌入 JS 引擎(`rquickjs` / `boa`)。其中少数(如新浪日线 `hk_js_decode` / `zh_js_decode`、CYQ `CYQCalculator`)若逆为纯 Rust,可单独解锁,无需整引擎——属增量工作。
+
+### 领域缺口(DEFERRED 按前缀)
+
+`stock`(68)、`fund`(14)、`macro`(11)、`bond`(8)、`futures`(6)、`spot`(6)、`air`(2)、`migration`(2)、`movie`(2)、`video`(2)、`energy`(1)、`index`(1)、`business`(1)、`online`(1)、`news`(1)、`option`(1)、`pro`(1)、`qhkc`(1)、`tool`(1)。(含本次复核更正的 169 个虚标 DONE。)
+
+### 下一步(按设计收敛)
+
+1. **HTML 抓取类(~9 + 部分虚标)**:用 `scraper` 逐端点补实现,复用既有 `*_html_gaps` 模式(需真实 fixture,联网环境补齐)。
+2. **JS 签名类**:要么接受 `rquickjs` 引擎统一解锁,要么挑高频端点(新浪日线、CYQ)做纯 Rust 逆向。
+3. **令牌类**:仅当用户提供令牌/会话策略时解锁。
+4. 每补一批即回填 fixture + 解析测试,并更新 `docs/MAPPING.md`(ADR-0012)。

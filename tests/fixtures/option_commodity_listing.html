@@ -1,0 +1,615 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>液化石油气期权,期权价格,实时行情,新闻,价格数据_新浪财经_新浪网</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <meta name="Keywords"
+          content="期权,<php echo $name ?>,期权免费实时行情,5档盘口,内在价值,风险分析,隐含波动率,Delta,Gamma,Theta,Vega,期权新闻,期权交易,市场评论,证券要闻,新浪期权"/>
+    <meta name="Description"
+          content="新浪财经-为您提供" . 液化石油气期权 ."价格,实时行情,新闻,证券要闻,大市评论,合约分析,期权定价等与" . 液化石油气期权 . "相关的信息与服务."/>
+    <meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0,minimum-scale=0.90"/>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- 顶部css -->
+    <link rel="stylesheet" type="text/css" href="http://tech.sina.com.cn/css/717/20140827/index2014/top.css">
+    <!-- 登录 css -->
+    <link rel="stylesheet" type="text/css" href="http://i.sso.sina.com.cn/css/userpanel/v1/top_account.css">
+    <!-- 登录皮肤css -->
+    <link rel="stylesheet" type="text/css" href="http://tech.sina.com.cn/css/717/20140821/index2014/comment.css">
+    <link href="http://i.sso.sina.com.cn/css/cardtips.css" rel="stylesheet" type="text/css" media="all"/>
+<!--    <link rel="stylesheet" type="text/css" href="http://n.sinaimg.cn/finance/optionDP/commodity_options_170404.css" charset="UTF-8"/>-->
+    <link rel="stylesheet" type="text/css" href="http://n.sinaimg.cn/finance/optionDP/commodity_options_0331.css" charset="UTF-8"/>
+    <style type="text/css">
+        .main_nav {
+            margin-top: 20px;
+        }
+        .tip {
+            margin: 40px auto;
+            width: 100%;
+            min-height: 300px;
+        }
+        .tip p {
+            line-height: 48px;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+        }
+        /* 登陆样式 */
+        .login_btn_s {
+            display: inline-block;
+            width: 111px;
+            height: 37px;
+            background: url(http://i1.sinaimg.cn/cj/basejs/loginLayer/login_back.png) 0 -88px;
+            line-height: 200px;
+            overflow: hidden;
+        }
+        .login_btn_s:hover {
+            display: inline-block;
+            background-position: 0 -125px;
+        }
+        .login_btn_m {
+            display: inline-block;
+            width: 151px;
+            height: 37px;
+            background: url(http://i1.sinaimg.cn/cj/basejs/loginLayer/login_back.png) -120px -88px;
+            line-height: 200px;
+            overflow: hidden;
+        }
+        .login_btn_m:hover {
+            display: inline-block;
+            background-position: -120px -125px;
+        }
+        .loginBG {
+            display: none;
+            position: fixed;
+            _position: absolute;
+            z-index: 90001;
+            left: 0px;
+            top: 0px;
+            _top: expression((_top=document.documentElement.scrollTop) + 'px');
+            width: 100%;
+            height: 100%;
+            _height: expression(document.documentElement.offsetHeight + 'px');
+            background-color: #08237a;
+            opacity: 0.2;
+            filter: alpha(opacity=20);
+        }
+        .loginLayer {
+            display: none;
+            position: fixed;
+            _position: absolute;
+            z-index: 90010;
+            left: 50%;
+            top: 150px;
+            _top: expression((_top=document.documentElement.scrollTop) + 150 + 'px');
+            width: 493px;
+            height: 418px;
+            margin-left: -248px;
+            background-color: #eff5ff;
+            border: 1px solid #cce2f0;
+            color: #08237a;
+        }
+        .loginLayer .login_close {
+            position: absolute;
+            right: 10px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            background: url(http://i1.sinaimg.cn/cj/basejs/loginLayer/login_back.png) -160px -168px;
+        }
+        .loginLayer .login_title {
+            height: 82px;
+            background: url(http://i1.sinaimg.cn/cj/basejs/loginLayer/login_back.png) 0 0;
+        }
+        .loginLayer .login_cont {
+            padding-top: 25px;
+        }
+        .loginLayer th {
+            text-align: right;
+        }
+        .loginLayer .txt {
+            width: 238px;
+            height: 21px;
+            line-height: 21px;
+            padding: 1px 3px;
+            border: 1px solid #c5cad0;
+            color: #333;
+        }
+        .loginLayer .login_loginBtn_bg {
+            width: 151px;
+            height: 12px;
+            background: url(http://i1.sinaimg.cn/cj/basejs/loginLayer/login_back.png) 0 -167px;
+            overflow: hidden;
+        }
+        .loginLayer .login_link0 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d2e1f6;
+        }
+        .loginLayer .login_link0 a {
+            color: #0961c0;
+            margin-right: 30px;
+        }
+        .loginLayer .login_link0 a:visited {
+            color: #0961c0;
+        }
+        .loginLayer .login_link0 a:hover {
+            color: #f00;
+        }
+        .loginLayer .login_link1 p {
+            line-height: 40px;
+            color: #035dbe;
+        }
+        .reg_btn {
+            display: inline-block;
+            width: 151px;
+            height: 37px;
+            background: url(http://i1.sinaimg.cn/cj/basejs/loginLayer/login_back.png) -280px -88px;
+            line-height: 200px;
+            overflow: hidden;
+        }
+        .reg_btn:hover {
+            background-position: -280px -125px;
+        }
+        #loginRemember {
+            vertical-align: -2px;
+            _vertical-align: -1px;
+        }
+        #loginError {
+            float: right;
+            width: 135px;
+            margin-top: 21px;
+            color: Red;
+            text-align: left;
+        }
+        /*HTML5版样式*/
+        #h5Container {
+            display: none;
+        }
+        #h5Container img {
+            margin-top: 18px;
+        }
+        .h5_tabs {
+            border: 1px solid #dde4f4;
+            padding-top: 1px;
+        }
+        .h5_tabs .tabs {
+            height: 25px;
+            padding: 2px 7px 0;
+            background: #eef5ff url(http://i2.sinaimg.cn/cj/realstock/2012/images/icon_right.2.png) right -384px no-repeat;
+            overflow: visible;
+        }
+        .h5_tabs .tabs .tab {
+            float: left;
+            text-align: center;
+            width: 50px;
+            height: 23px;
+            line-height: 23px;
+            border: none;
+            border-top: 2px solid #eef5ff;
+            font-family: 宋体;
+            font-size: 12px;
+        }
+        .h5_tabs .tabs .on {
+            position: relative;
+            z-index: 1;
+            width: 50px;
+            height: 24px;
+            _height: 25px;
+            _margin-bottom: -1px;
+            border-left: 1px solid #dde4f4;
+            border-right: 1px solid #dde4f4;
+            border-top-color: #062784;
+            background-color: White;
+        }
+        #h5Container .cont {
+            display: none;
+            height: 330px;
+            padding: 10px 0;
+            text-align: center;
+        }
+        #h5Container .vselect {
+            float: left;
+            margin-bottom: -20px;
+            margin-top: -5px;
+        }
+        #h5Container .compare {
+            height: 0px;
+            overflow: hidden;
+        }
+        /*合约分析*/
+        .st-detail {
+            margin-right: 10px !important;
+        }
+        .st-detail table tr {
+            line-height: 30px;
+            height: 30px;
+        }
+        .main-right table tr {
+            line-height: 40px;
+            height: 40px;
+        }
+        #flash {
+            height: 400px;
+            width: 620px;
+            font-size: 12px !important;
+            padding-right: 20px;
+        }
+        .tab_H5 li.selected {
+            background: #2076ce;
+            color: #fff;
+        }
+        .tab_H5 {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .tab_H5 li {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            height: 30px;
+            line-height: 30px;
+            padding: 0 15px;
+            background: #e3e3e3;
+            color: #626262;
+            text-align: center;
+            font-size: 14px;
+            margin-right: 1px;
+            cursor: pointer !important;
+        }
+        .compare_stock {
+            position: absolute;
+            padding: 0 10px;
+            line-height: 28px;
+            border: 1px solid #ccc;
+            background: #f7f7f7 !important;
+            color: #1463b4 !important;
+            right: 40px;
+            top: 0;
+            height: 28px;
+        }
+        .tip_ie {
+            color: #000;
+            font-size: 14px;
+            position: relative;
+            top: 4px;
+        }
+        .tip_ie a {
+            color: #1463b4;
+            padding: 0 2px;
+            text-decoration: underline;
+        }
+        .contract-02 {
+            margin-top: 5px;
+        }
+        .contract-01 {
+            margin-top: 9px;
+        }
+    </style>
+    <script>
+        var papercode = 'sh510050'; //当前页面个股代码
+        var stockname = '上证指数';
+        var stockType = 'I'; //股票类型  A-A股 B-B股  I-指数
+        var flashURL = 'http://finance.sina.com.cn/flash/cn.swf';
+        var UGA = '-0.127', LS = '301.03', IOPV = '2.352', subscribe_state = '\u53ef\u7533\u8d2d', TP = '3.192', redemption_state = '\u53ef\u8d4e\u56de';        </script>
+    <script src="http://i0.sinaimg.cn/dy/js/jquery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="http://www.sinaimg.cn/cj/ddp/js/swfobject2.2.js"></script>
+    <!--[if lt IE 9]>
+    <script src='http://i1.sinaimg.cn/cj/hsuan/flashcanvas/flashcanvas.js'></script>
+    <![endif]-->
+    <script src='http://finance.sina.com.cn/sinafinancesdk/js/sf_sdk.js?rn=20150414'></script>
+    <!-- SUDA_CODE_START -->
+    <script type="text/javascript" charset="utf-8" src="http://www.sinaimg.cn/unipro/pub/suda_s_v851c.js"></script>
+    <!-- SUDA_CODE_END -->
+
+    <script>
+        var f_product = "pg_o";
+        var f_exchange = "dce";
+        try {
+            document.domain = "stock.finance.sina.com.cn";
+        }
+        catch (e) {
+        }
+    </script>
+</head>
+<body>
+<!-- 顶通 html start -->
+<div class="sina-top-bar-wrap sina-top-bar-blue" id="SI_TopBar" top-data="auto">
+    <div class="sina-top-bar-inner" top-node-type="inner">
+        <div class="sina-top-bar-nav" top-node-type="nav">
+            <ul class="sina-top-bar-nav-list" top-node-type="main">
+                <li class="sina-top-bar-nav-guide" top-node-type="guide"><a top-node-type="guideLnk"
+                                                                            href="javascript:;"><i
+                            class="sina-top-bar-ico sina-top-bar-ico-list"></i><span class="sina-top-bar-nav-txt">导航</span></a>
+                </li>
+                <li class="sina-top-bar-nav-first"><a style="padding-top:14px;"><img
+                            src="http://www.sinaimg.cn/cj/option/optionlogo_20150130.png" alt="option_logo"></a></li>
+                <li class="sina-top-bar-nav-last sina-top-bar-nav-more" top-node-type="more" style="display: none">
+                    <a top-node-type="moreLnk" href="javascript:;"><span class="sina-top-bar-nav-txt">更多</span><i
+                            class="sina-top-bar-ico sina-top-bar-ico-down"></i></a>
+                </li>
+            </ul>
+            <ul class="sina-top-bar-nav-other" top-node-type="sub">
+                <!-- sina-top-bar-nav-mlnk链接会在顶通固定时显示 -->
+            </ul>
+        </div>
+        <div class="sina-top-bar-user TAP14" top-node-type="user" top-data="auto" id="SI_User">
+            <div class="message">
+                <!--激活状态增加 active-->
+                <a href="#0" class="msg-link" node-type="notification_btn">消息<i class="ac-icon ac-icon-message"
+                                                                                style="visibility: hidden;"
+                                                                                node-type="new_info_icon"></i></a>
+            </div>
+            <div class="ac-rgst">
+                <a target="_blank" href="https://login.sina.com.cn/signup/signup?entry=sports" class="msg-link"
+                   suda-uatrack="key=index_to&value=login_click">注册</a>
+            </div>
+            <div class="ac-login">
+                <div node-type="outer" class="ac-login-cnt">
+                    <a href="#0" node-type="login_btn" class="ac-login-cnt"><span class="thumb"><img
+                                src="http://i.sso.sina.com.cn/images/login/thumb_default.png"></span><span
+                            class="log-links">登录</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 顶通 html end -->
+<div class="wrap">
+    <!-- <div class="adver01" id="ad_05474"></div> -->
+    <div class="main_nav">
+        <a href="http://finance.sina.com.cn/" class="nav_01" target=_blank>财经首页</a>
+        <a href="http://stock.finance.sina.com.cn/option/quotes.html" style="color:#fffd37">股票期权</a>
+<!--        <a href="http://stock.finance.sina.com.cn/option/quotes.html" class="option">个股期权</a>-->
+        <a href="http://finance.sina.com.cn/stock/" target=_blank>股票</a>
+        <a href="http://finance.sina.com.cn/stock/newstock/" target=_blank>新股</a>
+        <a href="http://finance.sina.com.cn/stock/hkstock/" target=_blank>港股</a>
+        <a href="http://finance.sina.com.cn/stock/usstock/" target=_blank>美股</a>
+        <a href="http://finance.sina.com.cn/fund/" target=_blank>基金</a>
+        <a href="http://finance.sina.com.cn/futuremarket/" target=_blank>期货</a>
+        <a href="http://finance.sina.com.cn/forex/" target=_blank>外汇</a>
+        <a href="http://finance.sina.com.cn/nmetal/" target=_blank>贵金属</a>
+        <a href="http://finance.sina.com.cn/bond/" target=_blank class="option">债券</a>
+        <a class="nav_last" href="https://gu.sina.cn/pc/feedback/">用户建议</a>
+        <a href="http://finance.sina.com.cn/data/" target=_blank>数据中心</a>
+    </div>
+</div>
+<div class="wrap clearfix">
+    <div class="stockhead clearfix">
+        <div class="fl">
+            <h4>
+                <a href="http://finance.sina.com.cn/">财经首页</a> &gt;
+                <a href="http://finance.sina.com.cn/data/">数据中心</a> &gt;
+                <a href="http://stock.finance.sina.com.cn/option/quotes.html">期权</a> &gt;
+                <a class="curr">商品期权</a>
+            </h4>
+        </div>
+    </div>
+    <div class="main clearfix">
+        <div class="main-left fl clearfix">
+            <div class="search">
+                <div class="search-sel" id="select_option">
+                    <!--选择期权品种-->
+                    <div class="js-select" id="option_symbol" data-value="">
+                        <span class="selected">液化石油气期权</span>
+                        <ul style="display: none">
+                                                            <li class="active" data-value="m_o"><a href="/futures/view/optionsDP.php/m_o/dce" target = "blank">豆粕期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="c_o"><a href="/futures/view/optionsDP.php/c_o/dce" target = "blank">玉米期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="i_o"><a href="/futures/view/optionsDP.php/i_o/dce" target = "blank">铁矿石期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="cf"><a href="/futures/view/optionsDP.php/cf/czce" target = "blank">棉花期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="sr"><a href="/futures/view/optionsDP.php/sr/czce" target = "blank">白糖期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="ta"><a href="/futures/view/optionsDP.php/ta/czce" target = "blank">PTA期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="oi"><a href="/futures/view/optionsDP.php/oi/czce" target = "blank">菜籽油期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="pk"><a href="/futures/view/optionsDP.php/pk/czce" target = "blank">花生期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="ma"><a href="/futures/view/optionsDP.php/ma/czce" target = "blank">甲醇期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="ru_o"><a href="/futures/view/optionsDP.php/ru_o/shfe" target = "blank">橡胶期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="cu_o"><a href="/futures/view/optionsDP.php/cu_o/shfe" target = "blank">沪铜期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="au_o"><a href="/futures/view/optionsDP.php/au_o/shfe" target = "blank">黄金期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="rm"><a href="/futures/view/optionsDP.php/rm/czce" target = "blank">菜籽粕期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="pg_o"><a href="/futures/view/optionsDP.php/pg_o/dce" target = "blank">液化石油气期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="zc"><a href="/futures/view/optionsDP.php/zc/czce" target = "blank">动力煤期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="a_o"><a href="/futures/view/optionsDP.php/a_o/dce" target = "blank">黄大豆1号期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="b_o"><a href="/futures/view/optionsDP.php/b_o/dce" target = "blank">黄大豆2号期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="y_o"><a href="/futures/view/optionsDP.php/y_o/dce" target = "blank">豆油期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="ag_o"><a href="/futures/view/optionsDP.php/ag_o/shfe" target = "blank">白银期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="rb_o"><a href="/futures/view/optionsDP.php/rb_o/shfe" target = "blank">螺纹钢期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="si_o"><a href="/futures/view/optionsDP.php/si_o/gfex" target = "blank">工业硅期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="eg_o"><a href="/futures/view/optionsDP.php/eg_o/dce" target = "blank">乙二醇期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="eb_o"><a href="/futures/view/optionsDP.php/eb_o/dce" target = "blank">苯乙烯期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="lc_o"><a href="/futures/view/optionsDP.php/lc_o/gfex" target = "blank">碳酸锂期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="br_o"><a href="/futures/view/optionsDP.php/br_o/shfe" target = "blank">丁二烯橡胶期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="al_o"><a href="/futures/view/optionsDP.php/al_o/shfe" target = "blank">沪铝期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="px"><a href="/futures/view/optionsDP.php/px/czce" target = "blank">二甲苯期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                            <li class="active" data-value="sh"><a href="/futures/view/optionsDP.php/sh/czce" target = "blank">烧碱期权</a></li>
+<!--                            <li data-value="au">白糖期权</li>-->
+                                                    </ul>
+                    </div>
+                    <!--选择期权品种-->
+                    <!--选择合约日期-->
+                                            <div class="js-select" id="option_suffix" data-value="pg2609">
+                            <span class="selected">pg2609</span>
+                            <ul style="display: none">
+                                                                    <li class="active"  data-value="pg2609">pg2609</li>
+                                                                    <li  data-value="pg2610">pg2610</li>
+                                                            </ul>
+                        </div>
+                                        <!--选择合约日期 end-->
+
+                    <!--到期日：<span>&#45;&#45;</span>&emsp;&#40;&nbsp;<span>&#45;&#45;</span>&nbsp;&#41;&emsp;
+                    标的资产：<a href="http://finance.sina.com.cn/fund/quotes/510050/bc.shtml" target=_blank
+                            style="color:#252525;">华夏上证50ETF&ensp;</a>（<span id="F50"></span>）-->
+                </div>
+            </div>
+            <div class="fresh">
+                <div class="nav_fresh">
+                    <span class="up">看涨合约</span><span class="down">看跌合约</span>
+                </div>
+
+                <div class="table clearfix" id="table">
+                    <div class="table_up fl" id="table_up">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>买量</th>
+                                <th>买价</th>
+                                <th>最新价</th>
+                                <th>卖价</th>
+                                <th>卖量</th>
+                                <th>持仓量</th>
+                                <th>涨跌</th>
+                                <th>行权价</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="table_down fr" id="table_down">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>买量</th>
+                                <th>买价</th>
+                                <th>最新价</th>
+                                <th>卖价</th>
+                                <th>卖量</th>
+                                <th>持仓量</th>
+                                <th>涨跌</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--<div style="float:left;text-align:right;height:20px;line-height: 20px;color:#ccc;font-size: 12px;width:100%">-->
+            <!--红色背景为实值合约，白色背景为平值、虚值合约-->
+            <!--</div>-->
+                            <div class="main_hq">
+                    <h4 class="title clearfix">
+                        <span class="name"><a>合约分析</a></span>
+    <!--                    <span class="heyuefenxi_name">50ETF购4月2200</span>-->
+                        <span class="tip_ie fr" style="display:none;">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAMAAADzapwJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OERBNTREQUVFMUFEMTFFNEIzQ0NERjQzRDIyNzk0RTgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OERBNTREQUZFMUFEMTFFNEIzQ0NERjQzRDIyNzk0RTgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4REE1NERBQ0UxQUQxMUU0QjNDQ0RGNDNEMjI3OTRFOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4REE1NERBREUxQUQxMUU0QjNDQ0RGNDNEMjI3OTRFOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pm7NPTMAAAAGUExURf9YPQAAAEuBtnUAAAACdFJOU/8A5bcwSgAAAFJJREFUeNqkkUESACAIAuH/n27GSsniFBd1D4oKPoVMQg0jJTjrSlahvQrLsI03zYCFqZgT48YIzBPzB4tHHanOrUG3jlnencoc1r3BPq1rCDAAUVUBVYGGl+kAAAAASUVORK5CYII=">?您的浏览器太旧，请升级到<a href="http://down.tech.sina.com.cn/content/58979.html" target="_blank">IE11</a>及以上版本，或者使用<a href="http://down.tech.sina.com.cn/content/1461.html" target="_blank">火狐、</a><a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌、</a><a href="http://down.tech.sina.com.cn/content/39380.html" target="_blank">360浏览器</a>获得最好体验</span></h4>
+                    <!--KT线图start-->
+                    <div class="flash" id="h5Figure"></div>
+                    <!--KT线图end-->
+                </div>
+                        <div class="pcomment fl"><h4><a href="http://roll.finance.sina.com.cn/finance/qh/ncpzx/index.shtml" class="more"
+                                            target="_blank">更多&gt;&gt;</a>农副产品资讯</h4>
+                <ul>
+                                                                        <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agri/2026-08-16/doc-ininnuvs9837491.shtml">液体尿素商品报价动态（2026-08-16）</a><span>(08-16)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agri/2026-08-16/doc-ininnuvs9837490.shtml">食用小苏打商品报价动态（2026-08-16）</a><span>(08-16)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agri/2026-08-16/doc-ininnuvs9837480.shtml">尿素硝铵溶液商品报价动态（2026-08-16）</a><span>(08-16)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agri/2026-08-16/doc-ininnuvq1078148.shtml">玉米淀粉商品报价动态（2026-08-16）</a><span>(08-16)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agri/2026-08-16/doc-ininnuvq1078147.shtml">麦芽糊精商品报价动态（2026-08-16）</a><span>(08-16)</span></li>
+                                                            </ul>
+            </div>
+            <div class="pcomment fr">
+                <h4>
+                    <a href="http://roll.finance.sina.com.cn/finance/qh/jgkp__ncp/index.shtml" class="more" target="_blank">更多&gt;&gt;</a>农副产品评论
+                </h4>
+                <ul>
+                                                                        <li><a target="_blank" href="https://finance.sina.com.cn/money/future/fmnews/2025-10-31/doc-infvupas3345596.shtml">生猪：基本面维持宽松，期现货价格反弹受限</a><span>(10-31)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agrcom/2025-09-02/doc-infpatck0234061.shtml">东海期货：猪价低估值行情稳定，远月期货升水空间有限</a><span>(09-02)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agrcom/2025-09-02/doc-infpatcf6904800.shtml">东海期货：玉米低估值买盘增强，继续关注新季度开秤行情</a><span>(09-02)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/agrcom/2025-08-14/doc-infkxinc7071825.shtml">东海期货：加拿大菜籽倾销裁定后，油脂油料后市行情展望</a><span>(08-14)</span></li>
+                                                    <li><a target="_blank" href="https://finance.sina.com.cn/money/future/hfdata/2024-03-28/doc-inapvtry5824163.shtml">CBOT持仓：基金增加美麦净多头，种植意向重磅报告将袭击市场</a><span>(03-28)</span></li>
+                                                            </ul>
+            </div>
+
+        </div>
+        <div class="main-right fr">
+            <!--豆粕期货-->
+
+            <div class="blk simple-quote" id="simple_quote">
+                <h4>液化石油气</h4>
+                <div class="quote-items">
+                    <div class="quote-item" data-symbol="nf_PG0" data-type="1">
+<!--                        <img src="http://image.sinajs.cn/newchart/v5/futures/mins/M0.gif" alt="豆粕连续">-->
+<!--                        <table>-->
+<!--                            <tbody></tbody>-->
+<!--                        </table>-->
+                    </div>
+                </div>
+            </div>
+            <!--豆粕期货 end-->
+            <!--最近浏览品种-->
+            <div class="blk my-visited" id="my_visited">
+                <h4>最近浏览期货品种</h4>
+                <table>
+                    <thead>
+                    <tr><th>品种名称</th><th>最新价</th><th>涨跌幅</th><th></th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!--最近浏览品种 end-->
+        </div>
+    </div>
+</div>
+<div style="border-top: 1px solid #e1e1e1;margin-top: 50px;">
+    <div class="page_foot wrap">
+        客户服务热线：4006900000&#12288;&#12288;欢迎批评指正<br><a target="_blank"
+                                                      href="http://tech.sina.com.cn/focus/sinahelp.shtml">常见问题解答</a> <a
+            target="_blank" href="http://net.china.cn/chinese/index.htm">互联网违法和不良信息举报</a>&#12288;<a target="_blank"
+                                                                                                    href="http://finance.sina.com.cn/guest.html">新浪财经意见反馈留言板</a><br><br><a
+            href="http://corp.sina.com.cn/chn/">新浪简介</a> | <a href="http://corp.sina.com.cn/eng/">About Sina</a> | <a
+            href="http://emarketing.sina.com.cn/">广告服务</a> | <a href="http://www.sina.com.cn/contactus.html">联系我们</a> |
+        <a href="http://corp.sina.com.cn/chn/sina_job.html">招聘信息</a> | <a
+            href="http://www.sina.com.cn/intro/lawfirm.shtml">网站律师</a> | <a href="http://english.sina.com">SINA
+            English</a> | <a href="https://login.sina.com.cn/signup/signup.php">通行证注册</a> | <a
+            href="http://tech.sina.com.cn/focus/sinahelp.shtml">产品答疑</a><br><br>Copyright &copy; 1996-2015 SINA
+        Corporation, All Rights Reserved<br><br>新浪公司&#12288;<a target="_blank"
+                                                               href="http://home.sina.com.cn/intro/copyright.shtml">版权所有</a><br><br><span
+            style="color:#aaa;">新浪财经免费提供股票、基金、债券、外汇等行情数据以及其他资料均来自相关合作方，仅作为用户获取信息之目的，并不构成投资建议。<br>新浪财经以及其合作机构不为本页面提供信息的错误、残缺、延迟或因依靠此信息所采取的任何行动负责。市场有风险，投资需谨慎。</span>
+    </div>
+</div>
+<!-- 登录初始化 -->
+<script type="text/javascript" src="http://n.sinaimg.cn/ent/index2014/js/top.js"></script>
+<!-- 登录js -->
+<script type="text/javascript" src="http://i.sso.sina.com.cn/js/outlogin_layer.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://i.sso.sina.com.cn/js/user_panel_new_version.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://finance.sina.com.cn/sinafinancesdk/js/sf_sdk.js"></script>
+<!--<script src="//n.sinaimg.cn/finance/optionDP/commodity_options_170426.js" charset="utf-8"></script>-->
+<script src="//n.sinaimg.cn/finance/optionDP/commodity_options_191212.js?20220805" charset="utf-8"></script>
+
+<script>
+    window.__SinaTopBar__.user.init(document.getElementById('SI_User'), {
+        // entry 默认为 account，各频道不一样，可向通行证@龚翼 申请
+        entry: 'finance',
+        login_success: function () {
+            // 登录成功
+            window.__SinaFeedCard__.onLoginSuccess(SINA_OUTLOGIN_LAYER.getSinaCookie().uid, 30003);
+        },
+        logout_success: function () {
+        }
+    });
+</script>
+</body>
+</html>

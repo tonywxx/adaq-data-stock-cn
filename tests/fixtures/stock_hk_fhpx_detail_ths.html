@@ -1,0 +1,1774 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+		    <title>腾讯控股(HK0700) 分红派息_F10_同花顺金融服务网</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7;IE=9"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="keywords" content="港股,港股F10,腾讯控股,腾讯控股F10"/>
+	<script type="text/javascript" src="//s.thsi.cn/js/chameleon/chameleon.1.12.min.1786913.js"></script> <script type="text/javascript" src="//s.thsi.cn/js/chameleon/chameleon.min.1786913.js"></script> <script type="text/javascript" src="//s.thsi.cn/js/common/cefapi/1.5.5/cefApi.min.js"></script>
+	<!-- 券商url参数添加，落地只落broker-pcf10.html -->
+	
+	<script type="text/javascript" src="//s.thsi.cn/js/chameleon/chameleon.min.1786913.js"></script> <script>
+    function getUrlParams(key, url) {
+        var href = url ? url : window.location.href;
+        if (href.indexOf("?") < 0 && href.indexOf("#") < 0) {
+            return false;
+        }
+        var hrefStr = href.replace(/#/g, "&");
+        hrefStr = hrefStr.replace(/\?/g, "&");
+        var paramsObj= {};
+        hrefStr.split("&").forEach(function(i) {
+            if (i.indexOf("=") > -1) {
+                paramsObj[i.split("=")[0]] = i.split("=")[1];
+            }
+        });
+        if (key) {
+            return paramsObj[key] || false;
+        } else {
+            return paramsObj;
+        }
+    }
+
+    function addParam(url, obj) {
+        var str = "",res;
+        for (var key in obj) {
+            str += (key + "=" + obj[key]);
+        }
+        if (url.indexOf("?") > -1) {
+            res = url.split('?').join('?' + str + '&');
+        } else if (url.indexOf("#") > -1) {
+            res = url.replace(/#/g, "?" + str + "#");
+        } else {
+            res = url + "?" + str;
+        }
+        return res;
+    }
+
+    var historyUrl = document.referrer;
+    if (historyUrl) {
+        var broker = getUrlParams('broker', historyUrl);
+        if (broker && window.history) {
+            var url = window.location.href;
+            url = addParam(url, broker ? {broker: broker} : {});
+            window.history.pushState('', '', url);
+        }
+    }
+</script>
+	<!-- f10工具箱，工具函数修改，落地只落utils.html -->
+	
+	<script type="text/javascript" src="//s.thsi.cn/js/chameleon/chameleon.min.1786913.js"></script> <script type="text/javascript" charset="utf-8" src="//s.thsi.cn/cb?cd/website-thsc-f10-utils/1.4.8/f10-polyfill.js" crossorigin></script>
+<script type="text/javascript" charset="utf-8" src="//s.thsi.cn/cd/kernel-thslc-component-materials-container/F10/static/css-vars-ponyfill.js" ></script>
+<script type="text/javascript" charset="utf-8" src="//s.thsi.cn/cb?cd/website-thsc-f10-utils/1.6.0/thsc-f10-utils.js" crossorigin></script>
+<script>
+    function isIEInClient(){
+        return !!(window.external && 'getUserPath' in window.external && 'createObject' in window.external);
+    }
+
+    function isInTongYiClient(){
+      return !!(window.external && 'createObject' in window.external);
+    }
+
+    function isInYuanHangClient(){
+        return !!(window.HevoCef && 'IsHevoCef' in window.HevoCef);
+    }
+    
+    function isInIEEnv(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        return ua.indexOf('msie') > -1 || ua.indexOf('trident/') > -1;
+    }
+
+    function isChromeOlderThan50(){
+        var userAgent = navigator.userAgent.toLowerCase();
+        var match = userAgent.match(/chrome\/(\d+)./);
+        if (match && parseInt(match[1]) <= 49) {
+           return true;
+        }
+        return false;
+    }
+
+</script>
+<style>
+.kamis-loading {
+	min-height: 600px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #437EB7;
+	background-color: rgba(255,255,255,0.8);
+	gap: 4px;
+	font-size: 14px;
+}
+.dark .kamis-loading, .black .kamis-loading {
+	background-color: #171D25;
+	color: #FEB302;
+}
+.kamis-loading svg {
+	width: 20px;
+	height: 20px;
+}
+.arco-icon-spin {
+  animation: spin 1s linear infinite;
+}
+.kamis-nodata {
+  min-height: 300px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #333;
+  padding: 10px 14px;
+}
+.dark .kamis-nodata, .black .kamis-nodata {
+  color: #999;
+  background-color: #0b1016;
+  border-color:#1e2b38;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+	<script type="text/javascript" charset="utf-8" src="//s.thsi.cn/js/basic/stockph_v2/qdc_ad-fd3034.js"></script>
+	<link href="//s.thsi.cn/css/basic/stockph/qdc_ad-6e8683.css" rel="stylesheet" type="text/css">
+	
+	<script src="//s.thsi.cn/cb?webprivate/lib/axios.min.js;hxapp/m/base/js/vue.2.7.16.min.js" crossorigin="anonymous"></script>
+	<!-- kamis 渲染器 -->
+	<script src="//s.thsi.cn/hxapp/m/pkgs/amis-2c/sdk/v1-3/2c-sdk-register.1.3.6.js"></script>
+	<link href="//s.thsi.cn/staticS3/mobileweb-upload-static-server.file/offline/pkg/99ad2b6e-87ff-47a2-b6ba-9bc61f1a6a37.css" rel="stylesheet">
+	<link as="style" href="//s.thsi.cn/staticS3/mobileweb-upload-static-server.file/offline/pkg/99ad2b6e-87ff-47a2-b6ba-9bc61f1a6a37.css" rel="preload">
+	
+	<script>
+		var xhrProto = XMLHttpRequest.prototype;
+		var origOpen = xhrProto.open;
+		xhrProto.open = function (method, url) {
+			if (location.host.indexOf('0033.cn') > -1 && arguments[1] !== undefined && arguments[1].indexOf('10jqka.com.cn') > -1) {
+				arguments[1] = arguments[1].replace('10jqka.com.cn', '0033.cn');
+			}
+			return origOpen.apply(this, arguments);
+		};
+	</script>
+</head>
+
+<!-- 换肤功能实现  -->
+<script>
+var hash = window.location.hash.substring(1);
+var hashArray = hash.split('=');
+
+//cookie设置
+function setReviewJumpState(state) {
+	document.cookie = 'reviewJumphk='
+					+ state
+					+ ';path=/;domain='
+					+ window.location.host;
+}
+function getCookie(name) {
+	var cookieValue = "";
+	var search = name + "=";
+	if (document.cookie.length > 0) {
+	    offset = document.cookie.indexOf(search);
+	    if (offset != -1)    {
+	        offset += search.length;
+	        end = document.cookie.indexOf(";", offset);
+	        if (end == -1) end = document.cookie.length;
+	        cookieValue = unescape(document.cookie.substring(offset, end))
+	    }
+	}
+	return cookieValue;
+}
+
+//栏目提前跳转
+var reviewJumpState = getCookie('reviewJumphk');
+if (!!reviewJumpState && reviewJumpState != 'nojump') {
+	setReviewJumpState('nojump');
+	window.location.href = unescape(reviewJumpState);
+} else {
+	setReviewJumpState('nojump');
+}
+var STOCK_SKIN;
+if (hashArray[0].indexOf('stockpage')>-1) {
+    var STOCK_SKIN = 'white';
+} else {
+    var STOCK_SKIN = getCookie('skin_color');
+}
+// 匹配User Agent
+function isMac() {
+	return /macintosh|mac os x/i.test(navigator.userAgent);
+};
+// 获取客户端肤色
+function syncClientSkin(){
+	try {//取得客户端肤色
+		if (isMac()) {
+			return 'white';
+		}
+		return 'black';
+	} catch(e) {}
+}
+function addScript(url){
+	document.write("<script src='" +　url +"'><\/script>");
+}
+
+if(!STOCK_SKIN) {
+	STOCK_SKIN =  syncClientSkin()
+}
+
+//动态添加link-同步-会阻塞
+function addCssByLink(url){
+    document.write('<link rel="stylesheet" type="text/css"');
+    document.write(' href="' + url + '">');
+}
+document.documentElement.setAttribute("class",STOCK_SKIN);
+if(STOCK_SKIN == 'white'){
+			addCssByLink("//s.thsi.cn/cb?css/basic/hk/white/20200624/style_v1.css;css/basic/stock/white/wsplpager.css")
+		addCssByLink("//s.thsi.cn/cb?css/basic/hk/white/20200525141929/wchart.css;css/basic/stock/white/custom.css")
+	addCssByLink("//s.thsi.cn/css/basic/stock/white/append_v2-3.css")
+	addCssByLink("//s.thsi.cn/css/basic/stock/white/black_v2-4.20190711.css")
+	addCssByLink("//s.thsi.cn/css/basic/stock/chartsdom.css")
+	addCssByLink("//s.thsi.cn/css/basic/common/white/title.css")
+			}else{
+			addCssByLink("//s.thsi.cn/cb?css/basic/hk/20200624/style_v2-4.css;css/basic/stock/black/splpager.css")
+		addCssByLink("//s.thsi.cn/cb?css/basic/hk/20200525141929/chart.css;css/basic/stock/black/custom.css")
+	addCssByLink("//s.thsi.cn/css/basic/stock/black/append_v2-3.css")
+	addCssByLink("//s.thsi.cn/css/basic/stock/black/black_v2-4.20190711.css")
+	addCssByLink("//s.thsi.cn/css/basic/stock/chartsdom.css")
+	addCssByLink("//s.thsi.cn/css/basic/common/black/title.css")
+			}
+addCssByLink("//s.thsi.cn/webprivate/basic/fe_components/show_controller/show_controller.css")
+</script>
+<style>
+	#jpjl-input:focus { outline: none; }
+</style>
+<body>
+<div class="votepopbox votesuccess" style="display: none">
+		<div class="vpopicon"></div>
+		<p class="vpoptxt fz18">谢谢您的宝贵意见</p>
+		<p class="vpoptxt">您的支持是我们最大的动力</p>
+	</div>
+	<div class="votepopbox voteinfo" style="display: none">
+		<div class="vpopicon"></div>
+		<p class="vpoptxt fz18">谢谢您的支持</p>
+		<p class="vpoptxt"></p>
+	</div>
+	<div class="wrapper">
+		<!-- F10 Header Start -->
+		<div class="header">
+        	<div class="hd">
+        		<div class="logo fl" id="logo_self"><a title="同花顺F10">同花顺F10</a></div>
+
+				<div onclick="sendTalog('f10_click_quot')" style="width:260px; margin-left:73px; font-size:14px;cursor:pointer;display:none" class="fl tip " id="quotedata">
+					<div style="width:120px;" class="fl">最新价： <span style="width:40px" class="upcolor" id="zxj">--</span></div>
+					<div style="width:130px;" class="fr">涨跌幅： <span style="width:40px;" class="upcolor" id="zdf">--</span></div>
+				</div>
+				<span class="fr skin-change"><a href="###">换肤</a></span>
+				<div class="search fr" id="search_cyter">
+					<div id="updownchange" type="once" class="codeChange fl" style="display: none;">
+		                <a href="javascript:void(0)" class="per">上一个股</a>
+		                <a href="javascript:void(0)" class="next">下一个股</a>
+		            </div>
+					<div class="fl searchbar">
+              			<div class="text">
+                  			<input type="text" value="输入股票名称或代码" id="jpjl-input"><!--文本框获得焦点给.searchbar添加hover类-->
+               			</div>
+                		<input type="button" id="jpjl-submit" class="btn" value="搜索">
+            		</div>
+        		</div>
+    		</div>
+    		<div class="bd clear">
+        		<div class="code fl">
+            		<h1>
+            		            				<a title="公司为港股通标的">腾讯控股<br /></a><a href ="javascript:;" id="jumpGgt" title="公司为港股通标的"><span class="icon-hgt">00700</span></a>
+            		            	    </h1>
+				</div>
+        		<div class="nav">
+         			<ul>
+						<li><a href="./"  target="_self">最新动态</a></li>
+						<li><a href="./company.html"  target="_self">公司资料</a></li>
+						<li><a href="./equity.html"   target="_self">股本结构</a></li>
+						<li><a href="./business.html"   target="_self">业务展望</a></li>
+						<li><a href="./bonus.html"   class="cur"  target="_self">分红派息</a></li>
+						<li><a href="./manager.html"   target="_self">高管介绍</a></li>
+						<li><a href="./field.html"   target="_self">行业对比</a></li>
+						<li><a href="./news.html"   target="_self">新闻公告</a></li>
+						<li><a href="./finance.html"   target="_self">财务概况</a></li>
+						<li><a href="./holder.html"   target="_self">股东持股</a></li>
+						<li><a href="./operate.html"   target="_self">经营分析</a></li>
+						<li><a href="./warrant.html"   target="_self">关联权证</a></li>
+						<li><a href="./rating.html"  target="_self">投资评级</a></li>
+						<li><a href="./ahcontrast.html"  target="_self">AH股对比</a></li>
+        			</ul>
+				</div>
+				<div class="subnav">
+					<ul>
+												<li>
+							<a class="skipto" name="bonus.html#bonus" href="###">
+							分红派息							</a>
+						</li>
+												<li>
+							<a class="skipto" name="bonus.html#offer" href="###">
+							供股及公开招股							</a>
+						</li>
+											</ul>
+				</div>
+			</div>
+		</div>
+		<!-- F10 Header End -->
+
+		<!-- F10 Content Start -->
+		<div class="content">
+
+<!-- content -->
+<div class="m_box" id="bonus" stat="bonus_bonus">
+	<div class="hd">
+		<h2>分红派息</h2>
+	</div>
+	<div class="bd pt5">
+		<table class="m_table m_hl mt15">
+			<thead>
+			<tr>
+	            <th rowspan="2">公告日期</th>
+	            <th rowspan="2">方案</th>
+	            <th rowspan="2">除净日</th>
+	            <th rowspan="2">派息日</th>
+	            <th colspan="2">过户日期起止日</th>
+	            <th rowspan="2">类型</th>
+	            <th rowspan="2">进度</th>
+	            <th rowspan="2">以股代息</th>
+        	</tr>
+	        <tr>
+	            <th>起始</th>
+	            <th>截止</th>
+	        </tr>
+        	</thead>
+        	<tbody>
+        				<tr>
+				<th class="tc f12">2026-08-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2026-05-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2026-03-18</th>
+				<td class="tl">每股5.3港元</td>
+				<td class="tl">2026-05-15</td>
+				<td class="tl">2026-06-01</td>
+				<td class="tl">2026-05-19</td>
+				<td class="tl">2026-05-20</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2025-11-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报(累计)</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2025-08-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2025-05-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2025-03-19</th>
+				<td class="tl">每股4.5港元</td>
+				<td class="tl">2025-05-16</td>
+				<td class="tl">2025-05-30</td>
+				<td class="tl">2025-05-20</td>
+				<td class="tl">2025-05-21</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2024-11-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报(累计)</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2024-08-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2024-05-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2024-03-20</th>
+				<td class="tl">每股3.4港元</td>
+				<td class="tl">2024-05-17</td>
+				<td class="tl">2024-05-31</td>
+				<td class="tl">2024-05-21</td>
+				<td class="tl">2024-05-22</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2023-11-15</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报(累计)</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2023-08-16</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2023-05-17</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2023-03-22</th>
+				<td class="tl">每股2.4港元</td>
+				<td class="tl">2023-05-19</td>
+				<td class="tl">2023-06-05</td>
+				<td class="tl">2023-05-23</td>
+				<td class="tl">2023-05-24</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2022-11-16</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2022-11-16</th>
+				<td class="tl">每10股股份获发1股美团B类普通股</td>
+				<td class="tl">2023-01-05</td>
+				<td class="tl">--</td>
+				<td class="tl">2023-01-09</td>
+				<td class="tl">2023-01-10</td>
+				<td class="tl">其他</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2022-08-17</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2022-05-18</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2022-03-23</th>
+				<td class="tl">每股1.6港元</td>
+				<td class="tl">2022-05-20</td>
+				<td class="tl">2022-06-06</td>
+				<td class="tl">2022-05-24</td>
+				<td class="tl">2022-05-25</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2021-12-23</th>
+				<td class="tl">每21股股份获发1股京东集团A类普通股</td>
+				<td class="tl">2022-01-20</td>
+				<td class="tl">--</td>
+				<td class="tl">2022-01-24</td>
+				<td class="tl">2022-01-25</td>
+				<td class="tl">其他</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2021-11-10</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2021-08-18</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2021-05-20</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2021-03-24</th>
+				<td class="tl">每股1.60港元</td>
+				<td class="tl">2021-05-24</td>
+				<td class="tl">2021-06-07</td>
+				<td class="tl">2021-05-26</td>
+				<td class="tl">2021-05-27</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2020-11-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2020-08-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2020-05-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2020-03-18</th>
+				<td class="tl">每股1.20港元</td>
+				<td class="tl">2020-05-15</td>
+				<td class="tl">2020-05-29</td>
+				<td class="tl">2020-05-19</td>
+				<td class="tl">2020-05-20</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2019-11-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2019-08-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2019-05-15</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2019-03-21</th>
+				<td class="tl">每股1.00港元</td>
+				<td class="tl">2019-05-17</td>
+				<td class="tl">2019-05-31</td>
+				<td class="tl">2019-05-21</td>
+				<td class="tl">2019-05-22</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2018-12-13</th>
+				<td class="tl">每3900股分派1股腾讯音乐美国预托股份,可选择收取现金</td>
+				<td class="tl">2018-12-28</td>
+				<td class="tl">2019-02-20</td>
+				<td class="tl">2019-01-03</td>
+				<td class="tl">2019-01-04</td>
+				<td class="tl">其他</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2018-11-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2018-08-15</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2018-05-16</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2018-03-21</th>
+				<td class="tl">每股派0.88港元</td>
+				<td class="tl">2018-05-18</td>
+				<td class="tl">2018-06-01</td>
+				<td class="tl">2018-05-23</td>
+				<td class="tl">2018-05-24</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2017-11-15</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2017-10-06</th>
+				<td class="tl">每持有1,256股可认购1股China Literature Ltd.预留股份</td>
+				<td class="tl">2017-10-18</td>
+				<td class="tl">--</td>
+				<td class="tl">2017-10-20</td>
+				<td class="tl">2017-10-20</td>
+				<td class="tl">其他</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2017-08-16</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2017-05-17</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2017-03-22</th>
+				<td class="tl">每股派0.61港元</td>
+				<td class="tl">2017-05-19</td>
+				<td class="tl">2017-06-02</td>
+				<td class="tl">2017-05-23</td>
+				<td class="tl">2017-05-24</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2016-11-16</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2016-08-17</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2016-05-18</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2016-03-17</th>
+				<td class="tl">每股0.47港元</td>
+				<td class="tl">2016-05-20</td>
+				<td class="tl">2016-06-02</td>
+				<td class="tl">2016-05-24</td>
+				<td class="tl">2016-05-25</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2015-11-10</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2015-08-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2015-05-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2015-03-18</th>
+				<td class="tl">每股0.36港元</td>
+				<td class="tl">2015-05-15</td>
+				<td class="tl">2015-05-29</td>
+				<td class="tl">2015-05-19</td>
+				<td class="tl">2015-05-20</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2014-11-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2014-08-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2014-05-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2014-08-13</th>
+				<td class="tl">每股拆细股份0.24港元</td>
+				<td class="tl">2014-05-16</td>
+				<td class="tl">2014-06-30</td>
+				<td class="tl">2014-05-20</td>
+				<td class="tl">2014-05-21</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2013-11-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2013-08-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2013-05-15</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2013-03-20</th>
+				<td class="tl">每股1.00港元</td>
+				<td class="tl">2013-05-20</td>
+				<td class="tl">2013-05-30</td>
+				<td class="tl">2013-05-22</td>
+				<td class="tl">2013-05-23</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2012-11-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2012-08-15</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2012-05-16</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2012-03-14</th>
+				<td class="tl">每股0.75港元</td>
+				<td class="tl">2012-05-18</td>
+				<td class="tl">2012-05-30</td>
+				<td class="tl">2012-05-22</td>
+				<td class="tl">2012-05-23</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2011-11-09</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2011-08-10</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2011-05-11</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2011-03-16</th>
+				<td class="tl">每股0.55港元</td>
+				<td class="tl">2011-05-03</td>
+				<td class="tl">2011-05-25</td>
+				<td class="tl">2011-05-05</td>
+				<td class="tl">2011-05-11</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2010-11-10</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2010-08-11</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2010-05-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2010-03-17</th>
+				<td class="tl">每股0.4港元</td>
+				<td class="tl">2010-05-05</td>
+				<td class="tl">2010-05-26</td>
+				<td class="tl">2010-05-07</td>
+				<td class="tl">2010-05-12</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2009-11-11</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2009-08-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2009-05-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2009-03-18</th>
+				<td class="tl">每股0.1港元</td>
+				<td class="tl">2009-05-06</td>
+				<td class="tl">2009-05-27</td>
+				<td class="tl">2009-05-08</td>
+				<td class="tl">2009-05-13</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2009-03-18</th>
+				<td class="tl">每股0.25港元</td>
+				<td class="tl">2009-05-06</td>
+				<td class="tl">2009-05-27</td>
+				<td class="tl">2009-05-08</td>
+				<td class="tl">2009-05-13</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2008-11-12</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2008-08-13</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2008-05-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2008-03-19</th>
+				<td class="tl">每股0.16港元</td>
+				<td class="tl">2008-05-06</td>
+				<td class="tl">2008-05-28</td>
+				<td class="tl">2008-05-08</td>
+				<td class="tl">2008-05-14</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2007-11-14</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2007-08-15</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2007-05-16</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2007-03-21</th>
+				<td class="tl">每股0.12港元</td>
+				<td class="tl">2007-05-09</td>
+				<td class="tl">2007-05-30</td>
+				<td class="tl">2007-05-11</td>
+				<td class="tl">2007-05-16</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2006-11-22</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2006-08-23</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2006-05-24</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2006-03-22</th>
+				<td class="tl">每股0.08港元</td>
+				<td class="tl">2006-05-15</td>
+				<td class="tl">2006-06-07</td>
+				<td class="tl">2006-05-17</td>
+				<td class="tl">2006-05-24</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2005-11-23</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2005-08-24</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2005-05-18</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">一季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2005-03-17</th>
+				<td class="tl">每股0.07港元</td>
+				<td class="tl">2005-04-19</td>
+				<td class="tl">2005-05-17</td>
+				<td class="tl">2005-04-21</td>
+				<td class="tl">2005-04-27</td>
+				<td class="tl">年报</td>
+				<td class="tl">实施完成</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2004-11-18</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">三季报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+						<tr>
+				<th class="tc f12">2004-08-19</th>
+				<td class="tl">不分红</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">--</td>
+				<td class="tl">中报</td>
+				<td class="tl">预案</td>
+				<td class="tl">
+									否
+									</td>
+			</tr>
+			        	</tbody>
+        </table>
+	</div>
+	<div class="ft"></div>
+</div>
+<div class="m_box" id="offer" stat="bonus_offer">
+	<div class="hd">
+		<h2>供股及公开招股</h2>
+    </div>
+    <div class="bd">
+        <div class="clearfix">暂无数据</div>
+	</div>
+	<div class="ft"></div>
+</div>
+
+
+
+
+</div>
+		<!-- F10 Content End -->
+
+		<!-- F10 Footer Start -->
+		<div class="footer">
+			<div class="links">
+			    <a href="http://stockpage.10jqka.com.cn" target="_blank">同花顺个股</a> |
+			    <a href="http://moni.10jqka.com.cn/" target="_blank">模拟炒股</a> |
+			    <a href="https://xtz.10jqka.com.cn/pc/home?from=pcf10" target="_blank">股民学校</a> |
+			    <a href="http://mobile.10jqka.com.cn/?req=pcf10" target="_blank">手机炒股</a>|
+			    <a href="https://news.10jqka.com.cn/homepage/intro/contact-us" target="_blank">联系我们</a>
+			</div>
+			<p show-controller="changjiangNew" sc-mode="hide">免责声明:本信息由同花顺金融研究中心提供，仅供参考，同花顺金融研究中心力求但不保证数据的完全准确，如有错漏请以中国证监会指定上市公司信息披露媒体为准，同花顺金融研究中心不对因该资料全部或部分内容而引致的盈亏承担任何责任。用户个人对服务的使用承担风险。同花顺对此不作任何类型的担保。同花顺不担保服务一定能满足用户的要求，也不担保服务不会受中断，对服务的及时性，安全性，出错发生都不作担保。同花顺对在同花顺上得到的任何信息服务或交易进程不作担保。同花顺提供的包括同花顺理财的所有文章，数据，不构成任何的投资建议，用户查看或依据这些内容所进行的任何行为造成的风险和结果都自行负责，与同花顺无关。 </p>
+			<p show-controller="changjiangNew" sc-mode="show">【免责声明】本产品中的行情数据及资讯信息来源于第三方，长江证券不对收集数据的版权、真实性、准确性及传输过程中发生的传送错误承担法律责任。本内容仅供参考，不作为投资决策依据，长江证券不对因据此操作产生的盈亏承担任何责任。投资有风险，入市需谨慎。 </p>
+		</div>
+		<!-- F10 Footer End -->
+	</div>
+	<div class="r-go-top" id="r-go-top"></div>
+	<!-- title 容器 -->
+	<div class="titleBox" id="altlayer" style="display:none; width: 260px;">
+		<div class="tipbox_bd p0_5"><span style="line-height:24px;" class="tip f14">
+		<span id="altlayer_content"></span>
+		</div>
+	</div>
+	<input id="stockCode" type="hidden" value="00700">
+	<input id="thscode" type="hidden" value="HK0700">
+	<input id="stockName" type="hidden" value="腾讯控股">
+	<input id="cateName"  type="hidden" value="分红派息">
+	<input id="catecode"  type="hidden" value="bonus">
+	<input id="fcatecode"  type="hidden" value="bonus">
+	<input id="sid" type="hidden" value="F10hk_fhpx">
+	<input id="fid" type="hidden" value="F10,F10master,F10main,F10hk">
+	<input id="qid" type="hidden" value="">
+		<script type="text/javascript">
+	var system = {};
+    system.pathname		 = window.location.pathname;
+	function isChromeOlderThan50() {
+		var isChrome = navigator.userAgent.indexOf('Chrome') > -1;
+		var chromeVersion = navigator.userAgent.match(/Chrome\/(\d+)/);
+
+		if (isChrome && chromeVersion && parseInt(chromeVersion[1], 10)) {
+			return parseInt(chromeVersion[1], 10) <= 49;
+		}
+		return false;
+	}
+	function kamisRender() {
+		if (isInIEEnv()) {
+			return;
+		}
+		if (isChromeOlderThan50()) {
+			return;
+		}
+		// 处理kamis渲染
+		axios && axios.get("/basicapi/cmdb/v1/business_config?id=kamis_hkpc_briefinfo").then(function(res) {
+			if (res.status == 200 && res.data.status_code == 0 && res.data.data) {
+				var configs = res.data.data.data.configs;
+				configs && configs.forEach(function(item) {
+					var kamisToken = item['token'];
+					var kamisJsonpKey = item['kamisJsonpKey'];
+					var dom = item['dom'];
+					if (!dom) {
+						return;
+					}
+					if (kamisToken || kamisJsonpKey) {
+						// SDK初始化和嵌入
+						window['2c-amis-next'].default().then(function() {
+							console && console.log('sdk init successful');
+							var params = kamisToken ? {
+								token: kamisToken,
+								systemId: 0
+							} : {
+								jsonpKey: kamisJsonpKey
+							};
+							window['2c-amis-next'].amisRemoteEmbed(dom, params,{}, {data: {code: $("#thscode").val()}});
+						});
+					}
+				})
+			}
+		})
+	}
+	kamisRender();
+    </script>
+	<!-- Common script Start -->
+	<script type="text/javascript" src="//s.thsi.cn/cb?js/jquery-1.8.3.min.js;js/common/cefapi/1.5.5/cefApi.min.js;js/basic/hk/20200525141929/po.js;js/basic/hk/inheritance.js;js/basic/common/Model_v3.js;js/ta.min.js"></script> 
+	<!-- <script type="text/javascript" src="//s.thsi.cn/cb?js/jquery-1.8.3.min.js;js/common/cefapi/1.5.5/cefApi.min.js;js/basic/hk/20200525141929/po.js;js/basic/hk/inheritance.js;js/basic/common/Model_v3.js;js/ta.min.js;js/basic/hk/common.20200601.js;js/basic/hk/20200525141929/append-20200402.js"></script>  -->
+			<script type="text/javascript" src="//s.thsi.cn/js/basic/hk/common-20200622.js"></script>
+		<script type="text/javascript" charset="utf-8" src="//s.thsi.cn/js/basic/stockph_v2/hk/common_v2-30c8b3.js"></script>
+		<script type="text/javascript" src="//s.thsi.cn/js/basic/hk/common_v3.js"></script>
+	<!--[if IE ]><script language="javascript" type="text/javascript" src="//s.thsi.cn/js/excanvas.min.js"></script><![endif]-->
+	<!--  Common script End  -->
+			<script type="text/javascript" src="//s.thsi.cn/js/basic/hk/popwin.js"></script>
+						
+	
+			<script type="text/javascript">
+	var sid = 'F10hk_fhpx';
+	var fid = 'F10,F10master,F10main,F10hk';
+	var stockcode = '00700';
+	// var STOCK_SKIN = 'black';
+	$(document).ready(function(){
+	try {
+	    var passport = external.createObject('Passport');
+	    var qsid = passport.get('m_qs');
+	    TA.log({'id':sid, 'fid':fid, 'stockcode':stockcode, 'qsid': qsid});
+	} catch(e) {
+		TA.log({'id':sid, 'fid':fid, 'stockcode':stockcode});
+	}
+	try {
+		if (typeof external.registerEvent != 'undefined') {
+			external.registerEvent({'onshow': function(show) {
+				if (!show) {
+					TA.log({'id':sid,'fid':fid, 'stockcode':stockcode,'hide':1,'nj':1,_sid:"__ths_onshow"});
+				}
+			}});
+		}
+	} catch(e) {}
+	});
+	</script>
+	<div style="display:none">
+	<script type="text/javascript">
+	(function(){
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F78c58f01938e4d85eaf619eae71b4ed1' type='text/javascript'%3E%3C/script%3E"));
+	});
+	</script>
+	</div>
+	<script src="//s.thsi.cn/webprivate/basic/fe_components/show_controller/show_controller_v2.js"></script>
+
+			<script type="text/javascript" src="//s.thsi.cn/js/basic/stock/20200615142400/onlyBAuthorize.min.js"></script>
+		<script type="text/javascript" crossorigin src="//s.thsi.cn/js/basic/hk/20200622/f10hq.js"></script>
+	    <script type="text/javascript" crossorigin charset="utf-8" src="//s.thsi.cn/js/basic/stockph_v2/stock/append-960857.js"></script>
+	<script>
+
+	//禁止鼠标放大缩小
+	 var scrollFunc=function(e){
+		e=e || window.event;
+		if(e.wheelDelta && event.ctrlKey){//IE/Opera/Chrome
+			event.returnValue=false;
+		}else if(e.detail){//Firefox
+			event.returnValue=false;
+		}
+	}
+	
+
+	if (window.external && 'createObject' in window.external && window.cefQuery) {
+		//表示当前是客户端Chrome内核
+		document.getElementById("updownchange").style.display = "block";
+	}else{
+		$("#updownchange").empty()
+	}
+	
+	/*注册事件*/
+	if(document.addEventListener){
+		document.addEventListener('DOMMouseScroll',scrollFunc,false);
+	}//W3C
+	window.onmousewheel=document.onmousewheel=scrollFunc;
+	
+	//---------------自定义title弹窗 start----------
+	var tempalt='';//临时存储title
+	document.body.onmousemove = function(event) {
+		if(altlayer.style.display==''){
+			$("#altlayer").css({
+				left: event.pageX,
+				top: event.pageY+10
+			});
+		}
+	};
+	document.body.onmouseover = function(event) {
+		if (event.srcElement.className !== 'titleIcon') {
+			return false;
+		}
+		if(event.srcElement.title && (event.srcElement.title!='' || (event.srcElement.title=='' && tempalt!=''))){
+			$("#altlayer").css({
+				left: event.pageX,
+				top: event.pageY+20,
+				display: ''
+			});
+			$("#altlayer_content").html(event.srcElement.title)
+			tempalt = event.srcElement.title;
+			event.srcElement.title='';
+		}
+	};
+	document.body.onmouseout = function(event) {
+		if (tempalt != '') {
+			event.srcElement.title = tempalt;	
+		}
+		tempalt = '';
+		$("#altlayer").hide();
+	};
+	//---------------自定义title弹窗 end----------
+	</script>
+</body>
+</html>
+	

@@ -13,3 +13,4 @@ pub mod wv_index_fund_sw;
 
 pub mod wv_index_misc;
 pub mod excel_gaps;
+pub mod index_html_gaps;

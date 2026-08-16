@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+
+
+
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="content-language" content="zh-CN"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="shenma-site-verification" content="4556b205f40a74d5580ec2fae05391cc_1523083326">
+	<meta name='zyiis_check_verify' content='df808ca7ad95eb4945aabc03468483e9'>
+	<meta name="domain_verify" content="pmrgi33nmfuw4ir2ejwgkz3vnrswo5jomnxw2irmejtxk2leei5cezdbme3ggyjrgu3denlfgqydozdbmvtdgzjzgjsdeodbgeywkolgeiwce5djnvsvgylwmurdumjvgm3tknbygy2tiojwhb6q">
+	
+
+
+
+<title>A股市场赚钱效应分析_量化股市_乐咕乐股网</title>
+
+
+<meta name="keywords" content="A股市场赚钱效应,涨跌停比,涨跌比分布图,市场情绪,涨跌统计">
+<meta name="tags" content="A股市场赚钱效应,涨跌停比,市场情绪">
+<meta name="description" content="2026-08-14，A股赚钱效益分布，其中63家涨停，13家跌停，2322家上涨，2720家下跌，1795家上涨0%~3%，288家上涨3%~5%，112家上涨5%~7%，71家上涨7%~10%，56家上涨10%~20%，2436家下跌0%~3%，188家下跌3%~5%，51家下跌5%~7%，9家下跌7%~10%，0家下跌10%~20%。">
+
+<!-- 社交媒体元标签 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="A股市场赚钱效应分析_量化股市_乐咕乐股网">
+<meta property="og:description" content="2026-08-14，A股赚钱效益分布，其中63家涨停，13家跌停，2322家上涨，2720家下跌，1795家上涨0%~3%，288家上涨3%~5%，112家上涨5%~7%，71家上涨7%~10%，56家上涨10%~20%，2436家下跌0%~3%，188家下跌3%~5%，51家下跌5%~7%，9家下跌7%~10%，0家下跌10%~20%。">
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?4064402dbf370b44e70272f9f2632a67";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+	
+	
+<meta name="_csrf" content="763915b1-1a78-41b2-8aad-bdb5c30ca1da"/>
+<meta name="_csrf_header" content="X-CSRF-TOKEN"/>
+
+	<link rel="Shortcut Icon" href="/static/image/icon/legulegu_32_ico.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="/static/image/icon/legulegu_32_ico.ico" />
+	
+
+<script>
+(function () {
+    var t = 'light';
+    try {
+        var m = /[?&]theme=(dark|light)\b/.exec(location.search || '');
+        if (m) { t = m[1]; }
+        else {
+            var s = localStorage.getItem('lg-theme');
+            if (s === null) { s = localStorage.getItem('lg-dashboard-theme'); }
+            if (s === 'dark') { t = 'dark'; }
+        }
+    } catch (e) { /* localStorage ä¸å¯ç¨æ¶ä¿æ light */ }
+    document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+<link href="https://image.legulegu.com/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="https://image.legulegu.com/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="/static/css/all.min.css?date=20260816" rel="stylesheet" type="text/css">
+<link href="https://image.legulegu.com/css/lg-mobile-nav.css" rel="stylesheet" type="text/css">
+<link href="/static/css/lg-theme.css?date=20260816" rel="stylesheet" type="text/css">
+
+	<link rel="stylesheet" href="/static/css/embed-dashboard.css?date=20260721v2" type="text/css"/>
+	<script src="//image.legulegu.com/cdn/jquery.min.js" type="text/javascript"></script>
+	<script defer src="//image.legulegu.com/cdn/bootstrap.min.js" type="text/javascript"></script>
+	<script src="//image.legulegu.com/cdn/axios.min.js" type="text/javascript"></script>
+	<script src="//image.legulegu.com/cdn/hashes.min.js" type="text/javascript"></script>
+	<script defer src="//image.legulegu.com/cdn/js.cookie.min.js" type="text/javascript"></script>
+	<script defer src="//image.legulegu.com/cdn/qrcode.min.js" type="text/javascript"></script>
+	<script defer src="//image.legulegu.com/cdn/clipboard.min.js" type="text/javascript"></script>
+	<script defer src="https://image.legulegu.com/js/lg-mobile-nav.js" type="text/javascript"></script>
+	
+
+<link href="https://image.legulegu.com/css/lg-side-nav.css" rel="stylesheet" type="text/css">
+<script src="//image.legulegu.com/cdn/echarts.min.js"></script>
+<script defer src="https://image.legulegu.com/js/lg-side-nav.js" type="text/javascript"></script>
+<script defer src="https://image.legulegu.com/js/xlsx.full.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+<script src="/static/js/theme.js?date=20260816" type="text/javascript"></script>
+
+    
+
+
+
+<nav class="navbar navbar-default navbar-fixed-top lg-navbar">
+	<div style="position: relative">
+		<div class="container">
+			<div id="mobile-nav"></div>
+			<div class="navbar-header navbar-logo">
+				<a href="/" class="lg-navbar-brand">
+					<span class="sprite sprite-legulegu-logo"></span>
+					<span class="lg-navbar-brand-dark">
+						<img src="/static/image/icon/legulegu_icon.png" alt="logo" class="lg-navbar-brand-icon"/>
+						<span class="lg-navbar-brand-text">
+							<span class="lg-navbar-brand-text-cn">乐咕乐股</span>
+							<span class="lg-navbar-brand-text-en">legulegu.com</span>
+						</span>
+					</span>
+				</a>
+				<span class="top-nav-search-icon"><i class="glyphicon glyphicon-search"></i></span>
+				<span class="nav-top-login" id="notification-popover-mobile" data-toggle="popover" data-placement="bottom"
+							data-html="true">
+										
+										
+										
+											<a class="login-link" href="/login">登录</a>
+										
+									</span>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav navbar-nav-ul">
+					
+
+
+<li class="dropdown" id="top-nav-pe-pb">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+        PE/PB<span class="caret"></span>
+    </a>
+    <div class="dropdown-menu lg-dropdown-menu lg-dropdown-menu-pe">
+        <div>
+            <div class="dropdown-menu-section dropdown-menu-section_stock_a_main">
+                <div class="row">
+                    <h5>主板市盈率/市净率</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/shanghaiPE">上证市盈率</a>/<a href="/stockdata/shanghaiPB">市净率</a></div>
+                    <div class="col-md-12"><a href="/stockdata/shenzhenPE">深证市盈率</a>/<a href="/stockdata/shenzhenPB">市净率</a></div>
+                    <div class="col-md-12"><a href="/stockdata/cybPE">创业板市盈率</a>/<a href="/stockdata/cybPB">市净率</a></div>
+                    <div class="col-md-12"><a href="/stockdata/ke-chuang-ban-pe">科创板市盈率</a>/<a href="/stockdata/ke-chuang-ban-pb">市净率</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_stock_a_index">
+                <div class="row">
+                    <h5>指数市盈率/市净率</h5>
+                    <hr/>
+                    <div class="col-md-4"><a href="/stockdata/sz50-ttm-lyr">上证50市盈率</a>/<a href="/stockdata/sz50-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/zz500-ttm-lyr">中证500市盈率</a>/<a href="/stockdata/zz500-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/zz1000-ttm-lyr">中证1000市盈率</a>/<a href="/stockdata/zz1000-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/hs300-ttm-lyr">沪深300市盈率</a>/<a href="/stockdata/hs300-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/sz180-ttm-lyr">上证180市盈率</a>/<a href="/stockdata/sz180-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/zz800-ttm-lyr">中证800市盈率</a>/<a href="/stockdata/zz800-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/sz000015-ttm-lyr">上证红利市盈率</a>/<a href="/stockdata/sz000015-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/sz380-ttm-lyr">上证380市盈率</a>/<a href="/stockdata/sz380-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/sz399324-ttm-lyr">深证红利市盈率</a>/<a href="/stockdata/sz399324-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/zz100-ttm-lyr">中证100市盈率</a>/<a href="/stockdata/zz100-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/sz399673-ttm-lyr">创业板50市盈率</a>/<a href="/stockdata/sz399673-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/sz399330-ttm-lyr">深证100市盈率</a>/<a href="/stockdata/sz399330-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/gz2000-ttm-lyr">国证2000市盈率</a>/<a href="/stockdata/gz2000-pb">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/index-ttm-lyr-pe?indexCode=930050.CSI">中证A50市盈率</a>/<a href="/stockdata/index-pb?indexCode=930050.CSI">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/index-ttm-lyr-pe?indexCode=000510.CSI">中证A500市盈率</a>/<a href="/stockdata/index-pb?indexCode=000510.CSI">市净率</a></div>
+                    <div class="col-md-4"><a href="/stockdata/index-ttm-lyr-pe?indexCode=932365.CSI">自由现金流市盈率</a>/<a href="/stockdata/index-pb?indexCode=932365.CSI">市净率</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_stock_hsi">
+                <div class="row">
+                    <h5><a href="/stockdata/hsi-overview"><span style="color: #a5a5a5;">港指市盈率</span> <span style="padding-left:20px; font-size: 13px;color: #a5a5a5;">[查看更多]</span></a></h5>
+                    <hr/>
+                    <div class="col-md-6"><a href="/stockdata/market/hsi" title="恒生指数市盈率">恒生指数</a></div>
+                    <div class="col-md-6"><a href="/stockdata/market/hscei" title="恒生中国企业指数市盈率">恒生中国企业指数</a></div>
+                    <div class="col-md-6"><a href="/stockdata/market/hsf" title="恒生金融指数市盈率">恒生金融指数</a></div>
+                    <div class="col-md-6"><a href="/stockdata/market/hsp" title="恒生地产指数市盈率">恒生地产指数</a></div>
+                    <div class="col-md-6"><a href="/stockdata/market/hsu" title="恒生公共指数市盈率">恒生公共指数</a></div>
+                    <div class="col-md-6"><a href="/stockdata/market/hsci" title="恒生工商指数市盈率">恒生工商指数</a></div>
+                </div>
+                <div class="row">
+                    <h5 style="margin-top: 10px">
+                        美股市盈率
+                    </h5>
+                    <hr/>
+                    <div class="col-md-6"><a href="/stockdata/market/sandp">标普500市盈率</a></div>
+                    <div class="col-md-6"><a href="/stockdata/sp500-shiller-pe">标普500席勒市盈率</a></div>                </div>
+            </div>
+        </div>
+        <div>
+            <div class="dropdown-menu-section dropdown-menu-section_industry">
+                <div class="row">
+                    <h5>行业分类</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/sw-industry-overview">申万行业分类</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic-overview">规模指数</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic-overview">主题指数分类</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_industry_pe">
+                <div class="row">
+                    <h5>制造业</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=H30531.CSI">精工制造</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=930599.CSI">中证高装</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=930820.CSI">CS高端装备</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_industry_pe">
+                <div class="row">
+                    <h5>医药</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000991.SH">全指医药</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=930791.CSI">CS医药TI</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000933.SH">中证医药</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=399394.SZ">国证医药</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=931152.CSI">CS创新药</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_industry_pe">
+                <div class="row">
+                    <h5>消费</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=931139.CSI">CS消费50</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000990.SH">全指消费</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=931068.CSI">消费龙头</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000932.SH">中证消费</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=399997.SZ">中证白酒</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_industry_pe">
+                <div class="row">
+                    <h5>金融</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000914.SH">300金融</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000934.SH">中证金融</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000992.SH">全指金融</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=399986.SZ">中证银行</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_industry_pe">
+                <div class="row">
+                    <h5>资源</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000944.CSI">内地资源</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000805.CSI">A股资源</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000979.CSI">大宗商品</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=399440.SZ">国证钢铁</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000820.CSI">煤炭指数</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=399998.SZ">中证煤炭</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_industry_pe">
+                <div class="row">
+                    <h5>科技</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=931186.CSI">中证科技</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000998.CSI">中证TMT</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=000993.SH">全指信息</a></div>
+                    <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=h21081.CSI">中证半导全收益</a></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="dropdown-menu-section dropdown-menu-section_stock_middle_pe_pb">
+                <div class="row">
+                    <h5>全部A股平均市盈率/市净率（股市温度计）</h5>
+                    <hr/>
+                    <div class="col-md-6"><a href="/stockdata/a-ttm-lyr">全部A股等权重&中位数市盈率</a></div>
+                    <div class="col-md-6"><a href="/stockdata/all-pb">全部A股等权重&中位数市净率</a></div>
+                    <div class="col-md-6"><a href="/stockdata/a-pe">全部A股(沪深)市盈率</a></div>
+                    <div class="col-md-6"><a href="/stockdata/a-add-pb">全部A股(沪深)市净率</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_hongli">
+                <div class="row">
+                    <h5>红利指数</h5>
+                    <hr/>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=000922.CSI">中证红利</a></div>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=h30269.CSI">中证红利低波</a></div>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=931468.CSI">中证红利质量</a></div>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=H30089.CSI">中证红利潜力</a></div>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=H30094.CSI">中证消费红利</a></div>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=000824.SH">中证国企红利</a></div>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=000015.SH">上证红利</a></div>
+                    <div class="col-md-3"><a href="/stockdata/index-basic?indexCode=399324.SZ">深证红利</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+					
+
+
+<li class="dropdown" id="top-nav-data">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+        综合<span class="caret"></span>
+    </a>
+    <div class="dropdown-menu lg-dropdown-menu lg-dropdown-menu-zh">
+        <div class="dropdown-menu-section dropdown-menu-section_main">
+            <div class="row">
+                <h5><a href="/stockdata/macro-nav"><span style="color: #a5a5a5;">宏观指标</span> <span style="padding-left:20px; font-size: 13px;color: #a5a5a5;">[查看更多]</span></a></h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/pmi">PMI和股市同期</a></div>
+                <div class="col-md-12"><a href="/stockdata/m1m2">M1M2历史数据</a></div>
+                <div class="col-md-12"><a href="/stockdata/broadmoney">M1-M2</a></div>
+                <div class="col-md-12"><a href="/stockdata/charts/1882">住户存款/沪深300市值</a></div>
+                <div class="col-md-12"><a href="/stockdata/m1-yoy">M1同比</a></div>
+                <div class="col-md-12"><a href="/stockdata/m2-gdp">M2/GDP</a></div>
+                <div class="col-md-12"><a href="/stockdata/m1-ppi">M1-PPI</a></div>
+            </div>
+            <div class="row">
+                <h5>股息率</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/guxilv">A股股息率</a></div>
+                <div class="col-md-12"><a href="/stockdata/charts/628" title="标普500股息率">标普500股息率</a></div>
+                <div class="col-md-12"><a href="/stockdata/market/hk/dv/hsi" title="恒生指数股息率">恒生指数股息率</a></div>
+                <div class="col-md-12"><a href="/stockdata/market/hk/dv/hscei" title="恒生中国企业指数股息率">恒生中国企业股息率</a></div>
+                <div class="col-md-12"><a href="/stockdata/market/hk/dv/hsf" title="恒生金融指数股息率">恒生金融股息率</a></div>
+                <div class="col-md-12"><a href="/stockdata/market/hk/dv/hsp" title="恒生地产指数股息率">恒生地产股息率</a></div>
+                <div class="col-md-12"><a href="/stockdata/market/hk/dv/hsu" title="恒生公共指数股息率">恒生公共股息率</a></div>
+                <div class="col-md-12"><a href="/stockdata/market/hk/dv/hsci" title="恒生工商指数股息率">恒生工商股息率</a></div>
+
+            </div>
+        </div>
+        <div class="dropdown-menu-section dropdown-menu-section_main">
+            <div class="row">
+                <h5>沪深港通资金</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/hk-to-a">北向资金</a> / <a href="/stockdata/hk-to-a-acc">北向资金累计</a></div>
+                <div class="col-md-12"><a href="/stockdata/hu-shen-gang-tong">沪深港通资金流向</a></div>
+                <div class="col-md-12"><a href="/stockdata/hu-gu-tong">沪股通</a> / <a href="/stockdata/shen-gu-tong">深股通</a></div>
+                <div class="col-md-12"><a href="/stockdata/gang-gu-tong-hu">港股通(沪)</a> / <a href="/stockdata/gang-gu-tong-shen">港股通(深)</a></div>
+            </div>
+            <div class="row">
+                <h5>行情</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/market-activity">赚钱效应分析</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-activity-trend">赚钱效应日内趋势</a></div>
+                <div class="col-md-12"><a href="/hot-stock-rank">24小时热门股票排行</a></div>
+                <div class="col-md-12"><a href="/stockdata/holder-trade-count">增持、减持统计</a></div>
+                <div class="col-md-12"><a href="/stockdata/company-announcement">公告掘金</a></div>
+                <div class="col-md-12"><a href="/stockdata/earnings-momentum">业绩公告后涨幅榜</a></div>
+                <div class="col-md-12"><a href="/stockdata/earnings-losers">业绩公告后跌幅榜</a></div>
+            </div>
+            <div class="row">
+                <h5>排名</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/below-net-asset-sort">破净股排名</a></div>
+                <div class="col-md-12"><a href="/stockdata/dv-ratio-sort">股息率排名(前100名)</a></div>
+                <div class="col-md-12"><a href="/stockdata/stock-pe-sort">市盈率排名(前100名)</a></div>
+                <div class="col-md-12"><a href="/stockdata/roe-sort">ROE排名</a></div>
+                <div class="col-md-12"><a href="/stockdata/stock-daily-basic">A股每日股票指标</a></div>
+            </div>
+        </div>
+        <div class="dropdown-menu-section dropdown-menu-section_main">
+            <div class="row">
+                <h5>基金仓位</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/fund-position/pos-stock">股票型基金仓位</a></div>
+                <div class="col-md-12"><a href="/stockdata/fund-position/pos-pingheng">平衡混合型基金仓位</a></div>
+                <div class="col-md-12"><a href="/stockdata/fund-position/pos-linghuo">灵活配置型基金仓位</a></div>
+            </div>
+            <div class="row">
+                <h5>指数波段</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/market-analysis-shanghai">上证指数波段分析</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-analysis-szcz">深证成指波动分析</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-analysis-hs300">沪深300指数波段分析</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-analysis-chuangye">创业板指数波段分析</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-analysis-average-price">A股平均股价</a></div>
+            </div>
+            <div class="row">
+                <h5>追涨情绪</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/emotion-daily?emotionType=limitUp">昨日涨停指数</a></div>
+                <div class="col-md-12"><a href="/stockdata/emotion-daily?emotionType=hotStock">昨日TOP100指数</a></div>
+            </div>
+            <div class="row">
+                <h5>风格跟踪</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/dividend-style">红利风格跟踪(股息率风格)</a></div>
+                <div class="col-md-12"><a href="/stockdata/micro-cap">微盘股跟踪(最小市值100)</a></div>
+                <div class="col-md-12"><a href="/stockdata/fcf-index">自由现金流指数跟踪</a></div>
+                <div class="col-md-12"><a href="/stockdata/consume-dividend">消费红利指数跟踪</a></div>
+            </div>
+        </div>
+        <div class="dropdown-menu-section dropdown-menu-section_main">
+            <div class="row">
+                <h5>资金面</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/margin-trading">融资融券变动</a></div>
+                <div class="col-md-12"><a href="/stockdata/rzrqye">融资融券余额</a></div>
+            </div>
+            <div class="row">
+                <h5>情绪指标</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/investors-yoy">存量投资者数同比增长(%)</a></div>
+                <div class="col-md-12"><a href="/stockdata/new-investors">新增投资者数</a></div>
+            </div>
+            <div class="row">
+                <h5>券商月度十大金股</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/broker-recommend-monthly-regression">券商十大金股组合(当月)</a></div>
+                <div class="col-md-12"><a href="/stockdata/broker-recommend-monthly-regression/statistics">往期券商金股统计</a></div>
+            </div>
+            <div class="row">
+                <h5>股东查询</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/shareholder">十大股东查询</a></div>
+                <div class="col-md-12"><a href="/stockdata/stock-holder-number-stat">最近股东人数变化统计</a></div>
+            </div>
+            <div class="row">
+                <h5>模拟炒股</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/mock-trading">模拟炒股</a></div>
+            </div>
+            <div class="row">
+                <h5>定投</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/index-dca">指数定投模拟回测</a></div>
+            </div>
+        </div>
+    </div>
+</li>
+					
+
+
+<li class="dropdown" id="top-nav-bottom">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+        底部研究<span class="caret"></span>
+    </a>
+    <div class="dropdown-menu lg-dropdown-menu lg-dropdown-menu-d">
+        <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 380px">
+            <div class="row">
+                <h5>底部研究</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/marketcap-gdp">巴菲特指标：总市值比GDP</a></div>
+                <div class="col-md-12"><a href="/stockdata/equity-bond-spread">股债利差</a></div>
+                <div class="col-md-12">
+                    <a href="/stockdata/a-risk-premium">A股风险溢价</a>/
+                    <a href="/stockdata/hsi-risk-premium">港股风险溢价</a>/
+                    <a href="/stockdata/hs300-risk-premium">沪深300风险溢价</a>/
+                    <a href="/stockdata/hs300-tcjr-risk-premium">沪深300(剔除金融)风险溢价</a>/
+                    <a href="/stockdata/sz50-risk-premium">上证50风险溢价</a>
+                </div>
+                <div class="col-md-12"><a href="/stockdata/china-10-year-bond-yield">十年期国债利率倒数与A股PE中位数走势</a></div>
+                <div class="col-md-12">
+                    <a href="/stockdata/below-net-asset-statistics?marketId=1">统计破净股统计:全部A股</a>/
+                    <a href="/stockdata/below-net-asset-statistics?marketId=000300.XSHG">沪深300</a>/
+                    <a href="/stockdata/below-net-asset-statistics?marketId=000016.SH">上证50</a>/
+                    <a href="/stockdata/below-net-asset-statistics?marketId=000905.SH">中证500</a>
+                </div>
+                <div class="col-md-12"><a href="/stockdata/ma-statistics">5/20/60日均线</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-turn-over-ratio-statistics">低换手率、高换手率占比统计</a></div>
+                <div class="col-md-12"><a href="/stockdata/kdj-statistics">KDJ指标平均值</a></div>
+                <div class="col-md-12"><a href="/stockdata/high-low-statistics">创新高、新低数量统计</a></div>
+                <div class="col-md-12"><a href="/stockdata/stock-day-limit">涨停板统计研究(情绪指标)</a></div>
+                <div class="col-md-12"><a href="/stockdata/holder-trade-count">增持、减持统计</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-style?indexCode=1">恐慌&贪心指标(情绪指标)</a></div>
+                <div class="col-md-12">
+                    <a href="/stockdata/market-style-rotation">价值中小盘风格轮动:沪深300vs中证500</a>/
+                    <a href="/stockdata/market-style-rotation-hs300-gz2000">沪深300vs国证2000</a>
+                    <a href="/stockdata/market-style-rotation/gz2000-divided-by-hs300">国证2000/沪深300</a>
+                </div>
+                <div class="col-md-12"><a href="/stockdata/cnn-fear-and-greed">CNN恐慌贪心指标（美股）</a></div>
+                <div class="col-md-12"><a href="/stockdata/market-structure/momentum">市场结构-动量走势</a></div>
+            </div>
+        </div>
+    </div>
+</li>
+					<li id="top-nav-sw-market-width">
+						<a href="/stockdata/macro-nav">宏观数据</a>
+					</li>
+					
+
+
+<li class="dropdown" id="top-nav-prosperity">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+        景气度/拥挤度<span class="caret"></span>
+    </a>
+    <div class="dropdown-menu lg-dropdown-menu-db">
+        <div>
+            <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 370px">
+                <div class="row">
+                    <h5><a href="/stockdata/market-indicator-nav"><span style="color: #a5a5a5;">景气度指标</span> <span style="padding-left:20px; font-size: 13px;color: #a5a5a5;">[查看更多]</span></a></h5>
+                    <hr/>
+                    <div class="col-md-6"><a
+                            href="/stockdata/middle-avg-indicator?indicatorCode=netProfitYoy"
+                            title="景气度指标_净利润增长率">净利润增长率</a>
+                    </div>
+                    <div class="col-md-6"><a
+                            href="/stockdata/middle-avg-indicator?indicatorCode=orYoy"
+                            title="景气度指标_营业收入增长率">营业收入增长率</a>
+                    </div>
+                    <div class="col-md-6"><a
+                            href="/stockdata/middle-avg-indicator?indicatorCode=opYoy"
+                            title="景气度指标_营业利润增长率">营业利润增长率</a>
+                    </div>
+                    <div class="col-md-6"><a
+                            href="/stockdata/middle-avg-indicator?indicatorCode=trYoy"
+                            title=景气度指标_营业总收入增长率>营业总收入增长率</a>
+                    </div>
+                    <div class="col-md-6"><a
+                            href="/stockdata/middle-avg-indicator?indicatorCode=ebtYoy"
+                            title="景气度指标_利润总额增长率">利润总额增长率</a>
+                    </div>
+                    <div class="col-md-6"><a
+                            href="/stockdata/middle-avg-indicator?indicatorCode=roeYoy"
+                            title="景气度指标_ROE增长率">ROE增长率</a>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 370px">
+                <div class="row">
+                    <h5>拥挤度指标</h5>
+                    <hr/>
+                    <div class="col-md-12"><a
+                            href="/stockdata/ashares-congestion"
+                            title="大盘拥挤度">大盘拥挤度(逃顶利器)</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/szshares-congestion"
+                            title="深市拥挤度">深市拥挤度</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/cyshares-congestion"
+                            title="创业板拥挤度">创业板拥挤度</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/charts/426"
+                            title="融资买入/成交额">融资买入/成交额(逃顶利器)</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/sw-congestion"
+                            title="行业拥挤度-申万1级">行业拥挤度-申万1级</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/sw-congestion/sec-level"
+                            title="行业拥挤度-申万2级">行业拥挤度-申万2级</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/sw-amount-ratio"
+                            title="申万行业成交额占比-申万1级">申万行业成交额占比-1级</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/sw-amount-ratio/sec-level"
+                            title="申万行业成交额占比-申万2级">申万行业成交额占比-2级</a>
+                    </div>
+                    <div class="col-md-12"><a
+                            href="/stockdata/low-market-cap"
+                            title="小市值因子拥挤度与因子估值">小市值因子拥挤度与因子估值</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 370px">
+                <div class="row">
+                    <h5>业绩预告统计</h5>
+                    <hr/>
+                    <div class="col-md-12"><a
+                            href="/stockdata/ye-ji-yu-gao"
+                            title="业绩预告-按类型统计">业绩预告-按类型统计</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 370px">
+                <div class="row">
+                    <h5>机构调研</h5>
+                    <hr/>
+                    <div class="col-md-12"><a href="/stockdata/surveys">近期调研列表</a></div>
+                    <div class="col-md-12"><a href="/stockdata/survey-group-by-times?days=30">近30天调研次数排名</a></div>
+                    <div class="col-md-12"><a href="/stockdata/survey-group-by-institution?days=30">近30天机构调研排名</a></div>
+                </div>
+            </div>
+            <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 370px">
+                <div class="row">
+                    <h5>回购</h5>
+                    <hr/>
+                    <div class="col-md-12"><a
+                            href="/stockdata/stock-recent-repurchase?page=1"
+                            title="近期回购公告">近期A股回购数据</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+					
+
+
+<li class="dropdown" id="top-nav-market-width">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+        市场宽度<span class="caret"></span>
+    </a>
+    <div class="dropdown-menu lg-dropdown-menu lg-dropdown-menu-d">
+        <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 380px">
+            <div class="row">
+                <h5>市场宽度</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/sw-market-width">市场宽度-申万1级</a></div>
+                <div class="col-md-12"><a href="/stockdata/sw-market-width/sec-level">市场宽度-申万2级</a></div>
+            </div>
+        </div>
+    </div>
+</li>
+					
+
+
+<li class="dropdown" id="top-nav-fund">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">
+        基金持仓研究<span class="caret"></span>
+    </a>
+    <div class="dropdown-menu lg-dropdown-menu lg-dropdown-menu-d">
+        <div class="dropdown-menu-section dropdown-menu-section_stock_a_main" style="width: 380px">
+            <div class="row">
+                <h5>排名</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/fund-shareholding-rankings">基金重仓股排名</a></div>
+                <div class="col-md-12"><a href="/stockdata/fund-sw-industry-holding?level=1">基金重仓行业排名-申万1级</a></div>
+                <div class="col-md-12"><a href="/stockdata/fund-sw-industry-holding?level=2">基金重仓行业排名-申万2级</a></div>
+                
+            </div>
+            <div class="row">
+                <h5>仓位</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/fund-holding-rate-history?industryCode=主动型基金仓位(Top10)&keys=fund_sw_主动型基金仓位(Top10),hs300">主动型基金仓位-披露仓位计算版</a></div>
+                <div class="col-md-12"><a href="/stockdata/fund-holding-rate-history?industryCode=股票型仓位(Top10)&keys=fund_sw_股票型仓位(Top10),hs300">股票型仓位-披露仓位计算版</a></div>
+                <div class="col-md-12"><a href="/stockdata/fund-holding-rate-history?industryCode=混合型仓位(Top10)&keys=fund_sw_混合型仓位(Top10),hs300">混合型仓位-披露仓位计算版</a></div>
+                <div class="col-md-12"><a href="/stockdata/fund-holding-rate-history?industryCode=灵活型仓位(Top10)&keys=fund_sw_灵活型仓位(Top10),hs300">灵活型仓位-披露仓位计算版</a></div>
+            </div>
+            <div class="row">
+                <h5>基金重仓指数</h5>
+                <hr/>
+                <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=800200.LG">基金重仓前200名</a></div>
+                <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=800100.LG">基金重仓前100名</a></div>
+                <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=800050.LG">基金重仓前50名</a></div>
+                <div class="col-md-12"><a href="/stockdata/index-basic?indexCode=800020.LG">基金重仓前20名</a></div>
+            </div>
+        </div>
+    </div>
+</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-nav-ul navbar-right lg-nav-login">
+					
+
+
+
+	<li><a class="login-link" href="/login">登录</a></li>
+
+
+					<li class="lg-nav-theme-toggle">
+						<button type="button" class="lg-theme-toggle" data-theme-toggle
+						        title="切换日/夜间模式" aria-label="切换日/夜间模式">
+							<svg class="lg-theme-icon--sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="12" cy="12" r="5"/>
+								<line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+								<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+								<line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+								<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+							</svg>
+							<svg class="lg-theme-icon--moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+							</svg>
+						</button>
+					</li>
+					<li class="lg-nav-search-item">
+						<a class="glyphicon glyphicon-search lg-nav-search-icon" aria-hidden="true"></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-nav-ul navbar-right hidden-x">
+					<li>
+						<a class="glyphicon glyphicon-search lg-nav-search-icon" aria-hidden="true"></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="lg-nav-search-panel container">
+			<span class="lg-nav-search-close"><i class="glyphicon glyphicon-remove"></i></span>
+			<div class="row">
+				<form action="/search" method="get" id="search-form" class="col-md-12">
+					<div class="search-input-container">
+						<input id="autocomplete" maxlength="20" name="text" type="text" placeholder="股票代码/股票术语/题材"/>
+						<span id="search-icon" class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					</div>
+					<input type="hidden" name="page" value="1">
+				</form>
+				<div id="hot-searches" class="hot-searches col-md-offset-3 col-md-6">
+					
+
+
+<a href="/search?text=市盈率&page=1">市盈率</a>
+<a href="/search?text=M1M2&page=1">M1M2</a>
+<a href="/search?text=十年期国债&page=1">十年期国债</a>
+<a href="/search?text=红利&page=1">红利</a>
+<a href="/search?text=巴菲特指标&page=1">巴菲特指标</a>
+<a href="/search?text=恒生指数市盈率&page=1">恒生指数市盈率</a>
+<a href="/search?text=均线&page=1">均线</a>
+<a href="/search?text=波段&page=1">波段</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</nav>
+
+
+
+<div id="mobile-search-form" class="container lg-mobile-search-hide">
+	<div class="row">
+		<div>
+			<form class="form-inline" action="/search" method="get">
+				<input id="mobile-autocomplete" maxlength="20" name="text" type="text" class="form-control"
+							 placeholder="股票代码/股票术语/题材">
+				<input type="hidden" name="page" value="1">
+			</form>
+		</div>
+		<div class="mobile-search-close-icon">
+		</div>
+		<div id="recent-search" class="recent-search">
+			<h5>大家都在搜:</h5>
+			
+
+
+<a href="/search?text=市盈率&page=1">市盈率</a>
+<a href="/search?text=M1M2&page=1">M1M2</a>
+<a href="/search?text=十年期国债&page=1">十年期国债</a>
+<a href="/search?text=红利&page=1">红利</a>
+<a href="/search?text=巴菲特指标&page=1">巴菲特指标</a>
+<a href="/search?text=恒生指数市盈率&page=1">恒生指数市盈率</a>
+<a href="/search?text=均线&page=1">均线</a>
+<a href="/search?text=波段&page=1">波段</a>
+		</div>
+		<div class="mobile-search-logo">乐咕乐股网</div>
+	</div>
+</div>
+
+
+
+
+
+<div class="lg-main">
+	
+		<div class="container lg-container lg-container-ad">
+			
+
+
+
+
+
+<div class="row">
+	
+
+
+	<div class="col-md-12">
+		<div class="lg-top-ad" style="display: none">
+			<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4841635508396044"
+							crossorigin="anonymous"></script>
+			<!-- 页面顶部广告 -->
+			<ins class="adsbygoogle"
+					 style="display:inline-block;width:100%;height:90px"
+					 data-ad-client="ca-pub-4841635508396044"
+					 data-ad-slot="1871593366" data-ad-status-callback="adStatusChanged"></ins>
+			<script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          function adStatusChanged(status) {
+              if (status === 'filled') {          // 已填充
+                  document.querySelector('.lg-top-ad').style.display = 'block';
+              }
+          }
+			</script>
+		</div>
+	</div>
+
+
+	<div class="col-md-12">
+		<div class="stock-data-center">
+			
+
+<div class="data-center-menu">
+	<div id="data-center"></div>
+	
+
+
+	<div class="lg-ad-side">
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4841635508396044"
+						crossorigin="anonymous"></script>
+		<!-- 左侧导航栏下方广告 -->
+		<ins class="adsbygoogle adsbygoogle-hidden"
+				 style="display:block"
+				 data-ad-client="ca-pub-4841635508396044"
+				 data-ad-slot="5822590169"
+				 data-ad-format="auto"
+				 data-full-width-responsive="true"></ins>
+		<script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+	</div>
+
+</div>
+<div class="data-center-menu-mobile">
+	<div class="current-path">
+		<div class="current-path--label">
+			<i class="fa fa-map-marker icon-font-red"></i>
+			<span class="path-location">当前位置：</span>
+		</div>
+		<ol class="breadcrumb path-nav">
+			<li><a href="/">首页</a></li>
+			<li class="active"><a href="/stockdata/box">数据导航</a></li>
+			
+			<li class="active"><a href="">赚钱效应分析</a></li>
+		</ol>
+	</div>
+</div>
+
+
+			<div class="data-view">
+				<div class="market market-activity">
+					<div class="market-info market-info-no-border">
+						<div class="row">
+							<div class="col-md-5">
+								<div class="market-title">
+									<h1>赚钱效应分析</h1>
+									<div class="full-name">量化市场活跃度</div>
+								</div>
+							</div>
+							<div class="col-md-7">
+								<div class="market-activity-metrics metrics-layout">
+									<div class="metric-item metric-activity">
+										<span class="metric-label">活跃度</span>
+										<span class="metric-value">44.59%</span>
+									</div>
+								</div>
+								<div class="market-activity-meta">
+									<span class="market-activity-time">2026-08-14 15:00:00</span>
+									<div id="star-btn"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="view-content">
+					<div class="view-part">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="part-title">
+									<span class="light-title">赚钱效应</span>
+								</div>
+								<div class="part-content">
+									<div class="echarts-for-cube">
+										<div id="marketHotChart" class="chart-back"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="market-activity-chart-right-side">
+									<div class="market-activity-chart-right-side-table">
+										<h4>涨跌比: 44.59%</h4>
+										<table style="width: 100%;font-size: 15px;">
+											<tbody>
+											<tr>
+												<td>上涨</td>
+												<td class="color-red">2322</td>
+												<td>下跌</td>
+												<td class="color-green">2720</td>
+												<td>平盘</td>
+												<td class="color-gray">163</td>
+											</tr>
+											<tr>
+												<td>涨停</td>
+												<td class="color-red">63</td>
+												<td>跌停</td>
+												<td class="color-green">13</td>
+												<td>停牌</td>
+												<td class="color-gray">3</td>
+											</tr>
+											<tr>
+												<td>真实涨停</td>
+												<td class="color-red">56</td>
+												<td>真实跌停</td>
+												<td class="color-green">13</td>
+											</tr>
+											<tr>
+												<td>st st*涨停</td>
+												<td class="color-red">1</td>
+												<td>st st*跌停</td>
+												<td class="color-green">0</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+									<div class="market-activity-chart-right-side-question">
+										<h4>涨跌比是什么？</h4>
+										<p>即沪深两市上涨个股所占比例，体现的是市场整体涨跌，占比越大则代表大部分个股表现活跃。</p>
+									</div>
+									<div class="market-activity-chart-right-side-question">
+										<h4>涨停板数与跌停板数的意义：</h4>
+										<p>涨停家数在一定程度上反映了市场的投机氛围。当涨停家数越多，则市场的多头氛围越强。</p>
+										<p><b>真实涨停</b>是非一字无量涨停。<b>真实跌停</b>是非一字无量跌停。</p>
+									</div>
+									<div class="market-activity-chart-right-side-question">
+										<h4>A股每日中位数涨幅</h4>
+										<p>反馈市场的平均涨跌水平。该数据不支持实时更新，数据在收盘后更新。</p>
+									</div>
+									<div class="market-activity-chart-right-side-question">
+										<table class="table table-bordered">
+											<thead>
+											<tr>
+												<th>指数</th>
+												<th>中位数涨幅(2026-08-14)</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr>
+												<td>
+													全部A股
+												</td>
+												<td>
+													-0.20%
+												</td>
+											</tr>
+											<tr>
+												<td>
+													沪深300
+												</td>
+												<td>
+													-0.54%
+												</td>
+											</tr>
+											<tr>
+												<td>
+													上证
+												</td>
+												<td>
+													-0.20%
+												</td>
+											</tr>
+											<tr>
+												<td>
+													深证
+												</td>
+												<td>
+													-0.09%
+												</td>
+											</tr>
+											<tr>
+												<td>
+													创业板
+												</td>
+												<td>
+													0.19%
+												</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="market-activity-proportion-distribution-map view-part">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="part-title">
+									<span class="light-title">涨跌比分布图</span>
+								</div>
+								<div class="part-content">
+									<div class="echarts-market-distribution">
+										<div id="marketDistributionChart"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+
+
+				</div>
+				
+					<div id="total" data-chart="5208" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="totalUp" data-chart="2322" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="totalDown" data-chart="2720" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="limitUp" data-chart="63" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="realLimitUp" data-chart="56" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="limitDown" data-chart="13" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="realLimitDown" data-chart="13" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="up0To3" data-chart="1795" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="up3To5" data-chart="288" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="up5To7" data-chart="112" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="up7To10" data-chart="71" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="down0To3" data-chart="2436" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="down3To5" data-chart="188" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="down5To7" data-chart="51" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="down7To10" data-chart="9" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="priceStop" data-chart="163" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="down10To20" data-chart="0" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="up10To20" data-chart="56" class="hidden-chart-data" style="display: none"></div>
+				
+					<div id="pricePaused" data-chart="3" class="hidden-chart-data" style="display: none"></div>
+				
+			</div>
+		</div>
+		
+
+<div class="stock-data-announce">
+  <p>免责声明：数据相关栏目所收集数据，均来自第三方个人或企业公开数据以及国家统计网站公开发布数据，数据由计算机技术自动收集更新再由作者校验，作者将尽力校验，但不能保证数据的完全准确。
+    阅读本栏目的用户必须明白，图表所示结果或标示仅供学习参考使用，均不构成交易依据。任何据此进行交易等行为，而引致的任何损害后果，本站概不负责。</p>
+</div>
+
+	</div>
+</div>
+
+		</div>
+	
+	
+	
+		
+
+
+
+<div class="lg-my-star-pages-container">
+    
+    <div class="modal fade" id="lg-my-star-modal" tabindex="-1" role="dialog" aria-labelledby="lg-my-star-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="lg-my-star-page-model">
+                    <div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        
+                        
+                        
+                        
+                        
+                        
+                            <div>
+                                <h1>LEGU账号</h1>
+                                <a class="btn btn-danger btn-lg login-link" role="button">登录</a>
+                                <a href="/register" class="lg-my-star-page-model-register">新用户注册</a>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="lg-my-star-pages-side-bar" data-toggle="modal" data-target="#lg-my-star-modal">
+        我的收藏
+    </div>
+</div>
+		
+
+
+<div class="lg-donates-container">
+</div>
+
+
+		
+
+
+<div class="lg-wechat-container">
+	<div class="lg-wxgzh-side-bar">
+		<span>关注微信公众号</span>
+		<img src="//image.legulegu.com/legu_gzh_code.jpg" alt="微信公众号二维码">
+		<span>获取更多数据</span>
+		<div id="close-wechat">关闭 X</div>
+	</div>
+	<script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+          document.querySelector('#close-wechat').addEventListener('click', function() {
+              document.querySelector('.lg-wechat-container').style.display = 'none';
+          });
+      });
+	</script>
+</div>
+
+	
+	<div class="push"></div>
+</div>
+
+	<div id="mobile-nav-mount-dom"></div>
+	
+
+<footer class="lg-footer">
+	<div class="container">
+		<div class="row">
+			<div class="hidden-lg hidden-md col-sm-12 col-xs-12">
+				<div class="wechat-qr-code-app">
+					<img src="//image.legulegu.com/legu_gzh_code.jpg" width="100" alt="微信公众号二维码">
+					<div>扫二维码或微信搜索“乐咕乐股网”公众号</div>
+				</div>
+			</div>
+			<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+				<div class="declare">
+					<div class="about">
+						<div class="title">乐咕乐股网 - 在这里学会股票投资</div>
+						<div class="links">
+							<a href="/about" rel="external nofollow">关于我们</a>
+							<span>|</span>
+							<a href="/announce" rel="external nofollow">版权声明</a>
+							<span>|</span>
+							<a href="/relief" rel="external nofollow">免责声明</a>
+							<span>|</span>
+							<a href="/stockdata/charts-map" class="active">数据预览</a>
+						</div>
+					</div>
+					<div class="copyright">
+						<div class="announcement">
+							Copyright © 2015-2026
+							<a href="/" rel="external nofollow">乐咕乐股网</a>
+							<a href="/" rel="external nofollow">legulegu.com</a>
+							All Rights Reserved.
+						</div>
+						<div class="license">
+							<a href="http://www.miitbeian.gov.cn/" rel="external nofollow">鄂ICP备16005346号</a>
+							<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42010402000129" rel="external nofollow">
+								<img src="/static/image/icon/gonganbeian_icon.png" alt="鄂公网安备"/>
+								<span>鄂公网安备 42010402000129号</span>
+							</a>
+						</div>
+						<div class="aliyun">
+							本站由 <a href="https://www.aliyun.com/">阿里云</a> 提供计算和安全服务
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+				<div class="wechat-qr-code">
+					<img src="//image.legulegu.com/legu_gzh_code.jpg" width="100" alt="微信公众号二维码">
+					<div>微信公众号</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+
+
+
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "",
+  "description": "2026-08-14，A股赚钱效益分布，其中63家涨停，13家跌停，2322家上涨，2720家下跌，1795家上涨0%~3%，288家上涨3%~5%，112家上涨5%~7%，71家上涨7%~10%，56家上涨10%~20%，2436家下跌0%~3%，188家下跌3%~5%，51家下跌5%~7%，9家下跌7%~10%，0家下跌10%~20%。",
+  "url": "https://www.legulegu.com/stockdata/market-activity",
+  "variableMeasured": [
+    {"@type": "PropertyValue", "name": "数据", "description": "2026-08-14，A股赚钱效益分布，其中63家涨停，13家跌停，2322家上涨，2720家下跌，1795家上涨0%~3%，288家上涨3%~5%，112家上涨5%~7%，71家上涨7%~10%，56家上涨10%~20%，2436家下跌0%~3%，188家下跌3%~5%，51家下跌5%~7%，9家下跌7%~10%，0家下跌10%~20%。"}
+  ],
+  "dateModified": "",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.legulegu.com/stockdata/market-activity"
+  }
+}
+</script>
+
+
+<script defer src="/static/js/calc/formula.js"></script>
+<script defer src="/static/js/data-view.min.js?date=20260816"></script>
+<script defer src="//image.legulegu.com/js/tableExport.js" type="text/javascript" rel="script"></script>
+<script defer src="//image.legulegu.com/js/xlsx.full.min.js"></script>
+<script defer src="/static/js/user/user-settings.js?date=20260816"></script>
+<script defer src="//image.legulegu.com/cdn/jquery.autocomplete.min.js" type="text/javascript"></script>
+<script defer src="/static/js/all.min.js?date=20260816" type="text/javascript"></script>
+<script defer src="//cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>
+
+
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117119777-1"></script>
+	<script async>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-117119777-1');
+	</script>
+
+
+<div class="lg-rotate-device" id="lgRotateDevice">
+	<div class="rotate-icon"></div>
+	<div class="rotate-text">建议横屏查看</div>
+	<span class="rotate-close" onclick="closeRotateHint()">&times;</span>
+</div>
+<script>
+(function() {
+    var key = 'lgRotateHintClosed';
+    var week = 7 * 24 * 60 * 60 * 1000;
+    var lastClosed = localStorage.getItem(key);
+    if (lastClosed && Date.now() - parseInt(lastClosed) < week) {
+        var el = document.getElementById('lgRotateDevice');
+        if (el) el.style.display = 'none';
+    }
+    window.closeRotateHint = function() {
+        localStorage.setItem(key, Date.now().toString());
+        var el = document.getElementById('lgRotateDevice');
+        if (el) el.style.display = 'none';
+    };
+})();
+</script>
+</body>
+</html>

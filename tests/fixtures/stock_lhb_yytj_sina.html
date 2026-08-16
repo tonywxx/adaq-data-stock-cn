@@ -1,0 +1,662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=GB2312" />
+	<title>营业部上榜统计 - 数据中心 - 新浪财经</title>
+	<meta name="keywords" content="投资评级,机构评级,沪深A股,A股,股票评级,股票投资评级,研究报告,股票研报,机构股票池">
+    <meta name="description" content="新浪股票投资评级为您及时、全面地提供各大机构的研究报告精华，汇总股票专业投资评级，黑马白马一网打尽">
+    <link rel="stylesheet" type="text/css" href="/q//view/css/investment_rating.css" />
+    <link rel="stylesheet" href="/q//view/css/sjzx.css" type="text/css" />
+    <script type="text/javascript" src="/q//view/js/investment_rating.js"></script>
+</head>
+<body>
+<div class="wrap">
+<!-- 标准二级导航_财经 begin -->
+    <div>
+
+        <div class="secondaryHeader">
+	        <div class="sHBorder">
+		        <div class="sHLogo"><span><a href="http://www.sina.com.cn/"><img src="http://i1.sinaimg.cn/dy/images/header/2009/standardl2nav_sina_new.gif" alt="新浪网" /></a><a href="http://finance.sina.com.cn/"><img src="http://i1.sinaimg.cn/dy/images/header/2009/standardl2nav_finance.gif" alt="新浪财经" /></a></span></div>
+		        <div class="sHLinks"><a href="http://finance.sina.com.cn/">财经首页</a>&nbsp;|&nbsp;<a href="http://www.sina.com.cn/">新浪首页</a>&nbsp;|&nbsp;<a href="http://news.sina.com.cn/guide/">新浪导航</a></div>
+
+	        </div>
+        </div>
+    </div>
+
+<!-- 标准二级导航_财经 end -->
+    <dl class="top_nav">
+	    <dt class="black"><a href="http://finance.sina.com.cn/">财经首页</a></dt>
+	    <dd>
+		    <a href="http://finance.sina.com.cn/stock/">股票</a>
+		    <a href="http://finance.sina.com.cn/fund/">基金</a><a href="http://finance.sina.com.cn/stock/hkstock/">港股</a><a href="http://finance.sina.com.cn/stock/usstock/">美股</a><a href="http://finance.sina.com.cn/futuremarket/">期货</a><a href="http://finance.sina.com.cn/forex/">外汇</a><a href="http://finance.sina.com.cn/nmetal/">贵金属</a><a href="http://finance.sina.com.cn/bond/">债券</a><a href="http://finance.sina.com.cn/stock/indexfuture">期指</a><a href="http://finance.sina.com.cn/stock/warrant/">权证</a><a href="http://vip.stock.finance.sina.com.cn/portfolio/main.php">我的自选</a>
+
+	    </dd>
+	    <dt class="blue"><a href="http://money.finance.sina.com.cn/mkt">行情中心</a></dt>
+    </dl>
+<!--    <div id="ads_20150123" style="height:90px;position:relative;overflow:hidden;">-->
+<!--                                               <ul style="">-->
+<!--												   <li style="height:90px;"><a href="http://finance.sina.com.cn/focus/jiaoyi/ypds/intro.shtml" target="_blank"><img src="http://n.sinaimg.cn/finance/b3a4f934/20160726/980-901.png"/></a></li>-->
+<!--                                                        <li style="height:90px;"><a target="_blank" href="http://finance.sina.com.cn/data/ing.html"><img src="http://www.sinaimg.cn/cj/imgtable/idx/2016/0224/U12678P31T88D31901F2012DT20160224103417.png"/></a></li>-->
+<!---->
+<!--                                              </ul>-->
+<!--     </div>-->
+     <script type="text/javascript" src="http://www.sinaimg.cn/cj/data_20140924/js/js_lib/jquery.js"></script>
+     <script type="text/javascript" src="http://n.sinaimg.cn/finance/common/js/switchable.js"></script>
+     <script>
+        (function($){
+            $('#ads_20150123 ul').switchable({
+            triggers: false,
+            panels: 'li',
+            effect: 'scrollUp',
+            end2end: true,
+            loop: true,
+            autoplay: true,
+            interval: 5,
+            api: true
+            });
+            })(jQuery);
+     </script>
+
+    <div class="banner" style="position:relative;">
+        <a href="##" style="position:absolute;left:40px;top:0px;width:105px;height:35px; text-indent:-9999px;overflow:hidden;">数据中心</a>
+	    <div class="link_wrap" style="width:90px">
+		    <a href="https://gu.sina.cn/pc/feedback/" style="color:#f00;">意见反馈</a>
+		    <!--<a href="http://finance.sina.com.cn/333/2009-06-26/guest680.shtml" target="_blank">帮助</a>-->
+	    </div>
+		<style>
+		.lookup_wrap{width:auto;}
+		</style>
+
+	    <div class="lookup_wrap">
+		    <script type="text/javascript" src="http://www.sinaimg.cn/cj/financewidget/js/SuggestServer_3_0_16.js"></script>
+		    <form action="http://biz.finance.sina.com.cn/suggest/lookup_n.php" target="_blank" method="get" style="position:relative; zoom:1; z-index:100;">
+			    <select id="selectSuggest" name="country" onchange="suggestServer.changeType(this.value);">
+				    <option value="" selected="selected">全部</option>
+				    <option value="stock">沪深</option>
+
+				    <option value="fund">基金</option>
+				    <option value="hkstock">港股</option>
+				    <option value="usstock">美股</option>
+			    </select>
+			    <input type="text" id="inputSuggest" name="q" value="代码/名称/拼音" />
+			    <input type="submit" value="查询" />
+		    </form>
+
+		    <script type="text/javascript">
+			    var suggestServer = new SuggestServer();
+			    suggestServer.bind({
+				    "input": "inputSuggest",
+				    "value": "@2@",
+				    "type": "",
+				    "max": 10,
+				    "width": 270,
+				    "link": "http://biz.finance.sina.com.cn/suggest/lookup_n.php?country=@type@&q=@code@",
+				    "head": ["选项", "代码", "中文名称"],
+				    "body": [-1, 2, 4],
+				    "callback": null
+			    });
+		    </script>
+	    </div>
+        <div class="importantInfo"><a href="http://finance.sina.com.cn/mobile/comfinanceweb.shtml" target="_blank"><span style="color:#ff0000">新浪财经新版客户端火热上线：随时随地查行情 免费股价提醒</span></a></div>
+	    <!--<div class="time_wrap">北京时间:<span id="bj_time">读取中...</span> | 美东时间:<span id="edt_time">读取中...</span></div>-->
+
+    </div>
+
+    <div class="banner_line"></div>
+
+    <!-- main start -->
+    <div class="content">
+        <div class="content_left">
+		<div class="menu">
+            <dl class="menu" id="leftMenu"><dt class="dt_off"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/jyts/index.phtml">投资参考</a></dt><dd style=""><ul><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/jyts/index.phtml">交易提示</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/rzrq/index.phtml">融资融券</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/dzjy/index.phtml">大宗交易</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/nbjy/index.phtml">内部交易</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/xsjj/index.phtml">限售解禁</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/qgqp/index.phtml">千股千评</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/dxsy/index.phtml">打新收益</a></li><li style="border: none;"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lsfh/index.phtml">历史分红</a></li></ul></dd><dt class="dt_off"><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_RatingNewest/index.phtml">机构荐股池</a></dt><dd style="display: none;"><ul><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_RatingNewest/index.phtml">最新投资评级</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_RatingUp/index.phtml">上调评级股票</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_RatingDown/index.phtml">下调评级股票</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_SumRating/index.phtml">股票综合评级</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_RatingFirst/index.phtml">首次评级股票</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_SumPrice/index.phtml">目标涨幅排名</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_OrgCare/index.phtml">机构关注度</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_IndustryCare/index.phtml">行业关注度</a></li><li style="border: none;"><a href="http://stock.finance.sina.com.cn/stock/go.php/vIR_CustomSearch/index.phtml" style="color: red;">投资评级选股</a></li></ul></dd><dt class="dt_off"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml">龙虎榜</a><img class=" new" src="http://vip.stock.finance.sina.com.cn/q/view/image/new.gif"></dt><dd style="display: none;"><ul><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml">每日详情</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/ggtj/index.phtml">个股上榜统计</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml">营业部上榜统计</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/jgzz/index.phtml">机构席位追踪</a></li><li style="border: none;"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/jgmx/index.phtml">机构席位成交明细</a></li></ul></dd><dt class="dt_off"><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#jdgd">市场表现</a></dt><dd style="display: none;"><ul><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#jdgd">阶段最高最低</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#30xg">盘中创新高个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#30xd">盘中创新低个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#cjzz">成交骤增个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#cjzj">成交骤减个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#lxfl">连续放量个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#lxsl">连续缩量个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#lxsz">连续上涨个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#lxxd">连续下跌个股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#zzd">周涨跌排名</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#yzqs">一周强势股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#yzd">月涨跌排名</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#yyqs">一月强势股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#ltsz">流通市值排行</a></li><li><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#sylv">市盈率排行</a></li><li style="border: none;"><a href="http://vip.stock.finance.sina.com.cn/datacenter/hqstat.html#sjlv">市净率排行</a></li></ul></dd><dt class="dt_off"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/profit/index.phtml">财务分析</a></dt><dd style="display: none;"><ul><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/profit/index.phtml">盈利能力</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/operation/index.phtml">营运能力</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/grow/index.phtml">成长能力</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/debtpaying/index.phtml">偿债能力</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/cashflow/index.phtml">现金流量</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/mainindex/index.phtml">业绩报表</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/performance/index.phtml">业绩预告</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/news/index.phtml">业绩快报</a></li><li style="border: none;"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vFinanceAnalyze/kind/incomedetail/index.phtml">利润细分</a></li></ul></dd><dt class="dt_off"><a href="http://stock.finance.sina.com.cn/stock/go.php/vPerformancePrediction/kind/eps/index.phtml">业绩预测</a></dt><dd style="display: none;"><ul><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vPerformancePrediction/kind/eps/index.phtml">每股收益预测</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vPerformancePrediction/kind/sales/index.phtml">营业收入预测</a></li><li><a href="http://stock.finance.sina.com.cn/stock/go.php/vPerformancePrediction/kind/np/index.phtml">净利润预测</a></li><li style="border: none;"><a href="http://stock.finance.sina.com.cn/stock/go.php/vPerformancePrediction/kind/roe/index.phtml">净资产收益率预测</a></li></ul></dd><dt class="dt_off"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vComStockHold/kind/jgcg/index.phtml">机构持股</a></dt><dd style="display: none;"><ul><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vComStockHold/kind/jgcg/index.phtml">机构持股汇总</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vComStockHold/kind/jjzc/index.phtml">基金重仓股</a></li><li><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vComStockHold/kind/sbzc/index.phtml">社保重仓股</a></li><li style="border: none;"><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vComStockHold/kind/qfii/index.phtml">QFII重仓股</a></li></ul></dd></dl>
+            <script type="text/javascript" src="http://vip.stock.finance.sina.com.cn/q/view/js/mini.source.js"></script>
+            <script type="text/javascript" src="http://vip.stock.finance.sina.com.cn/q/view/js/sjzx_menu.js?t=191028"></script>
+            <script type="text/javascript" src="http://vip.stock.finance.sina.com.cn/q/view/js/sjzx_for_old.js?t=191028"></script>
+</div>        </div>
+        <div class="content_right">	<div class="main">
+		<div class="list">
+			<div class="title_bar">
+				<div class="left">营业上榜统计</div>
+			</div>			
+			<div class="page_config">
+			    <div class="left">
+			    	<a href="javascript:void(0)" onclick="set_last_days(5)" class="active"">近5天</a>
+					<div class="spliter"></div>
+					<a href="javascript:void(0)" onclick="set_last_days(10)" class="default"">近10天</a>
+					<div class="spliter"></div>
+					<a href="javascript:void(0)" onclick="set_last_days(30)" class="default"">近30天</a>
+					<div class="spliter"></div>
+					<a href="javascript:void(0)" onclick="set_last_days(60)" class="default"">近60天</a>
+					<div class="clear"></div>
+				</div>
+				<!--<div class="right">
+					<span>每页显示:</span>
+					<a class="page_number " href="javascript:void(0)" onclick="set_per_page(20)">20</a>
+					<a class="page_number active" href="javascript:void(0)" onclick="set_per_page(40)">40</a>
+					<a class="page_number " href="javascript:void(0)" onclick="set_per_page(60)">60</a>
+				</div>
+			--></div>
+				<script type="text/javascript" src="http://vip.stock.finance.sina.com.cn/q/view/js/followme.js"></script>
+			<script type="text/javascript">
+            function getTop(argO)
+            {
+                if(argO.offsetParent)
+                    return argO.offsetTop + getTop(argO.offsetParent);
+                else
+                    return argO.offsetTop || 0;
+            }
+            miniQuery(function()
+            {
+                var head = miniQuery('#dataTable').find('thead');
+                miniQuery('#dataTable').find('thead').followme({minY : getTop(miniQuery('#dataTable')[0])});
+            });
+            </script>
+            <div id="divContainer">
+       		<div style="margin-top:1px;"></div>
+            <table class="list_table" id="dataTable">
+                <thead>
+                  <tr class="head">
+				    <td>营业部名称</td>
+				    					<td><a href="javascript:void(0)" onclick="set_sort('time')"> 上榜次数</a></td>
+					<td><a href="javascript:void(0)" onclick="set_sort('smebtcompany4')">累积购买额(万)</a></td>
+					<td><a href="javascript:void(0)" onclick="set_sort('buy')">买入席位数</a></td>
+					<td><a href="javascript:void(0)" onclick="set_sort('smebtcompany5')">累积卖出额(万)</a></td>
+					<td><a href="javascript:void(0)" onclick="set_sort('sell')">卖出席位数</a></td>
+										<td>买入前三股票</td>
+				  </tr>
+				 </thead>
+				
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80603180&last=">深股通专用</a></td>
+		<td>166</td>
+		<td>966289.87</td>
+		<td>82</td>
+		<td>824588.63</td>
+		<td>84</td>
+		<td>招金黄金,网宿科技,风华高科,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80613584&last=">开源证券股份有限公司西安太华路证券营业部</a></td>
+		<td>93</td>
+		<td>297294.07</td>
+		<td>58</td>
+		<td>193012.12</td>
+		<td>35</td>
+		<td>招金黄金,中国稀土,洁美科技,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80744456&last=">国新证券股份有限公司北京分公司</a></td>
+		<td>15</td>
+		<td>70571.07</td>
+		<td>11</td>
+		<td>15452.71</td>
+		<td>4</td>
+		<td>招金黄金,中鼎股份,百普赛斯,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80435121&last=">东方财富证券股份有限公司昌都两江大道证券营业部</a></td>
+		<td>12</td>
+		<td>15073.71</td>
+		<td>8</td>
+		<td>7316.51</td>
+		<td>4</td>
+		<td>华电辽能,海南海药,立新能源,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80542852&last=">东方财富证券股份有限公司拉萨团结路第一证券营业部</a></td>
+		<td>35</td>
+		<td>35391.04</td>
+		<td>23</td>
+		<td>14384.44</td>
+		<td>12</td>
+		<td>太极实业,传智教育,超纯应材,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80565632&last=">国泰海通证券股份有限公司昆明北京路证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>6249.02</td>
+		<td>1</td>
+		<td>海南海药</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80639764&last=">东方财富证券股份有限公司拉萨金融城南环路证券营业部</a></td>
+		<td>60</td>
+		<td>55272.72</td>
+		<td>32</td>
+		<td>54983.26</td>
+		<td>28</td>
+		<td>风华高科,传智教育,天娱数科,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=82577526&last=">国信证券股份有限公司浙江互联网分公司</a></td>
+		<td>53</td>
+		<td>151613.64</td>
+		<td>36</td>
+		<td>61069.52</td>
+		<td>17</td>
+		<td>华电辽能,风华高科,太极实业,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80172608&last=">中信建投证券股份有限公司安徽分公司</a></td>
+		<td>1</td>
+		<td>15801.4</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>风华高科</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80276317&last=">东方财富证券股份有限公司山南香曲东路证券营业部</a></td>
+		<td>32</td>
+		<td>42390.83</td>
+		<td>17</td>
+		<td>29974.41</td>
+		<td>15</td>
+		<td>风华高科,华电辽能,百花医药,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80034367&last=">中国银河证券股份有限公司上海虹口区天潼路证券营业部</a></td>
+		<td>2</td>
+		<td>209.24</td>
+		<td>2</td>
+		<td>0</td>
+		<td>0</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80043794&last=">中银国际证券股份有限公司浙江分公司</a></td>
+		<td>1</td>
+		<td>88.28</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80127606&last=">方正证券股份有限公司长沙黄兴中路证券营业部</a></td>
+		<td>1</td>
+		<td>57.85</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80138526&last=">华泰证券股份有限公司武汉江汉路证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>249.45</td>
+		<td>1</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80138999&last=">中信证券股份有限公司北京分公司</a></td>
+		<td>5</td>
+		<td>236.59</td>
+		<td>1</td>
+		<td>5747.72</td>
+		<td>4</td>
+		<td>宁夏建材,博济医药,甘咨询,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80444244&last=">广发证券股份有限公司中山三乡证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>129.58</td>
+		<td>1</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80451367&last=">东方财富证券股份有限公司泉州田安路证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>112.81</td>
+		<td>1</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80718370&last=">东方证券股份有限公司唐山北新西道证券营业部</a></td>
+		<td>1</td>
+		<td>97.42</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=82729212&last=">国泰海通证券股份有限公司贵阳长岭南路证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>145.09</td>
+		<td>1</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80033789&last=">中国银河证券股份有限公司北京安贞门证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>488.32</td>
+		<td>1</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80100362&last=">山西证券股份有限公司晋城黄华街证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>581.21</td>
+		<td>1</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80117387&last=">中国中金财富证券有限公司深圳中金大厦证券营业部</a></td>
+		<td>4</td>
+		<td>119.12</td>
+		<td>1</td>
+		<td>7643.61</td>
+		<td>3</td>
+		<td>宝鼎科技,甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80292050&last=">国泰海通证券股份有限公司抚州金巢大道证券营业部</a></td>
+		<td>1</td>
+		<td>181.03</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80445111&last=">中信建投证券股份有限公司北京怀柔府前街证券营业部</a></td>
+		<td>1</td>
+		<td>279.23</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80507893&last=">中信证券股份有限公司深圳滨海大道证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>528.11</td>
+		<td>1</td>
+		<td>甘咨询</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80540274&last=">华泰证券股份有限公司苏州吴中大道证券营业部</a></td>
+		<td>7</td>
+		<td>29107.92</td>
+		<td>4</td>
+		<td>19701.76</td>
+		<td>3</td>
+		<td>誉衡药业,立新能源,通宇通讯,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80610853&last=">东方财富证券股份有限公司江苏分公司</a></td>
+		<td>3</td>
+		<td>0</td>
+		<td>0</td>
+		<td>12356.04</td>
+		<td>3</td>
+		<td>万邦医药,立新能源</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80715937&last=">开源证券股份有限公司西安高新成章路证券营业部</a></td>
+		<td>4</td>
+		<td>15541.64</td>
+		<td>2</td>
+		<td>16739.38</td>
+		<td>2</td>
+		<td>立新能源</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80716876&last=">国泰海通证券股份有限公司成都龙腾东路证券营业部</a></td>
+		<td>23</td>
+		<td>77256.56</td>
+		<td>14</td>
+		<td>33078.25</td>
+		<td>9</td>
+		<td>立新能源,百花医药,哈药股份,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80034123&last=">国泰海通证券股份有限公司深圳人民南路证券营业部</a></td>
+		<td>4</td>
+		<td>8570.04</td>
+		<td>3</td>
+		<td>1520.94</td>
+		<td>1</td>
+		<td>达利凯普,金螳螂,北京文化,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80035001&last=">华鑫证券有限责任公司上海茅台路证券营业部</a></td>
+		<td>5</td>
+		<td>5591.11</td>
+		<td>2</td>
+		<td>6485.06</td>
+		<td>3</td>
+		<td>秦安股份,北京文化,武汉凡谷</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80048397&last=">广发证券股份有限公司成都新光路证券营业部</a></td>
+		<td>1</td>
+		<td>843.58</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>武汉凡谷</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80092170&last=">中国国际金融股份有限公司上海分公司</a></td>
+		<td>41</td>
+		<td>42989.99</td>
+		<td>17</td>
+		<td>92649.98</td>
+		<td>24</td>
+		<td>红板科技,九州一轨,百普赛斯,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80617795&last=">国金证券股份有限公司北京崇文门外大街证券营业部</a></td>
+		<td>6</td>
+		<td>3598.39</td>
+		<td>2</td>
+		<td>4368.3</td>
+		<td>4</td>
+		<td>国风新材,惠天热电,武汉凡谷,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80097340&last=">招商证券股份有限公司深圳益田路免税商务大厦证券营业部</a></td>
+		<td>30</td>
+		<td>50756.77</td>
+		<td>13</td>
+		<td>65629.69</td>
+		<td>17</td>
+		<td>天娱数科,超纯应材,誉衡药业,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80153433&last=">中航证券有限公司南昌赣江北大道证券营业部</a></td>
+		<td>1</td>
+		<td>4216.54</td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>天娱数科</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80535223&last=">东方财富证券股份有限公司拉萨东环路第二证券营业部</a></td>
+		<td>33</td>
+		<td>20545.48</td>
+		<td>19</td>
+		<td>15195.46</td>
+		<td>14</td>
+		<td>超纯应材,天娱数科,传智教育,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80034119&last=">国泰海通证券股份有限公司上海长宁区江苏路证券营业部</a></td>
+		<td>40</td>
+		<td>97208.68</td>
+		<td>30</td>
+		<td>19099.5</td>
+		<td>10</td>
+		<td>网宿科技,宝鼎科技,炬光科技,</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80034811&last=">财通证券股份有限公司绍兴人民中路证券营业部</a></td>
+		<td>1</td>
+		<td>0</td>
+		<td>0</td>
+		<td>1813.15</td>
+		<td>1</td>
+		<td>圣阳股份</td>
+		
+		
+		</tr>
+				<tr>
+		<td><a href="http://vip.stock.finance.sina.com.cn/q/go.php/vLHBData/kind/yytj/index.phtml?smebtcompany2=80549796&last=">华源证券股份有限公司江苏分公司</a></td>
+		<td>7</td>
+		<td>10721.76</td>
+		<td>3</td>
+		<td>10804.69</td>
+		<td>4</td>
+		<td>巨轮智能,圣阳股份,传智教育,</td>
+		
+		
+		</tr>
+				</table>
+		</div>
+			<div class="pages">
+			      <a class="page nolink" href="javascript:void(0)" >上一页</a>  <a class="page nolink" href="javascript:void(0)" >1</a>  <a class="page" href="javascript:void(0)" onclick="set_page_num('2')">2</a>  <a class="page" href="javascript:void(0)" onclick="set_page_num('3')">3</a>  <a class="page" href="javascript:void(0)" onclick="set_page_num('4')">4</a>  <a class="page" href="javascript:void(0)" onclick="set_page_num('5')">5</a>  <a class="page" href="javascript:void(0)" onclick="set_page_num('6')">6</a>  <a class="page" href="javascript:void(0)" onclick="set_page_num('2')">下一页</a> 			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        var code_list = "";
+    var element_list = "";
+    </script>
+
+<script type="text/javascript" src="http://www.sinaimg.cn/cj/stock/investment_rating_tail.js"></script>
+
+<!-- 新浪财经标准尾 begin -->
+
+<style type="text/css">
+#footer{width:950px; text-align:center; line-height:21px; font-size:12px;margin-top:20px;color:#333;margin-left:auto;margin-right:auto;}
+#footer a:link{color:#000099}
+#footer a:visited{color:#800080}
+#footer a:hover{color:#ff0000;text-decoration:underline;}
+#footer a:active {color:#0100A3; text-decoration:none;}
+</style>
+<!-- SUDA_CODE_START --> 
+<script type="text/javascript" src="//www.sinaimg.cn/unipro/pub/suda_s_v851c.js"></script>
+<script type="text/javascript" > 
+_S_pSt(_S_PID_); 
+</script>
+<!-- SUDA_CODE_END -->
+
+<div id="footer">
+客户服务热线：4001102288　　
+欢迎批评指正<br>
+
+<a target="_blank" href="http://tech.sina.com.cn/focus/sinahelp.shtml">常见问题解答</a>  
+<a target="_blank" href="http://net.china.cn/chinese/index.htm">互联网违法和不良信息举报</a>　
+<a target="_blank" href="https://gu.sina.cn/pc/feedback/">新浪财经意见反馈留言板</a>
+<br><br>
+<a href="http://corp.sina.com.cn/chn/">新浪简介</a> | <a href="http://corp.sina.com.cn/eng/">About Sina</a> | <a href="http://emarketing.sina.com.cn/">广告服务</a> | <a href="http://www.sina.com.cn/contactus.html">联系我们</a> | <a href="http://corp.sina.com.cn/chn/sina_job.html">招聘信息</a> | <a href="http://www.sina.com.cn/intro/lawfirm.shtml">网站律师</a> | <a href="http://english.sina.com">SINA English</a> | <a href="http://members.sina.com.cn/apply/">通行证注册</a> | <a href="http://help.sina.com.cn/">产品答疑</a><br><br>新浪公司　<a target="_blank" href="http://www.sina.com.cn/intro/copyright.shtml">版权所有</a>
+ <br><br><span style="color:#aaa;">新浪财经免费提供股票、基金、债券、外汇等行情数据以及其他资料均来自相关合作方，仅作为用户获取信息之目的，并不构成投资建议。<br/>新浪财经以及其合作机构不为本页面提供信息的错误、残缺、延迟或因依靠此信息所采取的任何行动负责。市场有风险，投资需谨慎。</span>
+</div>
+
+<!-- 新浪财经标准尾 end -->
+
+<script type="text/javascript" src="http://www.sinaimg.cn/unipro/pub/suda_m_v629.js"></script>
+<script type="text/javascript">suds_init(1345,100.00,965,2);</script>
+
+</body>
+</html>

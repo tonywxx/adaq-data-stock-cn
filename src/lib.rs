@@ -1,5 +1,6 @@
 pub mod core;
 pub mod stock;
+pub mod stock_fundamental;
 
 pub mod alt;
 pub mod board;
@@ -9,6 +10,7 @@ pub mod coin;
 pub mod crypto;
 pub mod economic;
 pub mod forex;
+pub mod fx;
 pub mod fund;
 pub mod futures;
 pub mod index;
@@ -30,6 +32,7 @@ pub mod futures_derivative;
 pub mod hf;
 pub mod qdii;
 pub mod qhkc;
+pub mod qhkc_web;
 pub mod reits;
 pub mod video;
 

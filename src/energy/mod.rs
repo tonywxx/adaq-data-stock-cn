@@ -24,3 +24,5 @@
 //!
 //! (`energy_oil_em.energy_oil_hist` / `energy_oil_detail` are Sina/news
 //! endpoints tracked under the `spot`/`news` domains instead.)
+
+pub mod energy_html_gaps;

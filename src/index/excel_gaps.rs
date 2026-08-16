@@ -258,14 +258,6 @@ pub async fn index_detail_hist_cni(_client: &Client, symbol: &str) -> Result<Vec
     parse_index_detail_cni_impl(&bytes, "index_detail_hist_cni")
 }
 
-pub(crate) fn parse_index_detail_cni(bytes: &[u8]) -> Result<Vec<IndexDetailCni>> {
-    parse_index_detail_cni_impl(bytes, "index_detail_cni")
-}
-
-pub(crate) fn parse_index_detail_hist_cni(bytes: &[u8]) -> Result<Vec<IndexDetailCni>> {
-    parse_index_detail_cni_impl(bytes, "index_detail_hist_cni")
-}
-
 // ---------------------------------------------------------------------------
 // index_stock_cons_csindex / index_stock_cons_weight_csindex
 // ---------------------------------------------------------------------------
@@ -482,7 +474,7 @@ mod tests {
 
     #[test]
     fn parses_index_detail_cni() {
-        let rows = parse_index_detail_cni(&fixture("index_detail_cni.xlsx")).unwrap();
+        let rows = parse_index_detail_cni_impl(&fixture("index_detail_cni.xlsx"), "index_detail_cni").unwrap();
         assert!(!rows.is_empty());
         assert_eq!(rows[0].sample_code, "000937");
         assert_eq!(rows[0].sample_abbr, "冀中能源");
@@ -492,7 +484,7 @@ mod tests {
 
     #[test]
     fn parses_index_detail_hist_cni() {
-        let rows = parse_index_detail_hist_cni(&fixture("index_detail_hist_cni.xlsx")).unwrap();
+        let rows = parse_index_detail_cni_impl(&fixture("index_detail_hist_cni.xlsx"), "index_detail_hist_cni").unwrap();
         assert!(!rows.is_empty());
         assert_eq!(rows[0].sample_code, "000937");
     }

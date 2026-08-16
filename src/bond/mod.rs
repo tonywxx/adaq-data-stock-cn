@@ -18,3 +18,4 @@ pub use eastmoney::*;
 
 pub mod wv_bond_misc;
 pub mod excel_gaps;
+pub mod bond_html_gaps;

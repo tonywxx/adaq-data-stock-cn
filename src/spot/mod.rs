@@ -6,3 +6,6 @@ pub mod price_qh;
 
 // --- spot "gaps" port: 99qh spot-vs-futures trend ---
 pub mod spot_gaps;
+
+// --- spot "gaps" port: soozhu hog/feed price series ---
+pub mod spot_html_gaps;

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=GB2312" />
+	<title>持仓分析-期货-新浪财经</title>
+	<meta name="keywords" content="期货持仓,持仓排名,成交持仓,持仓结构,建仓过程,持仓均价,盈亏分析">
+    <meta name="description" content="各期货交易所会员的持仓情况一览">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="stylesheet" type="text/css" href="//n.sinaimg.cn/finance/futures/pc/src/futures_positions.css?202208231111" />
+    <script type="text/javascript" src="http://finance.sina.com.cn/realstock/company/js/mini.source.js"></script>
+    <script type="text/javascript" src="/q//view/js/futures_positions.js"></script>
+</head>
+<body>
+	
+    
+	<!-- 标准二级导航_财经 begin -->
+	<div class="sina_finance_header">
+		<div style="float:left"><a href="http://www.sina.com.cn/"><img src="http://i1.sinaimg.cn/dy/images/header/2009/standardl2nav_sina_new.gif" alt="新浪网" /></a><a href="http://finance.sina.com.cn/"><img src="http://i1.sinaimg.cn/dy/images/header/2009/standardl2nav_finance.gif" alt="新浪财经" /></a></div>
+		<div style="float:right; line-height:31px;"><a href="http://finance.sina.com.cn/">财经首页</a>&nbsp;|&nbsp;<a href="http://www.sina.com.cn/">新浪首页</a>&nbsp;|&nbsp;<a href="http://news.sina.com.cn/guide/">新浪导航</a></div>
+	</div>
+	<!-- 标准二级导航_财经 end -->
+	
+	<!-- 新浪财经二级导航 begin -->	
+	<div class="sina_finance_nav_blue">
+		<div><a target="_blank" href="http://finance.sina.com.cn/">财经首页</a></div>
+		<table>
+			<tr>
+				<td><a target="_blank" href="http://finance.sina.com.cn/futuremarket/">期货首页</a></td>
+				<td><a target="_blank" href="http://roll.finance.sina.com.cn/finance/qh/index.shtml">期货滚动</a></td>
+				<td><a target="_blank" href="http://roll.finance.sina.com.cn/finance/qh/gzqhzxzx/index.shtml ">股指期货资讯</a></td>
+				<td><a target="_blank" href="http://finance.sina.com.cn/futuremarket/agriroll.html">农产品资讯</a></td>
+				<td><a target="_blank" href="http://finance.sina.com.cn/futuremarket/metalroll.html">工业品资讯</a></td>
+				<td><a target="_blank" href="http://finance.sina.com.cn/futuremarket/oilroll.html">能源资讯</a></td>
+				<td><a target="_blank" href="http://finance.sina.com.cn/futuremarket/gold.html">黄金资讯</a></td>
+				<td><a target="_blank" href="http://roll.finance.sina.com.cn/finance/qh/pzyj/index.shtml">品种研究</a></td>
+				<td><a target="_blank" href="http://roll.finance.sina.com.cn/finance/qh/gwjgbg/index.shtml">机构报告</a></td>
+				<td><a target="_blank" href="http://q.blog.sina.com.cn/qihuoblog">期货圈</a></td>
+				<td><a target="_blank" href="http://biz.finance.sina.com.cn/futures/ask/">专家坐堂</a></td>
+			</tr>
+		</table>
+	</div>
+	<!-- 新浪财经二级导航 end -->
+    
+	<div class="wrap">
+	<!-- 本页导航 start -->
+	<div class="bn_nav">
+		<ul class="nav_wrap">
+			<li class="left"/>
+			<li>
+				<dl>
+					<dd class="active" ><div></div><a href="vFutures_Positions_cjcc.php">成交持仓</a><span></span></dd>	
+					<dt></dt>				
+					<dd ><div></div><a href="vFutures_Positions_ccjg.php">持仓结构</a><span></span></dd>
+					<dt></dt>									
+					<dd ><div></div><a href="vFutures_Positions_jcgc.php">建仓过程</a><span></span></dd>
+					<dt></dt>									
+					<dd ><div></div><a href="vFutures_Positions_ccjj.php">持仓均价</a><span></span></dd>
+					<dt></dt>				
+					<dd ><div></div><a href="vFutures_Positions_ykfx.php">盈亏分析</a><span></span></dd>
+					<dt></dt>
+                    <dd  ><div></div><a href="vPositions_fee.php">手续费</a><span></span></dd>
+                    <dt></dt>
+					<dd ><div></div><a href="vFutures_Positions_hyjg.php">会员机构</a><span></span></dd>
+				</dl>
+			</li>
+			<li class="right"/>
+		</ul>
+	</div>
+	<!-- 本页导航 end -->
+	
+	<form name="form1" action='' method='get'>
+    期货合约:
+    <select name='t_breed'>
+        <option value='NR2607'  >20号胶2607</option>
+        <option value='NR2608'  >20号胶2608</option>
+        <option value='NR2609'  >20号胶2609</option>
+        <option value='NR2610'  >20号胶2610</option>
+        <option value='NR2611'  >20号胶2611</option>
+        <option value='NR2701'  >20号胶2701</option>
+        <option value='TA2607'  >PTA2607</option>
+        <option value='TA2608'  >PTA2608</option>
+        <option value='TA2609'  >PTA2609</option>
+        <option value='TA2610'  >PTA2610</option>
+        <option value='TA2611'  >PTA2611</option>
+        <option value='TA2612'  >PTA2612</option>
+        <option value='TA2701'  >PTA2701</option>
+        <option value='TA2703'  >PTA2703</option>
+        <option value='TA2705'  >PTA2705</option>
+        <option value='V2607'  >PVC2607</option>
+        <option value='V2608'  >PVC2608</option>
+        <option value='V2609'  >PVC2609</option>
+        <option value='V2610'  >PVC2610</option>
+        <option value='V2611'  >PVC2611</option>
+        <option value='V2612'  >PVC2612</option>
+        <option value='V2701'  >PVC2701</option>
+        <option value='V2705'  >PVC2705</option>
+        <option value='SR2607'  >白糖2607</option>
+        <option value='SR2609'  >白糖2609</option>
+        <option value='SR2611'  >白糖2611</option>
+        <option value='SR2701'  >白糖2701</option>
+        <option value='SR2703'  >白糖2703</option>
+        <option value='SR2705'  >白糖2705</option>
+        <option value='AG2607'  >白银2607</option>
+        <option value='AG2608'  >白银2608</option>
+        <option value='AG2610'  >白银2610</option>
+        <option value='AG2612'  >白银2612</option>
+        <option value='AG2702'  >白银2702</option>
+        <option value='EB2607'  >苯乙烯2607</option>
+        <option value='EB2608'  >苯乙烯2608</option>
+        <option value='EB2609'  >苯乙烯2609</option>
+        <option value='EB2610'  >苯乙烯2610</option>
+        <option value='EB2611'  >苯乙烯2611</option>
+        <option value='EB2612'  >苯乙烯2612</option>
+        <option value='PL2607'  >丙烯2607</option>
+        <option value='PL2608'  >丙烯2608</option>
+        <option value='PL2609'  >丙烯2609</option>
+        <option value='PL2610'  >丙烯2610</option>
+        <option value='PL2611'  >丙烯2611</option>
+        <option value='FG2607'  >玻璃2607</option>
+        <option value='FG2608'  >玻璃2608</option>
+        <option value='FG2609'  >玻璃2609</option>
+        <option value='FG2610'  >玻璃2610</option>
+        <option value='FG2611'  >玻璃2611</option>
+        <option value='FG2612'  >玻璃2612</option>
+        <option value='FG2701'  >玻璃2701</option>
+        <option value='FG2703'  >玻璃2703</option>
+        <option value='FG2705'  >玻璃2705</option>
+        <option value='SS2607'  >不锈钢2607</option>
+        <option value='SS2608'  >不锈钢2608</option>
+        <option value='SS2609'  >不锈钢2609</option>
+        <option value='SS2610'  >不锈钢2610</option>
+        <option value='RM2607'  >菜粕2607</option>
+        <option value='RM2608'  >菜粕2608</option>
+        <option value='RM2609'  >菜粕2609</option>
+        <option value='RM2611'  >菜粕2611</option>
+        <option value='RM2701'  >菜粕2701</option>
+        <option value='RM2703'  >菜粕2703</option>
+        <option value='RM2705'  >菜粕2705</option>
+        <option value='OI2607'  >菜油2607</option>
+        <option value='OI2609'  >菜油2609</option>
+        <option value='OI2611'  >菜油2611</option>
+        <option value='OI2701'  >菜油2701</option>
+        <option value='OI2703'  >菜油2703</option>
+        <option value='OI2705'  >菜油2705</option>
+        <option value='RS2609'  >菜籽2609</option>
+        <option value='BZ2609'  >纯苯2609</option>
+        <option value='SA2607'  >纯碱2607</option>
+        <option value='SA2608'  >纯碱2608</option>
+        <option value='SA2609'  >纯碱2609</option>
+        <option value='SA2610'  >纯碱2610</option>
+        <option value='SA2611'  >纯碱2611</option>
+        <option value='SA2612'  >纯碱2612</option>
+        <option value='SA2701'  >纯碱2701</option>
+        <option value='SA2703'  >纯碱2703</option>
+        <option value='SA2705'  >纯碱2705</option>
+        <option value='LU2607'  >低硫燃料油2607</option>
+        <option value='LU2609'  >低硫燃料油2609</option>
+        <option value='LU2610'  >低硫燃料油2610</option>
+        <option value='CS2607'  >淀粉2607</option>
+        <option value='CS2609'  >淀粉2609</option>
+        <option value='CS2611'  >淀粉2611</option>
+        <option value='CS2701'  >淀粉2701</option>
+        <option value='CS2703'  >淀粉2703</option>
+        <option value='BR2607'  >丁二烯橡胶2607</option>
+        <option value='BR2608'  >丁二烯橡胶2608</option>
+        <option value='BR2609'  >丁二烯橡胶2609</option>
+        <option value='BR2610'  >丁二烯橡胶2610</option>
+        <option value='B2607'  >豆二2607</option>
+        <option value='B2608'  >豆二2608</option>
+        <option value='B2609'  >豆二2609</option>
+        <option value='B2610'  >豆二2610</option>
+        <option value='B2611'  >豆二2611</option>
+        <option value='B2612'  >豆二2612</option>
+        <option value='M2607'  >豆粕2607</option>
+        <option value='M2608'  >豆粕2608</option>
+        <option value='M2609'  >豆粕2609</option>
+        <option value='M2611'  >豆粕2611</option>
+        <option value='M2612'  >豆粕2612</option>
+        <option value='M2701'  >豆粕2701</option>
+        <option value='M2703'  >豆粕2703</option>
+        <option value='M2705'  >豆粕2705</option>
+        <option value='M2707'  >豆粕2707</option>
+        <option value='A2607'  >豆一2607</option>
+        <option value='A2609'  >豆一2609</option>
+        <option value='A2611'  >豆一2611</option>
+        <option value='A2701'  >豆一2701</option>
+        <option value='A2703'  >豆一2703</option>
+        <option value='Y2608'  >豆油2608</option>
+        <option value='Y2609'  >豆油2609</option>
+        <option value='Y2611'  >豆油2611</option>
+        <option value='Y2612'  >豆油2612</option>
+        <option value='Y2701'  >豆油2701</option>
+        <option value='Y2703'  >豆油2703</option>
+        <option value='Y2705'  >豆油2705</option>
+        <option value='Y2707'  >豆油2707</option>
+        <option value='PF2607'  >短纤2607</option>
+        <option value='PF2608'  >短纤2608</option>
+        <option value='PF2609'  >短纤2609</option>
+        <option value='PF2610'  >短纤2610</option>
+        <option value='PF2611'  >短纤2611</option>
+        <option value='PF2612'  >短纤2612</option>
+        <option value='PX2607'  >对二甲苯2607</option>
+        <option value='PX2608'  >对二甲苯2608</option>
+        <option value='PX2609'  >对二甲苯2609</option>
+        <option value='PX2610'  >对二甲苯2610</option>
+        <option value='PX2611'  >对二甲苯2611</option>
+        <option value='PX2612'  >对二甲苯2612</option>
+        <option value='PX2701'  >对二甲苯2701</option>
+        <option value='PS2608'  >多晶硅2608</option>
+        <option value='PS2609'  >多晶硅2609</option>
+        <option value='PS2610'  >多晶硅2610</option>
+        <option value='PS2611'  >多晶硅2611</option>
+        <option value='PS2612'  >多晶硅2612</option>
+        <option value='SI2608'  >工业硅2608</option>
+        <option value='SI2609'  >工业硅2609</option>
+        <option value='SI2610'  >工业硅2610</option>
+        <option value='SI2611'  >工业硅2611</option>
+        <option value='SF2607'  >硅铁2607</option>
+        <option value='SF2608'  >硅铁2608</option>
+        <option value='SF2609'  >硅铁2609</option>
+        <option value='SF2610'  >硅铁2610</option>
+        <option value='SF2611'  >硅铁2611</option>
+        <option value='SF2612'  >硅铁2612</option>
+        <option value='SF2701'  >硅铁2701</option>
+        <option value='BC2609'  >国际铜2609</option>
+        <option value='CJ2607'  >红枣2607</option>
+        <option value='CJ2609'  >红枣2609</option>
+        <option value='CJ2612'  >红枣2612</option>
+        <option value='CJ2701'  >红枣2701</option>
+        <option value='CJ2703'  >红枣2703</option>
+        <option value='CJ2705'  >红枣2705</option>
+        <option value='ZN2607'  >沪锌2607</option>
+        <option value='ZN2608'  >沪锌2608</option>
+        <option value='ZN2609'  >沪锌2609</option>
+        <option value='ZN2610'  >沪锌2610</option>
+        <option value='ZN2611'  >沪锌2611</option>
+        <option value='PK2610'  >花生2610</option>
+        <option value='PK2611'  >花生2611</option>
+        <option value='PK2612'  >花生2612</option>
+        <option value='AU2607'  >黄金2607</option>
+        <option value='AU2608'  >黄金2608</option>
+        <option value='AU2610'  >黄金2610</option>
+        <option value='AU2612'  >黄金2612</option>
+        <option value='AU2702'  >黄金2702</option>
+        <option value='JD2607'  >鸡蛋2607</option>
+        <option value='JD2608'  >鸡蛋2608</option>
+        <option value='JD2609'  >鸡蛋2609</option>
+        <option value='JD2610'  >鸡蛋2610</option>
+        <option value='JD2611'  >鸡蛋2611</option>
+        <option value='JD2612'  >鸡蛋2612</option>
+        <option value='JD2701'  >鸡蛋2701</option>
+        <option value='JD2702'  >鸡蛋2702</option>
+        <option value='MA2607'  >甲醇2607</option>
+        <option value='MA2608'  >甲醇2608</option>
+        <option value='MA2609'  >甲醇2609</option>
+        <option value='MA2610'  >甲醇2610</option>
+        <option value='MA2611'  >甲醇2611</option>
+        <option value='MA2612'  >甲醇2612</option>
+        <option value='MA2701'  >甲醇2701</option>
+        <option value='MA2703'  >甲醇2703</option>
+        <option value='MA2705'  >甲醇2705</option>
+        <option value='JM2608'  >焦煤2608</option>
+        <option value='JM2609'  >焦煤2609</option>
+        <option value='JM2610'  >焦煤2610</option>
+        <option value='JM2611'  >焦煤2611</option>
+        <option value='JM2612'  >焦煤2612</option>
+        <option value='JM2701'  >焦煤2701</option>
+        <option value='JM2705'  >焦煤2705</option>
+        <option value='J2609'  >焦炭2609</option>
+        <option value='J2701'  >焦炭2701</option>
+        <option value='OP2607'  >胶版印刷纸2607</option>
+        <option value='OP2608'  >胶版印刷纸2608</option>
+        <option value='OP2609'  >胶版印刷纸2609</option>
+        <option value='OP2610'  >胶版印刷纸2610</option>
+        <option value='RR2608'  >粳米2608</option>
+        <option value='RR2609'  >粳米2609</option>
+        <option value='PP2608'  >聚丙烯2608</option>
+        <option value='PP2609'  >聚丙烯2609</option>
+        <option value='PP2610'  >聚丙烯2610</option>
+        <option value='PP2611'  >聚丙烯2611</option>
+        <option value='PP2612'  >聚丙烯2612</option>
+        <option value='PP2701'  >聚丙烯2701</option>
+        <option value='PP2705'  >聚丙烯2705</option>
+        <option value='BU2607'  >沥青2607</option>
+        <option value='BU2608'  >沥青2608</option>
+        <option value='BU2609'  >沥青2609</option>
+        <option value='BU2610'  >沥青2610</option>
+        <option value='BU2611'  >沥青2611</option>
+        <option value='BU2612'  >沥青2612</option>
+        <option value='AL2607'  >铝2607</option>
+        <option value='AL2608'  >铝2608</option>
+        <option value='AL2609'  >铝2609</option>
+        <option value='AL2610'  >铝2610</option>
+        <option value='AL2611'  >铝2611</option>
+        <option value='AL2612'  >铝2612</option>
+        <option value='AL2701'  >铝2701</option>
+        <option value='RB2607'  >螺纹钢2607</option>
+        <option value='RB2608'  >螺纹钢2608</option>
+        <option value='RB2609'  >螺纹钢2609</option>
+        <option value='RB2610'  >螺纹钢2610</option>
+        <option value='RB2611'  >螺纹钢2611</option>
+        <option value='RB2701'  >螺纹钢2701</option>
+        <option value='SM2607'  >锰硅2607</option>
+        <option value='SM2608'  >锰硅2608</option>
+        <option value='SM2609'  >锰硅2609</option>
+        <option value='SM2610'  >锰硅2610</option>
+        <option value='SM2611'  >锰硅2611</option>
+        <option value='SM2612'  >锰硅2612</option>
+        <option value='SM2701'  >锰硅2701</option>
+        <option value='CF2607'  >棉花2607</option>
+        <option value='CF2609'  >棉花2609</option>
+        <option value='CF2611'  >棉花2611</option>
+        <option value='CF2701'  >棉花2701</option>
+        <option value='CF2703'  >棉花2703</option>
+        <option value='CF2705'  >棉花2705</option>
+        <option value='CY2607'  >棉纱2607</option>
+        <option value='CY2608'  >棉纱2608</option>
+        <option value='CY2609'  >棉纱2609</option>
+        <option value='CY2611'  >棉纱2611</option>
+        <option value='UR2607'  >尿素2607</option>
+        <option value='UR2608'  >尿素2608</option>
+        <option value='UR2609'  >尿素2609</option>
+        <option value='UR2610'  >尿素2610</option>
+        <option value='UR2611'  >尿素2611</option>
+        <option value='UR2612'  >尿素2612</option>
+        <option value='UR2701'  >尿素2701</option>
+        <option value='UR2703'  >尿素2703</option>
+        <option value='NI2607'  >镍2607</option>
+        <option value='NI2608'  >镍2608</option>
+        <option value='NI2609'  >镍2609</option>
+        <option value='NI2610'  >镍2610</option>
+        <option value='NI2611'  >镍2611</option>
+        <option value='NI2612'  >镍2612</option>
+        <option value='AP2610'  >苹果2610</option>
+        <option value='AP2611'  >苹果2611</option>
+        <option value='AP2612'  >苹果2612</option>
+        <option value='AP2701'  >苹果2701</option>
+        <option value='PR2607'  >瓶片2607</option>
+        <option value='PR2608'  >瓶片2608</option>
+        <option value='PR2609'  >瓶片2609</option>
+        <option value='PR2610'  >瓶片2610</option>
+        <option value='PR2611'  >瓶片2611</option>
+        <option value='PR2612'  >瓶片2612</option>
+        <option value='PB2607'  >铅2607</option>
+        <option value='PB2608'  >铅2608</option>
+        <option value='PB2609'  >铅2609</option>
+        <option value='PB2610'  >铅2610</option>
+        <option value='FU2607'  >燃料油2607</option>
+        <option value='FU2608'  >燃料油2608</option>
+        <option value='FU2609'  >燃料油2609</option>
+        <option value='FU2610'  >燃料油2610</option>
+        <option value='FU2611'  >燃料油2611</option>
+        <option value='FU2701'  >燃料油2701</option>
+        <option value='HC2607'  >热轧卷板2607</option>
+        <option value='HC2608'  >热轧卷板2608</option>
+        <option value='HC2609'  >热轧卷板2609</option>
+        <option value='HC2610'  >热轧卷板2610</option>
+        <option value='HC2611'  >热轧卷板2611</option>
+        <option value='HC2701'  >热轧卷板2701</option>
+        <option value='SH2607'  >烧碱2607</option>
+        <option value='SH2608'  >烧碱2608</option>
+        <option value='SH2609'  >烧碱2609</option>
+        <option value='SH2610'  >烧碱2610</option>
+        <option value='SH2611'  >烧碱2611</option>
+        <option value='SH2612'  >烧碱2612</option>
+        <option value='SH2701'  >烧碱2701</option>
+        <option value='LH2607'  >生猪2607</option>
+        <option value='LH2609'  >生猪2609</option>
+        <option value='LH2611'  >生猪2611</option>
+        <option value='LH2701'  >生猪2701</option>
+        <option value='LH2703'  >生猪2703</option>
+        <option value='LH2705'  >生猪2705</option>
+        <option value='L2608'  >塑料2608</option>
+        <option value='L2609'  >塑料2609</option>
+        <option value='L2610'  >塑料2610</option>
+        <option value='L2611'  >塑料2611</option>
+        <option value='L2612'  >塑料2612</option>
+        <option value='L2701'  >塑料2701</option>
+        <option value='LC2607'  >碳酸锂2607</option>
+        <option value='LC2609'  >碳酸锂2609</option>
+        <option value='LC2610'  >碳酸锂2610</option>
+        <option value='LC2611'  >碳酸锂2611</option>
+        <option value='LC2612'  >碳酸锂2612</option>
+        <option value='LC2701'  >碳酸锂2701</option>
+        <option value='LC2705'  >碳酸锂2705</option>
+        <option value='RU2607'  >天然橡胶2607</option>
+        <option value='RU2608'  >天然橡胶2608</option>
+        <option value='RU2609'  >天然橡胶2609</option>
+        <option value='RU2701'  >天然橡胶2701</option>
+        <option value='RU2705'  >天然橡胶2705</option>
+        <option value='I2608'  >铁矿石2608</option>
+        <option value='I2609'  >铁矿石2609</option>
+        <option value='I2610'  >铁矿石2610</option>
+        <option value='I2611'  >铁矿石2611</option>
+        <option value='I2612'  >铁矿石2612</option>
+        <option value='I2701'  >铁矿石2701</option>
+        <option value='I2702'  >铁矿石2702</option>
+        <option value='I2703'  >铁矿石2703</option>
+        <option value='I2704'  >铁矿石2704</option>
+        <option value='I2705'  >铁矿石2705</option>
+        <option value='I2706'  >铁矿石2706</option>
+        <option value='CU2607'  >铜2607</option>
+        <option value='CU2608'  >铜2608</option>
+        <option value='CU2609'  >铜2609</option>
+        <option value='CU2610'  >铜2610</option>
+        <option value='CU2611'  >铜2611</option>
+        <option value='CU2612'  >铜2612</option>
+        <option value='CU2701'  >铜2701</option>
+        <option value='CU2703'  >铜2703</option>
+        <option value='SN2607'  >锡2607</option>
+        <option value='SN2608'  >锡2608</option>
+        <option value='SN2609'  >锡2609</option>
+        <option value='SN2610'  >锡2610</option>
+        <option value='SN2611'  >锡2611</option>
+        <option value='AO2607'  >氧化铝2607</option>
+        <option value='AO2608'  >氧化铝2608</option>
+        <option value='AO2609'  >氧化铝2609</option>
+        <option value='AO2610'  >氧化铝2610</option>
+        <option value='AO2611'  >氧化铝2611</option>
+        <option value='AO2701'  >氧化铝2701</option>
+        <option value='PG2608'  >液化石油气2608</option>
+        <option value='PG2610'  >液化石油气2610</option>
+        <option value='PG2611'  >液化石油气2611</option>
+        <option value='EG2608'  >乙二醇2608</option>
+        <option value='EG2609'  >乙二醇2609</option>
+        <option value='EG2610'  >乙二醇2610</option>
+        <option value='EG2611'  >乙二醇2611</option>
+        <option value='EG2612'  >乙二醇2612</option>
+        <option value='EG2701'  >乙二醇2701</option>
+        <option value='C2607'  >玉米2607</option>
+        <option value='C2609'  >玉米2609</option>
+        <option value='C2611'  >玉米2611</option>
+        <option value='C2701'  >玉米2701</option>
+        <option value='C2703'  >玉米2703</option>
+        <option value='C2705'  >玉米2705</option>
+        <option value='C2707'  >玉米2707</option>
+        <option value='SP2607'  >纸浆2607</option>
+        <option value='SP2608'  >纸浆2608</option>
+        <option value='SP2609'  >纸浆2609</option>
+        <option value='SP2611'  >纸浆2611</option>
+        <option value='SP2701'  >纸浆2701</option>
+        <option value='AD2607'  >铸造铝合金2607</option>
+        <option value='AD2608'  >铸造铝合金2608</option>
+        <option value='AD2609'  >铸造铝合金2609</option>
+        <option value='AD2610'  >铸造铝合金2610</option>
+        <option value='P2608'  >棕榈油2608</option>
+        <option value='P2609'  >棕榈油2609</option>
+        <option value='P2610'  >棕榈油2610</option>
+        <option value='P2611'  >棕榈油2611</option>
+        <option value='P2612'  >棕榈油2612</option>
+        <option value='P2701'  >棕榈油2701</option>
+        <option value='P2702'  >棕榈油2702</option>
+        <option value='P2705'  >棕榈油2705</option>
+      
+    </select>
+    日期：
+    <input type='text' id="calen" name='t_date' value='2024-02-03' size='10'> 
+    <input type='submit' value='查看' class="but">
+</form>
+
+<table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td align="center" valign="top" class="row">
+		<div id="flashdeal" class="chart"  style="width:305px;height:250px"></div>
+		<div id="listdeal" class="chart" style="width:305px;height:200px"></div>
+		    <table border='0' cellpadding="0" cellspacing="0" class="listT" width="305px">
+              <tr>
+                <th>名次</th>
+                <th>会员简称</th>
+                <th class="number">成交量</th>
+                <th class="number">比上交易增减</th>
+              </tr>
+                            <tr>
+                <td>合计</td>
+                <td>&nbsp;</td>
+                <td class="number">&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+          </table></td>
+        <td align="center" valign="top" class="row">
+		<div id="flashbuy" class="chart"  style="width:305px;height:250px"></div>
+		<div id="listbuy" class="chart" style="width:305px;height:200px"></div>
+		    <table border='0' cellpadding="0" cellspacing="0" class="listT" width="305px">
+              <tr>
+                <th>名次</th>
+                <th>会员简称</th>
+                <th class="number">多单持仓</th>
+                <th class="number">比上交易增减</th>
+              </tr>              
+                            <tr>
+                <td>合计</td>
+                <td>&nbsp;</td>
+                <td class="number">&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+          </table></td>
+        <td align="center" valign="top" class="row">
+		<div id="flashsell" class="chart"  style="width:305px;height:250px"></div>
+		<div id="listsell" class="chart" style="width:305px;height:200px"></div>
+		    <table border='0' cellpadding="0" cellspacing="0" class="listT" width="305px">
+              <tr>
+                <th>名次</th>
+                <th>会员简称</th>
+                <th class="number">空单持仓</th>
+                <th class="number">比上交易增减</th>
+              </tr>
+               
+              <tr>
+                <td>合计</td>
+                <td>&nbsp;</td>
+                <td class="number">&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+          </table>
+      </td>
+    </tr>
+ </table>
+<script type="text/javascript" src="https://n.sinaimg.cn/finance/fusioncharts/v3_4_0/fusioncharts.js"></script>
+<script type="text/javascript" src="https://n.sinaimg.cn/finance/fusioncharts/v3_4_0/fusioncharts.charts.js"></script>
+<script type="text/javascript" src="https://finance.sina.com.cn/futures/pc/zilx/js/Calendar_1.0.1.js"></script>
+<script type="text/javascript">
+(function(){
+            document.getElementById('flashdeal').innerHTML='当日此合约无成交量';
+    
+            document.getElementById('flashbuy').innerHTML='当日此合约无多单持仓';
+     
+            document.getElementById('flashsell').innerHTML='当日此合约无空单持仓';
+     
+            document.getElementById('listdeal').style.display="none";
+        document.getElementById('listsell').style.display="none";
+        document.getElementById('listbuy').style.display="none";
+        
+    new Calendar("calen",false,false,[200,800,0.95,"solid","#EEE","#FFF",3,3,0.2,"#000","#444","#F6F8FD","#333","#F1F5FC","#000","#EFF3FB",false,false]);
+
+})();
+
+</script>	</div>
+	
+	<!-- 新浪财经标准尾 begin -->
+	<style type="text/css">
+#footer{width:950px; text-align:center; line-height:21px; font-size:12px;margin-top:20px;color:#333;margin-left:auto;margin-right:auto;}
+</style>
+<!-- SUDA_CODE_START --> 
+<script type="text/javascript" src="//www.sinaimg.cn/unipro/pub/suda_s_v851c.js"></script> 
+<script type="text/javascript" > 
+_S_pSt(_S_PID_); 
+</script>
+<!-- SUDA_CODE_END --> 
+
+<div id="footer">
+　客户服务热线：4001102288　欢迎批评指正<br>
+<a target="_blank" href="http://tech.sina.com.cn/focus/sinahelp.shtml">常见问题解答</a> 
+ <a target="_blank" href="http://net.china.cn/chinese/index.htm">互联网违法和不良信息举报</a>
+ <a target="_blank" href="https://gu.sina.cn/pc/feedback/">新浪财经意见反馈留言板</a>
+ <br><br><a href="http://corp.sina.com.cn/chn/">新浪简介</a> | <a href="http://corp.sina.com.cn/eng/">About Sina</a> | <a href="http://emarketing.sina.com.cn/">广告服务</a> | <a href="http://www.sina.com.cn/contactus.html">联系我们</a> | <a href="http://corp.sina.com.cn/chn/sina_job.html">招聘信息</a> | <a href="http://www.sina.com.cn/intro/lawfirm.shtml">网站律师</a> | <a href="http://english.sina.com">SINA English</a> | <a href="http://members.sina.com.cn/apply/">通行证注册</a> | <a href="http://help.sina.com.cn/">产品答疑</a><br><br>新浪公司　<a target="_blank" href="http://www.sina.com.cn/intro/copyright.shtml">版权所有</a>
+</div>
+
+	<!-- 新浪财经标准尾 end -->
+    
+
+<!-- SUDA_CODE_START -->
+<script type="text/javascript" src="http://www.sinaimg.cn/unipro/pub/suda_s_v851c.js"></script>
+<script type="text/javascript" > 
+_S_pSt(_S_PID_); 
+</script> 
+<noScript>
+<div style='position:absolute;top:0;left:0;width:0;height:0;visibility:hidden'><img width=0 height=0 src='http://beacon.sina.com.cn/a.gif?noScript' border='0' alt='' /></div>
+</noScript>
+<!-- SUDA_CODE_END --> 
+
+<!-- START WRating v1.0 -->
+<script type="text/javascript" src="http://sina.wrating.com/a1.js"></script>
+<script type="text/javascript">
+try{
+var vjAcc="860010-0314010000"; 
+var wrUrl="http://sina.wrating.com/";
+vjTrack("");
+}catch(e){};
+</script>
+<noscript><img src="http://sina.wrating.com/a.gif?a=&c=860010-0314010000" width="1" height="1" style="display: none;"/></noscript>
+<!-- END WRating v1.0 -->
+
+<!-- START Nielsen//NetRatings SiteCensus V5.2 -->
+<!-- COPYRIGHT 2006 Nielsen//NetRatings -->
+<script type="text/javascript">
+	var _rsCI="cn-sina2006";	 
+	var _rsCG="0";	
+	var _rsDN="//secure-cn.imrworldwide.com/";	
+	var _rsCC=0;	
+	var _rsSE=1;	
+	var _rsSM=0.01;	 
+	var _rsSS=1500;	 
+</script>
+<script type="text/javascript" src="//secure-cn.imrworldwide.com/v52.js"></script>
+<noscript>
+	<img src="//secure-cn.imrworldwide.com/cgi-bin/m?ci=cn-sina2006&cg=0" alt=""/>
+</noscript>
+<!-- END Nielsen//NetRatings SiteCensus V5.2 -->
+	
+</body>
+</html>

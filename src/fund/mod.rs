@@ -67,3 +67,4 @@ pub mod wv_fund_more;
 // in `wv_fund_misc.rs` by a prior pass, so this batch adds no new leaf module.
 
 pub mod excel_gaps;
+pub mod fund_html_gaps;

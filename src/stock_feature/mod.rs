@@ -17,3 +17,4 @@ pub mod wv_sf_more;
 
 pub mod sf_gaps;
 pub mod excel_gaps;
+pub mod stock_feature_html_gaps;
