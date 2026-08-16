@@ -48,3 +48,19 @@ pub(crate) fn parse_f64(s: &str) -> Option<f64> {
         t.parse::<f64>().ok()
     }
 }
+
+pub mod wv_fund_misc;
+
+// ## DEFERRED (assigned in this batch but not ported — exact reasons)
+//
+// - `fund_individual_basic_info_xq` (`fund_xq.py:13`) — 雪球/danjuanfunds
+//   requires `xq_a_token` cookie / xueqiu session (DEFER: `fund_individual_*_xq`).
+// - `fund_individual_achievement_xq` (`fund_xq.py:78`) — same xq token gate.
+// - `fund_individual_analysis_xq` (`fund_xq.py:132`) — same xq token gate.
+// - `fund_individual_profit_probability_xq` (`fund_xq.py:185`) — same xq token gate.
+// - `fund_individual_detail_info_xq` (`fund_xq.py:224`) — same xq token gate.
+// - `fund_individual_detail_hold_xq` (`fund_xq.py:270`) — same xq token gate.
+//
+// Note: the other assigned functions (`amac_fund_abs`, `amac_person_bond_org_list`,
+// `fund_hk_rank_em`, `fund_lof_hist_em`, `fund_new_found_ths`) were already ported
+// in `wv_fund_misc.rs` by a prior pass, so this batch adds no new leaf module.

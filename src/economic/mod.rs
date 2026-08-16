@@ -17,3 +17,9 @@ pub use china::{
 pub mod macro_china_more;
 pub mod macro_misc;
 pub mod macro_usa_more;
+
+pub mod wv_macro_core;
+
+pub mod macro_econ;
+
+pub mod macro_deferred_economic;

@@ -4,3 +4,11 @@ pub mod indicators_a;
 pub mod indicators_b;
 pub mod margin_research;
 pub mod board_zt;
+
+pub mod wv_sf_misc1;
+
+pub mod wv_sf_misc2;
+
+pub mod wv_sf_misc3;
+
+pub mod wv_sf_sgt;

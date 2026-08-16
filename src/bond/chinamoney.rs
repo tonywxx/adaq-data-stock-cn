@@ -170,6 +170,125 @@ fn split_pair(s: String) -> (Option<f64>, Option<f64>) {
     (a, b)
 }
 
+// ---------------------------------------------------------------------------
+// macro_china_bond_public — 债券发行信息披露 (ChinaMoney, POST `records`)
+// https://www.chinamoney.com.cn/chinese/xzjfx/
+// ---------------------------------------------------------------------------
+
+const BOND_EMIT_URL: &str = "https://www.chinamoney.com.cn/ags/ms/cm-u-bond-an/bnBondEmit";
+
+/// One bond-issuance disclosure row (`macro_china_bond_public`).
+///
+/// akshare renames the upstream positional record columns; the meaningful
+/// fields (in akshare output order) are 债券全称, 债券类型, 发行日期, 计息方式,
+/// 价格, 债券期限, 计划发行量, 债券评级.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct BondPublicEmit {
+    pub bond_full_name: String,
+    pub bond_type: String,
+    pub issue_date: String,
+    pub interest_method: String,
+    pub price: Option<f64>,
+    pub bond_term: String,
+    pub planned_issue_size: Option<f64>,
+    pub bond_rating: String,
+}
+
+/// Parse `macro_china_bond_public` rows from an already-fetched ChinaMoney
+/// `bnBondEmit` response (one page). `pub(crate)` so tests can call directly.
+pub(crate) fn parse_bond_public(resp: &Value) -> Result<Vec<BondPublicEmit>> {
+    let records = resp
+        .get("records")
+        .and_then(|r| r.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_CHINAMONEY,
+            message: "missing records".into(),
+        })?;
+    let mut out = Vec::with_capacity(records.len());
+    for rec in records {
+        let obj = match rec.as_object() {
+            Some(o) => o,
+            None => continue,
+        };
+        // akshare renames by position; read values in JSON order.
+        let vals: Vec<&Value> = obj.values().collect();
+        let g = |i: usize| -> &Value { vals.get(i).copied().unwrap_or(&Value::Null) };
+        let str_at = |i: usize| -> String {
+            match g(i) {
+                Value::String(s) => s.clone(),
+                Value::Null => String::new(),
+                other => other.to_string(),
+            }
+        };
+        let num_at = |i: usize| -> Option<f64> {
+            match g(i) {
+                Value::String(s) => s.parse::<f64>().ok(),
+                Value::Number(n) => n.as_f64(),
+                _ => None,
+            }
+        };
+        out.push(BondPublicEmit {
+            bond_full_name: str_at(0),
+            bond_type: str_at(1),
+            issue_date: str_at(3),
+            interest_method: str_at(5),
+            price: num_at(11),
+            bond_term: str_at(7),
+            planned_issue_size: num_at(12),
+            bond_rating: str_at(9),
+        });
+    }
+    Ok(out)
+}
+
+/// 中国-债券信息披露-债券发行 (`macro_china_bond_public`, `bond_china_money.py:313`).
+///
+/// Paginates ChinaMoney `bnBondEmit` (POST form). The upstream pre-step
+/// `bond_china_close_return_map()` only bootstraps a cookie and is omitted.
+pub async fn macro_china_bond_public(client: &Client) -> Result<Vec<BondPublicEmit>> {
+    let mut page: i64 = 1;
+    let mut total: i64 = 1;
+    let mut out: Vec<BondPublicEmit> = Vec::new();
+    loop {
+        let page_s = page.to_string();
+        let params = [
+            ("enty", ""),
+            ("bondType", ""),
+            ("bondNameCode", ""),
+            ("leadUnderwriter", ""),
+            ("pageNo", page_s.as_str()),
+            ("pageSize", "10"),
+            ("limit", "1"),
+        ];
+        let v = client
+            .post_form_json(
+                SOURCE_CHINAMONEY,
+                "macro_china_bond_public",
+                BOND_EMIT_URL,
+                &params,
+                None,
+            )
+            .await?;
+        if page == 1 {
+            total = v
+                .get("data")
+                .and_then(|d| d.get("pageTotalSize"))
+                .and_then(|t| t.as_i64())
+                .unwrap_or(1);
+        }
+        let rows = parse_bond_public(&v)?;
+        if rows.is_empty() && page > 1 {
+            break;
+        }
+        out.extend(rows);
+        if page >= total {
+            break;
+        }
+        page += 1;
+    }
+    Ok(out)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

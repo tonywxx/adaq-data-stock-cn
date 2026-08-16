@@ -2,3 +2,4 @@
 //! Exchange (SGE) quotes, history, and benchmark prices.
 
 pub mod sge;
+pub mod price_qh;

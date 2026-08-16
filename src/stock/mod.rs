@@ -29,3 +29,21 @@ pub mod spot;
 pub mod stock_hist_em;
 pub mod sy;
 pub mod us;
+
+pub mod wv_stock_misc1;
+
+pub mod wv_stock_misc2;
+
+pub mod bid_ask_em;
+pub mod staq_net_stop;
+pub mod hk_profile_em;
+pub mod hk_comparison_em;
+pub mod hold_management_em;
+pub mod zh_a_stop_em;
+pub mod zh_b_minute;
+pub mod zh_comparison_em;
+pub mod hot_search_baidu;
+pub mod news_cx;
+pub mod share_hold_exchange;
+
+pub mod sse_summary;

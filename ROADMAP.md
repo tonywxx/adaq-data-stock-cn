@@ -138,8 +138,9 @@
 | 95 | 东方财富个股人气榜 `stock::hot_rank`(emappdata JSON-body POST:`stock_hot_rank_em`/`stock_hot_up_em` 含 push2 实时价、`stock_hot_rank_detail_em`/`stock_hot_rank_detail_realtime_em`/`stock_hot_keyword_em`/`stock_hot_rank_latest_em`/`stock_hot_rank_relate_em` 共 7 函数);同步为 `core::client` 新增 `post_json`(JSON 请求体 POST)方法 | ✅ DONE | 7 | 7 ✅ |
 | 96 | 东方财富个股/大盘资金流 `stock::fund_flow` 补齐 3 个函数:`stock_individual_fund_flow`(push2his daykline `secid=sh→1./sz·bj→0.`)、`stock_market_fund_flow`(push2his `secid=1.000001` + `secid2=0.399001`,新增 `MarketFundFlowRow` 解析 `f62-f65` 沪深指数)、`stock_individual_fund_flow_rank`(push2 clist,`今日/3日/5日/10日` 通过 `rank_indicator_fields` 映射字段,新增 `IndividualRankRow` 含 10 列净流/占比) | ✅ DONE | 3 | 4 ✅ |
 | 97 | 港股个股人气榜 `stock::hot_rank` 补齐 4 个函数(东财 emappdata JSON-body POST,`marketType=000003`):`stock_hk_hot_rank_em`(POST `getAllCurrHkUsList` + push2 `116.` 前缀实时价)、`stock_hk_hot_rank_detail_em`/`stock_hk_hot_rank_detail_realtime_em`/`stock_hk_hot_rank_latest_em`(POST `getHisHkUsList`/`getCurrentHkUsList`/`getCurrentHkUsLatest`) | ✅ DONE | 4 | 4 ✅ |
+| 98 | 涨停板池 siblings + 两融账户 `stock_feature::board_zt` + `stock_feature::margin_research`(东财 push2ex 5 个涨停/跌停股池 + datacenter `RPTA_WEB_MARGIN_DAILYTRADE` 两融账户统计;补齐 wave-92 预置的空叶子模块) | ✅ DONE | 6 | 6 ✅ |
 
-**累计**:97 个批次、633 个公开(已落地)函数、686 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计**:98 个批次、639 个公开(已落地)函数、692 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
 
 > 第 80-91 行新增 12 个叶子模块(在既有 `economic` / `index` / `stock` 顶层域下),共 78 个公开函数、88 个离线解析测试(由 lead 预置模块骨架后 dispatch 12 个并行 worker 落地)。其中 `economic::macro_usa_more` 整模块因 Jin10 `datacenter-api` 需 `x-csrf-token` 会话鉴权,全部 40 个美国宏观函数 DEFERRED;`stock::fund_flow` 与 `stock::board` 的解析器被多个对外函数复用,故测试数高于函数数。
 

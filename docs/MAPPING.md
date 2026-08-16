@@ -231,6 +231,19 @@
 | `stock_hsgt_individual_detail_em` | `src/stock/hsgt.rs::stock_hsgt_individual_detail_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1527` | DONE |
 | `stock_hsgt_fund_min_em` | `src/stock/hsgt.rs::stock_hsgt_fund_min_em` | 东财 (synthetic fixture) | `akshare/stock_hsgt_min_em.py:13` | DONE |
 
+## Stock 涨停板池扩展 (board_zt)
+
+> akshare `stock_ztb_em.py` 的 6 个东方财富 `push2ex` 涨停/跌停股池端点。其中 `stock_zt_pool_em`(涨停股池,`getTopicZTPool`)已在 `src/stock/more.rs` 落地;本批补齐其余 5 个 sibling:`getYesterdayZTPool`(昨日涨停)/`getTopicQSPool`(强势)/`getTopicCXPooll`(次新)/`getTopicZBPool`(炸板)/`getTopicDTPool`(跌停),统一落地于 `src/stock_feature/board_zt.rs`。响应信封为 `data.pool`(数组),`p`/`ztp` 原始单位为 1/1000(解析时 ÷1000 对齐 akshare),时间字段 `fbt`/`lbt`/`yfbt` 整数补零为 HHMMSS,`zttj` 为 `{"days","ct"}` → `"days/ct"`。上游仅保留近期数据,空 `pool` / `data:null` → 空 `Vec`(对齐 akshare 空表)。
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_zt_pool_em`(涨停股池) | `src/stock/more.rs::stock_zt_pool_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:24` | DONE |
+| `stock_zt_pool_previous_em`(昨日涨停) | `src/stock_feature/board_zt.rs::stock_zt_pool_previous_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:110` | DONE |
+| `stock_zt_pool_strong_em`(强势股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_strong_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:187` | DONE |
+| `stock_zt_pool_sub_new_em`(次新股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_sub_new_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:276` | DONE |
+| `stock_zt_pool_zbgc_em`(炸板股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_zbgc_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:357` | DONE |
+| `stock_zt_pool_dtgc_em`(跌停股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_dtgc_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:439` | DONE |
+
 ## Stock 个股信息 / 主营构成 / 板块(holder)
 
 | akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
@@ -246,6 +259,7 @@
 | `stock_margin_sse`(→ `stock_margin_sh`) | `src/stock/margin.rs::stock_margin_sh` | 上交所 | `akshare/stock_feature/stock_margin_sse.py` | DONE |
 | `stock_margin_szse`(→ `stock_margin_sz`) | `src/stock/margin.rs::stock_margin_sz` | 深交所 | `akshare/stock_feature/stock_margin_szse.py` | DONE |
 | `stock_yjbb_em` | `src/stock/margin.rs::stock_yjbb_em` | 东财 | `akshare/stock_feature/stock_yjbb_em.py` | DONE |
+| `stock_margin_account_info`(两融账户信息) | `src/stock_feature/margin_research.rs::stock_margin_account_info` | 东财 | `akshare/stock_feature/stock_margin_em.py:15` | DONE |
 
 ## Bond 扩展
 
@@ -1252,3 +1266,499 @@
 | `stock_individual_spot_xq` | _(未移植)_ | `stock/stock_xq.py:81` | DEFERRED(需 `xq_a_token` 登录态 cookie,第三方会话令牌) |
 
 > 其余 `stock_*_xq`(雪球)族同理需 `xq_a_token`,整族 DEFERRED。
+
+## 对标补全 (Reconciliation — 自动补齐缺失行)
+
+> 以下为 `docs/MAPPING.md` 此前缺失的公共 API 行,按 akshare 顶层域归并。`DONE` 表示本库已实现(路径见本库路径列);`DEFERRED` 表示按 ADR-0005/0008 设计推迟(JS 签名 / 第三方令牌 / HTML·Excel 抓取 / cninfo 鉴权 / Jin10 x-csrf 等),详细原因见各模块 `//! ## DEFERRED` 段。
+
+### air
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `sunrise_daily` | _(待填)_ | 百度 | `air/sunrise_tad.py:40` | DEFERRED |
+| `sunrise_monthly` | _(待填)_ | 百度 | `air/sunrise_tad.py:73` | DEFERRED |
+
+### bond
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `bond_buy_back_hist_em` | `bond::wv_bond_misc::bond_buy_back_hist_em` | 东财/集思录/中债 | `bond/bond_buy_back_em.py:158` | DONE |
+| `bond_cb_adj_logs_jsl` | _(待填)_ | 东财/集思录/中债 | `bond/bond_convert.py:297` | DEFERRED |
+| `bond_cb_index_jsl` | _(待填)_ | 东财/集思录/中债 | `bond/bond_convert.py:17` | DEFERRED |
+| `bond_cb_jsl` | `bond::jisilu::bond_cb_jsl` | 东财/集思录/中债 | `bond/bond_convert.py:31` | DONE |
+| `bond_cb_redeem_jsl` | `bond::jisilu::bond_cb_redeem_jsl` | 东财/集思录/中债 | `bond/bond_convert.py:165` | DONE |
+| `bond_china_close_return_map` | `bond::chinamoney_pub::bond_china_close_return_map` | 东财/集思录/中债 | `bond/bond_china_money.py:93` | DONE |
+| `bond_corporate_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:222` | DEFERRED |
+| `bond_cov_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:322` | DEFERRED |
+| `bond_cov_stock_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:481` | DEFERRED |
+| `bond_info_cm` | `bond::wv_bond_misc::bond_info_cm` | 东财/集思录/中债 | `bond/bond_info_cm.py:65` | DONE |
+| `bond_info_cm_query` | `bond::wv_bond_misc::bond_info_cm_query` | 东财/集思录/中债 | `bond/bond_info_cm.py:19` | DONE |
+| `bond_info_detail_cm` | `bond::wv_bond_misc::bond_info_detail_cm` | 东财/集思录/中债 | `bond/bond_info_cm.py:183` | DONE |
+| `bond_local_government_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:126` | DEFERRED |
+| `bond_treasure_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:30` | DEFERRED |
+| `bond_zh_cov_info_ths` | `bond::wv_bond_misc::bond_zh_cov_info_ths` | 东财/集思录/中债 | `bond/bond_cb_ths.py:13` | DONE |
+| `bond_zh_hs_daily` | _(待填)_ | 东财/集思录/中债 | `bond/bond_zh_sina.py:118` | DEFERRED |
+| `macro_china_bond_public` | _(待填)_ | 东财/集思录/中债 | `bond/bond_china_money.py:313` | DEFERRED |
+
+### economic
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `macro_china_central_bank_balance` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3526` | DEFERRED |
+| `macro_china_foreign_exchange_gold` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3628` | DEFERRED |
+| `macro_china_freight_index` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3481` | DEFERRED |
+| `macro_china_insurance` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3560` | DEFERRED |
+| `macro_china_international_tourism_fx` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3381` | DEFERRED |
+| `macro_china_passenger_load_factor` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3415` | DEFERRED |
+| `macro_china_postal_telecommunicational` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3347` | DEFERRED |
+| `macro_china_retail_price_index` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3663` | DEFERRED |
+| `macro_china_society_electricity` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3236` | DEFERRED |
+| `macro_china_society_traffic_volume` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3289` | DEFERRED |
+| `macro_china_supply_of_money` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3594` | DEFERRED |
+| `macro_cnbs` | _(待填)_ | 东财/Jin10 | `economic/marco_cnbs.py:12` | DEFERRED |
+| `macro_cons_gold` | _(待填)_ | 东财/Jin10 | `economic/macro_constitute.py:17` | DEFERRED |
+| `macro_cons_opec_month` | _(待填)_ | 东财/Jin10 | `economic/macro_constitute.py:147` | DEFERRED |
+| `macro_cons_silver` | _(待填)_ | 东财/Jin10 | `economic/macro_constitute.py:82` | DEFERRED |
+| `macro_rmb_deposit` | _(待填)_ | 东财/Jin10 | `economic/macro_finance_ths.py:82` | DEFERRED |
+| `macro_rmb_loan` | _(待填)_ | 东财/Jin10 | `economic/macro_finance_ths.py:50` | DEFERRED |
+| `macro_shipping_bci` | `economic::macro_econ::macro_shipping_bci` | 东财/Jin10 | `economic/macro_china.py:2098` | DONE |
+| `macro_shipping_bcti` | `economic::macro_econ::macro_shipping_bcti` | 东财/Jin10 | `economic/macro_china.py:2131` | DONE |
+| `macro_shipping_bdi` | `economic::macro_econ::macro_shipping_bdi` | 东财/Jin10 | `economic/macro_china.py:2109` | DONE |
+| `macro_shipping_bpi` | `economic::macro_econ::macro_shipping_bpi` | 东财/Jin10 | `economic/macro_china.py:2120` | DONE |
+| `macro_stock_finance` | _(待填)_ | 东财/Jin10 | `economic/macro_finance_ths.py:15` | DEFERRED |
+| `macro_usa_adp_employment` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:374` | DEFERRED |
+| `macro_usa_api_crude_stock` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:534` | DEFERRED |
+| `macro_usa_building_permits` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:763` | DEFERRED |
+| `macro_usa_business_inventories` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:668` | DEFERRED |
+| `macro_usa_cb_consumer_confidence` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:862` | DEFERRED |
+| `macro_usa_core_cpi_monthly` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:205` | DEFERRED |
+| `macro_usa_core_pce_price` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:392` | DEFERRED |
+| `macro_usa_core_ppi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:515` | DEFERRED |
+| `macro_usa_cpi_monthly` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:186` | DEFERRED |
+| `macro_usa_current_account` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:448` | DEFERRED |
+| `macro_usa_durable_goods_orders` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:611` | DEFERRED |
+| `macro_usa_eia_crude_rate` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:923` | DEFERRED |
+| `macro_usa_exist_home_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:782` | DEFERRED |
+| `macro_usa_export_price` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:281` | DEFERRED |
+| `macro_usa_factory_orders` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:630` | DEFERRED |
+| `macro_usa_gdp_monthly` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:167` | DEFERRED |
+| `macro_usa_house_price_index` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:801` | DEFERRED |
+| `macro_usa_house_starts` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:725` | DEFERRED |
+| `macro_usa_import_price` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:262` | DEFERRED |
+| `macro_usa_industrial_production` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:592` | DEFERRED |
+| `macro_usa_initial_jobless` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:942` | DEFERRED |
+| `macro_usa_ism_non_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:687` | DEFERRED |
+| `macro_usa_ism_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:573` | DEFERRED |
+| `macro_usa_job_cuts` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:338` | DEFERRED |
+| `macro_usa_lmci` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:301` | DEFERRED |
+| `macro_usa_michigan_consumer_sentiment` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:902` | DEFERRED |
+| `macro_usa_nahb_house_market_index` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:706` | DEFERRED |
+| `macro_usa_new_home_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:744` | DEFERRED |
+| `macro_usa_nfib_small_business` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:881` | DEFERRED |
+| `macro_usa_non_farm` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:356` | DEFERRED |
+| `macro_usa_pending_home_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:841` | DEFERRED |
+| `macro_usa_personal_spending` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:224` | DEFERRED |
+| `macro_usa_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:554` | DEFERRED |
+| `macro_usa_ppi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:496` | DEFERRED |
+| `macro_usa_real_consumer_spending` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:410` | DEFERRED |
+| `macro_usa_retail_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:243` | DEFERRED |
+| `macro_usa_services_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:649` | DEFERRED |
+| `macro_usa_trade_balance` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:430` | DEFERRED |
+| `macro_usa_unemployment_rate` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:320` | DEFERRED |
+
+### fund
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `amac_fund_abs` | `fund::wv_fund_misc::amac_fund_abs` | 东财/集思录 | `fund/fund_amac.py:678` | DONE |
+| `amac_person_bond_org_list` | `fund::wv_fund_misc::amac_person_bond_org_list` | 东财/集思录 | `fund/fund_amac.py:198` | DONE |
+| `fund_aum_em` | _(待填)_ | 东财/集思录 | `fund/fund_aum_em.py:14` | DEFERRED |
+| `fund_aum_hist_em` | _(待填)_ | 东财/集思录 | `fund/fund_aum_em.py:64` | DEFERRED |
+| `fund_balance_position_lg` | _(待填)_ | 东财/集思录 | `fund/fund_position_lg.py:51` | DEFERRED |
+| `fund_etf_dividend_sina` | _(待填)_ | 东财/集思录 | `fund/fund_etf_sina.py:152` | DEFERRED |
+| `fund_etf_hist_sina` | _(待填)_ | 东财/集思录 | `fund/fund_etf_sina.py:116` | DEFERRED |
+| `fund_etf_scale_szse` | _(待填)_ | 东财/集思录 | `fund/fund_etf_szse.py:15` | DEFERRED |
+| `fund_exchange_rank_em` | `fund::wv_fund_misc::fund_exchange_rank_em` | 东财/集思录 | `fund/fund_rank_em.py:151` | DONE |
+| `fund_fee_em` | _(待填)_ | 东财/集思录 | `fund/fund_fee_em.py:17` | DEFERRED |
+| `fund_hk_rank_em` | `fund::wv_fund_misc::fund_hk_rank_em` | 东财/集思录 | `fund/fund_rank_em.py:427` | DONE |
+| `fund_individual_achievement_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:78` | DEFERRED |
+| `fund_individual_analysis_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:132` | DEFERRED |
+| `fund_individual_basic_info_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:13` | DEFERRED |
+| `fund_individual_detail_hold_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:270` | DEFERRED |
+| `fund_individual_detail_info_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:224` | DEFERRED |
+| `fund_individual_profit_probability_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:185` | DEFERRED |
+| `fund_info_ths` | _(待填)_ | 东财/集思录 | `fund/fund_info_ths.py:16` | DEFERRED |
+| `fund_linghuo_position_lg` | _(待填)_ | 东财/集思录 | `fund/fund_position_lg.py:89` | DEFERRED |
+| `fund_lof_hist_em` | `fund::wv_fund_misc::fund_lof_hist_em` | 东财/集思录 | `fund/fund_lof_em.py:120` | DONE |
+| `fund_new_found_ths` | `fund::wv_fund_misc::fund_new_found_ths` | 东财/集思录 | `fund/fund_init_ths.py:15` | DONE |
+| `fund_open_fund_rank_em` | `fund::wv_fund_misc::fund_open_fund_rank_em` | 东财/集思录 | `fund/fund_rank_em.py:33` | DONE |
+| `fund_overview_em` | _(待填)_ | 东财/集思录 | `fund/fund_overview_em.py:15` | DEFERRED |
+| `fund_portfolio_bond_hold_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:166` | DEFERRED |
+| `fund_portfolio_change_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:290` | DEFERRED |
+| `fund_portfolio_hold_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:84` | DEFERRED |
+| `fund_portfolio_industry_allocation_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:217` | DEFERRED |
+| `fund_rating_all` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:14` | DEFERRED |
+| `fund_rating_ja` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:276` | DEFERRED |
+| `fund_rating_sh` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:91` | DEFERRED |
+| `fund_rating_zs` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:189` | DEFERRED |
+| `fund_report_asset_allocation_cninfo` | _(待填)_ | 东财/集思录 | `fund/fund_report_cninfo.py:161` | DEFERRED |
+| `fund_report_industry_allocation_cninfo` | _(待填)_ | 东财/集思录 | `fund/fund_report_cninfo.py:97` | DEFERRED |
+| `fund_report_stock_cninfo` | _(待填)_ | 东财/集思录 | `fund/fund_report_cninfo.py:30` | DEFERRED |
+| `fund_scale_daily_szse` | _(待填)_ | 东财/集思录 | `fund/fund_scale_szse.py:27` | DEFERRED |
+| `fund_stock_position_lg` | _(待填)_ | 东财/集思录 | `fund/fund_position_lg.py:15` | DEFERRED |
+
+### futures
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `futures_comm_info` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_comm_qihuo.py:172` | DEFERRED |
+| `futures_comm_js` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_comm_js.py:15` | DEFERRED |
+| `futures_contract_detail` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_contract_detail.py:16` | DEFERRED |
+| `futures_contract_detail_em` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_contract_detail.py:41` | DEFERRED |
+| `futures_delivery_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:244` | DEFERRED |
+| `futures_delivery_dce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:57` | DEFERRED |
+| `futures_delivery_match_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:198` | DEFERRED |
+| `futures_delivery_match_dce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:128` | DEFERRED |
+| `futures_delivery_shfe` | `futures::exchange_shfe::futures_delivery_shfe` | 东财/新浪/交易所 | `futures/futures_to_spot.py:269` | DONE |
+| `futures_fees_info` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_comm_ctp.py:17` | DEFERRED |
+| `futures_foreign_commodity_realtime` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_hq_sina.py:103` | DEFERRED |
+| `futures_foreign_commodity_subscribe_exchange_symbol` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_hq_sina.py:38` | DEFERRED |
+| `futures_foreign_detail` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_foreign.py:45` | DEFERRED |
+| `futures_gfex_warehouse_receipt` | `futures::exchange_gfex::futures_gfex_warehouse_receipt` | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:159` | DONE |
+| `futures_global_hist_em` | `futures::global_em_hist::futures_global_hist_em` | 东财/新浪/交易所 | `futures/futures_hf_em.py:171` | DONE |
+| `futures_global_spot_em` | `futures::global_spot_em::futures_global_spot_em` | 东财/新浪/交易所 | `futures/futures_hf_em.py:87` | DONE |
+| `futures_hist_daily_cffex` | `futures::wv_futures_cffex::futures_hist_daily_cffex` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:697` | DONE |
+| `futures_hist_table_em` | `futures::global_em_hist::futures_hist_table_em` | 东财/新浪/交易所 | `futures/futures_hist_em.py:77` | DONE |
+| `futures_hq_subscribe_exchange_symbol` | `futures::sina_hq::futures_hq_subscribe_exchange_symbol` | 东财/新浪/交易所 | `futures/futures_hq_sina.py:58` | DONE |
+| `futures_index_ccidx` | `futures::wv_futures_index::futures_index_ccidx` | 东财/新浪/交易所 | `futures/futures_index_ccidx.py:13` | DONE |
+| `futures_news_shmet` | `futures::wv_futures_news::futures_news_shmet` | 东财/新浪/交易所 | `futures/futures_news_shmet.py:13` | DONE |
+| `futures_rule` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_rule.py:15` | DEFERRED |
+| `futures_settle` | `futures::wv_futures_settle::futures_settle` | 东财/新浪/交易所 | `futures/futures_settle.py:481` | DONE |
+| `futures_settle_cffex` | `futures::wv_futures_settle::futures_settle_cffex` | 东财/新浪/交易所 | `futures/futures_settle.py:175` | DONE |
+| `futures_settle_czce` | `futures::wv_futures_settle::futures_settle_czce` | 东财/新浪/交易所 | `futures/futures_settle.py:227` | DONE |
+| `futures_settle_gfex` | `futures::wv_futures_settle::futures_settle_gfex` | 东财/新浪/交易所 | `futures/futures_settle.py:288` | DONE |
+| `futures_settle_ine` | `futures::wv_futures_settle::futures_settle_ine` | 东财/新浪/交易所 | `futures/futures_settle.py:420` | DONE |
+| `futures_settle_shfe` | `futures::wv_futures_settle::futures_settle_shfe` | 东财/新浪/交易所 | `futures/futures_settle.py:359` | DONE |
+| `futures_settlement_price_sgx` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_settlement_price_sgx.py:63` | DEFERRED |
+| `futures_shfe_warehouse_receipt` | `futures::warehouse_receipt_shfe::futures_shfe_warehouse_receipt` | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:104` | DONE |
+| `futures_spot_price` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_basis.py:79` | DEFERRED |
+| `futures_spot_price_daily` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_basis.py:31` | DEFERRED |
+| `futures_spot_price_previous` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_basis.py:300` | DEFERRED |
+| `futures_spot_stock` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_spot_stock_em.py:15` | DEFERRED |
+| `futures_stock_shfe_js` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_stock_js.py:14` | DEFERRED |
+| `futures_symbol_mark` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_zh_sina.py:28` | DEFERRED |
+| `futures_to_spot_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:155` | DEFERRED |
+| `futures_to_spot_dce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:97` | DEFERRED |
+| `futures_to_spot_shfe` | `futures::exchange_shfe::futures_to_spot_shfe` | 东财/新浪/交易所 | `futures/futures_to_spot.py:14` | DONE |
+| `futures_warehouse_receipt_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:23` | DEFERRED |
+| `futures_warehouse_receipt_dce` | `futures::exchange_dce::futures_warehouse_receipt_dce` | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:61` | DONE |
+| `futures_zh_realtime` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_zh_sina.py:91` | DEFERRED |
+| `get_cffex_daily` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_daily_bar.py:108` | DEFERRED |
+| `get_czce_daily` | `futures::exchange_czce::get_czce_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:341` | DONE |
+| `get_dce_daily` | `futures::exchange_dce::get_dce_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:527` | DONE |
+| `get_futures_daily` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_daily_bar.py:637` | DEFERRED |
+| `get_gfex_daily` | `futures::exchange_gfex::get_gfex_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:199` | DONE |
+| `get_ine_daily` | `futures::exchange_ine::get_ine_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:275` | DONE |
+| `get_receipt` | _(待填)_ | 东财/新浪/交易所 | `futures/receipt.py:571` | DEFERRED |
+| `get_roll_yield` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_roll_yield.py:23` | DEFERRED |
+| `get_roll_yield_bar` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_roll_yield.py:74` | DEFERRED |
+| `get_shfe_daily` | `futures::exchange_shfe::get_shfe_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:453` | DONE |
+| `match_main_contract` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_zh_sina.py:171` | DEFERRED |
+
+### index
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `drewry_wci_index` | _(待填)_ | 东财/申万 | `index/index_drewry.py:17` | DEFERRED |
+| `index_code_id_map_em` | `index::index_more::index_code_id_map_em` | 东财/申万 | `index/index_zh_em.py:17` | DONE |
+| `index_csindex_all` | _(待填)_ | 东财/申万 | `index/index_csindex.py:16` | DEFERRED |
+| `index_detail_cni` | _(待填)_ | 东财/申万 | `index/index_cni.py:134` | DEFERRED |
+| `index_detail_hist_adjust_cni` | _(待填)_ | 东财/申万 | `index/index_cni.py:191` | DEFERRED |
+| `index_detail_hist_cni` | _(待填)_ | 东财/申万 | `index/index_cni.py:164` | DEFERRED |
+| `index_hist_fund_sw` | `index::wv_index_fund_sw::index_hist_fund_sw` | 东财/申万 | `index/index_research_fund_sw.py:61` | DONE |
+| `index_hog_spot_price` | `index::wv_index_misc::index_hog_spot_price` | 东财/申万 | `index/index_hog.py:13` | DONE |
+| `index_news_sentiment_scope` | `index::wv_index_misc::index_news_sentiment_scope` | 东财/申万 | `index/index_zh_a_scope.py:13` | DONE |
+| `index_pmi_com_cx` | `index::cx_pmi::index_pmi_com_cx` | 东财/申万 | `index/index_cx.py:13` | DONE |
+| `index_pmi_man_cx` | `index::cx_pmi::index_pmi_man_cx` | 东财/申万 | `index/index_cx.py:41` | DONE |
+| `index_pmi_ser_cx` | `index::cx_pmi::index_pmi_ser_cx` | 东财/申万 | `index/index_cx.py:69` | DONE |
+| `index_realtime_fund_sw` | `index::wv_index_fund_sw::index_realtime_fund_sw` | 东财/申万 | `index/index_research_fund_sw.py:15` | DONE |
+| `index_stock_cons_csindex` | _(待填)_ | 东财/申万 | `index/index_cons.py:126` | DEFERRED |
+| `index_stock_cons_weight_csindex` | _(待填)_ | 东财/申万 | `index/index_cons.py:160` | DEFERRED |
+| `index_stock_info` | _(待填)_ | 东财/申万 | `index/index_cons.py:70` | DEFERRED |
+| `index_us_stock_sina` | _(待填)_ | 东财/申万 | `index/index_stock_us_sina.py:18` | DEFERRED |
+| `spot_goods` | `index::wv_index_misc::spot_goods` | 东财/申万 | `index/index_spot.py:13` | DONE |
+| `stock_a_code_to_symbol` | `index::cons::stock_a_code_to_symbol` | 东财/申万 | `index/index_cons.py:196` | DONE |
+| `stock_zh_index_value_csindex` | _(待填)_ | 东财/申万 | `index/index_stock_zh_csindex.py:72` | DEFERRED |
+| `sw_index_first_info` | _(待填)_ | 东财/申万 | `index/index_sw.py:38` | DEFERRED |
+| `sw_index_second_info` | _(待填)_ | 东财/申万 | `index/index_sw.py:96` | DEFERRED |
+| `sw_index_third_cons` | _(待填)_ | 东财/申万 | `index/index_sw.py:220` | DEFERRED |
+| `sw_index_third_info` | _(待填)_ | 东财/申万 | `index/index_sw.py:158` | DEFERRED |
+
+### news
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `news_cctv` | _(待填)_ | 百度/东财 | `news/news_cctv.py:17` | DEFERRED |
+
+### option
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `option_comm_info` | _(待填)_ | 东财/新浪 | `option/option_comm_qihuo.py:38` | DEFERRED |
+| `option_comm_symbol` | _(待填)_ | 东财/新浪 | `option/option_comm_qihuo.py:18` | DEFERRED |
+| `option_commodity_contract_sina` | _(待填)_ | 东财/新浪 | `option/option_commodity_sina.py:16` | DEFERRED |
+| `option_commodity_contract_table_sina` | _(待填)_ | 东财/新浪 | `option/option_commodity_sina.py:55` | DEFERRED |
+| `option_commodity_hist_sina` | _(待填)_ | 东财/新浪 | `option/option_commodity_sina.py:139` | DEFERRED |
+| `option_contract_info_ctp` | `option::wv_option_misc::option_contract_info_ctp` | 东财/新浪 | `option/option_contract_info_ctp.py:13` | DONE |
+| `option_current_day_szse` | _(待填)_ | 东财/新浪 | `option/option_current_szse.py:14` | DEFERRED |
+| `option_daily_stats_szse` | `option::wv_option_misc::option_daily_stats_szse` | 东财/新浪 | `option/option_daily_stats_sse_szse.py:85` | DONE |
+| `option_lhb_em` | `option::wv_option_misc::option_lhb_em` | 东财/新浪 | `option/option_lhb_em.py:13` | DONE |
+| `option_margin` | _(待填)_ | 东财/新浪 | `option/option_margin.py:38` | DEFERRED |
+| `option_margin_symbol` | _(待填)_ | 东财/新浪 | `option/option_margin.py:18` | DEFERRED |
+| `option_premium_analysis_em` | `option::wv_option_misc::option_premium_analysis_em` | 东财/新浪 | `option/option_premium_analysis_em.py:14` | DONE |
+| `option_risk_analysis_em` | `option::wv_option_misc::option_risk_analysis_em` | 东财/新浪 | `option/option_risk_analysis_em.py:14` | DONE |
+| `option_value_analysis_em` | `option::wv_option_misc::option_value_analysis_em` | 东财/新浪 | `option/option_value_analysis_em.py:14` | DONE |
+
+### other
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `car_sale_rank_gasgoo` | `other::wv_other_misc::car_sale_rank_gasgoo` | — | `other/other_car_gasgoo.py:15` | DONE |
+| `game_hot_rank_taptap` | `other::wv_other_misc::game_hot_rank_taptap` | — | `other/other_taptap.py:72` | DONE |
+
+### qdii
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `qdii_e_comm_jsl` | `qdii::e_comm_jsl::qdii_e_comm_jsl` | 集思录 | `qdii/qdii_jsl.py:88` | DONE |
+
+### rate
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `repo_rate_hist` | `rate::chinamoney::repo_rate_hist` | 外汇交易中心 | `rate/repo_rate.py:45` | DONE |
+| `repo_rate_query` | `rate::chinamoney::repo_rate_query` | 外汇交易中心 | `rate/repo_rate.py:12` | DONE |
+
+### reits
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `reits_hist_min_em` | `reits::wv_reits_misc::reits_hist_min_em` | 东财 | `reits/reits_basic.py:173` | DONE |
+
+### spot
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `spot_corn_price_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:137` | DEFERRED |
+| `spot_hog_crossbred_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:113` | DEFERRED |
+| `spot_hog_lean_price_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:65` | DEFERRED |
+| `spot_hog_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:14` | DEFERRED |
+| `spot_hog_three_way_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:89` | DEFERRED |
+| `spot_hog_year_trend_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:41` | DEFERRED |
+| `spot_mixed_feed_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:185` | DEFERRED |
+| `spot_price_qh` | _(待填)_ | 上期所/QB | `spot/spot_price_qh.py:79` | DEFERRED |
+| `spot_price_table_qh` | `spot::price_qh::spot_price_table_qh` | 上期所/QB | `spot/spot_price_qh.py:55` | DONE |
+| `spot_soybean_price_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:161` | DEFERRED |
+
+### stock
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `get_us_stock_name` | _(待填)_ | 东财/新浪 | `stock/stock_us_sina.py:55` | DEFERRED |
+| `stock_allotment_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_allotment_cninfo.py:30` | DEFERRED |
+| `stock_bid_ask_em` | `stock::wv_stock_misc2::stock_bid_ask_em` | 东财/新浪 | `stock/stock_ask_bid_em.py:13` | DONE |
+| `stock_cg_equity_mortgage_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_cg_equity_mortgage.py:30` | DEFERRED |
+| `stock_cg_guarantee_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_cg_guarantee.py:30` | DEFERRED |
+| `stock_cg_lawsuit_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_cg_lawsuit.py:31` | DEFERRED |
+| `stock_dividend_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_dividend_cninfo.py:30` | DEFERRED |
+| `stock_hk_company_profile_em` | `stock::hk_profile_em::stock_hk_company_profile_em` | 东财/新浪 | `stock/stock_profile_em.py:79` | DONE |
+| `stock_hk_daily` | _(待填)_ | 东财/新浪 | `stock/stock_hk_sina.py:109` | DEFERRED |
+| `stock_hk_dividend_payout_em` | `stock::hk_profile_em::stock_hk_dividend_payout_em` | 东财/新浪 | `stock/stock_profile_em.py:237` | DONE |
+| `stock_hk_fhpx_detail_ths` | _(待填)_ | 东财/新浪 | `stock/stock_hk_fhpx_ths.py:15` | DEFERRED |
+| `stock_hk_financial_indicator_em` | `stock::hk_profile_em::stock_hk_financial_indicator_em` | 东财/新浪 | `stock/stock_profile_em.py:153` | DONE |
+| `stock_hk_growth_comparison_em` | `stock::hk_comparison_em::stock_hk_growth_comparison_em` | 东财/新浪 | `stock/stock_hk_comparison_em.py:13` | DONE |
+| `stock_hk_scale_comparison_em` | `stock::hk_comparison_em::stock_hk_scale_comparison_em` | 东财/新浪 | `stock/stock_hk_comparison_em.py:118` | DONE |
+| `stock_hk_valuation_comparison_em` | `stock::hk_comparison_em::stock_hk_valuation_comparison_em` | 东财/新浪 | `stock/stock_hk_comparison_em.py:61` | DONE |
+| `stock_hold_change_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_control_cninfo.py:198` | DEFERRED |
+| `stock_hold_control_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_control_cninfo.py:35` | DEFERRED |
+| `stock_hold_management_detail_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_control_cninfo.py:106` | DEFERRED |
+| `stock_hold_management_person_em` | `stock::wv_stock_misc1::stock_hold_management_person_em` | 东财/新浪 | `stock/stock_hold_control_em.py:111` | DONE |
+| `stock_hold_num_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_num_cninfo.py:30` | DEFERRED |
+| `stock_hot_search_baidu` | `stock::hot_search_baidu::stock_hot_search_baidu` | 东财/新浪 | `stock/stock_hot_search_baidu.py:15` | DONE |
+| `stock_industry_category_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_industry_cninfo.py:32` | DEFERRED |
+| `stock_industry_change_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_industry_cninfo.py:105` | DEFERRED |
+| `stock_industry_clf_hist_sw` | _(待填)_ | 东财/新浪 | `stock/stock_industry_sw.py:17` | DEFERRED |
+| `stock_info_change_name` | _(待填)_ | 东财/新浪 | `stock/stock_info.py:411` | DEFERRED |
+| `stock_info_sz_change_name` | _(待填)_ | 东财/新浪 | `stock/stock_info.py:384` | DEFERRED |
+| `stock_ipo_summary_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_ipo_summary_cninfo.py:30` | DEFERRED |
+| `stock_js_weibo_nlp_time` | _(待填)_ | 东财/新浪 | `stock/stock_weibo_nlp.py:20` | DEFERRED |
+| `stock_js_weibo_report` | _(待填)_ | 东财/新浪 | `stock/stock_weibo_nlp.py:49` | DEFERRED |
+| `stock_new_gh_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_new_cninfo.py:30` | DEFERRED |
+| `stock_new_ipo_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_new_cninfo.py:76` | DEFERRED |
+| `stock_news_main_cx` | `stock::news_cx::stock_news_main_cx` | 东财/新浪 | `stock/stock_news_cx.py:13` | DONE |
+| `stock_price_js` | `stock::wv_stock_misc1::stock_price_js` | 东财/新浪 | `stock/stock_us_js.py:13` | DONE |
+| `stock_profile_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_profile_cninfo.py:30` | DEFERRED |
+| `stock_rank_forecast_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_rank_forecast.py:30` | DEFERRED |
+| `stock_share_change_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_share_changes_cninfo.py:31` | DEFERRED |
+| `stock_share_hold_change_bse` | `stock::wv_stock_misc1::stock_share_hold_change_bse` | 东财/新浪 | `stock/stock_share_hold.py:196` | DONE |
+| `stock_share_hold_change_sse` | `stock::wv_stock_misc1::stock_share_hold_change_sse` | 东财/新浪 | `stock/stock_share_hold.py:21` | DONE |
+| `stock_share_hold_change_szse` | `stock::wv_stock_misc1::stock_share_hold_change_szse` | 东财/新浪 | `stock/stock_share_hold.py:118` | DONE |
+| `stock_sse_deal_daily` | `stock::sse_summary::stock_sse_deal_daily` | 东财/新浪 | `stock/stock_summary.py:251` | DONE |
+| `stock_sse_summary` | `stock::sse_summary::stock_sse_summary` | 东财/新浪 | `stock/stock_summary.py:207` | DONE |
+| `stock_staq_net_stop` | `stock::staq_net_stop::stock_staq_net_stop` | 东财/新浪 | `stock/stock_stop.py:13` | DONE |
+| `stock_szse_area_summary` | _(待填)_ | 东财/新浪 | `stock/stock_summary.py:53` | DEFERRED |
+| `stock_szse_sector_summary` | _(待填)_ | 东财/新浪 | `stock/stock_summary.py:110` | DEFERRED |
+| `stock_szse_summary` | _(待填)_ | 东财/新浪 | `stock/stock_summary.py:22` | DEFERRED |
+| `stock_us_daily` | _(待填)_ | 东财/新浪 | `stock/stock_us_sina.py:117` | DEFERRED |
+| `stock_us_spot` | _(待填)_ | 东财/新浪 | `stock/stock_us_sina.py:86` | DEFERRED |
+| `stock_zh_a_cdr_daily` | _(待填)_ | 东财/新浪 | `stock/stock_zh_a_sina.py:307` | DEFERRED |
+| `stock_zh_a_stop_em` | `stock::zh_a_stop_em::stock_zh_a_stop_em` | 东财/新浪 | `stock/stock_zh_a_special.py:200` | DONE |
+| `stock_zh_a_tick_tx_js` | `stock::wv_stock_misc1::stock_zh_a_tick_tx_js` | 东财/新浪 | `stock/stock_zh_a_tick_tx.py:16` | DONE |
+| `stock_zh_ah_daily` | `stock::wv_stock_misc1::stock_zh_ah_daily` | 东财/新浪 | `stock/stock_zh_ah_tx.py:157` | DONE |
+| `stock_zh_ah_name` | `stock::wv_stock_misc1::stock_zh_ah_name` | 东财/新浪 | `stock/stock_zh_ah_tx.py:110` | DONE |
+| `stock_zh_ah_spot` | `stock::wv_stock_misc1::stock_zh_ah_spot` | 东财/新浪 | `stock/stock_zh_ah_tx.py:40` | DONE |
+| `stock_zh_b_daily` | _(待填)_ | 东财/新浪 | `stock/stock_zh_b_sina.py:124` | DEFERRED |
+| `stock_zh_b_minute` | `stock::zh_b_minute::stock_zh_b_minute` | 东财/新浪 | `stock/stock_zh_b_sina.py:281` | DONE |
+| `stock_zh_b_spot` | _(待填)_ | 东财/新浪 | `stock/stock_zh_b_sina.py:48` | DEFERRED |
+| `stock_zh_dupont_comparison_em` | `stock::wv_stock_misc2::stock_zh_dupont_comparison_em` | 东财/新浪 | `stock/stock_zh_comparison_em.py:162` | DONE |
+| `stock_zh_growth_comparison_em` | `stock::wv_stock_misc2::stock_zh_growth_comparison_em` | 东财/新浪 | `stock/stock_zh_comparison_em.py:13` | DONE |
+| `stock_zh_kcb_daily` | `stock::wv_stock_misc2::stock_zh_kcb_daily` | 东财/新浪 | `stock/stock_zh_kcb_sina.py:123` | DONE |
+| `stock_zh_kcb_spot` | `stock::wv_stock_misc2::stock_zh_kcb_spot` | 东财/新浪 | `stock/stock_zh_kcb_sina.py:42` | DONE |
+
+### stock_feature
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_board_concept_info_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_concept_ths.py:91` | DEFERRED |
+| `stock_board_concept_name_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_concept_ths.py:71` | DEFERRED |
+| `stock_board_concept_summary_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_concept_ths.py:273` | DEFERRED |
+| `stock_board_industry_info_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:88` | DEFERRED |
+| `stock_board_industry_name_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:68` | DEFERRED |
+| `stock_board_industry_summary_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:331` | DEFERRED |
+| `stock_fund_flow_concept` | _(待填)_ | 东财/百度 | `stock_feature/stock_fund_flow.py:137` | DEFERRED |
+| `stock_fund_flow_individual` | _(待填)_ | 东财/百度 | `stock_feature/stock_fund_flow.py:41` | DEFERRED |
+| `stock_fund_flow_industry` | _(待填)_ | 东财/百度 | `stock_feature/stock_fund_flow.py:243` | DEFERRED |
+| `stock_ggcg_em` | `stock_feature::wv_sf_misc3::stock_ggcg_em` | 东财/百度 | `stock_feature/stock_gdzjc_em.py:15` | DONE |
+| `stock_hk_gxl_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_gxl_lg.py:54` | DEFERRED |
+| `stock_hk_indicator_eniu` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_indicator.py:54` | DEFERRED |
+| `stock_hk_valuation_baidu` | `stock_feature::wv_sf_misc2::stock_hk_valuation_baidu` | 东财/百度 | `stock_feature/stock_hk_valuation_baidu.py:14` | DONE |
+| `stock_hot_deal_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_hot_xq.py:207` | DEFERRED |
+| `stock_hot_follow_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_hot_xq.py:81` | DEFERRED |
+| `stock_hot_tweet_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_hot_xq.py:144` | DEFERRED |
+| `stock_index_pb_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:507` | DEFERRED |
+| `stock_index_pe_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:398` | DEFERRED |
+| `stock_info_cjzc_em` | `stock_feature::wv_sf_misc3::stock_info_cjzc_em` | 东财/百度 | `stock_feature/stock_info.py:21` | DONE |
+| `stock_info_global_cls` | _(待填)_ | 东财/百度 | `stock_feature/stock_info.py:195` | DEFERRED |
+| `stock_info_global_em` | `stock_feature::wv_sf_misc3::stock_info_global_em` | 东财/百度 | `stock_feature/stock_info.py:61` | DONE |
+| `stock_info_global_futu` | `stock_feature::wv_sf_misc3::stock_info_global_futu` | 东财/百度 | `stock_feature/stock_info.py:127` | DONE |
+| `stock_info_global_sina` | `stock_feature::wv_sf_misc3::stock_info_global_sina` | 东财/百度 | `stock_feature/stock_info.py:96` | DONE |
+| `stock_info_global_ths` | `stock_feature::wv_sf_misc3::stock_info_global_ths` | 东财/百度 | `stock_feature/stock_info.py:162` | DONE |
+| `stock_inner_trade_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_inner_trade_xq.py:72` | DEFERRED |
+| `stock_ipo_benefit_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:274` | DEFERRED |
+| `stock_irm_ans_cninfo` | `stock_feature::wv_sf_misc1::stock_irm_ans_cninfo` | 东财/百度 | `stock_feature/stock_irm_cninfo.py:140` | DONE |
+| `stock_irm_cninfo` | `stock_feature::wv_sf_misc1::stock_irm_cninfo` | 东财/百度 | `stock_feature/stock_irm_cninfo.py:31` | DONE |
+| `stock_jgdy_tj_em` | `stock_feature::wv_sf_misc1::stock_jgdy_tj_em` | 东财/百度 | `stock_feature/stock_jgdy_em.py:16` | DONE |
+| `stock_lh_yyb_capital` | _(待填)_ | 东财/百度 | `stock_feature/stock_lh_yybpm.py:42` | DEFERRED |
+| `stock_lh_yyb_control` | _(待填)_ | 东财/百度 | `stock_feature/stock_lh_yybpm.py:65` | DEFERRED |
+| `stock_lh_yyb_most` | _(待填)_ | 东财/百度 | `stock_feature/stock_lh_yybpm.py:19` | DEFERRED |
+| `stock_lhb_detail_daily_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:18` | DEFERRED |
+| `stock_lhb_ggtj_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:91` | DEFERRED |
+| `stock_lhb_jgmx_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:208` | DEFERRED |
+| `stock_lhb_jgzz_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:166` | DEFERRED |
+| `stock_lhb_yytj_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:128` | DEFERRED |
+| `stock_margin_bse` | `stock_feature::wv_sf_misc1::stock_margin_bse` | 东财/百度 | `stock_feature/stock_margin_bse.py:71` | DONE |
+| `stock_margin_detail_bse` | `stock_feature::wv_sf_misc1::stock_margin_detail_bse` | 东财/百度 | `stock_feature/stock_margin_bse.py:129` | DONE |
+| `stock_margin_detail_sse` | `stock_feature::wv_sf_misc3::stock_margin_detail_sse` | 东财/百度 | `stock_feature/stock_margin_sse.py:137` | DONE |
+| `stock_margin_detail_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_margin_szse.py:95` | DEFERRED |
+| `stock_margin_ratio_pa` | `stock_feature::wv_sf_misc3::stock_margin_ratio_pa` | 东财/百度 | `stock_feature/stock_margin_sse.py:13` | DONE |
+| `stock_margin_underlying_info_bse` | `stock_feature::wv_sf_misc1::stock_margin_underlying_info_bse` | 东财/百度 | `stock_feature/stock_margin_bse.py:190` | DONE |
+| `stock_margin_underlying_info_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_margin_szse.py:15` | DEFERRED |
+| `stock_market_activity_legu` | _(待填)_ | 东财/百度 | `stock_feature/stock_market_legu.py:18` | DEFERRED |
+| `stock_market_pb_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:461` | DEFERRED |
+| `stock_market_pe_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:322` | DEFERRED |
+| `stock_pg_em` | `stock_feature::wv_sf_misc1::stock_pg_em` | 东财/百度 | `stock_feature/stock_zf_pg.py:99` | DONE |
+| `stock_rank_cxd_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:111` | DEFERRED |
+| `stock_rank_cxfl_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:309` | DEFERRED |
+| `stock_rank_cxg_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:35` | DEFERRED |
+| `stock_rank_cxsl_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:401` | DEFERRED |
+| `stock_rank_ljqd_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:782` | DEFERRED |
+| `stock_rank_ljqs_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:694` | DEFERRED |
+| `stock_rank_lxsz_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:187` | DEFERRED |
+| `stock_rank_lxxd_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:248` | DEFERRED |
+| `stock_rank_xstp_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:493` | DEFERRED |
+| `stock_rank_xxtp_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:594` | DEFERRED |
+| `stock_rank_xzjp_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:870` | DEFERRED |
+| `stock_report_disclosure` | `stock_feature::wv_sf_misc2::stock_report_disclosure` | 东财/百度 | `stock_feature/stock_yjyg_cninfo.py:13` | DONE |
+| `stock_research_report_em` | `stock_feature::wv_sf_misc2::stock_research_report_em` | 东财/百度 | `stock_feature/stock_research_report_em.py:16` | DONE |
+| `stock_sgt_reference_exchange_rate_sse` | `stock_feature::wv_sf_sgt::stock_sgt_reference_exchange_rate_sse` | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:76` | DONE |
+| `stock_sgt_reference_exchange_rate_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:47` | DEFERRED |
+| `stock_sgt_settlement_exchange_rate_sse` | `stock_feature::wv_sf_sgt::stock_sgt_settlement_exchange_rate_sse` | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:134` | DONE |
+| `stock_sgt_settlement_exchange_rate_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:18` | DEFERRED |
+| `stock_sns_sseinfo` | _(待填)_ | 东财/百度 | `stock_feature/stock_sns_sseinfo.py:56` | DEFERRED |
+| `stock_tfp_em` | `stock_feature::wv_sf_misc2::stock_tfp_em` | 东财/百度 | `stock_feature/stock_tfp_em.py:13` | DONE |
+| `stock_us_valuation_baidu` | `stock_feature::wv_sf_misc1::stock_us_valuation_baidu` | 东财/百度 | `stock_feature/stock_us_valuation_baidu.py:16` | DONE |
+| `stock_xgsglb_em` | `stock_feature::wv_sf_misc3::stock_xgsglb_em` | 东财/百度 | `stock_feature/stock_dxsyl_em.py:128` | DONE |
+| `stock_xgsr_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:222` | DEFERRED |
+| `stock_yjkb_em` | `stock_feature::wv_sf_misc1::stock_yjkb_em` | 东财/百度 | `stock_feature/stock_yjyg_em.py:17` | DONE |
+| `stock_yjyg_em` | `stock_feature::wv_sf_misc1::stock_yjyg_em` | 东财/百度 | `stock_feature/stock_yjyg_em.py:135` | DONE |
+| `stock_yzxdr_em` | `stock_feature::wv_sf_misc2::stock_yzxdr_em` | 东财/百度 | `stock_feature/stock_yzxdr_em.py:16` | DONE |
+| `stock_zh_a_disclosure_relation_cninfo` | `stock_feature::wv_sf_misc1::stock_zh_a_disclosure_relation_cninfo` | 东财/百度 | `stock_feature/stock_disclosure_cninfo.py:205` | DONE |
+| `stock_zh_a_disclosure_report_cninfo` | `stock_feature::wv_sf_misc1::stock_zh_a_disclosure_report_cninfo` | 东财/百度 | `stock_feature/stock_disclosure_cninfo.py:129` | DONE |
+| `stock_zh_vote_baidu` | `stock_feature::wv_sf_misc2::stock_zh_vote_baidu` | 东财/百度 | `stock_feature/stock_zh_vote_baidu.py:13` | DONE |
+
+### stock_fundamental
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `stock_add_stock` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:499` | DEFERRED |
+| `stock_circulate_stock_holder` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:563` | DEFERRED |
+| `stock_financial_analysis_indicator` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:228` | DEFERRED |
+| `stock_fund_stock_holder` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:638` | DEFERRED |
+| `stock_history_dividend` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:327` | DEFERRED |
+| `stock_history_dividend_detail` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:360` | DEFERRED |
+| `stock_hk_profit_forecast_et` | _(待填)_ | 东财 | `stock_fundamental/stock_profit_forecast_hk_etnet.py:15` | DEFERRED |
+| `stock_individual_basic_info_hk_xq` | _(待填)_ | 东财 | `stock_fundamental/stock_basic_info_xq.py:129` | DEFERRED |
+| `stock_individual_basic_info_us_xq` | _(待填)_ | 东财 | `stock_fundamental/stock_basic_info_xq.py:106` | DEFERRED |
+| `stock_individual_basic_info_xq` | _(待填)_ | 东财 | `stock_fundamental/stock_basic_info_xq.py:83` | DEFERRED |
+| `stock_individual_notice_report` | `stock::fundamental::wv_fund_misc::stock_individual_notice_report` | 东财 | `stock_fundamental/stock_notice.py:151` | DONE |
+| `stock_institute_hold` | _(待填)_ | 东财 | `stock_fundamental/stock_hold.py:17` | DEFERRED |
+| `stock_institute_hold_detail` | _(待填)_ | 东财 | `stock_fundamental/stock_hold.py:58` | DEFERRED |
+| `stock_institute_recommend` | _(待填)_ | 东财 | `stock_fundamental/stock_recommend.py:14` | DEFERRED |
+| `stock_institute_recommend_detail` | _(待填)_ | 东财 | `stock_fundamental/stock_recommend.py:76` | DEFERRED |
+| `stock_ipo_hk_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_ipo_ths.py:81` | DEFERRED |
+| `stock_ipo_info` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:483` | DEFERRED |
+| `stock_ipo_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_ipo_ths.py:14` | DEFERRED |
+| `stock_main_stock_holder` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:696` | DEFERRED |
+| `stock_notice_report` | `stock::fundamental::wv_fund_misc::stock_notice_report` | 东财 | `stock_fundamental/stock_notice.py:133` | DONE |
+| `stock_profit_forecast_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_profit_forecast_ths.py:17` | DEFERRED |
+| `stock_register_bj` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:237` | DEFERRED |
+| `stock_register_cyb` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:163` | DEFERRED |
+| `stock_register_db` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:459` | DEFERRED |
+| `stock_register_kcb` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:89` | DEFERRED |
+| `stock_register_sh` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:311` | DEFERRED |
+| `stock_register_sz` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:385` | DEFERRED |
+| `stock_restricted_release_queue_sina` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:531` | DEFERRED |
+| `stock_zyjs_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_zyjs_ths.py:14` | DEFERRED |
+
+### utils
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `get_token` | _(待填)_ | — | `utils/token_process.py:22` | DEFERRED |
+| `set_token` | _(待填)_ | — | `utils/token_process.py:15` | DEFERRED |
+
+### zz
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+|---|---|---|---|---|
+| `futures_inventory_99` | _(待填)_ | — | — | DEFERRED |
+| `macro_usa_spcs20` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_hs300_daily_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_hs300_list_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_hs300_spot_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_sz50_daily_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_sz50_list_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_sz50_spot_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_zz1000_daily_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_zz1000_list_sina` | _(待填)_ | — | — | DEFERRED |
+| `option_cffex_zz1000_spot_sina` | _(待填)_ | — | — | DEFERRED |

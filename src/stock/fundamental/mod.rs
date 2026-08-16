@@ -14,3 +14,5 @@ pub use eastmoney::{
     stock_balance_sheet_by_report_em, stock_cash_flow_sheet_by_report_em,
     stock_financial_analysis_indicator_em, stock_profit_sheet_by_report_em,
 };
+
+pub mod wv_fund_misc;
