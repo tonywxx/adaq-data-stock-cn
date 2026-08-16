@@ -1,0 +1,12 @@
+{
+  "_note": "SYNTHETIC FIXTURE — push2 kamtbs.rtmin is geo-blocked from this build host (HTTP 302 redirect). Field layout mirrors akshare: each entry is a CSV string; split on ',' take indices [0,1,3,5] -> time, 沪股通/港股通沪, 深股通/港股通深, 北向资金/南向资金. Replace with a live capture on first run.",
+  "data": {
+    "s2nDate": "2024-01-02",
+    "s2n": [
+      "09:30,100.5,1.2,200.3,5.4,300.8",
+      "09:31,101.2,1.3,201.1,5.5,305.6"
+    ],
+    "n2s": [],
+    "n2sDate": ""
+  }
+}

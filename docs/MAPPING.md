@@ -215,15 +215,21 @@
 | `crypto_info` | `src/crypto/extra.rs::crypto_info` | Binance | (公开 REST) | DONE |
 | `crypto_name_map` | `src/crypto/extra.rs::crypto_name_map` | Binance | (公开 REST) | DONE |
 
-## Stock 资金流 / 沪深港通(flow)
+## Stock 沪深港通 (hsgt)
+
+> 9 个 `stock_hsgt_*` 端点集中落地于 `src/stock/hsgt.rs`(东财 `datacenter-web` 纯 JSON,`stock_hsgt_fund_min_em` 走 push2)。其中 `stock_hsgt_hold_stock_em` / `stock_hsgt_stock_statistics_em`(`RPT_MUTUAL_STOCK_NORTHSTA`,本机构出口 IP 限流)与 `stock_hsgt_fund_min_em`(push2 地域封锁)三个端点的 fixtures 为合成数据,已在 fixture 文件 `_note` 与模块头注释中标注,需在首次联网运行时以真实响应校准。
 
 | akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
 |---|---|---|---|---|
-| `stock_individual_fund_flow` | `src/stock/flow.rs::individual_fund_flow` | 东财 | `akshare/stock/stock_fund_em.py` | DONE |
-| `stock_market_fund_flow` | `src/stock/flow.rs::market_fund_flow` | 东财 | `akshare/stock/stock_fund_em.py` | DONE |
-| `stock_individual_fund_flow_rank` | `src/stock/flow.rs::individual_fund_flow_rank` | 东财 | `akshare/stock/stock_fund_em.py` | DONE |
-| `stock_hsgt_fund_flow_summary_em` | `src/stock/flow.rs::hsgt_fund_flow_summary_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py` | DONE |
-| `stock_hsgt_hist_em` | `src/stock/flow.rs::hsgt_hist_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py` | DONE |
+| `stock_hsgt_fund_flow_summary_em` | `src/stock/hsgt.rs::stock_hsgt_fund_flow_summary_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:18` | DONE |
+| `stock_hsgt_hist_em` | `src/stock/hsgt.rs::stock_hsgt_hist_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1070` | DONE |
+| `stock_hsgt_hold_stock_em` | `src/stock/hsgt.rs::stock_hsgt_hold_stock_em` | 东财 (synthetic fixture) | `akshare/stock_feature/stock_hsgt_em.py:171` | DONE |
+| `stock_hsgt_stock_statistics_em` | `src/stock/hsgt.rs::stock_hsgt_stock_statistics_em` | 东财 (synthetic fixture) | `akshare/stock_feature/stock_hsgt_em.py:336` | DONE |
+| `stock_hsgt_institution_statistics_em` | `src/stock/hsgt.rs::stock_hsgt_institution_statistics_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:778` | DONE |
+| `stock_hsgt_board_rank_em` | `src/stock/hsgt.rs::stock_hsgt_board_rank_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1190` | DONE |
+| `stock_hsgt_individual_em` | `src/stock/hsgt.rs::stock_hsgt_individual_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1512` | DONE |
+| `stock_hsgt_individual_detail_em` | `src/stock/hsgt.rs::stock_hsgt_individual_detail_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1527` | DONE |
+| `stock_hsgt_fund_min_em` | `src/stock/hsgt.rs::stock_hsgt_fund_min_em` | 东财 (synthetic fixture) | `akshare/stock_hsgt_min_em.py:13` | DONE |
 
 ## Stock 个股信息 / 主营构成 / 板块(holder)
 

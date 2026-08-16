@@ -46,7 +46,7 @@
 //!   the exact header order requires an online header dump, so they are not
 //!   ported here (would be faking the schema).
 //! - `stock_zh_a_spot` / industry-concept spot and push2his CSV kline endpoints
-//!   are covered by other modules (`spot.rs`, `flow.rs`).
+//!   are covered by other modules (`spot.rs`, `fund_flow.rs`).
 
 use serde_json::Value;
 

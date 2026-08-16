@@ -12,6 +12,7 @@ pub mod gdfx;
 pub mod gpzy;
 pub mod hist;
 pub mod hk;
+pub mod hsgt;
 pub mod holder;
 pub mod hot_rank;
 pub mod index;

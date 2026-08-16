@@ -64,7 +64,7 @@
 | 22 | 基金扩展 `fund::extra`(名单 / 估值 / 历史 / 货币 / ETF分类) | ✅ DONE | 5 | 5 ✅ |
 | 23 | 外汇扩展 `forex::extra`(中行牌价 / 中行历史 / 人民币掉期) | ✅ DONE | 3 | 3 ✅ |
 | 24 | 数字货币扩展 `crypto::extra`(Binance/OKX 历史 / 现货 / 信息) | ✅ DONE | 4 | 4 ✅ |
-| 25 | A股资金流 / 沪深港通 `stock::flow` | ✅ DONE | 5 | 5 ✅ |
+| 25 | 沪深港通 `stock::hsgt`(东财 datacenter-web / push2) | ✅ DONE | 9 | 11 ✅ |
 | 26 | A股个股信息 / 主营构成 / 板块 `stock::holder` | ✅ DONE | 3 | 3 ✅ |
 | 27 | 融资融券 / 业绩报表 `stock::margin` | ✅ DONE | 3 | 3 ✅ |
 | 28 | 债券扩展 `bond::extra`(可转债 / 回购) | ✅ DONE | 4 | 4 ✅ |
@@ -139,7 +139,7 @@
 | 96 | 东方财富个股/大盘资金流 `stock::fund_flow` 补齐 3 个函数:`stock_individual_fund_flow`(push2his daykline `secid=sh→1./sz·bj→0.`)、`stock_market_fund_flow`(push2his `secid=1.000001` + `secid2=0.399001`,新增 `MarketFundFlowRow` 解析 `f62-f65` 沪深指数)、`stock_individual_fund_flow_rank`(push2 clist,`今日/3日/5日/10日` 通过 `rank_indicator_fields` 映射字段,新增 `IndividualRankRow` 含 10 列净流/占比) | ✅ DONE | 3 | 4 ✅ |
 | 97 | 港股个股人气榜 `stock::hot_rank` 补齐 4 个函数(东财 emappdata JSON-body POST,`marketType=000003`):`stock_hk_hot_rank_em`(POST `getAllCurrHkUsList` + push2 `116.` 前缀实时价)、`stock_hk_hot_rank_detail_em`/`stock_hk_hot_rank_detail_realtime_em`/`stock_hk_hot_rank_latest_em`(POST `getHisHkUsList`/`getCurrentHkUsList`/`getCurrentHkUsLatest`) | ✅ DONE | 4 | 4 ✅ |
 
-**累计**:96 个批次、624 个公开(已落地)函数、675 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计**:97 个批次、633 个公开(已落地)函数、686 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
 
 > 第 80-91 行新增 12 个叶子模块(在既有 `economic` / `index` / `stock` 顶层域下),共 78 个公开函数、88 个离线解析测试(由 lead 预置模块骨架后 dispatch 12 个并行 worker 落地)。其中 `economic::macro_usa_more` 整模块因 Jin10 `datacenter-api` 需 `x-csrf-token` 会话鉴权,全部 40 个美国宏观函数 DEFERRED;`stock::fund_flow` 与 `stock::board` 的解析器被多个对外函数复用,故测试数高于函数数。
 
@@ -182,7 +182,7 @@
 - `stock_hk_daily` / `stock_us_daily` / `stock_us_spot`(新浪):`py_mini_racer` JS 解密,DEFERRED。
 
 ### 下一步候选
-- 沪深港通 `stock_hsgt_*`(akshare `stock_feature/stock_hsgt_em.py` + `stock_hsgt_min_em.py):`stock_hsgt_fund_flow_summary_em` 与 `stock_hsgt_hist_em` 已在 `stock::flow` 落地(非前缀命名);剩余 7 个中 `stock_hsgt_hold_stock_em`(RPT_MUTUAL_STOCK_NORTHSTA)与 `stock_hsgt_board_rank_em`(RPT_*)需从 HTML 抓 `TRADE_DATE`/`current_date`,改为显式 `trade_date` 入参即可纯 datacenter JSON 落地;`stock_hsgt_stock_statistics_em`/`stock_hsgt_institution_statistics_em`/`stock_hsgt_individual_em`/`stock_hsgt_individual_detail_em`/`stock_hsgt_fund_min_em` 为纯 datacenter/push2,可直接落地(字段键需联网校准,fixtures 按 akshare 列义构造)。
+- 沪深港通 `stock_hsgt_*` 全部 9 个端点已落地于 `stock::hsgt`(见 MAPPING「Stock 沪深港通 (hsgt)」):`stock_hsgt_fund_flow_summary_em`、`stock_hsgt_hist_em`、`stock_hsgt_hold_stock_em`、`stock_hsgt_stock_statistics_em`、`stock_hsgt_institution_statistics_em`、`stock_hsgt_board_rank_em`、`stock_hsgt_individual_em`、`stock_hsgt_individual_detail_em`、`stock_hsgt_fund_min_em`。其中 `stock_hsgt_hold_stock_em` / `stock_hsgt_stock_statistics_em`(`RPT_MUTUAL_STOCK_NORTHSTA`,本机构出口 IP 限流返回 9701)与 `stock_hsgt_fund_min_em`(push2 地域封锁 HTTP 302)三端 fixtures 为**合成数据**,已在 fixture 文件 `_note` 与模块头注释标注,需在首次联网运行时以真实响应校准字段键(解析器对缺失键做了容错,真实数据不会硬失败)。
 - 继续补齐长尾包:`news` / `nlp` / `event` / `lpr` / `stock_fundamental`(财务)等。
 - 为 `rate_interbank` 等增加多源 fallback(目前为单源)。
 - 实现 `scripts/sync-akshare`(ADR-0012 的对标更新机制)。

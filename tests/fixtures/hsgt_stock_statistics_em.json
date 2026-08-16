@@ -1,0 +1,34 @@
+{
+  "_note": "SYNTHETIC FIXTURE — RPT_MUTUAL_STOCK_NORTHSTA is IP-throttled from this build host (Eastmoney returns code 9701 '服务器繁忙'). Field keys follow Eastmoney's standard mutual-stock schema; replace with a live capture (datacenter-web reportName=RPT_MUTUAL_STOCK_NORTHSTA) and calibrate on first run.",
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "TRADE_DATE": "2024-08-16 00:00:00",
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "CLOSE_PRICE": 1431.2,
+        "CHANGE_RATE": 0.21,
+        "HOLD_SHARES": 82354427,
+        "HOLD_MARKET_CAP": 117865655922.4,
+        "HOLD_SHARES_RATIO": 6.55,
+        "HOLD_MARKET_CAPONE": 411165619.48,
+        "HOLD_MARKET_CAPFIVE": 123456789.0,
+        "HOLD_MARKET_CAPTEN": 987654321.0
+      },
+      {
+        "TRADE_DATE": "2024-08-16 00:00:00",
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "CLOSE_PRICE": 11.05,
+        "CHANGE_RATE": -0.54,
+        "HOLD_SHARES": 1987654321,
+        "HOLD_MARKET_CAP": 21963456000.0,
+        "HOLD_SHARES_RATIO": 9.12,
+        "HOLD_MARKET_CAPONE": -1364016.0,
+        "HOLD_MARKET_CAPFIVE": 5555555.0,
+        "HOLD_MARKET_CAPTEN": 9999999.0
+      }
+    ]
+  }
+}

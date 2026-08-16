@@ -1,0 +1,44 @@
+{
+  "_note": "SYNTHETIC FIXTURE — RPT_MUTUAL_STOCK_NORTHSTA is IP-throttled from this build host (Eastmoney returns code 9701 '服务器繁忙'). Field keys follow Eastmoney's standard mutual-stock schema; replace with a live capture (datacenter-web reportName=RPT_MUTUAL_STOCK_NORTHSTA) and calibrate on first run. Parsers are tolerant of missing keys so a live parse degrades gracefully.",
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "RN": 1,
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME_ABBR": "贵州茅台",
+        "CLOSE_PRICE": 1431.2,
+        "CHANGE_RATE": 0.21,
+        "HOLD_SHARES": 82354427,
+        "HOLD_MARKET_CAP": 117865655922.4,
+        "HOLD_SHARES_RATIO": 6.55,
+        "TOTAL_SHARES_RATIO": 6.56,
+        "ADD_SHARES": 39399,
+        "ADD_MARKET_CAP": 56264037.44,
+        "ADD_MARKET_CAP_RATIO": 0.47,
+        "ADD_HOLD_SHARES_RATIO": 0.0003,
+        "ADD_TOTAL_SHARES_RATIO": 0.0003,
+        "BOARD_NAME": "白酒",
+        "TRADE_DATE": "2024-08-16 00:00:00"
+      },
+      {
+        "RN": 2,
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "CLOSE_PRICE": 11.05,
+        "CHANGE_RATE": -0.54,
+        "HOLD_SHARES": 1987654321,
+        "HOLD_MARKET_CAP": 21963456000.0,
+        "HOLD_SHARES_RATIO": 9.12,
+        "TOTAL_SHARES_RATIO": 9.12,
+        "ADD_SHARES": -123456,
+        "ADD_MARKET_CAP": -1364016.0,
+        "ADD_MARKET_CAP_RATIO": -0.06,
+        "ADD_HOLD_SHARES_RATIO": -0.0006,
+        "ADD_TOTAL_SHARES_RATIO": -0.0006,
+        "BOARD_NAME": "银行",
+        "TRADE_DATE": "2024-08-16 00:00:00"
+      }
+    ]
+  }
+}
