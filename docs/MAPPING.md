@@ -1049,6 +1049,9 @@
 | `stock_main_fund_flow` | `src/stock/fund_flow.rs` | 东财 push2 | DONE |
 | `stock_concept_fund_flow_hist` / `stock_sector_fund_flow_hist` | `src/stock/fund_flow.rs` | 东财 datacenter | DONE |
 | `stock_sector_fund_flow_rank` / `stock_sector_fund_flow_summary` / `stock_sector_detail` | `src/stock/fund_flow.rs` | 东财 push2 | DONE |
+| `stock_individual_fund_flow` | `src/stock/fund_flow.rs` | 东财 push2his | DONE(`stock/stock_fund_em.py:20`; `market`∈sh/sz/bj→secid 前缀) |
+| `stock_market_fund_flow` | `src/stock/fund_flow.rs` | 东财 push2his | DONE(`stock/stock_fund_em.py:347`; `secid=1.000001`+`secid2=0.399001`) |
+| `stock_individual_fund_flow_rank` | `src/stock/fund_flow.rs` | 东财 push2 | DONE(`stock/stock_fund_em.py:122`; `indicator`∈今日/3日/5日/10日) |
 
 ### 板块行情 `stock::board`
 

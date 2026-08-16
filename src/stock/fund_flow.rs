@@ -828,6 +828,278 @@ pub async fn stock_sector_detail(client: &Client, sector: &str) -> Result<Vec<Se
     Ok(out)
 }
 
+// ---------------------------------------------------------------------------
+// stock_individual_fund_flow  (stock/stock_fund_em.py:20)
+// ---------------------------------------------------------------------------
+
+/// 东方财富-个股资金流-历史 (push2his daykline, `secid = <market>.<code>`).
+/// `market` ∈ {`sh`, `sz`, `bj`} → Eastmoney market prefix (`sh`→1, else→0).
+pub async fn stock_individual_fund_flow(
+    client: &Client,
+    stock: &str,
+    market: &str,
+) -> Result<Vec<FundFlowHistRow>> {
+    let secid = match market {
+        "sh" => format!("1.{stock}"),
+        "sz" | "bj" => format!("0.{stock}"),
+        other => {
+            return Err(Error::InvalidParam(format!(
+                "stock_individual_fund_flow: unknown market {other:?} (use sh/sz/bj)"
+            )));
+        }
+    };
+    let v = client
+        .get_json(
+            SOURCE_EASTMONEY,
+            "stock_individual_fund_flow",
+            PUSH2HIS,
+            &[
+                ("lmt", "0"),
+                ("klt", "101"),
+                ("fields1", "f1,f2,f3,f7"),
+                (
+                    "fields2",
+                    "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64,f65",
+                ),
+                ("secid", &secid),
+            ],
+        )
+        .await?;
+    let klines = emh_klines(&v)?;
+    Ok(parse_fflow_klines(&klines))
+}
+
+// ---------------------------------------------------------------------------
+// stock_market_fund_flow  (stock/stock_fund_em.py:347)
+// ---------------------------------------------------------------------------
+
+/// A single day's main/large/extra-large/medium/small net inflow for the
+/// broader market, plus the Shanghai/Shenzhen index close & change.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct MarketFundFlowRow {
+    /// 日期 (kline f51)
+    pub date: String,
+    /// 主力净流入-净额 (f52)
+    pub main_net_in: Option<f64>,
+    /// 主力净流入-净占比 (f57)
+    pub main_net_pct: Option<f64>,
+    /// 超大单净流入-净额 (f56)
+    pub xxl_net_in: Option<f64>,
+    /// 超大单净流入-净占比 (f61)
+    pub xxl_net_pct: Option<f64>,
+    /// 大单净流入-净额 (f55)
+    pub big_net_in: Option<f64>,
+    /// 大单净流入-净占比 (f60)
+    pub big_net_pct: Option<f64>,
+    /// 中单净流入-净额 (f54)
+    pub mid_net_in: Option<f64>,
+    /// 中单净流入-净占比 (f59)
+    pub mid_net_pct: Option<f64>,
+    /// 小单净流入-净额 (f53)
+    pub small_net_in: Option<f64>,
+    /// 小单净流入-净占比 (f58)
+    pub small_net_pct: Option<f64>,
+    /// 上证-收盘价 (f62)
+    pub sh_close: Option<f64>,
+    /// 上证-涨跌幅 (f63)
+    pub sh_pct: Option<f64>,
+    /// 深证-收盘价 (f64)
+    pub sz_close: Option<f64>,
+    /// 深证-涨跌幅 (f65)
+    pub sz_pct: Option<f64>,
+}
+
+/// Parse `stock_market_fund_flow` rows from a daykline `klines` payload.
+pub(crate) fn parse_market_fund_flow(klines: &[String]) -> Vec<MarketFundFlowRow> {
+    let mut out = Vec::with_capacity(klines.len());
+    for line in klines {
+        let cells: Vec<&str> = line.split(',').collect();
+        if cells.is_empty() {
+            continue;
+        }
+        out.push(MarketFundFlowRow {
+            date: cells[0].to_string(),
+            main_net_in: kf(&cells, 1),
+            small_net_in: kf(&cells, 2),
+            mid_net_in: kf(&cells, 3),
+            big_net_in: kf(&cells, 4),
+            xxl_net_in: kf(&cells, 5),
+            main_net_pct: kf(&cells, 6),
+            small_net_pct: kf(&cells, 7),
+            mid_net_pct: kf(&cells, 8),
+            big_net_pct: kf(&cells, 9),
+            xxl_net_pct: kf(&cells, 10),
+            sh_close: kf(&cells, 11),
+            sh_pct: kf(&cells, 12),
+            sz_close: kf(&cells, 13),
+            sz_pct: kf(&cells, 14),
+        });
+    }
+    out
+}
+
+/// 东方财富-大盘资金流 (push2his daykline, `secid=1.000001` + `secid2=0.399001`).
+pub async fn stock_market_fund_flow(client: &Client) -> Result<Vec<MarketFundFlowRow>> {
+    let v = client
+        .get_json(
+            SOURCE_EASTMONEY,
+            "stock_market_fund_flow",
+            PUSH2HIS,
+            &[
+                ("lmt", "0"),
+                ("klt", "101"),
+                ("secid", "1.000001"),
+                ("secid2", "0.399001"),
+                ("fields1", "f1,f2,f3,f7"),
+                (
+                    "fields2",
+                    "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64,f65",
+                ),
+            ],
+        )
+        .await?;
+    let klines = emh_klines(&v)?;
+    Ok(parse_market_fund_flow(&klines))
+}
+
+// ---------------------------------------------------------------------------
+// stock_individual_fund_flow_rank  (stock/stock_fund_em.py:122)
+// ---------------------------------------------------------------------------
+
+/// One row of the market-wide individual-stock fund-flow ranking.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct IndividualRankRow {
+    /// 序号 (synthesized 1-based row index).
+    pub rank: u32,
+    /// 代码 (f12)
+    pub code: String,
+    /// 名称 (f14)
+    pub name: String,
+    /// 最新价 (f2)
+    pub price: Option<f64>,
+    /// 涨跌幅 (period: f3 / f127 / f109 / f160)
+    pub change_pct: Option<f64>,
+    /// 主力净流入-净额
+    pub main_net_in: Option<f64>,
+    /// 主力净流入-净占比
+    pub main_net_pct: Option<f64>,
+    /// 超大单净流入-净额
+    pub xxl_net_in: Option<f64>,
+    /// 超大单净流入-净占比
+    pub xxl_net_pct: Option<f64>,
+    /// 大单净流入-净额
+    pub big_net_in: Option<f64>,
+    /// 大单净流入-净占比
+    pub big_net_pct: Option<f64>,
+    /// 中单净流入-净额
+    pub mid_net_in: Option<f64>,
+    /// 中单净流入-净占比
+    pub mid_net_pct: Option<f64>,
+    /// 小单净流入-净额
+    pub small_net_in: Option<f64>,
+    /// 小单净流入-净占比
+    pub small_net_pct: Option<f64>,
+}
+
+/// Per-indicator `push2` field keys for the 10 net-inflow/pct columns, in the
+/// order `(main, main_pct, xxl, xxl_pct, big, big_pct, mid, mid_pct, small,
+/// small_pct)`, plus the `change_pct` field and the `fid`.
+fn rank_indicator_fields(indicator: &str) -> Option<(&'static str, [&'static str; 10], &'static str)> {
+    let net = match indicator {
+        "今日" => [
+            "f62", "f184", "f66", "f69", "f72", "f75", "f78", "f81", "f84", "f87",
+        ],
+        "3日" => [
+            "f267", "f268", "f269", "f270", "f271", "f272", "f273", "f274", "f275", "f276",
+        ],
+        "5日" => [
+            "f164", "f165", "f166", "f167", "f168", "f169", "f170", "f171", "f172", "f173",
+        ],
+        "10日" => [
+            "f174", "f175", "f176", "f177", "f178", "f179", "f180", "f181", "f182", "f183",
+        ],
+        _ => return None,
+    };
+    let (pct_field, fid) = match indicator {
+        "今日" => ("f3", "f62"),
+        "3日" => ("f127", "f267"),
+        "5日" => ("f109", "f164"),
+        "10日" => ("f160", "f174"),
+        _ => unreachable!(),
+    };
+    Some((fid, net, pct_field))
+}
+
+/// Parse `stock_individual_fund_flow_rank` rows from a push2 clist `data.diff`.
+pub(crate) fn parse_individual_rank(
+    diff: &[Value],
+    net_fields: &[&str; 10],
+    pct_field: &str,
+) -> Vec<IndividualRankRow> {
+    let mut out = Vec::with_capacity(diff.len());
+    for (i, item) in diff.iter().enumerate() {
+        let Some(name) = fstr(item, "f14") else {
+            continue;
+        };
+        out.push(IndividualRankRow {
+            rank: (i + 1) as u32,
+            code: fstr(item, "f12").unwrap_or_default(),
+            name,
+            price: fnum(item, "f2"),
+            change_pct: fnum(item, pct_field),
+            main_net_in: fnum(item, net_fields[0]),
+            main_net_pct: fnum(item, net_fields[1]),
+            xxl_net_in: fnum(item, net_fields[2]),
+            xxl_net_pct: fnum(item, net_fields[3]),
+            big_net_in: fnum(item, net_fields[4]),
+            big_net_pct: fnum(item, net_fields[5]),
+            mid_net_in: fnum(item, net_fields[6]),
+            mid_net_pct: fnum(item, net_fields[7]),
+            small_net_in: fnum(item, net_fields[8]),
+            small_net_pct: fnum(item, net_fields[9]),
+        });
+    }
+    out
+}
+
+/// 东方财富-个股资金流-排名 (push2 clist). `indicator` ∈ {今日, 3日, 5日, 10日};
+/// defaults to `5日`.
+pub async fn stock_individual_fund_flow_rank(
+    client: &Client,
+    indicator: &str,
+) -> Result<Vec<IndividualRankRow>> {
+    let (fid, net_fields, pct_field) = rank_indicator_fields(indicator).ok_or_else(|| {
+        Error::InvalidParam(format!(
+            "stock_individual_fund_flow_rank: unknown indicator {indicator:?} (use 今日/3日/5日/10日)"
+        ))
+    })?;
+    let fields = format!("f12,f14,f2,{pct_field},{}", net_fields.join(","));
+    let v = client
+        .get_json(
+            SOURCE_EASTMONEY,
+            "stock_individual_fund_flow_rank",
+            PUSH2,
+            &[
+                ("pn", "1"),
+                ("pz", "100"),
+                ("po", "1"),
+                ("np", "1"),
+                ("ut", UT),
+                ("fltt", "2"),
+                ("invt", "2"),
+                ("fid", fid),
+                (
+                    "fs",
+                    "m:0+t:6+f:!2,m:0+t:13+f:!2,m:0+t:80+f:!2,m:1+t:2+f:!2,m:1+t:23+f:!2,m:0+t:7+f:!2,m:1+t:3+f:!2",
+                ),
+                ("fields", &fields),
+            ],
+        )
+        .await?;
+    let diff = emh_diff(&v)?;
+    Ok(parse_individual_rank(diff, &net_fields, pct_field))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -995,5 +1267,72 @@ mod tests {
         assert!(approx(rows[0].change_percent, 1.23));
         assert!(approx(rows[0].volume, 3500000.0));
         assert!(approx(rows[1].mkt_cap, 2000000000000.0));
+    }
+
+    // ---- individual fund flow (Eastmoney daykline) ----
+
+    #[test]
+    fn parse_individual_fund_flow_ok() {
+        let klines = klines_of("stock_individual_fund_flow.json");
+        let rows = parse_fflow_klines(&klines);
+        assert_eq!(rows.len(), 3);
+        assert_eq!(rows[0].date, "2024-01-02");
+        assert!(approx(rows[0].main_net_in, 123456789.0));
+        assert!(approx(rows[0].small_net_in, -2000000.0));
+        assert!(approx(rows[0].xxl_net_pct, 0.07));
+        assert!(approx(rows[2].main_net_in, 0.0));
+    }
+
+    // ---- market fund flow (Eastmoney daykline, secid=1.000001 / 0.399001) ----
+
+    #[test]
+    fn parse_market_fund_flow_ok() {
+        let klines = klines_of("stock_market_fund_flow.json");
+        let rows = parse_market_fund_flow(&klines);
+        assert_eq!(rows.len(), 2);
+        assert_eq!(rows[0].date, "2024-01-02");
+        assert!(approx(rows[0].main_net_in, 15000000000.0));
+        assert!(approx(rows[0].xxl_net_in, 3000000000.0));
+        assert!(approx(rows[0].main_net_pct, 0.42));
+        assert!(approx(rows[0].sh_close, 3000.12));
+        assert!(approx(rows[0].sh_pct, 0.83));
+        assert!(approx(rows[0].sz_close, 9500.34));
+        assert!(approx(rows[0].sz_pct, 1.21));
+        assert!(approx(rows[1].small_net_in, 2000000000.0));
+    }
+
+    // ---- individual fund flow rank (Eastmoney push2 clist) ----
+
+    #[test]
+    fn parse_individual_fund_flow_rank_ok() {
+        let diff = diff_of("stock_individual_fund_flow_rank.json");
+        let (_, net_fields, pct_field) = rank_indicator_fields("今日").unwrap();
+        let rows = parse_individual_rank(&diff, &net_fields, pct_field);
+        assert_eq!(rows.len(), 3);
+        assert_eq!(rows[0].rank, 1);
+        assert_eq!(rows[0].code, "600519");
+        assert_eq!(rows[0].name, "贵州茅台");
+        assert!(approx(rows[0].price, 1685.0));
+        assert!(approx(rows[0].change_pct, 1.23));
+        assert!(approx(rows[0].main_net_in, 123456789.0));
+        assert!(approx(rows[0].main_net_pct, 0.45));
+        assert!(approx(rows[0].xxl_net_in, 80000000.0));
+        assert!(approx(rows[0].xxl_net_pct, 0.30));
+        assert!(approx(rows[0].big_net_in, 43456789.0));
+        assert!(approx(rows[0].big_net_pct, 0.15));
+        assert!(approx(rows[0].mid_net_in, -12345678.0));
+        assert!(approx(rows[0].mid_net_pct, -0.05));
+        assert!(approx(rows[0].small_net_in, -98765432.0));
+        assert!(approx(rows[0].small_net_pct, -0.40));
+        assert_eq!(rows[2].name, "宁德时代");
+        assert!(approx(rows[2].main_net_in, 200000000.0));
+    }
+
+    #[test]
+    fn rank_indicator_fields_all_known() {
+        for ind in ["今日", "3日", "5日", "10日"] {
+            assert!(rank_indicator_fields(ind).is_some(), "indicator {ind} should be supported");
+        }
+        assert!(rank_indicator_fields("bad").is_none());
     }
 }
