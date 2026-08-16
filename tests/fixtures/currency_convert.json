@@ -1,0 +1,11 @@
+{
+  "result": true,
+  "response": {
+    "amount": 10000,
+    "from": "USD",
+    "to": "CNY",
+    "value": 68500.0,
+    "rate": 6.85,
+    "timestamp": 1675400000
+  }
+}

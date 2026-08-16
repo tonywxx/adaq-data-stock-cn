@@ -1,0 +1,12 @@
+{
+  "result": true,
+  "response": {
+    "date": "2023-02-03",
+    "base": "USD",
+    "rates": {
+      "CNY": 6.85,
+      "GBP": 0.81,
+      "HKD": 7.82
+    }
+  }
+}

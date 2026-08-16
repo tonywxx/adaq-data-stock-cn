@@ -107,8 +107,22 @@
 | 65 | 上海黄金交易所 `spot::sge`(SGE 行情/历史/基准价,新增顶层领域) | ✅ DONE | 5 | 5 ✅ |
 | 66 | 乘联会汽车 `other::car_cpca`(CPCA chartlist JSON,新增顶层领域) | ✅ DONE | 6 | 7 ✅ |
 | 67 | 艺恩票房 `alt::movie_yien`(endata POST JSON) | ✅ DONE | 3 | 2 ✅ |
+| 68 | 货币/外汇 `currency`(currencyscoop/外汇交易中心,新增顶层领域) | ✅ DONE | 6 | 6 ✅ |
+| 69 | REITs `reits`(东财 push2,新增顶层领域) | ✅ DONE | 2 | 2 ✅ |
+| 70 | 期货衍生品 `futures_derivative`(交易所/新浪 JSON,新增顶层领域) | ✅ DONE | 8 | 9 ✅ |
+| 71 | 文章/学术指标 `article`(FRED CSV,新增顶层领域) | ✅ DONE | 2 | 2 ✅ |
+| 72 | 高频 `hf`(GitHub 公开 CSV,新增顶层领域) | ✅ DONE | 1 | 1 ✅ |
+| 73 | 财富榜 `fortune`(新财富 JSONP,新增顶层领域) | ✅ DONE | 1 | 2 ✅ |
+| 74 | QDII `qdii`(集思录 JSON,新增顶层领域) | ✅ DONE | 2 | 2 ✅ |
+| 75 | 空气质量 `air`(百度 AQICN,新增顶层领域) | DEFERRED | 0 | 0 |
+| 76 | 奇货可查 `qhkc`(qhkch.com,新增顶层领域) | DEFERRED | 0 | 0 |
+| 77 | 银行 `bank`(银保监会,新增顶层领域) | DEFERRED | 0 | 0 |
+| 78 | 迁徙 `event`(百度迁徙,新增顶层领域) | DEFERRED | 0 | 0 |
+| 79 | 视频 `video`(艺恩,新增顶层领域) | DEFERRED | 0 | 0 |
 
-**累计**:67 个领域、476 个公开函数、466 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+**累计**:79 个领域、498 个公开函数、490 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+
+> 第 68-79 行新增 12 个顶层领域、22 个公开函数、24 个离线解析测试(由 lead 直接 dispatch 10 个并行 worker 落地,覆盖纯 HTTP 长尾):`currency`(`currency_*` 走 currencyscoop 纯 JSON API、`fx_c_swap_cm` 走外汇交易中心 POST;`currency_boc_sina`/`currency_boc_safe`/`currency_pair_map`/`fx_quote_baidu` 为 HTML/Excel/反爬 → DEFERRED);`reits`(东财 push2/push2his,无 DEFERRED);`futures_derivative`(大商所/广期所/上期能源/上期所 合约信息为公开 JSON、新浪主力 JSONP、东财 hog datacenter 全落地;`cffex`/`czce` 为 XML、`futures_hold_pos_sina`/`futures_spot_sys` 为 `pd.read_html`、`futures_display_main_sina` 依赖 `demjson` → DEFERRED);`article`(`fred_md`/`fred_qd` 走 FRED S3 CSV;EPU/FF/RV 为 Excel/HTML/JS → DEFERRED);`hf`(`hf_sp_500` 走 GitHub 公开 CSV,无 DEFERRED);`fortune`(仅 `xincaifu_rank` 新财富 JSONP 落地,Bloomberg/胡润/福布斯 为 HTML、`business`/`online_value_artist` 需 JS 解密 → DEFERRED);`qdii`(集思录 `qdii_a/e_index_jsl` 公开 JSON,无 DEFERRED);`air`/`qhkc`/`bank`/`event`/`video` 全 DEFERRED(XML/HTML/JS 签名/API 下线/反爬)。
 
 > 第 58-67 行新增 77 个函数 / 65 个离线解析测试(由 lead 直接 dispatch 9 个并行 worker 落地,覆盖 research agent-11 3 批计划剩余的纯 HTTP 长尾):`stock::stock_hist_em`(沪深京 A/北交/港股主板/AB 比价/美股 实时 spot 与 分钟趋势,东财 push2,无 DEFERRED);`fund::em`(EM 申购/指数/开放/货币/理财/分级/ETF 净值与日列表,`fund_money_fund_daily_em` 与 `fund_etf_fund_daily_em` 为 gb2312 `pd.read_html` 抓取 → DEFERRED,`fund_open_fund_info_em` 已在 `fund::open_fund` 移植故跳过);`economic::macro_bank` 与 `economic::macro_nbs_euro` 走金十纯 JSON(`macro_china_nbs_nation`/`macro_china_nbs_region` 需 `curl_cffi` 会话预热多步导航、`macro_euro_lme_holding`/`macro_euro_lme_stock` 为嵌套元组字符串 `eval` → DEFERRED);`index::research_sw` 走申万研究 API(`index_realtime_sw` 的 大类风格/金创 子路径为 JSON-body POST,`Client` 无此能力 → 该 2 symbol DEFERRED,其余 GET 全落地);`option::commodity`(DCE 为 JSON-body POST、CZCE 为 `|` 分隔 `pd.read_table` HTML → 2 个 DEFERRED,SHFE/GFEX 4 个落地);`futures::cot`(CZCE/DCE/CFFEX 为 Excel/HTML/ZIP 抓取、聚合器依赖这些 → 7 个 DEFERRED,SHFE/GFEX 2 个落地);`spot::sge` 与 `other::car_cpca` 全落地(纯 JSON);`alt::movie_yien`(`decrypt` 需 `py_mini_racer` JS、`movie_boxoffice_weekly`/`movie_boxoffice_cinema_weekly` 上游权限错误 → 3 个 DEFERRED,其余已在 `alt::movie` 移植故跳过)。
 

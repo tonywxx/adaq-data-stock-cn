@@ -839,3 +839,129 @@
 | `movie_boxoffice_cinema_daily` | `src/alt/movie_yien.rs::movie_boxoffice_cinema_daily` | 艺恩 POST | `:581` | DONE |
 
 > DEFERRED:`decrypt`(:65) 需 `py_mini_racer` JS;`movie_boxoffice_weekly`(:340)、`movie_boxoffice_cinema_weekly`(:642) 上游权限错误;`movie_boxoffice_realtime/_daily/_monthly/_yearly` 已在 `alt::movie` 移植,不重复。
+
+## Wave 1 新增顶层领域(纯 HTTP 长尾)
+
+### 货币 / 外汇 `currency`(currencyscoop / 外汇交易中心)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `currency_latest` | `src/currency/api.rs::currency_latest` | currencyscoop | `currency/currency.py:14` | DONE |
+| `currency_history` | `src/currency/api.rs::currency_history` | currencyscoop | `currency/currency.py:39` | DONE |
+| `currency_time_series` | `src/currency/api.rs::currency_time_series` | currencyscoop | `currency/currency.py:66` | DONE |
+| `currency_currencies` | `src/currency/api.rs::currency_currencies` | currencyscoop | `currency/currency.py:107` | DONE |
+| `currency_convert` | `src/currency/api.rs::currency_convert` | currencyscoop | `currency/currency.py:126` | DONE |
+| `fx_c_swap_cm` | `src/currency/api.rs::fx_c_swap_cm` | 外汇交易中心 | `fx/fx_c_swap_cm.py:25` | DONE |
+| `currency_boc_sina` | _(待填)_ | 新浪 | `currency/currency_china_bank_sina.py:57` | DEFERRED |
+| `currency_boc_safe` | _(待填)_ | 安全外汇储备 | `currency/currency_safe.py:18` | DEFERRED |
+| `currency_pair_map` | _(待填)_ | investing | `fx/currency_investing.py:16` | DEFERRED |
+| `fx_quote_baidu` | _(待填)_ | 百度 | `fx/fx_quote_baidu.py:13` | DEFERRED |
+
+> DEFERRED:`currency_boc_sina`/`currency_boc_safe` 为 `pd.read_html`+Excel 抓取;`currency_pair_map` 为 investing.com 反爬 HTML;`fx_quote_baidu` 需 `acs-token` 反爬(返回 403)。
+
+### REITs `reits`(东方财富 push2)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `reits_realtime_em` | `src/reits/em.rs::reits_realtime_em` | 东财 push2 | `reits/reits_basic.py:45` | DONE |
+| `reits_hist_em` | `src/reits/em.rs::reits_hist_em` | 东财 push2his | `reits/reits_basic.py:116` | DONE |
+
+### 期货衍生品 `futures_derivative`(交易所 / 新浪)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `futures_contract_info_dce` | `src/futures_derivative/contract_info.rs::futures_contract_info_dce` | 大商所 | `futures_derivative/futures_contract_info_dce.py:13` | DONE |
+| `futures_contract_info_gfex` | `src/futures_derivative/contract_info.rs::futures_contract_info_gfex` | 广期所 | `futures_derivative/futures_contract_info_gfex.py:13` | DONE |
+| `futures_contract_info_ine` | `src/futures_derivative/contract_info.rs::futures_contract_info_ine` | 上期能源 | `futures_derivative/futures_contract_info_ine.py:13` | DONE |
+| `futures_contract_info_shfe` | `src/futures_derivative/contract_info.rs::futures_contract_info_shfe` | 上期所 | `futures_derivative/futures_contract_info_shfe.py:13` | DONE |
+| `futures_main_sina` | `src/futures_derivative/sina.rs::futures_main_sina` | 新浪 | `futures_derivative/futures_index_sina.py:103` | DONE |
+| `futures_hog_core` | `src/futures_derivative/hog.rs::futures_hog_core` | 东财 datacenter | `futures_derivative/futures_hog.py:13` | DONE |
+| `futures_hog_cost` | `src/futures_derivative/hog.rs::futures_hog_cost` | 东财 datacenter | `futures_derivative/futures_hog.py:57` | DONE |
+| `futures_hog_supply` | `src/futures_derivative/hog.rs::futures_hog_supply` | 东财 datacenter | `futures_derivative/futures_hog.py:116` | DONE |
+| `futures_contract_info_cffex` | _(待填)_ | 中金所 | `futures_derivative/futures_contract_info_cffex.py:15` | DEFERRED |
+| `futures_contract_info_czce` | _(待填)_ | 郑商所 | `futures_derivative/futures_contract_info_czce.py:15` | DEFERRED |
+| `futures_hold_pos_sina` | _(待填)_ | 新浪 | `futures_derivative/futures_cot_sina.py:15` | DEFERRED |
+| `futures_display_main_sina` | _(待填)_ | 新浪 | `futures_derivative/futures_index_sina.py:89` | DEFERRED |
+| `futures_spot_sys` | _(待填)_ | 上期所 | `futures_derivative/futures_spot_sys.py:36` | DEFERRED |
+
+> DEFERRED:`futures_contract_info_cffex`/`futures_contract_info_czce` 上游为 XML,需 XML crate;`futures_hold_pos_sina` 为 `pd.read_html`;`futures_display_main_sina` 依赖 `demjson` 解析 JS 文件;`futures_spot_sys` 为 `pd.read_html` 抓取。
+
+### 文章 / 学术指标 `article`(FRED / EPU / RV)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `fred_md` | `src/article/fred.rs::fred_md` | FRED S3 CSV | `article/fred_md.py:13` | DONE |
+| `fred_qd` | `src/article/fred.rs::fred_qd` | FRED S3 CSV | `article/fred_md.py:28` | DONE |
+| `article_epu_index` | _(待填)_ | EPU | `article/epu_index.py:12` | DEFERRED |
+| `article_ff_crr` | _(待填)_ | FF | `article/ff_factor.py:17` | DEFERRED |
+| `article_oman_rv` | _(待填)_ | RV | `article/risk_rv.py:18` | DEFERRED |
+| `article_oman_rv_short` | _(待填)_ | RV | `article/risk_rv.py:78` | DEFERRED |
+| `article_rlab_rv` | _(待填)_ | RV | `article/risk_rv.py:117` | DEFERRED |
+
+> DEFERRED:`article_epu_index` 默认 symbol 为 Excel 透视表;`article_ff_crr` 为 HTML 表;`article_oman_rv`/`_short` 为 HTML 内嵌 JS 对象;`article_rlab_rv` 为 HTML 正文抓取。
+
+### 高频 `hf`(GitHub 公开 CSV)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `hf_sp_500` | `src/hf/sp500.rs::hf_sp_500` | GitHub CSV | `hf/hf_sp500.py:14` | DONE |
+
+### 财富榜 `fortune`(新财富 / Bloomberg / 胡润 / 福布斯)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `xincaifu_rank` | `src/fortune/xincaifu.rs::xincaifu_rank` | 新财富 JSONP | `fortune/fortune_xincaifu_500.py:15` | DONE |
+| `index_bloomberg_billionaires` | _(待填)_ | Bloomberg | `fortune/fortune_bloomberg.py:65` | DEFERRED |
+| `index_bloomberg_billionaires_hist` | _(待填)_ | Bloomberg | `fortune/fortune_bloomberg.py:14` | DEFERRED |
+| `forbes_rank` | _(待填)_ | 福布斯 | `fortune/fortune_forbes_500.py:14` | DEFERRED |
+| `hurun_rank` | _(待填)_ | 胡润 | `fortune/fortune_hurun.py:16` | DEFERRED |
+| `business_value_artist` | _(待填)_ | 艺恩 | `movie/artist_yien.py:65` | DEFERRED |
+| `online_value_artist` | _(待填)_ | 艺恩 | `movie/artist_yien.py:103` | DEFERRED |
+
+> DEFERRED:`index_bloomberg_*`/`forbes_rank`/`hurun_rank` 为 HTML 表抓取;`business_value_artist`/`online_value_artist` 需 `py_mini_racer` JS 解密。
+
+### QDII `qdii`(集思录)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `qdii_a_index_jsl` | `src/qdii/jsl.rs::qdii_a_index_jsl` | 集思录 | `qdii/qdii_jsl.py:160` | DONE |
+| `qdii_e_index_jsl` | `src/qdii/jsl.rs::qdii_e_index_jsl` | 集思录 | `qdii/qdii_jsl.py:14` | DONE |
+
+### 空气质量 `air`(百度 AQICN)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `air_quality_hebei` | _(待填)_ | 河北 | `air/air_hebei.py:23` | DEFERRED |
+| `air_city_table` | _(待填)_ | 真气网 | `air/air_zhenqi.py:64` | DEFERRED |
+| `air_quality_rank` | _(待填)_ | 真气网 | `air/air_zhenqi.py:219` | DEFERRED |
+| `air_quality_hist` | _(待填)_ | 真气网 | `air/air_zhenqi.py:142` | DEFERRED |
+| `air_quality_watch_point` | _(待填)_ | 真气网 | `air/air_zhenqi.py:99` | DEFERRED |
+
+> DEFERRED:`air_quality_hebei` 为 XML;`air_city_table`/`air_quality_rank` 为 `pd.read_html`;`air_quality_hist`/`air_quality_watch_point` 需 JS 签名(`outcrypto.js`/`crypto.js`)。
+
+### 奇货可查 `qhkc`(qhkch.com)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `get_qhkc_fund_bs` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_fund.py:23` | DEFERRED |
+| `get_qhkc_fund_position` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_fund.py:121` | DEFERRED |
+| `get_qhkc_fund_money_change` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_fund.py:319` | DEFERRED |
+| `get_qhkc_index` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_index.py:21` | DEFERRED |
+| `get_qhkc_index_trend` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_index.py:77` | DEFERRED |
+| `get_qhkc_index_profit_loss` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_index.py:149` | DEFERRED |
+| `qhkc_tool_foreign` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_tool.py:17` | DEFERRED |
+| `qhkc_tool_gdp` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_tool.py:111` | DEFERRED |
+
+> DEFERRED:qhkch.com 公开 JSON API 已下线(返回 `{"code":404}`),且 `qhkc_tool_gdp` 为 `pd.read_html` 抓取,需 token/鉴权。
+
+### 银行 / 迁徙 / 视频(DEFERRED 占位)
+
+| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
+| --- | --- | --- | --- | --- |
+| `bank_fjcf_table_detail` | _(待填)_ | 银保监会 | `bank/bank_cbirc_2020.py:111` | DEFERRED |
+| `migration_area_baidu` | _(待填)_ | 百度迁徙 | `event/migration.py:16` | DEFERRED |
+| `migration_scale_baidu` | _(待填)_ | 百度迁徙 | `event/migration.py:56` | DEFERRED |
+| `video_tv` | _(待填)_ | 艺恩 | `movie/video_yien.py:65` | DEFERRED |
+| `video_variety_show` | _(待填)_ | 艺恩 | `movie/video_yien.py:96` | DEFERRED |
+
+> DEFERRED:`bank_fjcf_table_detail` 为 `pd.read_html`;`migration_*` 为百度反爬 JSONP(无 `ak` token);`video_*` 需 `py_mini_racer` JS 解密。

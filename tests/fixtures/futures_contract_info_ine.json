@@ -1,0 +1,22 @@
+{
+  "ContractBaseInfo": [
+    {
+      "INSTRUMENTID": "sc2410",
+      "OPENDATE": "20240902",
+      "EXPIREDATE": "20241015",
+      "STARTDELIVDATE": "20241015",
+      "ENDDELIVDATE": "20241018",
+      "BASISPRICE": "550.0",
+      "TRADINGDAY": "20241129"
+    },
+    {
+      "INSTRUMENTID": "lu2410",
+      "OPENDATE": "20240902",
+      "EXPIREDATE": "20241015",
+      "STARTDELIVDATE": "20241015",
+      "ENDDELIVDATE": "20241018",
+      "BASISPRICE": "4000.0",
+      "TRADINGDAY": "20241129"
+    }
+  ]
+}

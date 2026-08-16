@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "contractId": "c2501",
+      "variety": "玉米",
+      "varietyOrder": "1",
+      "unit": "10",
+      "tick": "1",
+      "startTradeDate": "20240902",
+      "endTradeDate": "20250115",
+      "endDeliveryDate": "20250120",
+      "tradeType": "1"
+    },
+    {
+      "contractId": "a2501",
+      "variety": "豆一",
+      "varietyOrder": "2",
+      "unit": "",
+      "tick": "1",
+      "startTradeDate": "20240902",
+      "endTradeDate": "20250115",
+      "endDeliveryDate": "20250120",
+      "tradeType": "1"
+    }
+  ]
+}

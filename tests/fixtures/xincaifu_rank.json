@@ -1,0 +1,43 @@
+{
+  "data": {
+    "rows": [
+      {
+        "id": "1001",
+        "rank": "1",
+        "assets": 2000.0,
+        "name": "张三",
+        "company": "某某实业",
+        "industry": "房地产",
+        "addr": "北京",
+        "sex": "男",
+        "age": "55",
+        "year": "2022",
+        "rankLst": "1"
+      },
+      {
+        "id": "1002",
+        "rank": "2",
+        "assets": 1800.5,
+        "name": "李四",
+        "company": "测试科技集团",
+        "industry": "科技",
+        "addr": "深圳",
+        "sex": "女",
+        "age": "48",
+        "year": "2022",
+        "rankLst": "2"
+      },
+      {
+        "id": "1003",
+        "rank": "3",
+        "assets": 1500.0,
+        "name": "王五",
+        "company": "远景能源",
+        "industry": "新能源",
+        "addr": "上海",
+        "year": "2022",
+        "rankLst": "3"
+      }
+    ]
+  }
+}

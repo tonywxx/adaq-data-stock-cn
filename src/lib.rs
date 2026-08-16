@@ -19,6 +19,20 @@ pub mod rate;
 pub mod spot;
 pub mod other;
 
+// --- wave-1 new top-level domains (akshare long-tail ports) ---
+pub mod air;
+pub mod article;
+pub mod bank;
+pub mod currency;
+pub mod event;
+pub mod fortune;
+pub mod futures_derivative;
+pub mod hf;
+pub mod qdii;
+pub mod qhkc;
+pub mod reits;
+pub mod video;
+
 pub use core::client::Client;
 pub use core::error::{Error, Result};
 pub use core::convert;

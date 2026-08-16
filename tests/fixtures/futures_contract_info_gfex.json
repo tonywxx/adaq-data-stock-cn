@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "tradeType": "0",
+      "variety": "工业硅",
+      "varietyOrder": "1",
+      "contractId": "si2501",
+      "unit": "5",
+      "tick": "5",
+      "startTradeDate": "20240902",
+      "endTradeDate": "20250115",
+      "endDeliveryDate0": "20250120"
+    },
+    {
+      "tradeType": "0",
+      "variety": "碳酸锂",
+      "varietyOrder": "2",
+      "contractId": "lc2501",
+      "unit": "1",
+      "tick": "50",
+      "startTradeDate": "20240902",
+      "endTradeDate": "20250115",
+      "endDeliveryDate0": "20250120"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "result": true,
+  "response": [
+    { "code": "USD", "name": "US Dollar", "symbol": "$", "decimal_units": 2, "name_plural": "US dollars" },
+    { "code": "CNY", "name": "Chinese Yuan", "symbol": "¥", "decimal_units": 2, "name_plural": "Chinese yuan" },
+    { "code": "EUR", "name": "Euro", "symbol": "€", "decimal_units": 2, "name_plural": "euros" }
+  ]
+}
