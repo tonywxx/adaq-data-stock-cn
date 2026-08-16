@@ -153,7 +153,7 @@ impl Client {
         }
 
         let resp = self
-            .fetch_with_retry(source, reqwest::Method::GET, url, params, None)
+            .fetch_with_retry(source, reqwest::Method::GET, url, params, None, None)
             .await?;
         let value: Value = resp.json().await.map_err(Error::Http)?;
 
@@ -190,7 +190,7 @@ impl Client {
         }
 
         let resp = self
-            .fetch_with_retry(source, reqwest::Method::GET, url, params, headers)
+            .fetch_with_retry(source, reqwest::Method::GET, url, params, None, headers)
             .await?;
         let value: Value = resp.json().await.map_err(Error::Http)?;
 
@@ -216,7 +216,7 @@ impl Client {
         headers: Option<&[(&str, &str)]>,
     ) -> Result<String> {
         let resp = self
-            .fetch_with_retry(source, reqwest::Method::GET, url, params, headers)
+            .fetch_with_retry(source, reqwest::Method::GET, url, params, None, headers)
             .await?;
         resp.text().await.map_err(Error::Http)
     }
@@ -235,7 +235,33 @@ impl Client {
         headers: Option<&[(&str, &str)]>,
     ) -> Result<Value> {
         let resp = self
-            .fetch_with_retry(source, reqwest::Method::POST, url, params, headers)
+            .fetch_with_retry(source, reqwest::Method::POST, url, params, None, headers)
+            .await?;
+        resp.json().await.map_err(Error::Http)
+    }
+
+    /// POST a JSON request body and parse the JSON response. Same resilience
+    /// (retry/backoff, rate limiting, concurrency cap) as [`get_json`].
+    ///
+    /// Used by sources that require a JSON body (e.g. Eastmoney `emappdata`
+    /// stock-rank endpoints). Caching is not applied to POSTs (ADR-0009).
+    pub async fn post_json(
+        &self,
+        source: &'static str,
+        _endpoint: &'static str,
+        url: &str,
+        body: &Value,
+        headers: Option<&[(&str, &str)]>,
+    ) -> Result<Value> {
+        let resp = self
+            .fetch_with_retry(
+                source,
+                reqwest::Method::POST,
+                url,
+                &[],
+                Some(body),
+                headers,
+            )
             .await?;
         resp.json().await.map_err(Error::Http)
     }
@@ -246,6 +272,7 @@ impl Client {
         method: reqwest::Method,
         url: &str,
         params: &[(&str, &str)],
+        body: Option<&Value>,
         headers: Option<&[(&str, &str)]>,
     ) -> Result<reqwest::Response> {
         // Hold a concurrency permit for the whole request lifecycle.
@@ -254,7 +281,12 @@ impl Client {
         let mut attempt: u32 = 0;
         loop {
             self.rate_limit(source).await;
-            let mut req = self.inner.request(method.clone(), url).query(params);
+            let mut req = self.inner.request(method.clone(), url);
+            if let Some(b) = body {
+                req = req.json(b);
+            } else {
+                req = req.query(params);
+            }
             if let Some(h) = headers {
                 for (k, v) in h {
                     req = req.header(*k, *v);

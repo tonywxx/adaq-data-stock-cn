@@ -1219,3 +1219,15 @@
 | `stock_zh_a_gbjg_em` | `src/stock/fundamental/more.rs::stock_zh_a_gbjg_em` | `stock_fundamental/stock_gbjg_em.py:62` | DONE(东财股本结构,`RPT_F10_EH_EQUITY`) |
 | `stock_report_fund_hold` | `src/stock/fundamental/more.rs::stock_report_fund_hold` | `stock/stock_fund_hold.py:13` | DONE(东财基金持仓,`zlsj/list`) |
 | `stock_report_fund_hold_detail` | `src/stock/fundamental/more.rs::stock_report_fund_hold_detail` | `stock/stock_fund_hold.py:110` | DONE(东财基金持仓明细,`zlsj/list`) |
+
+## 东方财富个股人气榜 `stock::hot_rank`(Wave 6)
+
+| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
+| --- | --- | --- | --- |
+| `stock_hot_rank_em` | `src/stock/hot_rank.rs::stock_hot_rank_em` | `stock/stock_hot_rank_em.py:16` | DONE(emappdata `getAllCurrentList` + push2 `ulist.np/get` 实时价) |
+| `stock_hot_up_em` | `src/stock/hot_rank.rs::stock_hot_up_em` | `stock/stock_hot_up_em.py:13` | DONE(emappdata `getAllHisRcList` + push2 实时价,含 `hrc` 排名变动) |
+| `stock_hot_rank_detail_em` | `src/stock/hot_rank.rs::stock_hot_rank_detail_em` | `stock/stock_hot_rank_em.py:53` | DONE(emappdata `getHisList` + `getHisProfileList`) |
+| `stock_hot_rank_detail_realtime_em` | `src/stock/hot_rank.rs::stock_hot_rank_detail_realtime_em` | `stock/stock_hot_rank_em.py:90` | DONE(emappdata `getCurrentList`) |
+| `stock_hot_keyword_em` | `src/stock/hot_rank.rs::stock_hot_keyword_em` | `stock/stock_hot_rank_em.py:124` | DONE(emappdata `getHotStockRankList`) |
+| `stock_hot_rank_latest_em` | `src/stock/hot_rank.rs::stock_hot_rank_latest_em` | `stock/stock_hot_rank_em.py:158` | DONE(emappdata `getCurrentLatest`,`data` 字典→`(item,value)`) |
+| `stock_hot_rank_relate_em` | `src/stock/hot_rank.rs::stock_hot_rank_relate_em` | `stock/stock_hot_rank_em.py:191` | DONE(emappdata `getFollowStockRankList`) |

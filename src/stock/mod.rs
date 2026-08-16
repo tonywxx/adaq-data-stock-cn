@@ -13,6 +13,7 @@ pub mod gpzy;
 pub mod hist;
 pub mod hk;
 pub mod holder;
+pub mod hot_rank;
 pub mod index;
 pub mod indicator;
 pub mod info;
