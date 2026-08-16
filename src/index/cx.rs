@@ -58,7 +58,7 @@ pub(crate) fn parse_cx_trend(
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_CCXE,
                 message: "data is not an array".into(),
-            })
+            });
         }
         None => return Ok(Vec::new()),
     };

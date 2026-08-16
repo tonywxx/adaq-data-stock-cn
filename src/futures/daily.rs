@@ -18,11 +18,7 @@ use crate::core::error::{Error, Result};
 const UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
 const BASE: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 
-const PERIOD_MAP: &[(&str, &str)] = &[
-    ("daily", "101"),
-    ("weekly", "102"),
-    ("monthly", "103"),
-];
+const PERIOD_MAP: &[(&str, &str)] = &[("daily", "101"), ("weekly", "102"), ("monthly", "103")];
 
 /// One day of Chinese-futures OHLC from Eastmoney (`futures_hist_em`).
 #[derive(Debug, Clone, serde::Serialize)]
@@ -74,12 +70,10 @@ pub async fn futures_zh_daily(
 }
 
 pub(crate) fn parse_klines(resp: &Value) -> Result<Vec<FuturesDailyRow>> {
-    let data = resp
-        .get("data")
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing data".into(),
-        })?;
+    let data = resp.get("data").ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "missing data".into(),
+    })?;
     let klines = data
         .get("klines")
         .and_then(|k| k.as_array())
@@ -94,12 +88,10 @@ pub(crate) fn parse_klines(resp: &Value) -> Result<Vec<FuturesDailyRow>> {
         .to_string();
     let mut out = Vec::with_capacity(klines.len());
     for line in klines {
-        let s = line
-            .as_str()
-            .ok_or_else(|| Error::Parse {
-                endpoint: "futures_zh_daily",
-                message: "kline entry is not a string".into(),
-            })?;
+        let s = line.as_str().ok_or_else(|| Error::Parse {
+            endpoint: "futures_zh_daily",
+            message: "kline entry is not a string".into(),
+        })?;
         let p: Vec<&str> = s.split(',').collect();
         // fields2 has 14 fields; skip malformed/short rows.
         if p.len() < 13 {
@@ -148,8 +140,8 @@ mod tests {
 
     #[test]
     fn parses_futures_zh_daily_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/futures_zh_daily.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/futures_zh_daily.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_klines(&v).unwrap();

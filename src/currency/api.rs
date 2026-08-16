@@ -78,20 +78,19 @@ pub struct CurrencyRateRow {
 /// `response.rates` maps currency code -> rate (mirrors akshare's intent:
 /// `from_dict(response)` + `rename(index="currency")`).
 pub(crate) fn parse_currency_rates(resp: &Value) -> Result<Vec<CurrencyRateRow>> {
-    let response = resp
-        .get("response")
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_CURRENCYSCOOP,
-            message: "missing response".into(),
-        })?;
+    let response = resp.get("response").ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_CURRENCYSCOOP,
+        message: "missing response".into(),
+    })?;
     let date = fstr(response, "date").unwrap_or_default();
     let base = fstr(response, "base").unwrap_or_default();
-    let rates = response.get("rates").and_then(|v| v.as_object()).ok_or_else(|| {
-        Error::UpstreamChanged {
+    let rates = response
+        .get("rates")
+        .and_then(|v| v.as_object())
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_CURRENCYSCOOP,
             message: "missing response.rates".into(),
-        }
-    })?;
+        })?;
     let mut out = Vec::with_capacity(rates.len());
     for (currency, rate) in rates {
         out.push(CurrencyRateRow {

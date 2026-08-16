@@ -1,0 +1,4 @@
+[
+  {"symbol":"sh600000","code":"600000","name":"浦发银行","trade":"9.85","open":"9.80","high":"9.90","low":"9.75","volume":"12345678","amount":"121345678.90","pricechange":"0.05","changepercent":"0.51%"},
+  {"symbol":"sz000001","code":"000001","name":"平安银行","trade":"11.20","open":"11.10","high":"11.30","low":"11.05","volume":"23456789","amount":"262345678.10","pricechange":"0.10","changepercent":"0.90%"}
+]

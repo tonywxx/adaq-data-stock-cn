@@ -9,17 +9,17 @@
 //! whose upstream is a JS file containing a JSON array; we extract that array
 //! without evaluating JS.
 
+pub mod amac;
+pub mod em;
 pub mod etf;
 pub mod extra;
 pub mod lof;
 pub mod more;
 pub mod open_fund;
-pub mod amac;
-pub mod em;
 
-pub use etf::{fund_etf_hist_em, fund_etf_spot_em, EtfHistRow, EtfSpotRow};
-pub use lof::{fund_lof_spot_em, LofSpotRow};
-pub use open_fund::{fund_open_fund_info, OpenFundNavRow};
+pub use etf::{EtfHistRow, EtfSpotRow, fund_etf_hist_em, fund_etf_spot_em};
+pub use lof::{LofSpotRow, fund_lof_spot_em};
+pub use open_fund::{OpenFundNavRow, fund_open_fund_info};
 
 /// Extract a string field from an Eastmoney `clist` item.
 pub(crate) fn fstr(item: &serde_json::Value, k: &str) -> String {

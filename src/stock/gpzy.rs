@@ -96,7 +96,11 @@ fn fmt_date8(date: &str) -> Result<String> {
 
 /// Follow Eastmoney `result.pages` pagination, concatenating every `result.data`
 /// page. Used by the fns whose akshare source loops over the total page count.
-async fn paged(client: &Client, endpoint: &'static str, params: &[(&str, &str)]) -> Result<Vec<Value>> {
+async fn paged(
+    client: &Client,
+    endpoint: &'static str,
+    params: &[(&str, &str)],
+) -> Result<Vec<Value>> {
     let mut out = Vec::new();
     let mut pn: u32 = 1;
     loop {
@@ -105,8 +109,13 @@ async fn paged(client: &Client, endpoint: &'static str, params: &[(&str, &str)])
             .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
             .collect();
         owned.push(("pageNumber".to_string(), pn.to_string()));
-        let borrowed: Vec<(&str, &str)> = owned.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
-        let v = client.get_json(SOURCE_EASTMONEY, endpoint, BASE, &borrowed).await?;
+        let borrowed: Vec<(&str, &str)> = owned
+            .iter()
+            .map(|(k, v)| (k.as_str(), v.as_str()))
+            .collect();
+        let v = client
+            .get_json(SOURCE_EASTMONEY, endpoint, BASE, &borrowed)
+            .await?;
         let data = data_array(&v)?;
         if data.is_empty() {
             break;
@@ -228,7 +237,10 @@ pub struct GpzyPledgeRatioRow {
 /// Port of `stock_gpzy_pledge_ratio_em(date)` (akshare `stock_gpzy_em.py:88`).
 ///
 /// `date` is `YYYYMMDD`; mapped to the `TRADE_DATE='YYYY-MM-DD'` filter.
-pub async fn stock_gpzy_pledge_ratio_em(client: &Client, date: &str) -> Result<Vec<GpzyPledgeRatioRow>> {
+pub async fn stock_gpzy_pledge_ratio_em(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<GpzyPledgeRatioRow>> {
     let d = fmt_date8(date)?;
     let filter = format!("(TRADE_DATE='{d}')");
     let params = [
@@ -355,7 +367,12 @@ pub async fn stock_gpzy_individual_pledge_ratio_detail_em(
         ("client", "WEB"),
         ("filter", filter.as_str()),
     ];
-    let items = paged(client, "stock_gpzy_individual_pledge_ratio_detail_em", &params).await?;
+    let items = paged(
+        client,
+        "stock_gpzy_individual_pledge_ratio_detail_em",
+        &params,
+    )
+    .await?;
     let synthetic = serde_json::json!({ "result": { "data": items } });
     parse_stock_gpzy_pledge_ratio_detail_em(&synthetic)
 }
@@ -670,9 +687,9 @@ mod tests {
 
     #[test]
     fn parses_stock_gpzy_pledge_ratio_detail_em() {
-        let rows = parse_stock_gpzy_pledge_ratio_detail_em(
-            &fixture("stock_gpzy_pledge_ratio_detail_em.json"),
-        )
+        let rows = parse_stock_gpzy_pledge_ratio_detail_em(&fixture(
+            "stock_gpzy_pledge_ratio_detail_em.json",
+        ))
         .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].code, "603132");
@@ -698,9 +715,9 @@ mod tests {
     fn parses_stock_gpzy_individual_pledge_ratio_detail_em() {
         // Individual query shares the detail parser; it only adds a
         // (SECURITY_CODE="...") filter, which is applied at request time.
-        let rows = parse_stock_gpzy_pledge_ratio_detail_em(
-            &fixture("stock_gpzy_pledge_ratio_detail_em.json"),
-        )
+        let rows = parse_stock_gpzy_pledge_ratio_detail_em(&fixture(
+            "stock_gpzy_pledge_ratio_detail_em.json",
+        ))
         .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].code, "603132");
@@ -710,9 +727,9 @@ mod tests {
 
     #[test]
     fn parses_stock_gpzy_distribute_statistics_company_em() {
-        let rows = parse_stock_gpzy_distribute_statistics_company_em(
-            &fixture("stock_gpzy_distribute_statistics_company_em.json"),
-        )
+        let rows = parse_stock_gpzy_distribute_statistics_company_em(&fixture(
+            "stock_gpzy_distribute_statistics_company_em.json",
+        ))
         .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].org_name, "中信证券");
@@ -729,9 +746,9 @@ mod tests {
 
     #[test]
     fn parses_stock_gpzy_distribute_statistics_bank_em() {
-        let rows = parse_stock_gpzy_distribute_statistics_bank_em(
-            &fixture("stock_gpzy_distribute_statistics_bank_em.json"),
-        )
+        let rows = parse_stock_gpzy_distribute_statistics_bank_em(&fixture(
+            "stock_gpzy_distribute_statistics_bank_em.json",
+        ))
         .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].org_name, "中国银行");
@@ -748,8 +765,8 @@ mod tests {
 
     #[test]
     fn parses_stock_gpzy_industry_data_em() {
-        let rows =
-            parse_stock_gpzy_industry_data_em(&fixture("stock_gpzy_industry_data_em.json")).unwrap();
+        let rows = parse_stock_gpzy_industry_data_em(&fixture("stock_gpzy_industry_data_em.json"))
+            .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].industry, "房地产");
         assert_eq!(rows[0].trade_date, "2024-09-06");

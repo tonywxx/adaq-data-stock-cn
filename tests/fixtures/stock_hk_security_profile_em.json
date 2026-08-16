@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "03900.HK",
+        "SECURITY_CODE": "03900",
+        "SECURITY_NAME_ABBR": "NDRG",
+        "SECURITY_TYPE": "股票",
+        "LISTING_DATE": "2010-09-29",
+        "ISIN_CODE": "CNE1000014P2",
+        "BOARD": "主板",
+        "TRADE_UNIT": 2000,
+        "TRADE_MARKET": "香港交易所",
+        "GANGGUTONGBIAODISHEN": "是",
+        "GANGGUTONGBIAODIHU": "否",
+        "PAR_VALUE": 1,
+        "ISSUE_PRICE": 3.7,
+        "ISSUE_NUM": 3540000000,
+        "YEAR_SETTLE_DAY": "12-31"
+      }
+    ]
+  }
+}

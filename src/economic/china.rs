@@ -23,7 +23,10 @@ fn data_array(resp: &Value) -> Result<&Vec<Value>> {
 }
 
 /// Shared param block for the datacenter-web reportName endpoint (mirrors akshare).
-fn report_params(report_name: &'static str, columns: &'static str) -> [(&'static str, &'static str); 11] {
+fn report_params(
+    report_name: &'static str,
+    columns: &'static str,
+) -> [(&'static str, &'static str); 11] {
     [
         ("reportName", report_name),
         ("columns", columns),
@@ -71,7 +74,12 @@ pub async fn macro_china_gdp(client: &Client) -> Result<Vec<ChinaGdp>> {
     const COLUMNS: &str = "REPORT_DATE,TIME,DOMESTICL_PRODUCT_BASE,FIRST_PRODUCT_BASE,\
         SECOND_PRODUCT_BASE,THIRD_PRODUCT_BASE,SUM_SAME,FIRST_SAME,SECOND_SAME,THIRD_SAME";
     let v = client
-        .get_json(SOURCE_EASTMONEY, "macro_china_gdp", BASE, &report_params("RPT_ECONOMY_GDP", COLUMNS))
+        .get_json(
+            SOURCE_EASTMONEY,
+            "macro_china_gdp",
+            BASE,
+            &report_params("RPT_ECONOMY_GDP", COLUMNS),
+        )
         .await?;
     parse_china_gdp(&v)
 }
@@ -140,7 +148,12 @@ pub async fn macro_china_cpi(client: &Client) -> Result<Vec<ChinaCpi>> {
         NATIONAL_ACCUMULATE,CITY_BASE,CITY_SAME,CITY_SEQUENTIAL,CITY_ACCUMULATE,\
         RURAL_BASE,RURAL_SAME,RURAL_SEQUENTIAL,RURAL_ACCUMULATE";
     let v = client
-        .get_json(SOURCE_EASTMONEY, "macro_china_cpi", BASE, &report_params("RPT_ECONOMY_CPI", COLUMNS))
+        .get_json(
+            SOURCE_EASTMONEY,
+            "macro_china_cpi",
+            BASE,
+            &report_params("RPT_ECONOMY_CPI", COLUMNS),
+        )
         .await?;
     parse_china_cpi(&v)
 }
@@ -193,7 +206,12 @@ pub struct ChinaPpi {
 pub async fn macro_china_ppi(client: &Client) -> Result<Vec<ChinaPpi>> {
     const COLUMNS: &str = "REPORT_DATE,TIME,BASE,BASE_SAME,BASE_ACCUMULATE";
     let v = client
-        .get_json(SOURCE_EASTMONEY, "macro_china_ppi", BASE, &report_params("RPT_ECONOMY_PPI", COLUMNS))
+        .get_json(
+            SOURCE_EASTMONEY,
+            "macro_china_ppi",
+            BASE,
+            &report_params("RPT_ECONOMY_PPI", COLUMNS),
+        )
         .await?;
     parse_china_ppi(&v)
 }
@@ -250,7 +268,12 @@ pub async fn macro_china_money_supply(client: &Client) -> Result<Vec<ChinaMoneyS
     const COLUMNS: &str = "REPORT_DATE,TIME,BASIC_CURRENCY,BASIC_CURRENCY_SAME,BASIC_CURRENCY_SEQUENTIAL,\
         CURRENCY,CURRENCY_SAME,CURRENCY_SEQUENTIAL,FREE_CASH,FREE_CASH_SAME,FREE_CASH_SEQUENTIAL";
     let v = client
-        .get_json(SOURCE_EASTMONEY, "macro_china_money_supply", BASE, &report_params("RPT_ECONOMY_CURRENCY_SUPPLY", COLUMNS))
+        .get_json(
+            SOURCE_EASTMONEY,
+            "macro_china_money_supply",
+            BASE,
+            &report_params("RPT_ECONOMY_CURRENCY_SUPPLY", COLUMNS),
+        )
         .await?;
     parse_china_money_supply(&v)
 }

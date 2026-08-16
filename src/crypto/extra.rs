@@ -213,13 +213,13 @@ pub(crate) fn parse_hist(resp: &Value) -> Result<Vec<CryptoHistRow>> {
 /// Parse an OKX `/api/v5/market/candles` response (`{code,data:[[...]]}`).
 /// OKX returns newest-first; we reverse to oldest-first to match Binance.
 pub(crate) fn parse_hist_okx(resp: &Value) -> Result<Vec<CryptoHistRow>> {
-    let data = resp
-        .get("data")
-        .and_then(|d| d.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_OKX,
-            message: "missing data".into(),
-        })?;
+    let data =
+        resp.get("data")
+            .and_then(|d| d.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_OKX,
+                message: "missing data".into(),
+            })?;
     let mut out = Vec::with_capacity(data.len());
     for row in data {
         let cells = match row.as_array() {
@@ -343,7 +343,7 @@ pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_BINANCE,
                 message: "missing lastPrice".into(),
-            })
+            });
         }
     };
     Ok(vec![CryptoSpotRow {
@@ -364,13 +364,13 @@ pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
 
 /// Parse an OKX `/api/v5/market/ticker` response (`{code,data:[{...}]}`).
 pub(crate) fn parse_spot_okx(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
-    let data = resp
-        .get("data")
-        .and_then(|d| d.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_OKX,
-            message: "missing data".into(),
-        })?;
+    let data =
+        resp.get("data")
+            .and_then(|d| d.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_OKX,
+                message: "missing data".into(),
+            })?;
     let item = data.first().ok_or_else(|| Error::UpstreamChanged {
         origin: SOURCE_OKX,
         message: "empty ticker data".into(),
@@ -388,7 +388,7 @@ pub(crate) fn parse_spot_okx(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_OKX,
                 message: "missing last".into(),
-            })
+            });
         }
     };
     Ok(vec![CryptoSpotRow {

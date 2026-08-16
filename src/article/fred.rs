@@ -27,8 +27,7 @@ use crate::core::error::{Error, Result};
 
 const SOURCE_FRED: &str = "fred";
 const BASE_MONTHLY: &str = "https://s3.amazonaws.com/files.fred.stlouisfed.org/fred-md/monthly";
-const BASE_QUARTERLY: &str =
-    "https://s3.amazonaws.com/files.fred.stlouisfed.org/fred-md/quarterly";
+const BASE_QUARTERLY: &str = "https://s3.amazonaws.com/files.fred.stlouisfed.org/fred-md/quarterly";
 
 /// One observation row of a FRED-MD/QD vintage: a date plus the full set of FRED
 /// series values for that date (the CSV's remaining columns, keyed by series id).
@@ -89,14 +88,18 @@ pub(crate) fn parse_fred_csv(text: &str) -> Result<Vec<FredMdRow>> {
 /// FRED-MD monthly data for the given vintage `date` (e.g. `"2020-01"`).
 pub async fn fred_md(client: &Client, date: &str) -> Result<Vec<FredMdRow>> {
     let url = format!("{BASE_MONTHLY}/{date}.csv");
-    let text = client.get_text(SOURCE_FRED, "fred_md", &url, &[], None).await?;
+    let text = client
+        .get_text(SOURCE_FRED, "fred_md", &url, &[], None)
+        .await?;
     parse_fred_csv(&text)
 }
 
 /// FRED-QD quarterly data for the given vintage `date` (e.g. `"2020-01"`).
 pub async fn fred_qd(client: &Client, date: &str) -> Result<Vec<FredMdRow>> {
     let url = format!("{BASE_QUARTERLY}/{date}.csv");
-    let text = client.get_text(SOURCE_FRED, "fred_qd", &url, &[], None).await?;
+    let text = client
+        .get_text(SOURCE_FRED, "fred_qd", &url, &[], None)
+        .await?;
     parse_fred_csv(&text)
 }
 

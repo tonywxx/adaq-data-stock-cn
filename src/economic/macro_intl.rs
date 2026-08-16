@@ -136,7 +136,14 @@ async fn emg_fetch(
 
 /// Australia retail sales MoM (`macro_australia_retail_rate_monthly`, Eastmoney `RPT_ECONOMICVALUE_AUSTRALIA`, indicator `EMG00152903`).
 pub async fn macro_australia_retail_rate_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_australia_retail_rate_monthly", "RPT_ECONOMICVALUE_AUSTRALIA", "EMG00152903", "2000").await
+    emg_fetch(
+        client,
+        "macro_australia_retail_rate_monthly",
+        "RPT_ECONOMICVALUE_AUSTRALIA",
+        "EMG00152903",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_australia_retail_rate_monthly` response (delegates to the shared [`parse_emg`]).
@@ -147,7 +154,14 @@ pub(crate) fn parse_macro_australia_retail_rate_monthly(resp: &Value) -> Result<
 
 /// Australia trade balance (`macro_australia_trade`, Eastmoney `RPT_ECONOMICVALUE_AUSTRALIA`, indicator `EMG00152793`).
 pub async fn macro_australia_trade(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_australia_trade", "RPT_ECONOMICVALUE_AUSTRALIA", "EMG00152793", "2000").await
+    emg_fetch(
+        client,
+        "macro_australia_trade",
+        "RPT_ECONOMICVALUE_AUSTRALIA",
+        "EMG00152793",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_australia_trade` response (delegates to the shared [`parse_emg`]).
@@ -158,7 +172,14 @@ pub(crate) fn parse_macro_australia_trade(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Australia unemployment rate (`macro_australia_unemployment_rate`, Eastmoney `RPT_ECONOMICVALUE_AUSTRALIA`, indicator `EMG00101141`).
 pub async fn macro_australia_unemployment_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_australia_unemployment_rate", "RPT_ECONOMICVALUE_AUSTRALIA", "EMG00101141", "2000").await
+    emg_fetch(
+        client,
+        "macro_australia_unemployment_rate",
+        "RPT_ECONOMICVALUE_AUSTRALIA",
+        "EMG00101141",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_australia_unemployment_rate` response (delegates to the shared [`parse_emg`]).
@@ -169,7 +190,14 @@ pub(crate) fn parse_macro_australia_unemployment_rate(resp: &Value) -> Result<Ve
 
 /// Australia PPI quarterly (`macro_australia_ppi_quarterly`, Eastmoney `RPT_ECONOMICVALUE_AUSTRALIA`, indicator `EMG00152722`).
 pub async fn macro_australia_ppi_quarterly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_australia_ppi_quarterly", "RPT_ECONOMICVALUE_AUSTRALIA", "EMG00152722", "2000").await
+    emg_fetch(
+        client,
+        "macro_australia_ppi_quarterly",
+        "RPT_ECONOMICVALUE_AUSTRALIA",
+        "EMG00152722",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_australia_ppi_quarterly` response (delegates to the shared [`parse_emg`]).
@@ -180,7 +208,14 @@ pub(crate) fn parse_macro_australia_ppi_quarterly(resp: &Value) -> Result<Vec<Em
 
 /// Australia CPI quarterly (`macro_australia_cpi_quarterly`, Eastmoney `RPT_ECONOMICVALUE_AUSTRALIA`, indicator `EMG00101104`).
 pub async fn macro_australia_cpi_quarterly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_australia_cpi_quarterly", "RPT_ECONOMICVALUE_AUSTRALIA", "EMG00101104", "2000").await
+    emg_fetch(
+        client,
+        "macro_australia_cpi_quarterly",
+        "RPT_ECONOMICVALUE_AUSTRALIA",
+        "EMG00101104",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_australia_cpi_quarterly` response (delegates to the shared [`parse_emg`]).
@@ -191,7 +226,14 @@ pub(crate) fn parse_macro_australia_cpi_quarterly(resp: &Value) -> Result<Vec<Em
 
 /// Australia CPI yearly (`macro_australia_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_AUSTRALIA`, indicator `EMG00101093`).
 pub async fn macro_australia_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_australia_cpi_yearly", "RPT_ECONOMICVALUE_AUSTRALIA", "EMG00101093", "2000").await
+    emg_fetch(
+        client,
+        "macro_australia_cpi_yearly",
+        "RPT_ECONOMICVALUE_AUSTRALIA",
+        "EMG00101093",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_australia_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -202,7 +244,14 @@ pub(crate) fn parse_macro_australia_cpi_yearly(resp: &Value) -> Result<Vec<EmgRo
 
 /// Australia cash rate target (`macro_australia_bank_rate`, Eastmoney `RPT_ECONOMICVALUE_AUSTRALIA`, indicator `EMG00342255`).
 pub async fn macro_australia_bank_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_australia_bank_rate", "RPT_ECONOMICVALUE_AUSTRALIA", "EMG00342255", "2000").await
+    emg_fetch(
+        client,
+        "macro_australia_bank_rate",
+        "RPT_ECONOMICVALUE_AUSTRALIA",
+        "EMG00342255",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_australia_bank_rate` response (delegates to the shared [`parse_emg`]).
@@ -213,7 +262,14 @@ pub(crate) fn parse_macro_australia_bank_rate(resp: &Value) -> Result<Vec<EmgRow
 
 /// Canada housing starts (`macro_canada_new_house_rate`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00342247`).
 pub async fn macro_canada_new_house_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_new_house_rate", "RPT_ECONOMICVALUE_CA", "EMG00342247", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_new_house_rate",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00342247",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_new_house_rate` response (delegates to the shared [`parse_emg`]).
@@ -224,7 +280,14 @@ pub(crate) fn parse_macro_canada_new_house_rate(resp: &Value) -> Result<Vec<EmgR
 
 /// Canada unemployment rate (`macro_canada_unemployment_rate`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00157746`).
 pub async fn macro_canada_unemployment_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_unemployment_rate", "RPT_ECONOMICVALUE_CA", "EMG00157746", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_unemployment_rate",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00157746",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_unemployment_rate` response (delegates to the shared [`parse_emg`]).
@@ -235,7 +298,14 @@ pub(crate) fn parse_macro_canada_unemployment_rate(resp: &Value) -> Result<Vec<E
 
 /// Canada trade balance (`macro_canada_trade`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00102022`).
 pub async fn macro_canada_trade(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_trade", "RPT_ECONOMICVALUE_CA", "EMG00102022", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_trade",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00102022",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_trade` response (delegates to the shared [`parse_emg`]).
@@ -246,7 +316,14 @@ pub(crate) fn parse_macro_canada_trade(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Canada retail sales MoM (`macro_canada_retail_rate_monthly`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG01337094`).
 pub async fn macro_canada_retail_rate_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_retail_rate_monthly", "RPT_ECONOMICVALUE_CA", "EMG01337094", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_retail_rate_monthly",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG01337094",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_retail_rate_monthly` response (delegates to the shared [`parse_emg`]).
@@ -257,7 +334,14 @@ pub(crate) fn parse_macro_canada_retail_rate_monthly(resp: &Value) -> Result<Vec
 
 /// Canada overnight rate target (`macro_canada_bank_rate`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00342248`).
 pub async fn macro_canada_bank_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_bank_rate", "RPT_ECONOMICVALUE_CA", "EMG00342248", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_bank_rate",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00342248",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_bank_rate` response (delegates to the shared [`parse_emg`]).
@@ -268,7 +352,14 @@ pub(crate) fn parse_macro_canada_bank_rate(resp: &Value) -> Result<Vec<EmgRow>> 
 
 /// Canada core CPI yearly (`macro_canada_core_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00102030`).
 pub async fn macro_canada_core_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_core_cpi_yearly", "RPT_ECONOMICVALUE_CA", "EMG00102030", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_core_cpi_yearly",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00102030",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_core_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -279,7 +370,14 @@ pub(crate) fn parse_macro_canada_core_cpi_yearly(resp: &Value) -> Result<Vec<Emg
 
 /// Canada core CPI monthly (`macro_canada_core_cpi_monthly`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00102044`).
 pub async fn macro_canada_core_cpi_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_core_cpi_monthly", "RPT_ECONOMICVALUE_CA", "EMG00102044", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_core_cpi_monthly",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00102044",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_core_cpi_monthly` response (delegates to the shared [`parse_emg`]).
@@ -290,7 +388,14 @@ pub(crate) fn parse_macro_canada_core_cpi_monthly(resp: &Value) -> Result<Vec<Em
 
 /// Canada CPI yearly (`macro_canada_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00102029`).
 pub async fn macro_canada_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_cpi_yearly", "RPT_ECONOMICVALUE_CA", "EMG00102029", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_cpi_yearly",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00102029",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -301,7 +406,14 @@ pub(crate) fn parse_macro_canada_cpi_yearly(resp: &Value) -> Result<Vec<EmgRow>>
 
 /// Canada CPI monthly (`macro_canada_cpi_monthly`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00158719`).
 pub async fn macro_canada_cpi_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_cpi_monthly", "RPT_ECONOMICVALUE_CA", "EMG00158719", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_cpi_monthly",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00158719",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_cpi_monthly` response (delegates to the shared [`parse_emg`]).
@@ -312,7 +424,14 @@ pub(crate) fn parse_macro_canada_cpi_monthly(resp: &Value) -> Result<Vec<EmgRow>
 
 /// Canada GDP monthly (`macro_canada_gdp_monthly`, Eastmoney `RPT_ECONOMICVALUE_CA`, indicator `EMG00159259`).
 pub async fn macro_canada_gdp_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_canada_gdp_monthly", "RPT_ECONOMICVALUE_CA", "EMG00159259", "2000").await
+    emg_fetch(
+        client,
+        "macro_canada_gdp_monthly",
+        "RPT_ECONOMICVALUE_CA",
+        "EMG00159259",
+        "2000",
+    )
+    .await
 }
 
 /// Parse `macro_canada_gdp_monthly` response (delegates to the shared [`parse_emg`]).
@@ -323,7 +442,14 @@ pub(crate) fn parse_macro_canada_gdp_monthly(resp: &Value) -> Result<Vec<EmgRow>
 
 /// UK Halifax house price MoM (`macro_uk_halifax_monthly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00342256`).
 pub async fn macro_uk_halifax_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_halifax_monthly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00342256", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_halifax_monthly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00342256",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_halifax_monthly` response (delegates to the shared [`parse_emg`]).
@@ -334,7 +460,14 @@ pub(crate) fn parse_macro_uk_halifax_monthly(resp: &Value) -> Result<Vec<EmgRow>
 
 /// UK Halifax house price YoY (`macro_uk_halifax_yearly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00010370`).
 pub async fn macro_uk_halifax_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_halifax_yearly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00010370", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_halifax_yearly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00010370",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_halifax_yearly` response (delegates to the shared [`parse_emg`]).
@@ -345,7 +478,14 @@ pub(crate) fn parse_macro_uk_halifax_yearly(resp: &Value) -> Result<Vec<EmgRow>>
 
 /// UK trade balance (`macro_uk_trade`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00158309`).
 pub async fn macro_uk_trade(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_trade", "RPT_ECONOMICVALUE_BRITAIN", "EMG00158309", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_trade",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00158309",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_trade` response (delegates to the shared [`parse_emg`]).
@@ -356,7 +496,14 @@ pub(crate) fn parse_macro_uk_trade(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// UK bank rate (`macro_uk_bank_rate`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00342253`).
 pub async fn macro_uk_bank_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_bank_rate", "RPT_ECONOMICVALUE_BRITAIN", "EMG00342253", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_bank_rate",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00342253",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_bank_rate` response (delegates to the shared [`parse_emg`]).
@@ -367,7 +514,14 @@ pub(crate) fn parse_macro_uk_bank_rate(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// UK core CPI yearly (`macro_uk_core_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00010279`).
 pub async fn macro_uk_core_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_core_cpi_yearly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00010279", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_core_cpi_yearly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00010279",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_core_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -378,7 +532,14 @@ pub(crate) fn parse_macro_uk_core_cpi_yearly(resp: &Value) -> Result<Vec<EmgRow>
 
 /// UK core CPI monthly (`macro_uk_core_cpi_monthly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00010291`).
 pub async fn macro_uk_core_cpi_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_core_cpi_monthly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00010291", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_core_cpi_monthly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00010291",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_core_cpi_monthly` response (delegates to the shared [`parse_emg`]).
@@ -389,7 +550,14 @@ pub(crate) fn parse_macro_uk_core_cpi_monthly(resp: &Value) -> Result<Vec<EmgRow
 
 /// UK CPI yearly (`macro_uk_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00010267`).
 pub async fn macro_uk_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_cpi_yearly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00010267", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_cpi_yearly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00010267",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -400,7 +568,14 @@ pub(crate) fn parse_macro_uk_cpi_yearly(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// UK CPI monthly (`macro_uk_cpi_monthly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00010291`).
 pub async fn macro_uk_cpi_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_cpi_monthly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00010291", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_cpi_monthly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00010291",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_cpi_monthly` response (delegates to the shared [`parse_emg`]).
@@ -411,7 +586,14 @@ pub(crate) fn parse_macro_uk_cpi_monthly(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// UK retail sales MoM (`macro_uk_retail_monthly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00158298`).
 pub async fn macro_uk_retail_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_retail_monthly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00158298", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_retail_monthly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00158298",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_retail_monthly` response (delegates to the shared [`parse_emg`]).
@@ -422,7 +604,14 @@ pub(crate) fn parse_macro_uk_retail_monthly(resp: &Value) -> Result<Vec<EmgRow>>
 
 /// UK retail sales YoY (`macro_uk_retail_yearly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00158297`).
 pub async fn macro_uk_retail_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_retail_yearly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00158297", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_retail_yearly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00158297",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_retail_yearly` response (delegates to the shared [`parse_emg`]).
@@ -433,7 +622,14 @@ pub(crate) fn parse_macro_uk_retail_yearly(resp: &Value) -> Result<Vec<EmgRow>> 
 
 /// UK Rightmove house price YoY (`macro_uk_rightmove_yearly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00341608`).
 pub async fn macro_uk_rightmove_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_rightmove_yearly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00341608", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_rightmove_yearly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00341608",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_rightmove_yearly` response (delegates to the shared [`parse_emg`]).
@@ -444,7 +640,14 @@ pub(crate) fn parse_macro_uk_rightmove_yearly(resp: &Value) -> Result<Vec<EmgRow
 
 /// UK Rightmove house price MoM (`macro_uk_rightmove_monthly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00341607`).
 pub async fn macro_uk_rightmove_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_rightmove_monthly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00341607", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_rightmove_monthly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00341607",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_rightmove_monthly` response (delegates to the shared [`parse_emg`]).
@@ -455,7 +658,14 @@ pub(crate) fn parse_macro_uk_rightmove_monthly(resp: &Value) -> Result<Vec<EmgRo
 
 /// UK GDP quarterly (`macro_uk_gdp_quarterly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00158277`).
 pub async fn macro_uk_gdp_quarterly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_gdp_quarterly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00158277", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_gdp_quarterly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00158277",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_gdp_quarterly` response (delegates to the shared [`parse_emg`]).
@@ -466,7 +676,14 @@ pub(crate) fn parse_macro_uk_gdp_quarterly(resp: &Value) -> Result<Vec<EmgRow>> 
 
 /// UK GDP yearly (`macro_uk_gdp_yearly`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00158276`).
 pub async fn macro_uk_gdp_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_gdp_yearly", "RPT_ECONOMICVALUE_BRITAIN", "EMG00158276", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_gdp_yearly",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00158276",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_gdp_yearly` response (delegates to the shared [`parse_emg`]).
@@ -477,7 +694,14 @@ pub(crate) fn parse_macro_uk_gdp_yearly(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// UK unemployment rate (`macro_uk_unemployment_rate`, Eastmoney `RPT_ECONOMICVALUE_BRITAIN`, indicator `EMG00010348`).
 pub async fn macro_uk_unemployment_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_uk_unemployment_rate", "RPT_ECONOMICVALUE_BRITAIN", "EMG00010348", "5000").await
+    emg_fetch(
+        client,
+        "macro_uk_unemployment_rate",
+        "RPT_ECONOMICVALUE_BRITAIN",
+        "EMG00010348",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_uk_unemployment_rate` response (delegates to the shared [`parse_emg`]).
@@ -488,7 +712,14 @@ pub(crate) fn parse_macro_uk_unemployment_rate(resp: &Value) -> Result<Vec<EmgRo
 
 /// Switzerland SVME PMI (`macro_swiss_svme`, Eastmoney `RPT_ECONOMICVALUE_CH`, indicator `EMG00341602`).
 pub async fn macro_swiss_svme(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_swiss_svme", "RPT_ECONOMICVALUE_CH", "EMG00341602", "5000").await
+    emg_fetch(
+        client,
+        "macro_swiss_svme",
+        "RPT_ECONOMICVALUE_CH",
+        "EMG00341602",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_swiss_svme` response (delegates to the shared [`parse_emg`]).
@@ -499,7 +730,14 @@ pub(crate) fn parse_macro_swiss_svme(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Switzerland trade balance (`macro_swiss_trade`, Eastmoney `RPT_ECONOMICVALUE_CH`, indicator `EMG00341603`).
 pub async fn macro_swiss_trade(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_swiss_trade", "RPT_ECONOMICVALUE_CH", "EMG00341603", "5000").await
+    emg_fetch(
+        client,
+        "macro_swiss_trade",
+        "RPT_ECONOMICVALUE_CH",
+        "EMG00341603",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_swiss_trade` response (delegates to the shared [`parse_emg`]).
@@ -510,7 +748,14 @@ pub(crate) fn parse_macro_swiss_trade(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Switzerland CPI yearly (`macro_swiss_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_CH`, indicator `EMG00341604`).
 pub async fn macro_swiss_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_swiss_cpi_yearly", "RPT_ECONOMICVALUE_CH", "EMG00341604", "5000").await
+    emg_fetch(
+        client,
+        "macro_swiss_cpi_yearly",
+        "RPT_ECONOMICVALUE_CH",
+        "EMG00341604",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_swiss_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -521,7 +766,14 @@ pub(crate) fn parse_macro_swiss_cpi_yearly(resp: &Value) -> Result<Vec<EmgRow>> 
 
 /// Switzerland GDP quarterly (`macro_swiss_gdp_quarterly`, Eastmoney `RPT_ECONOMICVALUE_CH`, indicator `EMG00341600`).
 pub async fn macro_swiss_gdp_quarterly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_swiss_gdp_quarterly", "RPT_ECONOMICVALUE_CH", "EMG00341600", "5000").await
+    emg_fetch(
+        client,
+        "macro_swiss_gdp_quarterly",
+        "RPT_ECONOMICVALUE_CH",
+        "EMG00341600",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_swiss_gdp_quarterly` response (delegates to the shared [`parse_emg`]).
@@ -532,7 +784,14 @@ pub(crate) fn parse_macro_swiss_gdp_quarterly(resp: &Value) -> Result<Vec<EmgRow
 
 /// Switzerland GDP yearly (`macro_swiss_gbd_yearly`, Eastmoney `RPT_ECONOMICVALUE_CH`, indicator `EMG00341601`).
 pub async fn macro_swiss_gbd_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_swiss_gbd_yearly", "RPT_ECONOMICVALUE_CH", "EMG00341601", "5000").await
+    emg_fetch(
+        client,
+        "macro_swiss_gbd_yearly",
+        "RPT_ECONOMICVALUE_CH",
+        "EMG00341601",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_swiss_gbd_yearly` response (delegates to the shared [`parse_emg`]).
@@ -543,7 +802,14 @@ pub(crate) fn parse_macro_swiss_gbd_yearly(resp: &Value) -> Result<Vec<EmgRow>> 
 
 /// Switzerland SNB policy rate (`macro_swiss_gbd_bank_rate`, Eastmoney `RPT_ECONOMICVALUE_CH`, indicator `EMG00341606`).
 pub async fn macro_swiss_gbd_bank_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_swiss_gbd_bank_rate", "RPT_ECONOMICVALUE_CH", "EMG00341606", "5000").await
+    emg_fetch(
+        client,
+        "macro_swiss_gbd_bank_rate",
+        "RPT_ECONOMICVALUE_CH",
+        "EMG00341606",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_swiss_gbd_bank_rate` response (delegates to the shared [`parse_emg`]).
@@ -554,7 +820,14 @@ pub(crate) fn parse_macro_swiss_gbd_bank_rate(resp: &Value) -> Result<Vec<EmgRow
 
 /// Japan policy rate (`macro_japan_bank_rate`, Eastmoney `RPT_ECONOMICVALUE_JPAN`, indicator `EMG00342252`).
 pub async fn macro_japan_bank_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_japan_bank_rate", "RPT_ECONOMICVALUE_JPAN", "EMG00342252", "5000").await
+    emg_fetch(
+        client,
+        "macro_japan_bank_rate",
+        "RPT_ECONOMICVALUE_JPAN",
+        "EMG00342252",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_japan_bank_rate` response (delegates to the shared [`parse_emg`]).
@@ -565,7 +838,14 @@ pub(crate) fn parse_macro_japan_bank_rate(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Japan CPI yearly (`macro_japan_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_JPAN`, indicator `EMG00005004`).
 pub async fn macro_japan_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_japan_cpi_yearly", "RPT_ECONOMICVALUE_JPAN", "EMG00005004", "5000").await
+    emg_fetch(
+        client,
+        "macro_japan_cpi_yearly",
+        "RPT_ECONOMICVALUE_JPAN",
+        "EMG00005004",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_japan_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -576,7 +856,14 @@ pub(crate) fn parse_macro_japan_cpi_yearly(resp: &Value) -> Result<Vec<EmgRow>> 
 
 /// Japan core CPI yearly (`macro_japan_core_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_JPAN`, indicator `EMG00158099`).
 pub async fn macro_japan_core_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_japan_core_cpi_yearly", "RPT_ECONOMICVALUE_JPAN", "EMG00158099", "5000").await
+    emg_fetch(
+        client,
+        "macro_japan_core_cpi_yearly",
+        "RPT_ECONOMICVALUE_JPAN",
+        "EMG00158099",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_japan_core_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -587,7 +874,14 @@ pub(crate) fn parse_macro_japan_core_cpi_yearly(resp: &Value) -> Result<Vec<EmgR
 
 /// Japan unemployment rate (`macro_japan_unemployment_rate`, Eastmoney `RPT_ECONOMICVALUE_JPAN`, indicator `EMG00005047`).
 pub async fn macro_japan_unemployment_rate(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_japan_unemployment_rate", "RPT_ECONOMICVALUE_JPAN", "EMG00005047", "5000").await
+    emg_fetch(
+        client,
+        "macro_japan_unemployment_rate",
+        "RPT_ECONOMICVALUE_JPAN",
+        "EMG00005047",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_japan_unemployment_rate` response (delegates to the shared [`parse_emg`]).
@@ -598,7 +892,14 @@ pub(crate) fn parse_macro_japan_unemployment_rate(resp: &Value) -> Result<Vec<Em
 
 /// Japan leading index CI (`macro_japan_head_indicator`, Eastmoney `RPT_ECONOMICVALUE_JPAN`, indicator `EMG00005117`).
 pub async fn macro_japan_head_indicator(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_japan_head_indicator", "RPT_ECONOMICVALUE_JPAN", "EMG00005117", "5000").await
+    emg_fetch(
+        client,
+        "macro_japan_head_indicator",
+        "RPT_ECONOMICVALUE_JPAN",
+        "EMG00005117",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_japan_head_indicator` response (delegates to the shared [`parse_emg`]).
@@ -609,7 +910,14 @@ pub(crate) fn parse_macro_japan_head_indicator(resp: &Value) -> Result<Vec<EmgRo
 
 /// Germany IFO business climate (`macro_germany_ifo`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG00179154`).
 pub async fn macro_germany_ifo(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_ifo", "RPT_ECONOMICVALUE_GER", "EMG00179154", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_ifo",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG00179154",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_ifo` response (delegates to the shared [`parse_emg`]).
@@ -620,7 +928,14 @@ pub(crate) fn parse_macro_germany_ifo(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Germany CPI monthly (`macro_germany_cpi_monthly`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG00009758`).
 pub async fn macro_germany_cpi_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_cpi_monthly", "RPT_ECONOMICVALUE_GER", "EMG00009758", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_cpi_monthly",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG00009758",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_cpi_monthly` response (delegates to the shared [`parse_emg`]).
@@ -631,7 +946,14 @@ pub(crate) fn parse_macro_germany_cpi_monthly(resp: &Value) -> Result<Vec<EmgRow
 
 /// Germany CPI yearly (`macro_germany_cpi_yearly`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG00009756`).
 pub async fn macro_germany_cpi_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_cpi_yearly", "RPT_ECONOMICVALUE_GER", "EMG00009756", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_cpi_yearly",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG00009756",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_cpi_yearly` response (delegates to the shared [`parse_emg`]).
@@ -642,7 +964,14 @@ pub(crate) fn parse_macro_germany_cpi_yearly(resp: &Value) -> Result<Vec<EmgRow>
 
 /// Germany trade balance (seasonally adjusted) (`macro_germany_trade_adjusted`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG00009753`).
 pub async fn macro_germany_trade_adjusted(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_trade_adjusted", "RPT_ECONOMICVALUE_GER", "EMG00009753", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_trade_adjusted",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG00009753",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_trade_adjusted` response (delegates to the shared [`parse_emg`]).
@@ -653,7 +982,14 @@ pub(crate) fn parse_macro_germany_trade_adjusted(resp: &Value) -> Result<Vec<Emg
 
 /// Germany GDP (`macro_germany_gdp`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG00009720`).
 pub async fn macro_germany_gdp(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_gdp", "RPT_ECONOMICVALUE_GER", "EMG00009720", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_gdp",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG00009720",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_gdp` response (delegates to the shared [`parse_emg`]).
@@ -664,7 +1000,14 @@ pub(crate) fn parse_macro_germany_gdp(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Germany real retail sales MoM (`macro_germany_retail_sale_monthly`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG01333186`).
 pub async fn macro_germany_retail_sale_monthly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_retail_sale_monthly", "RPT_ECONOMICVALUE_GER", "EMG01333186", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_retail_sale_monthly",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG01333186",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_retail_sale_monthly` response (delegates to the shared [`parse_emg`]).
@@ -675,7 +1018,14 @@ pub(crate) fn parse_macro_germany_retail_sale_monthly(resp: &Value) -> Result<Ve
 
 /// Germany real retail sales YoY (`macro_germany_retail_sale_yearly`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG01333192`).
 pub async fn macro_germany_retail_sale_yearly(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_retail_sale_yearly", "RPT_ECONOMICVALUE_GER", "EMG01333192", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_retail_sale_yearly",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG01333192",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_retail_sale_yearly` response (delegates to the shared [`parse_emg`]).
@@ -686,7 +1036,14 @@ pub(crate) fn parse_macro_germany_retail_sale_yearly(resp: &Value) -> Result<Vec
 
 /// Germany ZEW economic sentiment (`macro_germany_zew`, Eastmoney `RPT_ECONOMICVALUE_GER`, indicator `EMG00172577`).
 pub async fn macro_germany_zew(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_germany_zew", "RPT_ECONOMICVALUE_GER", "EMG00172577", "5000").await
+    emg_fetch(
+        client,
+        "macro_germany_zew",
+        "RPT_ECONOMICVALUE_GER",
+        "EMG00172577",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_germany_zew` response (delegates to the shared [`parse_emg`]).
@@ -697,7 +1054,14 @@ pub(crate) fn parse_macro_germany_zew(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Hong Kong CPI (`macro_china_hk_cpi`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG01336996`).
 pub async fn macro_china_hk_cpi(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_cpi", "RPT_ECONOMICVALUE_HK", "EMG01336996", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_cpi",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG01336996",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_cpi` response (delegates to the shared [`parse_emg`]).
@@ -708,7 +1072,14 @@ pub(crate) fn parse_macro_china_hk_cpi(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Hong Kong CPI YoY (`macro_china_hk_cpi_ratio`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG00059282`).
 pub async fn macro_china_hk_cpi_ratio(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_cpi_ratio", "RPT_ECONOMICVALUE_HK", "EMG00059282", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_cpi_ratio",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG00059282",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_cpi_ratio` response (delegates to the shared [`parse_emg`]).
@@ -719,7 +1090,14 @@ pub(crate) fn parse_macro_china_hk_cpi_ratio(resp: &Value) -> Result<Vec<EmgRow>
 
 /// Hong Kong unemployment rate (`macro_china_hk_rate_of_unemployment`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG00059647`).
 pub async fn macro_china_hk_rate_of_unemployment(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_rate_of_unemployment", "RPT_ECONOMICVALUE_HK", "EMG00059647", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_rate_of_unemployment",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG00059647",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_rate_of_unemployment` response (delegates to the shared [`parse_emg`]).
@@ -730,7 +1108,14 @@ pub(crate) fn parse_macro_china_hk_rate_of_unemployment(resp: &Value) -> Result<
 
 /// Hong Kong GDP (`macro_china_hk_gbp`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG01337008`).
 pub async fn macro_china_hk_gbp(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_gbp", "RPT_ECONOMICVALUE_HK", "EMG01337008", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_gbp",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG01337008",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_gbp` response (delegates to the shared [`parse_emg`]).
@@ -741,7 +1126,14 @@ pub(crate) fn parse_macro_china_hk_gbp(resp: &Value) -> Result<Vec<EmgRow>> {
 
 /// Hong Kong GDP YoY (`macro_china_hk_gbp_ratio`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG01337009`).
 pub async fn macro_china_hk_gbp_ratio(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_gbp_ratio", "RPT_ECONOMICVALUE_HK", "EMG01337009", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_gbp_ratio",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG01337009",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_gbp_ratio` response (delegates to the shared [`parse_emg`]).
@@ -752,7 +1144,14 @@ pub(crate) fn parse_macro_china_hk_gbp_ratio(resp: &Value) -> Result<Vec<EmgRow>
 
 /// Hong Kong building transactions volume (`macro_china_hk_building_volume`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG00158055`).
 pub async fn macro_china_hk_building_volume(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_building_volume", "RPT_ECONOMICVALUE_HK", "EMG00158055", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_building_volume",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG00158055",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_building_volume` response (delegates to the shared [`parse_emg`]).
@@ -763,7 +1162,14 @@ pub(crate) fn parse_macro_china_hk_building_volume(resp: &Value) -> Result<Vec<E
 
 /// Hong Kong building transactions amount (`macro_china_hk_building_amount`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG00158066`).
 pub async fn macro_china_hk_building_amount(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_building_amount", "RPT_ECONOMICVALUE_HK", "EMG00158066", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_building_amount",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG00158066",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_building_amount` response (delegates to the shared [`parse_emg`]).
@@ -774,7 +1180,14 @@ pub(crate) fn parse_macro_china_hk_building_amount(resp: &Value) -> Result<Vec<E
 
 /// Hong Kong merchandise trade balance YoY (`macro_china_hk_trade_diff_ratio`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG00157898`).
 pub async fn macro_china_hk_trade_diff_ratio(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_trade_diff_ratio", "RPT_ECONOMICVALUE_HK", "EMG00157898", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_trade_diff_ratio",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG00157898",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_trade_diff_ratio` response (delegates to the shared [`parse_emg`]).
@@ -785,7 +1198,14 @@ pub(crate) fn parse_macro_china_hk_trade_diff_ratio(resp: &Value) -> Result<Vec<
 
 /// Hong Kong manufacturing PPI YoY (`macro_china_hk_ppi`, Eastmoney `RPT_ECONOMICVALUE_HK`, indicator `EMG00157818`).
 pub async fn macro_china_hk_ppi(client: &Client) -> Result<Vec<EmgRow>> {
-    emg_fetch(client, "macro_china_hk_ppi", "RPT_ECONOMICVALUE_HK", "EMG00157818", "5000").await
+    emg_fetch(
+        client,
+        "macro_china_hk_ppi",
+        "RPT_ECONOMICVALUE_HK",
+        "EMG00157818",
+        "5000",
+    )
+    .await
 }
 
 /// Parse `macro_china_hk_ppi` response (delegates to the shared [`parse_emg`]).
@@ -808,7 +1228,10 @@ mod tests {
 
     #[test]
     fn parses_macro_australia_retail_rate_monthly() {
-        let rows = parse_macro_australia_retail_rate_monthly(&fixture("macro_australia_retail_rate_monthly.json")).unwrap();
+        let rows = parse_macro_australia_retail_rate_monthly(&fixture(
+            "macro_australia_retail_rate_monthly.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -832,7 +1255,10 @@ mod tests {
 
     #[test]
     fn parses_macro_australia_unemployment_rate() {
-        let rows = parse_macro_australia_unemployment_rate(&fixture("macro_australia_unemployment_rate.json")).unwrap();
+        let rows = parse_macro_australia_unemployment_rate(&fixture(
+            "macro_australia_unemployment_rate.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -844,7 +1270,9 @@ mod tests {
 
     #[test]
     fn parses_macro_australia_ppi_quarterly() {
-        let rows = parse_macro_australia_ppi_quarterly(&fixture("macro_australia_ppi_quarterly.json")).unwrap();
+        let rows =
+            parse_macro_australia_ppi_quarterly(&fixture("macro_australia_ppi_quarterly.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -856,7 +1284,9 @@ mod tests {
 
     #[test]
     fn parses_macro_australia_cpi_quarterly() {
-        let rows = parse_macro_australia_cpi_quarterly(&fixture("macro_australia_cpi_quarterly.json")).unwrap();
+        let rows =
+            parse_macro_australia_cpi_quarterly(&fixture("macro_australia_cpi_quarterly.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -868,7 +1298,8 @@ mod tests {
 
     #[test]
     fn parses_macro_australia_cpi_yearly() {
-        let rows = parse_macro_australia_cpi_yearly(&fixture("macro_australia_cpi_yearly.json")).unwrap();
+        let rows =
+            parse_macro_australia_cpi_yearly(&fixture("macro_australia_cpi_yearly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -880,7 +1311,8 @@ mod tests {
 
     #[test]
     fn parses_macro_australia_bank_rate() {
-        let rows = parse_macro_australia_bank_rate(&fixture("macro_australia_bank_rate.json")).unwrap();
+        let rows =
+            parse_macro_australia_bank_rate(&fixture("macro_australia_bank_rate.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -892,7 +1324,8 @@ mod tests {
 
     #[test]
     fn parses_macro_canada_new_house_rate() {
-        let rows = parse_macro_canada_new_house_rate(&fixture("macro_canada_new_house_rate.json")).unwrap();
+        let rows = parse_macro_canada_new_house_rate(&fixture("macro_canada_new_house_rate.json"))
+            .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -904,7 +1337,9 @@ mod tests {
 
     #[test]
     fn parses_macro_canada_unemployment_rate() {
-        let rows = parse_macro_canada_unemployment_rate(&fixture("macro_canada_unemployment_rate.json")).unwrap();
+        let rows =
+            parse_macro_canada_unemployment_rate(&fixture("macro_canada_unemployment_rate.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -928,7 +1363,10 @@ mod tests {
 
     #[test]
     fn parses_macro_canada_retail_rate_monthly() {
-        let rows = parse_macro_canada_retail_rate_monthly(&fixture("macro_canada_retail_rate_monthly.json")).unwrap();
+        let rows = parse_macro_canada_retail_rate_monthly(&fixture(
+            "macro_canada_retail_rate_monthly.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -952,7 +1390,9 @@ mod tests {
 
     #[test]
     fn parses_macro_canada_core_cpi_yearly() {
-        let rows = parse_macro_canada_core_cpi_yearly(&fixture("macro_canada_core_cpi_yearly.json")).unwrap();
+        let rows =
+            parse_macro_canada_core_cpi_yearly(&fixture("macro_canada_core_cpi_yearly.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -964,7 +1404,9 @@ mod tests {
 
     #[test]
     fn parses_macro_canada_core_cpi_monthly() {
-        let rows = parse_macro_canada_core_cpi_monthly(&fixture("macro_canada_core_cpi_monthly.json")).unwrap();
+        let rows =
+            parse_macro_canada_core_cpi_monthly(&fixture("macro_canada_core_cpi_monthly.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -988,7 +1430,8 @@ mod tests {
 
     #[test]
     fn parses_macro_canada_cpi_monthly() {
-        let rows = parse_macro_canada_cpi_monthly(&fixture("macro_canada_cpi_monthly.json")).unwrap();
+        let rows =
+            parse_macro_canada_cpi_monthly(&fixture("macro_canada_cpi_monthly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1000,7 +1443,8 @@ mod tests {
 
     #[test]
     fn parses_macro_canada_gdp_monthly() {
-        let rows = parse_macro_canada_gdp_monthly(&fixture("macro_canada_gdp_monthly.json")).unwrap();
+        let rows =
+            parse_macro_canada_gdp_monthly(&fixture("macro_canada_gdp_monthly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1012,7 +1456,8 @@ mod tests {
 
     #[test]
     fn parses_macro_uk_halifax_monthly() {
-        let rows = parse_macro_uk_halifax_monthly(&fixture("macro_uk_halifax_monthly.json")).unwrap();
+        let rows =
+            parse_macro_uk_halifax_monthly(&fixture("macro_uk_halifax_monthly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1060,7 +1505,8 @@ mod tests {
 
     #[test]
     fn parses_macro_uk_core_cpi_yearly() {
-        let rows = parse_macro_uk_core_cpi_yearly(&fixture("macro_uk_core_cpi_yearly.json")).unwrap();
+        let rows =
+            parse_macro_uk_core_cpi_yearly(&fixture("macro_uk_core_cpi_yearly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1072,7 +1518,8 @@ mod tests {
 
     #[test]
     fn parses_macro_uk_core_cpi_monthly() {
-        let rows = parse_macro_uk_core_cpi_monthly(&fixture("macro_uk_core_cpi_monthly.json")).unwrap();
+        let rows =
+            parse_macro_uk_core_cpi_monthly(&fixture("macro_uk_core_cpi_monthly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1132,7 +1579,8 @@ mod tests {
 
     #[test]
     fn parses_macro_uk_rightmove_yearly() {
-        let rows = parse_macro_uk_rightmove_yearly(&fixture("macro_uk_rightmove_yearly.json")).unwrap();
+        let rows =
+            parse_macro_uk_rightmove_yearly(&fixture("macro_uk_rightmove_yearly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1144,7 +1592,8 @@ mod tests {
 
     #[test]
     fn parses_macro_uk_rightmove_monthly() {
-        let rows = parse_macro_uk_rightmove_monthly(&fixture("macro_uk_rightmove_monthly.json")).unwrap();
+        let rows =
+            parse_macro_uk_rightmove_monthly(&fixture("macro_uk_rightmove_monthly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1180,7 +1629,8 @@ mod tests {
 
     #[test]
     fn parses_macro_uk_unemployment_rate() {
-        let rows = parse_macro_uk_unemployment_rate(&fixture("macro_uk_unemployment_rate.json")).unwrap();
+        let rows =
+            parse_macro_uk_unemployment_rate(&fixture("macro_uk_unemployment_rate.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1228,7 +1678,8 @@ mod tests {
 
     #[test]
     fn parses_macro_swiss_gdp_quarterly() {
-        let rows = parse_macro_swiss_gdp_quarterly(&fixture("macro_swiss_gdp_quarterly.json")).unwrap();
+        let rows =
+            parse_macro_swiss_gdp_quarterly(&fixture("macro_swiss_gdp_quarterly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1252,7 +1703,8 @@ mod tests {
 
     #[test]
     fn parses_macro_swiss_gbd_bank_rate() {
-        let rows = parse_macro_swiss_gbd_bank_rate(&fixture("macro_swiss_gbd_bank_rate.json")).unwrap();
+        let rows =
+            parse_macro_swiss_gbd_bank_rate(&fixture("macro_swiss_gbd_bank_rate.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1288,7 +1740,8 @@ mod tests {
 
     #[test]
     fn parses_macro_japan_core_cpi_yearly() {
-        let rows = parse_macro_japan_core_cpi_yearly(&fixture("macro_japan_core_cpi_yearly.json")).unwrap();
+        let rows = parse_macro_japan_core_cpi_yearly(&fixture("macro_japan_core_cpi_yearly.json"))
+            .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1300,7 +1753,9 @@ mod tests {
 
     #[test]
     fn parses_macro_japan_unemployment_rate() {
-        let rows = parse_macro_japan_unemployment_rate(&fixture("macro_japan_unemployment_rate.json")).unwrap();
+        let rows =
+            parse_macro_japan_unemployment_rate(&fixture("macro_japan_unemployment_rate.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1312,7 +1767,8 @@ mod tests {
 
     #[test]
     fn parses_macro_japan_head_indicator() {
-        let rows = parse_macro_japan_head_indicator(&fixture("macro_japan_head_indicator.json")).unwrap();
+        let rows =
+            parse_macro_japan_head_indicator(&fixture("macro_japan_head_indicator.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1336,7 +1792,8 @@ mod tests {
 
     #[test]
     fn parses_macro_germany_cpi_monthly() {
-        let rows = parse_macro_germany_cpi_monthly(&fixture("macro_germany_cpi_monthly.json")).unwrap();
+        let rows =
+            parse_macro_germany_cpi_monthly(&fixture("macro_germany_cpi_monthly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1348,7 +1805,8 @@ mod tests {
 
     #[test]
     fn parses_macro_germany_cpi_yearly() {
-        let rows = parse_macro_germany_cpi_yearly(&fixture("macro_germany_cpi_yearly.json")).unwrap();
+        let rows =
+            parse_macro_germany_cpi_yearly(&fixture("macro_germany_cpi_yearly.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1360,7 +1818,9 @@ mod tests {
 
     #[test]
     fn parses_macro_germany_trade_adjusted() {
-        let rows = parse_macro_germany_trade_adjusted(&fixture("macro_germany_trade_adjusted.json")).unwrap();
+        let rows =
+            parse_macro_germany_trade_adjusted(&fixture("macro_germany_trade_adjusted.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1384,7 +1844,10 @@ mod tests {
 
     #[test]
     fn parses_macro_germany_retail_sale_monthly() {
-        let rows = parse_macro_germany_retail_sale_monthly(&fixture("macro_germany_retail_sale_monthly.json")).unwrap();
+        let rows = parse_macro_germany_retail_sale_monthly(&fixture(
+            "macro_germany_retail_sale_monthly.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1396,7 +1859,10 @@ mod tests {
 
     #[test]
     fn parses_macro_germany_retail_sale_yearly() {
-        let rows = parse_macro_germany_retail_sale_yearly(&fixture("macro_germany_retail_sale_yearly.json")).unwrap();
+        let rows = parse_macro_germany_retail_sale_yearly(&fixture(
+            "macro_germany_retail_sale_yearly.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1432,7 +1898,8 @@ mod tests {
 
     #[test]
     fn parses_macro_china_hk_cpi_ratio() {
-        let rows = parse_macro_china_hk_cpi_ratio(&fixture("macro_china_hk_cpi_ratio.json")).unwrap();
+        let rows =
+            parse_macro_china_hk_cpi_ratio(&fixture("macro_china_hk_cpi_ratio.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1444,7 +1911,10 @@ mod tests {
 
     #[test]
     fn parses_macro_china_hk_rate_of_unemployment() {
-        let rows = parse_macro_china_hk_rate_of_unemployment(&fixture("macro_china_hk_rate_of_unemployment.json")).unwrap();
+        let rows = parse_macro_china_hk_rate_of_unemployment(&fixture(
+            "macro_china_hk_rate_of_unemployment.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1468,7 +1938,8 @@ mod tests {
 
     #[test]
     fn parses_macro_china_hk_gbp_ratio() {
-        let rows = parse_macro_china_hk_gbp_ratio(&fixture("macro_china_hk_gbp_ratio.json")).unwrap();
+        let rows =
+            parse_macro_china_hk_gbp_ratio(&fixture("macro_china_hk_gbp_ratio.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1480,7 +1951,9 @@ mod tests {
 
     #[test]
     fn parses_macro_china_hk_building_volume() {
-        let rows = parse_macro_china_hk_building_volume(&fixture("macro_china_hk_building_volume.json")).unwrap();
+        let rows =
+            parse_macro_china_hk_building_volume(&fixture("macro_china_hk_building_volume.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1492,7 +1965,9 @@ mod tests {
 
     #[test]
     fn parses_macro_china_hk_building_amount() {
-        let rows = parse_macro_china_hk_building_amount(&fixture("macro_china_hk_building_amount.json")).unwrap();
+        let rows =
+            parse_macro_china_hk_building_amount(&fixture("macro_china_hk_building_amount.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));
@@ -1504,7 +1979,9 @@ mod tests {
 
     #[test]
     fn parses_macro_china_hk_trade_diff_ratio() {
-        let rows = parse_macro_china_hk_trade_diff_ratio(&fixture("macro_china_hk_trade_diff_ratio.json")).unwrap();
+        let rows =
+            parse_macro_china_hk_trade_diff_ratio(&fixture("macro_china_hk_trade_diff_ratio.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024年03月");
         assert_eq!(rows[0].value, Some(3.5));

@@ -117,7 +117,10 @@ async fn fetch_statement(
             .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
             .collect();
         owned.push(("pageNumber".to_string(), pn.to_string()));
-        let borrowed: Vec<(&str, &str)> = owned.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
+        let borrowed: Vec<(&str, &str)> = owned
+            .iter()
+            .map(|(k, v)| (k.as_str(), v.as_str()))
+            .collect();
         let v = client
             .get_json(SOURCE_EASTMONEY, endpoint, BASE, &borrowed)
             .await?;
@@ -385,7 +388,11 @@ mod tests {
     }
 
     /// Find a single normalized row by security code + item label.
-    fn find<'a>(rows: &'a [FinancialStatementRow], code: &str, item: &str) -> &'a FinancialStatementRow {
+    fn find<'a>(
+        rows: &'a [FinancialStatementRow],
+        code: &str,
+        item: &str,
+    ) -> &'a FinancialStatementRow {
         rows.iter()
             .find(|r| r.security_code == code && r.item == item)
             .expect("expected row present")
@@ -432,7 +439,10 @@ mod tests {
         assert_eq!(m.value, Some(24065100000.0));
         // None case: 营业总支出-财务费用 is null for 贵州茅台
         assert_eq!(find(&rows, "600519", "营业总支出-财务费用").value, None);
-        assert_eq!(find(&rows, "000001", "营业总收入").value, Some(43187000000.0));
+        assert_eq!(
+            find(&rows, "000001", "营业总收入").value,
+            Some(43187000000.0)
+        );
     }
 
     #[test]
@@ -445,7 +455,13 @@ mod tests {
         assert_eq!(m.report_date, "2024-03-31");
         assert_eq!(m.value, Some(9123700000.0));
         // None case: 融资性现金流-净现金流占比 null for one stock
-        assert_eq!(find(&rows, "600519", "融资性现金流-净现金流占比").value, None);
-        assert_eq!(find(&rows, "000001", "净现金流-净现金流").value, Some(-123456789.0));
+        assert_eq!(
+            find(&rows, "600519", "融资性现金流-净现金流占比").value,
+            None
+        );
+        assert_eq!(
+            find(&rows, "000001", "净现金流-净现金流").value,
+            Some(-123456789.0)
+        );
     }
 }

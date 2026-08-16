@@ -1,0 +1,33 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "rows": [
+      {
+        "indexcode": "399001",
+        "indexname": "深证成指",
+        "samplesize": 500,
+        "closeingPoint": 9876.54,
+        "percent": -1.23,
+        "peDynamic": 22.5,
+        "volume": 1234567890,
+        "amount": 234567890123,
+        "totalMarketValue": 345678901234,
+        "freeMarketValue": 234567890123
+      },
+      {
+        "indexcode": "399005",
+        "indexname": "中小100",
+        "samplesize": 100,
+        "closeingPoint": 6543.21,
+        "percent": 0.45,
+        "peDynamic": 18.2,
+        "volume": 987654321,
+        "amount": 123456789012,
+        "totalMarketValue": 234567890123,
+        "freeMarketValue": 123456789012
+      }
+    ],
+    "total": 2
+  }
+}

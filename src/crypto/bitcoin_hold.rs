@@ -8,10 +8,7 @@ const SOURCE_JIN10: &str = "jin10";
 
 const HOLD_URL: &str = "https://datacenter-api.jin10.com/bitcoin_treasuries/list";
 
-const REPORT_HEADERS: &[(&str, &str)] = &[
-    ("x-app-id", "lnFP5lxse24wPgtY"),
-    ("x-version", "1.0.0"),
-];
+const REPORT_HEADERS: &[(&str, &str)] = &[("x-app-id", "lnFP5lxse24wPgtY"), ("x-version", "1.0.0")];
 
 /// Bitcoin treasury-holdings report (akshare `crypto_bitcoin_hold_report`).
 ///
@@ -61,13 +58,13 @@ pub(crate) fn parse(resp: &Value) -> Result<Vec<CryptoHold>> {
         origin: SOURCE_JIN10,
         message: "missing data".into(),
     })?;
-    let names = data
-        .get("keys")
-        .and_then(|k| k.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_JIN10,
-            message: "missing data.keys".into(),
-        })?;
+    let names =
+        data.get("keys")
+            .and_then(|k| k.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_JIN10,
+                message: "missing data.keys".into(),
+            })?;
     let col: Vec<String> = names
         .iter()
         .filter_map(|n| n.as_str().map(|s| s.to_string()))
@@ -153,8 +150,7 @@ mod tests {
     fn parses_bitcoin_hold_fixture() {
         let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("tests/fixtures/crypto_bitcoin_hold_report.json");
-        let v: Value =
-            serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
+        let v: Value = serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
         let rows = parse(&v).unwrap();
         // fixture includes one malformed row (empty code) that must be skipped
         assert_eq!(rows.len(), 2);

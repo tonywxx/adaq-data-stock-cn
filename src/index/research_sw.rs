@@ -82,7 +82,9 @@ fn fnum(item: &Value, k: &str) -> Option<f64> {
 /// Positional-array variant of [`fstr`] for endpoints that return rows as lists
 /// (not objects) — e.g. the `current/` realtime feed.
 fn arr_fstr(item: &Value, idx: usize) -> Option<String> {
-    item.get(idx).and_then(|v| v.as_str()).map(|s| s.to_string())
+    item.get(idx)
+        .and_then(|v| v.as_str())
+        .map(|s| s.to_string())
 }
 
 /// Positional-array variant of [`fnum`].
@@ -285,7 +287,8 @@ pub struct ComponentSwRow {
 /// 申万宏源研究-指数发布-指数详情-成分股 (`institute-sw/api/index_publish/details/component_stocks/`, index_research_sw.py:139).
 pub async fn index_component_sw(client: &Client, symbol: &str) -> Result<Vec<ComponentSwRow>> {
     let params: [(&str, &str); 2] = [("swindexcode", symbol), ("page_size", "10000")];
-    let rows = sw_fetch_results(client, "index_component_sw", COMPONENT_URL, &params, 10000).await?;
+    let rows =
+        sw_fetch_results(client, "index_component_sw", COMPONENT_URL, &params, 10000).await?;
     Ok(parse_component_sw(&rows))
 }
 
@@ -431,16 +434,31 @@ pub async fn index_analysis_daily_sw(
         ("type", "DAY"),
         ("swindexcode", "all"),
     ];
-    let rows = sw_fetch_results(client, "index_analysis_daily_sw", ANALYSIS_DAILY_URL, &params, 50)
-        .await?;
+    let rows = sw_fetch_results(
+        client,
+        "index_analysis_daily_sw",
+        ANALYSIS_DAILY_URL,
+        &params,
+        50,
+    )
+    .await?;
     Ok(parse_analysis_sw(&rows))
 }
 
 /// 申万宏源研究-周/月报表-日期序列 (`institute-sw/api/index_analysis/week_month_datetime/`, index_research_sw.py:397).
-pub async fn index_analysis_week_month_sw(client: &Client, symbol: &str) -> Result<Vec<WeekMonthSwRow>> {
+pub async fn index_analysis_week_month_sw(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<WeekMonthSwRow>> {
     let t = symbol.to_uppercase();
     let params: [(&str, &str); 1] = [("type", t.as_str())];
-    let rows = sw_fetch_array(client, "index_analysis_week_month_sw", WEEK_MONTH_URL, &params).await?;
+    let rows = sw_fetch_array(
+        client,
+        "index_analysis_week_month_sw",
+        WEEK_MONTH_URL,
+        &params,
+    )
+    .await?;
     Ok(parse_week_month_sw(&rows))
 }
 
@@ -458,8 +476,14 @@ pub async fn index_analysis_weekly_sw(
         ("type", "WEEK"),
         ("swindexcode", "all"),
     ];
-    let rows = sw_fetch_results(client, "index_analysis_weekly_sw", ANALYSIS_REPORTS_URL, &params, 50)
-        .await?;
+    let rows = sw_fetch_results(
+        client,
+        "index_analysis_weekly_sw",
+        ANALYSIS_REPORTS_URL,
+        &params,
+        50,
+    )
+    .await?;
     Ok(parse_analysis_sw(&rows))
 }
 
@@ -477,8 +501,14 @@ pub async fn index_analysis_monthly_sw(
         ("type", "MONTH"),
         ("swindexcode", "all"),
     ];
-    let rows = sw_fetch_results(client, "index_analysis_monthly_sw", ANALYSIS_REPORTS_URL, &params, 50)
-        .await?;
+    let rows = sw_fetch_results(
+        client,
+        "index_analysis_monthly_sw",
+        ANALYSIS_REPORTS_URL,
+        &params,
+        50,
+    )
+    .await?;
     Ok(parse_analysis_sw(&rows))
 }
 

@@ -38,8 +38,7 @@ use crate::fund::{fnum, fstr};
 const AUM_TREND_URL: &str = "https://fund.eastmoney.com/Company/home/GetFundTotalScaleForChart";
 const NAME_URL: &str = "https://fund.eastmoney.com/js/fundcode_search.js";
 const FH_URL: &str = "https://fund.eastmoney.com/Data/funddataIndex_Interface.aspx";
-const PORTFOLIO_URL: &str =
-    "https://fund.eastmoney.com/data/FundDataPortfolio_Interface.aspx";
+const PORTFOLIO_URL: &str = "https://fund.eastmoney.com/data/FundDataPortfolio_Interface.aspx";
 const MANAGER_URL: &str = "https://fund.eastmoney.com/Data/FundDataPortfolio_Interface.aspx";
 
 // ---------------------------------------------------------------------------
@@ -64,7 +63,12 @@ pub struct FundAumTrendRow {
 pub async fn fund_aum_trend_em(client: &Client) -> Result<Vec<FundAumTrendRow>> {
     let params = [("fundType", "0")];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "fund_aum_trend_em", AUM_TREND_URL, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "fund_aum_trend_em",
+            AUM_TREND_URL,
+            &params,
+        )
         .await?;
     parse_aum_trend(&v)
 }
@@ -131,12 +135,10 @@ pub async fn fund_name_em(client: &Client) -> Result<Vec<FundNameRow>> {
 }
 
 pub(crate) fn parse_name(resp: &Value) -> Result<Vec<FundNameRow>> {
-    let arr = resp
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "fund_name_em: expected a JSON array".into(),
-        })?;
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "fund_name_em: expected a JSON array".into(),
+    })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         let cells = match item.as_array() {
@@ -210,12 +212,10 @@ pub async fn fund_fh_em(client: &Client, year: &str, typ: &str) -> Result<Vec<Fu
 }
 
 pub(crate) fn parse_fh(resp: &Value) -> Result<Vec<FundDividendRow>> {
-    let arr = resp
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "fund_fh_em: expected a JSON array".into(),
-        })?;
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "fund_fh_em: expected a JSON array".into(),
+    })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         let cells = match item.as_array() {
@@ -475,43 +475,32 @@ fn unwrap_json(text: &str) -> Result<&str> {
     // Drop a leading `var <ident> = ` assignment if one is present (the `=`
     // must come before the first `{`/`[`, otherwise it is JSON-internal).
     let s = if let Some(eq) = s.find('=') {
-        let bracket = s
-            .find(['{', '['])
-            .unwrap_or(usize::MAX);
-        if eq < bracket {
-            &s[eq + 1..]
-        } else {
-            s
-        }
+        let bracket = s.find(['{', '[']).unwrap_or(usize::MAX);
+        if eq < bracket { &s[eq + 1..] } else { s }
     } else {
         s
     };
     let s = s.trim_start();
     // Drop a single trailing `;`.
     let s = s.strip_suffix(';').unwrap_or(s).trim();
-    let start = s
-        .find(['{', '['])
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "expected JSON object/array".into(),
-        })?;
-    let end = s
-        .rfind(['}', ']'])
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "expected JSON object/array".into(),
-        })?;
+    let start = s.find(['{', '[']).ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "expected JSON object/array".into(),
+    })?;
+    let end = s.rfind(['}', ']']).ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "expected JSON object/array".into(),
+    })?;
     Ok(&s[start..=end])
 }
 
 /// Extract the dividend-data JSON array from a
 /// `var jjfh_data=[[...]];var jjfh_jjgs=...` response (no JS evaluation).
 fn extract_fh_array(text: &str) -> Result<Value> {
-    let start = text.find("[[")
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "fund_fh_em: missing '[['".into(),
-        })?;
+    let start = text.find("[[").ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "fund_fh_em: missing '[['".into(),
+    })?;
     let end = text
         .find(";var jjfh_jjgs")
         .ok_or_else(|| Error::UpstreamChanged {

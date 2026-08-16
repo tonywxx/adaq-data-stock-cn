@@ -1,14 +1,13 @@
 use serde_json::Value;
 
-use super::{adjust_map, fnum, fstr, parse_klines, period_map, BASE_HIS};
+use super::{BASE_HIS, adjust_map, fnum, fstr, parse_klines, period_map};
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
 /// Static, well-known Eastmoney `ut` token — no JS signing required (ADR-0005).
 const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 /// Field list mirrors akshare `stock_hk_spot_em`.
-const FIELDS: &str =
-    "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152";
+const FIELDS: &str = "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152";
 /// HKEX boards (m:128).
 const FS: &str = "m:128 t:3,m:128 t:4,m:128 t:1,m:128 t:2";
 const BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
@@ -183,8 +182,8 @@ mod tests {
 
     #[test]
     fn parses_hk_spot_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/stock_hk_spot_em.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/stock_hk_spot_em.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse(&v).unwrap();
@@ -204,8 +203,8 @@ mod tests {
 
     #[test]
     fn parses_hk_hist_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/stock_hk_hist.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/stock_hk_hist.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_hist(&v).unwrap();

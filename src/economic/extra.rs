@@ -35,7 +35,10 @@ fn data_array(resp: &Value) -> Result<&Vec<Value>> {
 }
 
 /// Shared param block for a datacenter-web `reportName` endpoint (akshare style).
-fn dc_params(report_name: &'static str, columns: &'static str) -> [(&'static str, &'static str); 11] {
+fn dc_params(
+    report_name: &'static str,
+    columns: &'static str,
+) -> [(&'static str, &'static str); 11] {
     [
         ("reportName", report_name),
         ("columns", columns),
@@ -106,7 +109,12 @@ pub async fn macro_china_new_house_price(
         ("pageNum", "1"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "macro_china_new_house_price", BASE, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "macro_china_new_house_price",
+            BASE,
+            &params,
+        )
         .await?;
     parse_china_new_house_price(&v)
 }
@@ -224,7 +232,9 @@ pub struct ChinaEnterpriseBoom {
 
 /// Enterprise boom & entrepreneur confidence indices
 /// (`macro_china_enterprise_boom_index`, Eastmoney `RPT_ECONOMY_BOOM_INDEX`).
-pub async fn macro_china_enterprise_boom_index(client: &Client) -> Result<Vec<ChinaEnterpriseBoom>> {
+pub async fn macro_china_enterprise_boom_index(
+    client: &Client,
+) -> Result<Vec<ChinaEnterpriseBoom>> {
     const COLUMNS: &str = "REPORT_DATE,TIME,BOOM_INDEX,FAITH_INDEX,BOOM_INDEX_SAME,\
         BOOM_INDEX_SEQUENTIAL,FAITH_INDEX_SAME,FAITH_INDEX_SEQUENTIAL";
     let v = client
@@ -473,7 +483,8 @@ mod tests {
 
     #[test]
     fn parses_macro_china_new_house_price() {
-        let rows = parse_china_new_house_price(&fixture("macro_china_new_house_price.json")).unwrap();
+        let rows =
+            parse_china_new_house_price(&fixture("macro_china_new_house_price.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024-03-31");
         assert_eq!(rows[0].city, "北京");
@@ -498,7 +509,9 @@ mod tests {
 
     #[test]
     fn parses_macro_china_enterprise_boom_index() {
-        let rows = parse_china_enterprise_boom_index(&fixture("macro_china_enterprise_boom_index.json")).unwrap();
+        let rows =
+            parse_china_enterprise_boom_index(&fixture("macro_china_enterprise_boom_index.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024-03");
         assert_eq!(rows[0].boom_index, Some(120.3));
@@ -509,7 +522,9 @@ mod tests {
 
     #[test]
     fn parses_macro_china_national_tax_receipts() {
-        let rows = parse_china_national_tax_receipts(&fixture("macro_china_national_tax_receipts.json")).unwrap();
+        let rows =
+            parse_china_national_tax_receipts(&fixture("macro_china_national_tax_receipts.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].date, "2024-03");
         assert_eq!(rows[0].tax_income, Some(53823.0));

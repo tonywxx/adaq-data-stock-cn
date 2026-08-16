@@ -4,10 +4,8 @@ use crate::core::client::{Client, SOURCE_SINA};
 use crate::core::error::{Error, Result};
 use crate::stock::spot::SpotQuote;
 
-const COUNT_URL: &str =
-    "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=hs_a";
-const SPOT_URL: &str =
-    "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData";
+const COUNT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=hs_a";
+const SPOT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData";
 const PAGE_SIZE: u32 = 80;
 const NODE: &str = "hs_a";
 
@@ -54,12 +52,10 @@ pub async fn spot(client: &Client) -> Result<Vec<SpotQuote>> {
 }
 
 pub(crate) fn parse_rows(resp: &Value) -> Result<Vec<SpotQuote>> {
-    let arr = resp
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "expected a JSON array".into(),
-        })?;
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "expected a JSON array".into(),
+    })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(parse_item(item));

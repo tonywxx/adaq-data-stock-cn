@@ -195,21 +195,36 @@ PREDICT_LISTING_MARKET,LAW_FIRM,ACCOUNT_FIRM,ORG_CODE,UPDATE_DATE,RECOMMEND_ORG,
 ///
 /// Returns IPO registration-review rows across all markets.
 pub async fn stock_register_all_em(client: &Client) -> Result<Vec<RptIpoInfoallnewRow>> {
-    fetch_register_em(client, register_market_filter("all"), "stock_register_all_em").await
+    fetch_register_em(
+        client,
+        register_market_filter("all"),
+        "stock_register_all_em",
+    )
+    .await
 }
 
 /// Port of `stock_register_kcb()` (akshare `stock_register_em.py:89`).
 ///
 /// SciTech (STAR) board only — filter `PREDICT_LISTING_MARKET="科创板"`.
 pub async fn stock_register_kcb_em(client: &Client) -> Result<Vec<RptIpoInfoallnewRow>> {
-    fetch_register_em(client, register_market_filter("kcb"), "stock_register_kcb_em").await
+    fetch_register_em(
+        client,
+        register_market_filter("kcb"),
+        "stock_register_kcb_em",
+    )
+    .await
 }
 
 /// Port of `stock_register_cyb()` (akshare `stock_register_em.py:163`).
 ///
 /// ChiNext board only — filter `PREDICT_LISTING_MARKET="创业板"`.
 pub async fn stock_register_cyb_em(client: &Client) -> Result<Vec<RptIpoInfoallnewRow>> {
-    fetch_register_em(client, register_market_filter("cyb"), "stock_register_cyb_em").await
+    fetch_register_em(
+        client,
+        register_market_filter("cyb"),
+        "stock_register_cyb_em",
+    )
+    .await
 }
 
 /// Port of `stock_register_bj()` (akshare `stock_register_em.py:237`).
@@ -238,8 +253,8 @@ pub(crate) fn parse_stock_register_em(resp: &Value) -> Result<Vec<RptIpoInfoalln
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for (i, item) in data.iter().enumerate() {
-        let prospectus = fstr(item, "INFO_CODE")
-            .map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
+        let prospectus =
+            fstr(item, "INFO_CODE").map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
         out.push(RptIpoInfoallnewRow {
             seq: i + 1,
             declare_org: fstr(item, "DECLARE_ORG"),
@@ -356,8 +371,8 @@ pub(crate) fn parse_stock_ipo_declare_em(resp: &Value) -> Result<Vec<RptIpoDecor
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for (i, item) in data.iter().enumerate() {
-        let prospectus = fstr(item, "INFO_CODE")
-            .map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
+        let prospectus =
+            fstr(item, "INFO_CODE").map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
         out.push(RptIpoDecorgnewestRow {
             seq: i + 1,
             declare_org: fstr(item, "DECLARE_ORG"),
@@ -697,7 +712,10 @@ mod tests {
         assert_eq!(rows[0].csrc_industry, Some("计算机".to_string()));
         assert_eq!(rows[0].recommend_org, Some("中信证券".to_string()));
         assert_eq!(rows[0].law_firm, Some("上海市方达律师事务所".to_string()));
-        assert_eq!(rows[0].account_firm, Some("安永华明会计师事务所".to_string()));
+        assert_eq!(
+            rows[0].account_firm,
+            Some("安永华明会计师事务所".to_string())
+        );
         assert_eq!(rows[0].update_date, Some("2023-05-10".to_string()));
         assert_eq!(rows[0].accept_date, Some("2023-03-01".to_string()));
         assert_eq!(rows[0].predict_listing_market, Some("科创板".to_string()));

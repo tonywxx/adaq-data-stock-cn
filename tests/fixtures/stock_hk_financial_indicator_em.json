@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "03900.HK",
+        "SECURITY_CODE": "03900",
+        "BASIC_EPS": 1.23,
+        "BPS": 14.5,
+        "COMMON_ACS": 35400000000,
+        "PER_SHARES": 2000,
+        "DIVIDEND_TTM": 0.5,
+        "DIVI_RATIO": 45.3,
+        "ISSUED_COMMON_SHARES": 35400000000,
+        "HK_COMMON_SHARES": 35400000000,
+        "PER_NETCASH_OPERATE": 3.2,
+        "DIVIDEND_RATE": 5.6,
+        "TOTAL_MARKET_CAP": 350000000000,
+        "HKSK_MARKET_CAP": 350000000000,
+        "OPERATE_INCOME": 500000000000,
+        "OPERATE_INCOME_QOQ": 2.1,
+        "NET_PROFIT_RATIO": 30.5,
+        "HOLDER_PROFIT": 1200000000,
+        "HOLDER_PROFIT_QOQ": 1.5,
+        "ROE_AVG": 12.3,
+        "PE_TTM": 9.8,
+        "PB_TTM": 0.85,
+        "ROA": 1.2
+      }
+    ]
+  }
+}

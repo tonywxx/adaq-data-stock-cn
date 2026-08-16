@@ -97,8 +97,10 @@ async fn paged(
             .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
             .collect();
         owned.push(("pageNumber".to_string(), pn.to_string()));
-        let borrowed: Vec<(&str, &str)> =
-            owned.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
+        let borrowed: Vec<(&str, &str)> = owned
+            .iter()
+            .map(|(k, v)| (k.as_str(), v.as_str()))
+            .collect();
         let v = client
             .get_json(SOURCE_EASTMONEY, endpoint, BASE, &borrowed)
             .await?;
@@ -545,7 +547,10 @@ mod tests {
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].code, "000725");
         assert_eq!(rows[0].name, "京东方A");
-        assert_eq!(rows[0].perform_change_explain, Some("预计净利润亏损".to_string()));
+        assert_eq!(
+            rows[0].perform_change_explain,
+            Some("预计净利润亏损".to_string())
+        );
         assert_eq!(rows[0].newest_report_date, Some("2024-03-31".to_string()));
         assert_eq!(rows[0].newest_goodwill, Some(500.0));
         assert_eq!(rows[0].pe_goodwill, Some(520.0));

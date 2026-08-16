@@ -103,8 +103,14 @@ pub async fn index_global_spot_em(client: &Client) -> Result<Vec<GlobalSpotRow>>
         ("np", "2"),
         ("fltt", "1"),
         ("invt", "2"),
-        ("fs", "i:1.000001,i:0.399001,i:0.399005,i:0.399006,i:1.000300,i:100.HSI,i:100.HSCEI,i:124.HSCCI,i:100.TWII,i:100.N225,i:100.KOSPI200,i:100.KS11,i:100.STI,i:100.SENSEX,i:100.KLSE,i:100.SET,i:100.PSI,i:100.KSE100,i:100.VNINDEX,i:100.JKSE,i:100.CSEALL,i:100.SX5E,i:100.FTSE,i:100.MCX,i:100.AXX,i:100.FCHI,i:100.GDAXI,i:100.RTS,i:100.IBEX,i:100.PSI20,i:100.OMXC20,i:100.BFX,i:100.AEX,i:100.WIG,i:100.OMXSPI,i:100.SSMI,i:100.HEX,i:100.OSEBX,i:100.ATX,i:100.MIB,i:100.ASE,i:100.ICEXI,i:100.PX,i:100.ISEQ,i:100.DJIA,i:100.SPX,i:100.NDX,i:100.TSX,i:100.BVSP,i:100.MXX,i:100.AS51,i:100.AORD,i:100.NZ50,i:100.UDI,i:100.BDI,i:100.CRB"),
-        ("fields", "f12,f13,f14,f292,f1,f2,f4,f3,f152,f17,f18,f15,f16,f7,f124"),
+        (
+            "fs",
+            "i:1.000001,i:0.399001,i:0.399005,i:0.399006,i:1.000300,i:100.HSI,i:100.HSCEI,i:124.HSCCI,i:100.TWII,i:100.N225,i:100.KOSPI200,i:100.KS11,i:100.STI,i:100.SENSEX,i:100.KLSE,i:100.SET,i:100.PSI,i:100.KSE100,i:100.VNINDEX,i:100.JKSE,i:100.CSEALL,i:100.SX5E,i:100.FTSE,i:100.MCX,i:100.AXX,i:100.FCHI,i:100.GDAXI,i:100.RTS,i:100.IBEX,i:100.PSI20,i:100.OMXC20,i:100.BFX,i:100.AEX,i:100.WIG,i:100.OMXSPI,i:100.SSMI,i:100.HEX,i:100.OSEBX,i:100.ATX,i:100.MIB,i:100.ASE,i:100.ICEXI,i:100.PX,i:100.ISEQ,i:100.DJIA,i:100.SPX,i:100.NDX,i:100.TSX,i:100.BVSP,i:100.MXX,i:100.AS51,i:100.AORD,i:100.NZ50,i:100.UDI,i:100.BDI,i:100.CRB",
+        ),
+        (
+            "fields",
+            "f12,f13,f14,f292,f1,f2,f4,f3,f152,f17,f18,f15,f16,f7,f124",
+        ),
         ("fid", "f3"),
         ("pn", "1"),
         ("pz", "200"),
@@ -113,7 +119,12 @@ pub async fn index_global_spot_em(client: &Client) -> Result<Vec<GlobalSpotRow>>
         ("wbp2u", "|0|0|0|web"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "index_global_spot_em", EM_SPOT_URL, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "index_global_spot_em",
+            EM_SPOT_URL,
+            &params,
+        )
         .await?;
     parse_global_spot(&v)
 }
@@ -159,7 +170,7 @@ pub(crate) fn parse_global_spot(resp: &Value) -> Result<Vec<GlobalSpotRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "data.diff is not an array".into(),
-            })
+            });
         }
         None => {
             if data.is_none() {
@@ -216,12 +227,20 @@ pub async fn index_global_hist_em(client: &Client, symbol: &str) -> Result<Vec<G
         ("end", "20500000"),
         ("iscca", "1"),
         ("fields1", "f1,f2,f3,f4,f5,f6,f7,f8"),
-        ("fields2", "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64"),
+        (
+            "fields2",
+            "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64",
+        ),
         ("ut", "f057cbcbce2a86e2866ab8877db1d059"),
         ("forcect", "1"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "index_global_hist_em", EM_KLINE_URL, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "index_global_hist_em",
+            EM_KLINE_URL,
+            &params,
+        )
         .await?;
     parse_global_hist(&v)
 }
@@ -256,7 +275,7 @@ pub(crate) fn parse_global_hist(resp: &Value) -> Result<Vec<GlobalHistRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "data.klines is not an array".into(),
-            })
+            });
         }
         None => {
             if data.is_none() {
@@ -337,7 +356,12 @@ pub async fn index_zh_a_hist_min_em(
             ("secid", secid),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "index_zh_a_hist_min_em", EM_TREND_URL, &params)
+            .get_json(
+                SOURCE_EASTMONEY,
+                "index_zh_a_hist_min_em",
+                EM_TREND_URL,
+                &params,
+            )
             .await?;
         parse_min_trends(&v)
     } else {
@@ -352,7 +376,12 @@ pub async fn index_zh_a_hist_min_em(
             ("end", end_date),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "index_zh_a_hist_min_em", EM_KLINE_URL, &params)
+            .get_json(
+                SOURCE_EASTMONEY,
+                "index_zh_a_hist_min_em",
+                EM_KLINE_URL,
+                &params,
+            )
             .await?;
         parse_min_kline(&v)
     }
@@ -400,7 +429,7 @@ pub(crate) fn parse_min_trends(resp: &Value) -> Result<Vec<IndexMinRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "data.trends is not an array".into(),
-            })
+            });
         }
         None => {
             if data.is_none() {
@@ -452,7 +481,7 @@ pub(crate) fn parse_min_kline(resp: &Value) -> Result<Vec<IndexMinRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "data.klines is not an array".into(),
-            })
+            });
         }
         None => {
             if data.is_none() {
@@ -517,7 +546,12 @@ pub async fn stock_zh_index_hist_csindex(
         ("endDate", end_date),
     ];
     let v = client
-        .get_json("csindex", "stock_zh_index_hist_csindex", CSINDEX_HIST_URL, &params)
+        .get_json(
+            "csindex",
+            "stock_zh_index_hist_csindex",
+            CSINDEX_HIST_URL,
+            &params,
+        )
         .await?;
     parse_csindex_hist(&v)
 }
@@ -562,7 +596,7 @@ pub(crate) fn parse_csindex_hist(resp: &Value) -> Result<Vec<CsindexHistRow>> {
             return Err(Error::UpstreamChanged {
                 origin: "csindex",
                 message: "data is not an array".into(),
-            })
+            });
         }
         None => return Ok(Vec::new()),
     };
@@ -647,7 +681,7 @@ pub(crate) fn parse_pmi_cx(resp: &Value, value_key: &str) -> Result<Vec<PmiCxRow
             return Err(Error::UpstreamChanged {
                 origin: "ccxe",
                 message: "data is not an array".into(),
-            })
+            });
         }
         None => return Ok(Vec::new()),
     };

@@ -39,7 +39,13 @@ pub async fn crypto_js_spot(client: &Client) -> Result<Vec<CryptoSpot>> {
         ("x-version", "1.0.0"),
     ];
     let text = client
-        .get_text(SOURCE_JIN10, "crypto_js_spot", SPOT_URL, &[], Some(&headers))
+        .get_text(
+            SOURCE_JIN10,
+            "crypto_js_spot",
+            SPOT_URL,
+            &[],
+            Some(&headers),
+        )
         .await?;
     let v: Value = serde_json::from_str(&text).map_err(Error::Json)?;
     parse(&v)
@@ -48,13 +54,13 @@ pub async fn crypto_js_spot(client: &Client) -> Result<Vec<CryptoSpot>> {
 /// Parse a `crypto_js_spot` response. `data` is a JSON array of objects; rows
 /// missing a `currency_pair` are skipped (the batch is not failed).
 pub(crate) fn parse(resp: &Value) -> Result<Vec<CryptoSpot>> {
-    let arr = resp
-        .get("data")
-        .and_then(|d| d.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_JIN10,
-            message: "missing data array".into(),
-        })?;
+    let arr =
+        resp.get("data")
+            .and_then(|d| d.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_JIN10,
+                message: "missing data array".into(),
+            })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         let symbol = match item.get("currency_pair").and_then(|v| v.as_str()) {
@@ -86,9 +92,7 @@ pub(crate) fn parse(resp: &Value) -> Result<Vec<CryptoSpot>> {
 }
 
 fn str_or(item: &Value, k: &str) -> Option<String> {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .map(|s| s.to_string())
+    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
 }
 
 fn num(v: &Value) -> Option<f64> {
@@ -106,10 +110,9 @@ mod tests {
 
     #[test]
     fn parses_js_spot_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/crypto_js_spot.json");
-        let v: Value =
-            serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/crypto_js_spot.json");
+        let v: Value = serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
         let rows = parse(&v).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].market, "Bitfinex(香港)");

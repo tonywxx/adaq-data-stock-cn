@@ -24,7 +24,7 @@ pub fn to_csv<T: Serialize>(rows: &[T]) -> Result<String> {
 /// lean, Parquet support is opt-in.
 #[cfg(feature = "parquet")]
 pub fn to_parquet<T: Serialize>(rows: &[T], path: &std::path::Path) -> Result<()> {
-    use arrow::json::reader::{infer_json_schema, ReaderBuilder};
+    use arrow::json::reader::{ReaderBuilder, infer_json_schema};
     use parquet::arrow::ArrowWriter;
 
     if rows.is_empty() {
@@ -46,9 +46,11 @@ pub fn to_parquet<T: Serialize>(rows: &[T], path: &std::path::Path) -> Result<()
         .map_err(|e| Error::Parquet(e.to_string()))?
         .ok_or_else(|| Error::Parquet("empty record batch".into()))?;
     let file = std::fs::File::create(path).map_err(Error::Io)?;
-    let mut writer =
-        ArrowWriter::try_new(file, batch.schema(), None).map_err(|e| Error::Parquet(e.to_string()))?;
-    writer.write(&batch).map_err(|e| Error::Parquet(e.to_string()))?;
+    let mut writer = ArrowWriter::try_new(file, batch.schema(), None)
+        .map_err(|e| Error::Parquet(e.to_string()))?;
+    writer
+        .write(&batch)
+        .map_err(|e| Error::Parquet(e.to_string()))?;
     writer.close().map_err(|e| Error::Parquet(e.to_string()))?;
     Ok(())
 }

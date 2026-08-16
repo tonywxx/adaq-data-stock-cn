@@ -965,3 +965,102 @@
 | `video_variety_show` | _(待填)_ | 艺恩 | `movie/video_yien.py:96` | DEFERRED |
 
 > DEFERRED:`bank_fjcf_table_detail` 为 `pd.read_html`;`migration_*` 为百度反爬 JSONP(无 `ak` token);`video_*` 需 `py_mini_racer` JS 解密。
+
+## Wave 2 新增叶子模块(既有 `economic` / `index` / `stock` 顶层域下)
+
+> 第 80-91 行领域(见 ROADMAP.md)。除 `economic::macro_usa_more` 整模块 DEFERRED 外,其余 11 个模块共 78 个公开函数已落地,均含离线 fixtures 解析测试。
+
+### 中国宏观扩展2 `economic::macro_china_more`(东财 datacenter / Jin10 / SGE)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `macro_china_shibor_all` | `src/economic/macro_china_more.rs::macro_china_shibor_all` | 东财 datacenter | DONE |
+| `macro_china_hk_market_info` | `src/economic/macro_china_more.rs::macro_china_hk_market_info` | Jin10 | DONE |
+| `macro_china_rmb` | `src/economic/macro_china_more.rs::macro_china_rmb` | Jin10 | DONE |
+| `macro_china_market_margin_sh` | `src/economic/macro_china_more.rs::macro_china_market_margin_sh` | Jin10 | DONE |
+| `macro_china_market_margin_sz` | `src/economic/macro_china_more.rs::macro_china_market_margin_sz` | Jin10 | DONE |
+| `macro_china_au_report` | `src/economic/macro_china_more.rs::macro_china_au_report` | SGE | DONE |
+
+### 宏观杂项 `economic::macro_misc`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `macro_info_ws` | `src/economic/macro_misc.rs::macro_info_ws` | 华尔街见闻 `macro_info_ws.py:38` | DONE |
+| `macro_fx_sentiment` | `src/economic/macro_misc.rs::macro_fx_sentiment` | `macro_other.py:53` | DONE |
+
+### 美国宏观扩展 `economic::macro_usa_more`
+
+> DEFERRED:Jin10 `datacenter-api.jin10.com` 需 `x-csrf-token` 会话鉴权,整模块 40 个美国宏观函数(`macro_usa_*`、各州/城市指标等)均推迟,待签名逆向或 token 会话机制落地(ADR-0005)。
+
+### 国证指数 `index::cons`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `index_stock_cons_sina` | `src/index/cons.rs::index_stock_cons_sina` | `index_cons.py:20` | DONE |
+| `index_all_cni` | `src/index/cons.rs::index_all_cni` | `index_cni.py:16` | DONE |
+| `index_hist_cni` | `src/index/cons.rs::index_hist_cni` | `index_cni.py:67` | DONE |
+
+### 指数扩展 `index::extra`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `index_sugar_msweet` / `index_inner_quote_sugar_msweet` / `index_outer_quote_sugar_msweet` | `src/index/extra.rs` | 郑商所 msweet | DONE |
+| `index_kq_fz` / `index_kq_fashion` | `src/index/extra.rs` | 柯桥指数 | DONE |
+| `index_eri` | `src/index/extra.rs` | 央行动力指数 | DONE |
+| `index_yw` | `src/index/extra.rs` | 义乌指数 | DONE |
+| `index_price_cflp` / `index_volume_cflp` | `src/index/extra.rs` | 中国物流与采购联合会 | DONE |
+| `index_global_hist_sina` / `index_global_name_table` | `src/index/extra.rs` | 新浪全球指数 | DONE |
+
+### 港股美股中资 `index::stock_hk_us_zh`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_hk_index_spot_em` / `stock_hk_index_daily_em` | `src/index/stock_hk_us_zh.rs` | 东财 `index_stock_hk.py:54` | DONE |
+| `stock_hk_index_spot_sina` | `src/index/stock_hk_us_zh.rs` | 新浪 `index_stock_hk.py:148` | DONE |
+| `stock_zh_index_daily_em` / `stock_zh_index_daily_tx` | `src/index/stock_hk_us_zh.rs` | 东财/腾讯 `index_stock_zh.py:354` | DONE |
+
+### A股个股信息 `stock::info`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_info_a_code_name` | `src/stock/info.rs` | 东财 | DONE |
+| `stock_info_bj_name_code` / `stock_info_sh_name_code` / `stock_info_sz_name_code` | `src/stock/info.rs` | 北交/上交所/深交所 | DONE |
+| `stock_info_sh_delist` / `stock_info_sz_delist` | `src/stock/info.rs` | 东财 datacenter | DONE |
+
+### 港股行情 `stock::hk`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_hk_famous_spot_em` / `stock_hk_ggt_components_em` | `src/stock/hk.rs::famous_spot_em` / `ggt_components_em` | 东财 push2 | DONE |
+| `stock_hk_spot` | `src/stock/hk.rs::spot` | 新浪 `index_stock_hk.py:235` | DONE |
+| `stock_hk_security_profile_em` / `company_profile_em` / `financial_indicator_em` / `dividend_payout_em` / `growth_comparison_em` / `valuation_comparison_em` / `scale_comparison_em` | `src/stock/hk.rs` | 东财 datacenter | DONE |
+
+### 美股行情 `stock::us`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_us_famous_spot_em` / `stock_us_famous_spot_em_opts` | `src/stock/us.rs` | 东财/ushknews `stock_us_js.py:13` | DONE |
+| `stock_us_pink_spot_em` | `src/stock/us.rs` | 东财 `stock_us_pink.py:15` | DONE |
+
+### A股资金流 `stock::fund_flow`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_main_fund_flow` | `src/stock/fund_flow.rs` | 东财 push2 | DONE |
+| `stock_concept_fund_flow_hist` / `stock_sector_fund_flow_hist` | `src/stock/fund_flow.rs` | 东财 datacenter | DONE |
+| `stock_sector_fund_flow_rank` / `stock_sector_fund_flow_summary` / `stock_sector_detail` | `src/stock/fund_flow.rs` | 东财 push2 | DONE |
+
+### 板块行情 `stock::board`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_board_industry_spot_em` / `stock_board_concept_spot_em` | `src/stock/board.rs` | 东财 push2 clist | DONE |
+| `stock_board_industry_hist_em` / `stock_board_concept_hist_em`(含 `_opts` 变体) | `src/stock/board.rs` | 东财 push2his | DONE |
+| `stock_board_industry_hist_min_em` / `stock_board_concept_hist_min_em`(含 `_trends` / `_opts` 变体) | `src/stock/board.rs` | 东财 push2 trends2 | DONE |
+
+### ESG 评论热度 `stock::esg_comment_hot`
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_esg_hz_sina` / `stock_esg_msci_sina` / `stock_esg_zd_sina` / `stock_esg_rft_sina` / `stock_esg_rate_sina` | `src/stock/esg_comment_hot.rs` | 新浪 ESG | DONE |
+| `stock_comment_em` / `stock_comment_detail_scrd_focus_em` / `stock_comment_detail_zhpj_lspf_em` / `stock_comment_detail_scrd_desire_em` | `src/stock/esg_comment_hot.rs` | 东财 ESG 评论 | DONE |

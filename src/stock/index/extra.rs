@@ -18,8 +18,7 @@ const EM_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const EM_SPOT_URL: &str = "https://48.push2.eastmoney.com/api/qt/clist/get";
 const EM_KLINE_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 const EM_CONS_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
-const TX_KLINE_URL: &str =
-    "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get";
+const TX_KLINE_URL: &str = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get";
 
 /// Broad A-share index filter (Shanghai + Shenzhen + CSI) for [`index_zh_a_spot`].
 const SPOT_FS: &str = "m:1 t:1,m:0 t:5,m:2";
@@ -44,7 +43,10 @@ pub async fn index_zh_a_spot(client: &Client) -> Result<Vec<IndexSpotRow>> {
         ("wbp2u", "|0|0|0|web"),
         ("fid", "f12"),
         ("fs", SPOT_FS),
-        ("fields", "f1,f2,f3,f4,f5,f6,f7,f10,f12,f13,f14,f15,f16,f17,f18"),
+        (
+            "fields",
+            "f1,f2,f3,f4,f5,f6,f7,f10,f12,f13,f14,f15,f16,f17,f18",
+        ),
     ];
     let v = client
         .get_json(SOURCE_EASTMONEY, "index_zh_a_spot", EM_SPOT_URL, &params)
@@ -92,7 +94,7 @@ pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<IndexSpotRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "data.diff is not an array".into(),
-            })
+            });
         }
         None => {
             if data.is_none() {
@@ -187,7 +189,7 @@ pub(crate) fn parse_daily(resp: &Value) -> Result<Vec<IndexDailyRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "data.klines is not an array".into(),
-            })
+            });
         }
         None => {
             if data.is_none() {
@@ -252,7 +254,7 @@ fn adjust_to_fqt(adjust: &str) -> Result<&'static str> {
         other => {
             return Err(Error::InvalidParam(format!(
                 "unknown adjust (expected qfq/hfq/empty): {other}"
-            )))
+            )));
         }
     })
 }
@@ -284,10 +286,19 @@ pub async fn stock_zh_index_daily(
         ("r", "0.8205512681390605"),
     ];
     let text = client
-        .get_text(SOURCE_TENCENT, "stock_zh_index_daily", TX_KLINE_URL, &params, None)
+        .get_text(
+            SOURCE_TENCENT,
+            "stock_zh_index_daily",
+            TX_KLINE_URL,
+            &params,
+            None,
+        )
         .await?;
     // Strip the JSONP-style `kline_dayqfq=` assignment prefix.
-    let json_str = text.split_once('=').map(|(_, v)| v.trim()).unwrap_or(text.trim());
+    let json_str = text
+        .split_once('=')
+        .map(|(_, v)| v.trim())
+        .unwrap_or(text.trim());
     let v: Value = serde_json::from_str(json_str).map_err(Error::Json)?;
     parse_tx_daily(&v, symbol)
 }
@@ -405,7 +416,7 @@ pub(crate) fn parse_cons(resp: &Value) -> Result<Vec<IndexConsRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "data.diff is not an array".into(),
-            })
+            });
         }
         None => {
             if data.is_none() {

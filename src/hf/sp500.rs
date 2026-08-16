@@ -18,8 +18,7 @@ use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
 const SOURCE: &str = "github";
-const BASE: &str =
-    "https://github.com/FutureSharks/financial-data/raw/master/pyfinancialdata/data/stocks/histdata/SPXUSD/DAT_ASCII_SPXUSD_M1_{year}.csv";
+const BASE: &str = "https://github.com/FutureSharks/financial-data/raw/master/pyfinancialdata/data/stocks/histdata/SPXUSD/DAT_ASCII_SPXUSD_M1_{year}.csv";
 
 /// One S&P 500 minute bar. Mirrors akshare's column order
 /// `[date, open, high, low, close, price]` (`price` is the histdata volume field).

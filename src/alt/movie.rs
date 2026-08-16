@@ -110,7 +110,10 @@ pub struct MovieBoxofficeDaily {
 ///
 /// `date` is an 8-digit string, e.g. `"20240219"` (akshare fetches the day
 /// before "today"; we mirror the upstream pagination loop).
-pub async fn movie_boxoffice_daily(client: &Client, date: &str) -> Result<Vec<MovieBoxofficeDaily>> {
+pub async fn movie_boxoffice_daily(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<MovieBoxofficeDaily>> {
     let date_str = fmt_date(date);
     let mut out = Vec::new();
     let mut page: u32 = 1;
@@ -130,7 +133,13 @@ pub async fn movie_boxoffice_daily(client: &Client, date: &str) -> Result<Vec<Mo
             ("ordertype", "desc"),
         ];
         let v = client
-            .post_form_json(SOURCE_ENDATA, "movie_boxoffice_daily", DAY_URL, &params, Some(ENDATA_HEADERS))
+            .post_form_json(
+                SOURCE_ENDATA,
+                "movie_boxoffice_daily",
+                DAY_URL,
+                &params,
+                Some(ENDATA_HEADERS),
+            )
             .await?;
         let total = total_pages(&v);
         out.extend(parse_movie_boxoffice_daily(&v)?);
@@ -202,7 +211,10 @@ pub struct MovieBoxofficeRealtime {
 ///
 /// `date` is an 8-digit string (akshare uses today's date; we require it for a
 /// deterministic, replayable call).
-pub async fn movie_boxoffice_realtime(client: &Client, date: &str) -> Result<Vec<MovieBoxofficeRealtime>> {
+pub async fn movie_boxoffice_realtime(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<MovieBoxofficeRealtime>> {
     let date_str = fmt_date(date);
     let mut out = Vec::new();
     let mut page: u32 = 1;
@@ -225,7 +237,13 @@ pub async fn movie_boxoffice_realtime(client: &Client, date: &str) -> Result<Vec
             ("ordertype", "desc"),
         ];
         let v = client
-            .post_form_json(SOURCE_ENDATA, "movie_boxoffice_realtime", DAY_URL, &params, Some(ENDATA_HEADERS))
+            .post_form_json(
+                SOURCE_ENDATA,
+                "movie_boxoffice_realtime",
+                DAY_URL,
+                &params,
+                Some(ENDATA_HEADERS),
+            )
             .await?;
         let total = total_pages(&v);
         out.extend(parse_movie_boxoffice_realtime(&v)?);
@@ -274,8 +292,7 @@ pub(crate) fn parse_movie_boxoffice_realtime(resp: &Value) -> Result<Vec<MovieBo
 // movie_boxoffice_monthly
 // ---------------------------------------------------------------------------
 
-const MONTH_URL: &str =
-    "https://ys.endata.cn/enlib-api/api/movie/getMovie_BoxOffice_Month_List.do";
+const MONTH_URL: &str = "https://ys.endata.cn/enlib-api/api/movie/getMovie_BoxOffice_Month_List.do";
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct MovieBoxofficeMonthly {
@@ -299,7 +316,10 @@ pub struct MovieBoxofficeMonthly {
 }
 
 /// Monthly box office (`movie_boxoffice_monthly`, 艺恩 `getMovie_BoxOffice_Month_List.do`).
-pub async fn movie_boxoffice_monthly(client: &Client, date: &str) -> Result<Vec<MovieBoxofficeMonthly>> {
+pub async fn movie_boxoffice_monthly(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<MovieBoxofficeMonthly>> {
     let date_iso = fmt_date(date);
     let (ms, me) = month_bounds(&date_iso);
     let mid = month_id(&date_iso).to_string();
@@ -325,7 +345,13 @@ pub async fn movie_boxoffice_monthly(client: &Client, date: &str) -> Result<Vec<
             ("ordertype", "desc"),
         ];
         let v = client
-            .post_form_json(SOURCE_ENDATA, "movie_boxoffice_monthly", MONTH_URL, &params, Some(ENDATA_HEADERS))
+            .post_form_json(
+                SOURCE_ENDATA,
+                "movie_boxoffice_monthly",
+                MONTH_URL,
+                &params,
+                Some(ENDATA_HEADERS),
+            )
             .await?;
         let total = total_pages(&v);
         out.extend(parse_movie_boxoffice_monthly(&v)?);
@@ -376,8 +402,7 @@ pub(crate) fn parse_movie_boxoffice_monthly(resp: &Value) -> Result<Vec<MovieBox
 // movie_boxoffice_yearly
 // ---------------------------------------------------------------------------
 
-const YEAR_URL: &str =
-    "https://ys.endata.cn/enlib-api/api/movie/getMovie_BoxOffice_Year_List.do";
+const YEAR_URL: &str = "https://ys.endata.cn/enlib-api/api/movie/getMovie_BoxOffice_Year_List.do";
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct MovieBoxofficeYearly {
@@ -401,7 +426,10 @@ pub struct MovieBoxofficeYearly {
 }
 
 /// Yearly box office (`movie_boxoffice_yearly`, 艺恩 `getMovie_BoxOffice_Year_List.do`).
-pub async fn movie_boxoffice_yearly(client: &Client, date: &str) -> Result<Vec<MovieBoxofficeYearly>> {
+pub async fn movie_boxoffice_yearly(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<MovieBoxofficeYearly>> {
     let year = &date[..4];
     let start = format!("{year}-01-01");
     let end = format!("{year}-12-31");
@@ -427,7 +455,13 @@ pub async fn movie_boxoffice_yearly(client: &Client, date: &str) -> Result<Vec<M
             ("ordertype", "desc"),
         ];
         let v = client
-            .post_form_json(SOURCE_ENDATA, "movie_boxoffice_yearly", YEAR_URL, &params, Some(ENDATA_HEADERS))
+            .post_form_json(
+                SOURCE_ENDATA,
+                "movie_boxoffice_yearly",
+                YEAR_URL,
+                &params,
+                Some(ENDATA_HEADERS),
+            )
             .await?;
         let total = total_pages(&v);
         out.extend(parse_movie_boxoffice_yearly(&v)?);
@@ -501,7 +535,8 @@ mod tests {
 
     #[test]
     fn parses_movie_boxoffice_realtime() {
-        let rows = parse_movie_boxoffice_realtime(&fixture("movie_boxoffice_realtime.json")).unwrap();
+        let rows =
+            parse_movie_boxoffice_realtime(&fixture("movie_boxoffice_realtime.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].movie_name, "影片甲");
         assert_eq!(rows[0].box_office, Some(150.0));

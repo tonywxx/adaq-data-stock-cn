@@ -103,7 +103,11 @@ fn statistic_cycle(symbol: &str) -> Result<&'static str> {
 
 /// Follow Eastmoney `result.pages` pagination, concatenating every `result.data`
 /// page. Used by the fns whose akshare source loops over `total_page_num`.
-async fn paged(client: &Client, endpoint: &'static str, params: &[(&str, &str)]) -> Result<Vec<Value>> {
+async fn paged(
+    client: &Client,
+    endpoint: &'static str,
+    params: &[(&str, &str)],
+) -> Result<Vec<Value>> {
     let mut out = Vec::new();
     let mut pn: u32 = 1;
     loop {
@@ -112,8 +116,13 @@ async fn paged(client: &Client, endpoint: &'static str, params: &[(&str, &str)])
             .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
             .collect();
         owned.push(("pageNumber".to_string(), pn.to_string()));
-        let borrowed: Vec<(&str, &str)> = owned.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
-        let v = client.get_json(SOURCE_EASTMONEY, endpoint, BASE, &borrowed).await?;
+        let borrowed: Vec<(&str, &str)> = owned
+            .iter()
+            .map(|(k, v)| (k.as_str(), v.as_str()))
+            .collect();
+        let v = client
+            .get_json(SOURCE_EASTMONEY, endpoint, BASE, &borrowed)
+            .await?;
         let data = data_array(&v)?;
         if data.is_empty() {
             break;
@@ -329,7 +338,12 @@ pub async fn stock_lhb_stock_statistic_em(
         ("filter", &filter),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_lhb_stock_statistic_em", BASE, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "stock_lhb_stock_statistic_em",
+            BASE,
+            &params,
+        )
         .await?;
     parse_stock_lhb_stock_statistic_em(&v)
 }
@@ -539,9 +553,7 @@ pub async fn stock_lhb_jgstatistic_em(
 }
 
 /// Parse a datacenter `result.data` array into [`StockLhbJgstatisticRow`]s.
-pub(crate) fn parse_stock_lhb_jgstatistic_em(
-    resp: &Value,
-) -> Result<Vec<StockLhbJgstatisticRow>> {
+pub(crate) fn parse_stock_lhb_jgstatistic_em(resp: &Value) -> Result<Vec<StockLhbJgstatisticRow>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
@@ -704,7 +716,10 @@ pub async fn stock_lhb_yybph_em(client: &Client, symbol: &str) -> Result<Vec<Sto
     let cycle = statistic_cycle(symbol)?;
     let filter = format!("(STATISTICSCYCLE=\"{cycle}\")");
     let params = [
-        ("sortColumns", "TOTAL_BUYER_SALESTIMES_1DAY,OPERATEDEPT_CODE"),
+        (
+            "sortColumns",
+            "TOTAL_BUYER_SALESTIMES_1DAY,OPERATEDEPT_CODE",
+        ),
         ("sortTypes", "-1,1"),
         ("pageSize", "5000"),
         ("reportName", "RPT_RATEDEPT_RETURNT_RANKING"),
@@ -1112,7 +1127,8 @@ mod tests {
     #[test]
     fn parses_stock_lhb_stock_statistic_em() {
         let rows =
-            parse_stock_lhb_stock_statistic_em(&fixture("stock_lhb_stock_statistic_em.json")).unwrap();
+            parse_stock_lhb_stock_statistic_em(&fixture("stock_lhb_stock_statistic_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].code, "000001");
         assert_eq!(rows[0].name, "平安银行");
@@ -1173,8 +1189,9 @@ mod tests {
 
     #[test]
     fn parses_stock_lhb_traderstatistic_em() {
-        let rows = parse_stock_lhb_traderstatistic_em(&fixture("stock_lhb_traderstatistic_em.json"))
-            .unwrap();
+        let rows =
+            parse_stock_lhb_traderstatistic_em(&fixture("stock_lhb_traderstatistic_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].dept_name, "东方财富拉萨团结路");
         assert_eq!(rows[0].amount, Some(567890123.0));
@@ -1186,10 +1203,9 @@ mod tests {
 
     #[test]
     fn parses_stock_lhb_stock_detail_date_em() {
-        let rows = parse_stock_lhb_stock_detail_date_em(
-            &fixture("stock_lhb_stock_detail_date_em.json"),
-        )
-        .unwrap();
+        let rows =
+            parse_stock_lhb_stock_detail_date_em(&fixture("stock_lhb_stock_detail_date_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].code, "002901");
         assert_eq!(rows[0].trade_date, "2022-10-12");
@@ -1212,8 +1228,7 @@ mod tests {
 
     #[test]
     fn parses_stock_lhb_yyb_detail_em() {
-        let rows =
-            parse_stock_lhb_yyb_detail_em(&fixture("stock_lhb_yyb_detail_em.json")).unwrap();
+        let rows = parse_stock_lhb_yyb_detail_em(&fixture("stock_lhb_yyb_detail_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].dept_code, "10188715");
         assert_eq!(rows[0].dept_name, "华泰证券深圳益田路");

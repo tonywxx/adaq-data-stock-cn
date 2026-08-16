@@ -101,12 +101,10 @@ pub(crate) fn parse_spot_diff(resp: &Value) -> Result<Vec<ForexSpotQuote>> {
 }
 
 pub(crate) fn parse_hist_klines(resp: &Value) -> Result<Vec<ForexHistRow>> {
-    let data = resp
-        .get("data")
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing data".into(),
-        })?;
+    let data = resp.get("data").ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "missing data".into(),
+    })?;
     let klines = data
         .get("klines")
         .and_then(|k| k.as_array())
@@ -127,12 +125,10 @@ pub(crate) fn parse_hist_klines(resp: &Value) -> Result<Vec<ForexHistRow>> {
     let _ = name;
     let mut out = Vec::with_capacity(klines.len());
     for k in klines {
-        let s = k
-            .as_str()
-            .ok_or_else(|| Error::Parse {
-                endpoint: "forex_hist_em",
-                message: "kline entry is not a string".into(),
-            })?;
+        let s = k.as_str().ok_or_else(|| Error::Parse {
+            endpoint: "forex_hist_em",
+            message: "kline entry is not a string".into(),
+        })?;
         let p: Vec<&str> = s.split(',').collect();
         out.push(ForexHistRow {
             symbol: code.clone(),
@@ -385,8 +381,8 @@ mod tests {
 
     #[test]
     fn parses_forex_spot_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/forex_spot_em.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/forex_spot_em.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_spot_diff(&v).unwrap();
@@ -401,8 +397,8 @@ mod tests {
 
     #[test]
     fn parses_forex_hist_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/forex_hist_em.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/forex_hist_em.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_hist_klines(&v).unwrap();

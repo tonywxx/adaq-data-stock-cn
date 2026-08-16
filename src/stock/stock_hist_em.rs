@@ -47,11 +47,9 @@ const BASE_TRENDS2: &str = "https://push2.eastmoney.com/api/qt/stock/trends2/get
 const BASE_KLINE: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 
 /// Standard 29-field set used by the A-share / B-share / HK-main-board spots.
-const FIELDS_STD: &str =
-    "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152";
+const FIELDS_STD: &str = "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152";
 /// New-share spot field set (adds `f26` = listing date).
-const FIELDS_NEW: &str =
-    "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f11,f62,f128,f136,f115,f152";
+const FIELDS_NEW: &str = "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f11,f62,f128,f136,f115,f152";
 /// AB-comparison field set (fltt=1 → raw values, divided by 100 downstream).
 const FIELDS_AB: &str = "f201,f202,f203,f196,f200,f197,f152,f12,f13,f14,f1,f2,f4,f3,f199";
 
@@ -618,9 +616,7 @@ pub async fn stock_zh_ab_comparison_em(client: &Client) -> Result<Vec<ZhAbCompar
 }
 
 /// 东方财富网-港股-主板-实时行情 (`stock_hk_main_board_spot_em`, stock_hist_em.py:1310).
-pub async fn stock_hk_main_board_spot_em(
-    client: &Client,
-) -> Result<Vec<HkMainBoardSpotEmRow>> {
+pub async fn stock_hk_main_board_spot_em(client: &Client) -> Result<Vec<HkMainBoardSpotEmRow>> {
     let params = clist_base(FS_HK_MAIN, FIELDS_STD);
     let v = client
         .get_json(
@@ -639,10 +635,7 @@ pub async fn stock_hk_main_board_spot_em(
 
 /// 东方财富网-沪深京 A 股-每日分时行情(含盘前) (`stock_zh_a_hist_pre_min_em`,
 /// stock_hist_em.py:1170). `symbol` is a 6-digit A-share code (e.g. `000001`).
-pub async fn stock_zh_a_hist_pre_min_em(
-    client: &Client,
-    symbol: &str,
-) -> Result<Vec<TrendMinRow>> {
+pub async fn stock_zh_a_hist_pre_min_em(client: &Client, symbol: &str) -> Result<Vec<TrendMinRow>> {
     let secid = cn_secid(symbol);
     let params = [
         ("fields1", "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13"),

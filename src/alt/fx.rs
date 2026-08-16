@@ -16,10 +16,8 @@ use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
 const SOURCE_CHINAMONEY: &str = "chinamoney";
-const SPOT_URL: &str =
-    "http://www.chinamoney.com.cn/r/cms/www/chinamoney/data/fx/rfx-sp-quot.json";
-const PAIR_URL: &str =
-    "http://www.chinamoney.com.cn/r/cms/www/chinamoney/data/fx/cpair-quot.json";
+const SPOT_URL: &str = "http://www.chinamoney.com.cn/r/cms/www/chinamoney/data/fx/rfx-sp-quot.json";
+const PAIR_URL: &str = "http://www.chinamoney.com.cn/r/cms/www/chinamoney/data/fx/cpair-quot.json";
 
 const CHINAMONEY_HEADERS: &[(&str, &str)] = &[(
     "User-Agent",
@@ -55,7 +53,13 @@ pub async fn fx_spot_quote(client: &Client) -> Result<Vec<FxQuote>> {
     let t = now_ms();
     let params: [(&str, &str); 1] = [("t", &t)];
     let v = client
-        .post_form_json(SOURCE_CHINAMONEY, "fx_spot_quote", SPOT_URL, &params, Some(CHINAMONEY_HEADERS))
+        .post_form_json(
+            SOURCE_CHINAMONEY,
+            "fx_spot_quote",
+            SPOT_URL,
+            &params,
+            Some(CHINAMONEY_HEADERS),
+        )
         .await?;
     parse_fx_spot_quote(&v)
 }
@@ -71,18 +75,25 @@ pub async fn fx_pair_quote(client: &Client) -> Result<Vec<FxQuote>> {
     let t = now_ms();
     let params: [(&str, &str); 1] = [("t", &t)];
     let v = client
-        .post_form_json(SOURCE_CHINAMONEY, "fx_pair_quote", PAIR_URL, &params, Some(CHINAMONEY_HEADERS))
+        .post_form_json(
+            SOURCE_CHINAMONEY,
+            "fx_pair_quote",
+            PAIR_URL,
+            &params,
+            Some(CHINAMONEY_HEADERS),
+        )
         .await?;
     parse_fx_pair_quote(&v)
 }
 
 fn parse_records(resp: &Value) -> Result<Vec<FxQuote>> {
-    let data = resp.get("records").and_then(|r| r.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
+    let data = resp
+        .get("records")
+        .and_then(|r| r.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_CHINAMONEY,
             message: "missing records".into(),
-        }
-    })?;
+        })?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         let Some(pair) = fstr(item, "ccyPair") else {

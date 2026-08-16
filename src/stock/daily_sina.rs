@@ -21,7 +21,8 @@ use crate::core::error::{Error, Result};
 const ENDPOINT: &str = "stock_zh_a_daily";
 
 /// Sina K-line daily history endpoint.
-const BASE_URL: &str = "https://quotes.sina.cn/cn/api/json_v2.php/CN_MarketDataService.getKLineData";
+const BASE_URL: &str =
+    "https://quotes.sina.cn/cn/api/json_v2.php/CN_MarketDataService.getKLineData";
 
 /// Bootstrap JS that historically yields the integer seed for the token. Returns
 /// 404 today; left as the documented source and a calibration point.
@@ -153,9 +154,7 @@ pub(crate) fn parse_csv(text: &str) -> Result<Vec<DailySinaRow>> {
         .flexible(false)
         .from_reader(text.as_bytes());
 
-    let headers = rdr
-        .headers()
-        .map_err(|e| Error::Csv(e.to_string()))?;
+    let headers = rdr.headers().map_err(|e| Error::Csv(e.to_string()))?;
     let idx = |name: &str| headers.iter().position(|h| h.trim() == name);
 
     let i_date = idx("date");
@@ -178,9 +177,8 @@ pub(crate) fn parse_csv(text: &str) -> Result<Vec<DailySinaRow>> {
             Ok(r) => r,
             Err(_) => continue, // malformed row -> skip
         };
-        let cell = |i: Option<usize>| -> Option<&str> {
-            i.and_then(|i| rec.get(i)).map(|s| s.trim())
-        };
+        let cell =
+            |i: Option<usize>| -> Option<&str> { i.and_then(|i| rec.get(i)).map(|s| s.trim()) };
         let date = match cell(Some(i_date)) {
             Some(d) if !d.is_empty() => d.to_string(),
             _ => continue, // no date -> skip
@@ -201,10 +199,7 @@ pub(crate) fn parse_csv(text: &str) -> Result<Vec<DailySinaRow>> {
 
 fn parse_opt_f64(s: &str) -> Option<f64> {
     let t = s.trim();
-    if t.is_empty()
-        || t.eq_ignore_ascii_case("null")
-        || t.eq_ignore_ascii_case("nan")
-        || t == "--"
+    if t.is_empty() || t.eq_ignore_ascii_case("null") || t.eq_ignore_ascii_case("nan") || t == "--"
     {
         None
     } else {
@@ -291,10 +286,7 @@ mod md5 {
     }
 
     pub fn hash_hex(input: &[u8]) -> String {
-        hash(input)
-            .iter()
-            .map(|b| format!("{b:02x}"))
-            .collect()
+        hash(input).iter().map(|b| format!("{b:02x}")).collect()
     }
 }
 
@@ -336,9 +328,6 @@ mod tests {
     #[test]
     fn md5_known_vector() {
         // RFC 1321 / akshare outcrypto.js reference vector.
-        assert_eq!(
-            md5::hash_hex(b"abc"),
-            "900150983cd24fb0d6963f7d28e17f72"
-        );
+        assert_eq!(md5::hash_hex(b"abc"), "900150983cd24fb0d6963f7d28e17f72");
     }
 }

@@ -155,7 +155,9 @@ pub async fn reits_realtime_em(client: &Client) -> Result<Vec<ReitsRealtimeRow>>
         ("fs", "m:1 t:9 e:97,m:0 t:10 e:97"),
         ("fields", "f2,f3,f4,f5,f6,f12,f14,f15,f16,f17,f18"),
     ];
-    let v = client.get_json(SOURCE, "reits_realtime_em", PUSH2_URL, params).await?;
+    let v = client
+        .get_json(SOURCE, "reits_realtime_em", PUSH2_URL, params)
+        .await?;
     let diff = push2_diff_array(&v)?;
     parse_reits_realtime(diff)
 }
@@ -252,9 +254,11 @@ async fn reits_code_market_map(client: &Client) -> Result<HashMap<String, String
 /// 东方财富网-行情中心-REITs-沪深 REITs-历史行情 (push2his kline, akshare `reits_hist_em`, reits_basic.py:116).
 pub async fn reits_hist_em(client: &Client, symbol: &str) -> Result<Vec<ReitsHistRow>> {
     let map = reits_code_market_map(client).await?;
-    let market = map.get(symbol).ok_or_else(|| Error::InvalidParam(format!(
-        "unknown reits symbol `{symbol}`; not found in eastmoney REITs list"
-    )))?;
+    let market = map.get(symbol).ok_or_else(|| {
+        Error::InvalidParam(format!(
+            "unknown reits symbol `{symbol}`; not found in eastmoney REITs list"
+        ))
+    })?;
     let secid = format!("{market}.{symbol}");
     let params: Vec<(&str, &str)> = vec![
         ("secid", &secid),

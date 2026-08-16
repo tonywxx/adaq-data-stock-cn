@@ -7,11 +7,7 @@ use crate::stock::hist::HistRow;
 const UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
 const BASE: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 
-const PERIOD_MAP: &[(&str, &str)] = &[
-    ("daily", "101"),
-    ("weekly", "102"),
-    ("monthly", "103"),
-];
+const PERIOD_MAP: &[(&str, &str)] = &[("daily", "101"), ("weekly", "102"), ("monthly", "103")];
 
 const ADJUST_MAP: &[(&str, &str)] = &[("qfq", "1"), ("hfq", "2"), ("", "0")];
 

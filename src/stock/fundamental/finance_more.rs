@@ -46,8 +46,7 @@ const SOURCE_THS: &str = "ths";
 const THS_APP_API: &str = "https://basic.10jqka.com.cn/basicapi/finance/index/v1/app_data/";
 
 /// Eastmoney datacenter `v1/get` endpoint (HK / US statements + indicators).
-const EM_DATACENTER: &str =
-    "https://datacenter.eastmoney.com/securities/api/data/v1/get";
+const EM_DATACENTER: &str = "https://datacenter.eastmoney.com/securities/api/data/v1/get";
 
 // ---------------------------------------------------------------------------
 // Shared helpers
@@ -136,23 +135,22 @@ pub(crate) fn parse_ths(resp: &Value, key: &str) -> Result<Vec<FinanceThsRow>> {
             origin: SOURCE_THS,
             message: "missing flashData string".into(),
         })?;
-    let inner: Value =
-        serde_json::from_str(flash).map_err(Error::Json)?;
-    let block = inner.get(key).and_then(|v| v.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
-            origin: SOURCE_THS,
-            message: format!("missing {key} block in flashData"),
-        }
-    })?;
+    let inner: Value = serde_json::from_str(flash).map_err(Error::Json)?;
+    let block =
+        inner
+            .get(key)
+            .and_then(|v| v.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_THS,
+                message: format!("missing {key} block in flashData"),
+            })?;
     if block.is_empty() {
         return Ok(Vec::new());
     }
-    let columns = block[0]
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_THS,
-            message: "report header is not an array".into(),
-        })?;
+    let columns = block[0].as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_THS,
+        message: "report header is not an array".into(),
+    })?;
     // `columns[0]` is the axis label ("报告期"); the rest are report dates.
     let dates: Vec<String> = columns.iter().skip(1).map(fstr).collect();
 
@@ -504,9 +502,7 @@ pub struct FinanceHkReportRow {
 }
 
 /// Parse a HK `result.data` array into [`FinanceHkReportRow`]s.
-pub(crate) fn parse_stock_financial_hk_report_em(
-    resp: &Value,
-) -> Result<Vec<FinanceHkReportRow>> {
+pub(crate) fn parse_stock_financial_hk_report_em(resp: &Value) -> Result<Vec<FinanceHkReportRow>> {
     let data = em_data(resp, "stock_financial_hk_report_em")?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
@@ -541,10 +537,7 @@ pub async fn stock_financial_hk_report_em(
     indicator: &str,
 ) -> Result<Vec<FinanceHkReportRow>> {
     let summary_params = [
-        (
-            "reportName",
-            "RPT_CUSTOM_HKSK_APPFN_CASHFLOW_SUMMARY",
-        ),
+        ("reportName", "RPT_CUSTOM_HKSK_APPFN_CASHFLOW_SUMMARY"),
         (
             "columns",
             "SECUCODE,SECURITY_CODE,SECURITY_NAME_ABBR,START_DATE,REPORT_DATE,FISCAL_YEAR,\
@@ -577,8 +570,7 @@ CURRENCY,ACCOUNT_STANDARD,REPORT_TYPE",
     let year_list: Vec<String> = report_list
         .iter()
         .filter(|item| {
-            indicator != "年度"
-                || item.get("REPORT_TYPE").and_then(|v| v.as_str()) == Some("年报")
+            indicator != "年度" || item.get("REPORT_TYPE").and_then(|v| v.as_str()) == Some("年报")
         })
         .filter_map(|item| {
             item.get("REPORT_DATE")
@@ -771,9 +763,7 @@ pub struct FinanceUsReportRow {
 }
 
 /// Parse a US `result.data` array into [`FinanceUsReportRow`]s.
-pub(crate) fn parse_stock_financial_us_report_em(
-    resp: &Value,
-) -> Result<Vec<FinanceUsReportRow>> {
+pub(crate) fn parse_stock_financial_us_report_em(resp: &Value) -> Result<Vec<FinanceUsReportRow>> {
     let data = em_data(resp, "stock_financial_us_report_em")?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
@@ -901,7 +891,7 @@ CURRENCY,ACCOUNT_STANDARD,REPORT_TYPE,DATE_TYPE_CODE",
         other => {
             return Err(Error::InvalidParam(format!(
                 "stock_financial_us_report_em: unknown indicator {other:?}"
-            )))
+            )));
         }
     };
     let mut sorted: Vec<String> = keep;
@@ -1123,14 +1113,14 @@ DEBT_RATIO_YOY,EQUITY_RATIO",
     };
     let filter = match indicator {
         "年报" => format!(r#"(SECUCODE="{secucode}")(DATE_TYPE_CODE="001")"#),
-        "单季报" => format!(
-            r#"(SECUCODE="{secucode}")(DATE_TYPE_CODE in ("003","006","007","008"))"#
-        ),
+        "单季报" => {
+            format!(r#"(SECUCODE="{secucode}")(DATE_TYPE_CODE in ("003","006","007","008"))"#)
+        }
         "累计季报" => format!(r#"(SECUCODE="{secucode}")(DATE_TYPE_CODE in ("002","004"))"#),
         other => {
             return Err(Error::InvalidParam(format!(
                 "stock_financial_us_analysis_indicator_em: unknown indicator {other:?}"
-            )))
+            )));
         }
     };
     let params = [
@@ -1213,8 +1203,7 @@ mod tests {
 
     #[test]
     fn parses_stock_financial_abstract_new_ths() {
-        let rows =
-            parse_ths_new(&fixture("stock_financial_abstract_new_ths.json")).unwrap();
+        let rows = parse_ths_new(&fixture("stock_financial_abstract_new_ths.json")).unwrap();
         assert_eq!(rows.len(), 2);
         // order of index_list keys is not guaranteed; look up by metric name
         let profit = find_new(&rows, "盈利能力");
@@ -1254,10 +1243,9 @@ mod tests {
 
     #[test]
     fn parses_stock_financial_hk_report_em() {
-        let rows = parse_stock_financial_hk_report_em(
-            &fixture("stock_financial_hk_report_em.json"),
-        )
-        .unwrap();
+        let rows =
+            parse_stock_financial_hk_report_em(&fixture("stock_financial_hk_report_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].secucode, "00700.HK");
         assert_eq!(rows[0].std_item_name, "货币资金");
@@ -1268,9 +1256,9 @@ mod tests {
 
     #[test]
     fn parses_stock_financial_hk_analysis_indicator_em() {
-        let rows = parse_stock_financial_hk_analysis_indicator_em(
-            &fixture("stock_financial_hk_analysis_indicator_em.json"),
-        )
+        let rows = parse_stock_financial_hk_analysis_indicator_em(&fixture(
+            "stock_financial_hk_analysis_indicator_em.json",
+        ))
         .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].secucode, "00700.HK");
@@ -1293,9 +1281,9 @@ mod tests {
 
     #[test]
     fn parses_stock_financial_us_analysis_indicator_em() {
-        let rows = parse_stock_financial_us_analysis_indicator_em(
-            &fixture("stock_financial_us_analysis_indicator_em.json"),
-        )
+        let rows = parse_stock_financial_us_analysis_indicator_em(&fixture(
+            "stock_financial_us_analysis_indicator_em.json",
+        ))
         .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].secucode, "BRK_A");

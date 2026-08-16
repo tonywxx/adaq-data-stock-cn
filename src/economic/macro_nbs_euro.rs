@@ -131,9 +131,19 @@ async fn jin10_ec_report(
 
     let mut out = Vec::new();
     for date in date_list.iter().step_by(20) {
-        let params = [("max_date", date.as_str()), ("category", "ec"), ("attr_id", attr_id)];
+        let params = [
+            ("max_date", date.as_str()),
+            ("category", "ec"),
+            ("attr_id", attr_id),
+        ];
         let v = client
-            .get_json_with_headers(SOURCE_JIN10, fn_name, JIN10_LIST, &params, Some(JIN10_HEADERS))
+            .get_json_with_headers(
+                SOURCE_JIN10,
+                fn_name,
+                JIN10_LIST,
+                &params,
+                Some(JIN10_HEADERS),
+            )
             .await?;
         out.extend(parse_jin10_ec_report(&v, product)?);
     }
@@ -149,19 +159,20 @@ pub fn parse_jin10_ec_report(resp: &Value, product: &str) -> Result<Vec<EuroRepo
         origin: SOURCE_JIN10,
         message: "missing data".into(),
     })?;
-    let values = data.get("values").and_then(|v| v.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
-            origin: SOURCE_JIN10,
-            message: "missing data.values".into(),
-        }
-    })?;
-    let keys = data
-        .get("keys")
-        .and_then(|k| k.as_array())
+    let values = data
+        .get("values")
+        .and_then(|v| v.as_array())
         .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_JIN10,
-            message: "missing data.keys".into(),
+            message: "missing data.values".into(),
         })?;
+    let keys =
+        data.get("keys")
+            .and_then(|k| k.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_JIN10,
+                message: "missing data.keys".into(),
+            })?;
 
     // The `日期` column is mandatory; the others are optional.
     let has_date = keys
@@ -223,15 +234,45 @@ jin10_euro_fn!(macro_euro_gdp_yoy, "24", "84", "欧元区季度GDP年率");
 jin10_euro_fn!(macro_euro_cpi_mom, "81", "84", "欧元区CPI月率");
 jin10_euro_fn!(macro_euro_cpi_yoy, "137", "8", "欧元区CPI年率");
 jin10_euro_fn!(macro_euro_ppi_mom, "196", "36", "欧元区PPI月率");
-jin10_euro_fn!(macro_euro_retail_sales_mom, "254", "38", "欧元区零售销售月率");
-jin10_euro_fn!(macro_euro_employment_change_qoq, "313", "14", "欧元区季调后就业人数季率");
-jin10_euro_fn!(macro_euro_unemployment_rate_mom, "369", "46", "欧元区失业率");
+jin10_euro_fn!(
+    macro_euro_retail_sales_mom,
+    "254",
+    "38",
+    "欧元区零售销售月率"
+);
+jin10_euro_fn!(
+    macro_euro_employment_change_qoq,
+    "313",
+    "14",
+    "欧元区季调后就业人数季率"
+);
+jin10_euro_fn!(
+    macro_euro_unemployment_rate_mom,
+    "369",
+    "46",
+    "欧元区失业率"
+);
 jin10_euro_fn!(macro_euro_trade_balance, "428", "43", "欧元区未季调贸易帐");
 jin10_euro_fn!(macro_euro_current_account_mom, "487", "11", "欧元区经常帐");
-jin10_euro_fn!(macro_euro_industrial_production_mom, "546", "19", "欧元区工业产出月率");
-jin10_euro_fn!(macro_euro_manufacturing_pmi, "605", "30", "欧元区制造业PMI初值");
+jin10_euro_fn!(
+    macro_euro_industrial_production_mom,
+    "546",
+    "19",
+    "欧元区工业产出月率"
+);
+jin10_euro_fn!(
+    macro_euro_manufacturing_pmi,
+    "605",
+    "30",
+    "欧元区制造业PMI初值"
+);
 jin10_euro_fn!(macro_euro_services_pmi, "664", "41", "欧元区服务业PMI终值");
-jin10_euro_fn!(macro_euro_zew_economic_sentiment, "723", "48", "欧元区ZEW经济景气指数");
+jin10_euro_fn!(
+    macro_euro_zew_economic_sentiment,
+    "723",
+    "48",
+    "欧元区ZEW经济景气指数"
+);
 jin10_euro_fn!(
     macro_euro_sentix_investor_confidence,
     "781",
@@ -254,7 +295,8 @@ mod tests {
 
     #[test]
     fn parses_jin10_ec_report() {
-        let rows = parse_jin10_ec_report(&fixture("macro_euro_report.json"), "欧元区季度GDP年率").unwrap();
+        let rows =
+            parse_jin10_ec_report(&fixture("macro_euro_report.json"), "欧元区季度GDP年率").unwrap();
         assert_eq!(rows.len(), 3);
         // Sorted ascending by date.
         assert_eq!(rows[0].date, "2018-10-31");

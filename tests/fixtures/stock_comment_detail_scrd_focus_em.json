@@ -1,0 +1,8 @@
+{
+  "result": {
+    "data": [
+      {"TRADE_DATE":"2024-03-31","MARKET_FOCUS":120.5},
+      {"TRADE_DATE":"2024-03-30","MARKET_FOCUS":118.0}
+    ]
+  }
+}

@@ -157,12 +157,12 @@ impl Client {
             .await?;
         let value: Value = resp.json().await.map_err(Error::Http)?;
 
-                if let Some(_cache) = &self.cache {
-                    let p = self.cache_path(&key);
-                    if let Ok(bytes) = serde_json::to_vec(&value) {
-                        let _ = std::fs::write(p, bytes);
-                    }
-                }
+        if let Some(_cache) = &self.cache {
+            let p = self.cache_path(&key);
+            if let Ok(bytes) = serde_json::to_vec(&value) {
+                let _ = std::fs::write(p, bytes);
+            }
+        }
         Ok(value)
     }
 
@@ -249,11 +249,7 @@ impl Client {
         headers: Option<&[(&str, &str)]>,
     ) -> Result<reqwest::Response> {
         // Hold a concurrency permit for the whole request lifecycle.
-        let _permit = self
-            .sem
-            .acquire()
-            .await
-            .map_err(|_| Error::RateLimited)?;
+        let _permit = self.sem.acquire().await.map_err(|_| Error::RateLimited)?;
 
         let mut attempt: u32 = 0;
         loop {

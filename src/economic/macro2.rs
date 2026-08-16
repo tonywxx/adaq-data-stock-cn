@@ -253,9 +253,7 @@ pub struct ChinaRetailSales {
 
 /// China total retail sales of consumer goods (`macro_china_consumer_goods_retail`,
 /// Eastmoney `RPT_ECONOMY_TOTAL_RETAIL`).
-pub async fn macro_china_consumer_goods_retail(
-    client: &Client,
-) -> Result<Vec<ChinaRetailSales>> {
+pub async fn macro_china_consumer_goods_retail(client: &Client) -> Result<Vec<ChinaRetailSales>> {
     const COLUMNS: &str = "REPORT_DATE,TIME,RETAIL_TOTAL,RETAIL_TOTAL_SAME,\
         RETAIL_TOTAL_SEQUENTIAL,RETAIL_TOTAL_ACCUMULATE,RETAIL_ACCUMULATE_SAME";
     let params = [

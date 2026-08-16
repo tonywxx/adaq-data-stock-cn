@@ -152,10 +152,11 @@ pub async fn option_hist_shfe(
     trade_date: &str,
 ) -> Result<Vec<ShfeOptionHistRow>> {
     let day = normalize_trade_date(trade_date)?;
-    let url = format!(
-        "https://www.shfe.com.cn/data/tradedata/option/dailydata/kx{day}.dat"
-    );
-    let headers = &[("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)")];
+    let url = format!("https://www.shfe.com.cn/data/tradedata/option/dailydata/kx{day}.dat");
+    let headers = &[(
+        "User-Agent",
+        "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)",
+    )];
     let json = client
         .get_json_with_headers(SOURCE_SHFE, "option_hist_shfe", &url, &[], Some(headers))
         .await?;
@@ -213,10 +214,11 @@ pub async fn option_vol_shfe(
     trade_date: &str,
 ) -> Result<Vec<ShfeOptionVolRow>> {
     let day = normalize_trade_date(trade_date)?;
-    let url = format!(
-        "https://www.shfe.com.cn/data/tradedata/option/dailydata/kx{day}.dat"
-    );
-    let headers = &[("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)")];
+    let url = format!("https://www.shfe.com.cn/data/tradedata/option/dailydata/kx{day}.dat");
+    let headers = &[(
+        "User-Agent",
+        "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)",
+    )];
     let json = client
         .get_json_with_headers(SOURCE_SHFE, "option_vol_shfe", &url, &[], Some(headers))
         .await?;
@@ -297,7 +299,10 @@ pub async fn option_hist_gfex(
     let day = normalize_trade_date(trade_date)?;
     let url = "http://www.gfex.com.cn/u/interfacesWebTiDayQuotes/loadList";
     let params = &[("trade_date", day.as_str()), ("trade_type", "1")];
-    let headers = &[("Referer", "http://www.gfex.com.cn/gfex/rihq/hqsj_tjsj.shtml")];
+    let headers = &[(
+        "Referer",
+        "http://www.gfex.com.cn/gfex/rihq/hqsj_tjsj.shtml",
+    )];
     let json = client
         .post_form_json(SOURCE_GFEX, "option_hist_gfex", url, params, Some(headers))
         .await?;
@@ -356,13 +361,15 @@ pub async fn option_vol_gfex(
     symbol: &str,
     trade_date: &str,
 ) -> Result<Vec<GfexOptionVolRow>> {
-    let code = gfex_vol_symbol_code(symbol).ok_or_else(|| {
-        Error::InvalidParam(format!("unsupported GFEX option symbol: {symbol}"))
-    })?;
+    let code = gfex_vol_symbol_code(symbol)
+        .ok_or_else(|| Error::InvalidParam(format!("unsupported GFEX option symbol: {symbol}")))?;
     let day = normalize_trade_date(trade_date)?;
     let url = "http://www.gfex.com.cn/u/interfacesWebTiDayQuotes/loadListOptVolatility";
     let params = &[("trade_date", day.as_str())];
-    let headers = &[("Referer", "http://www.gfex.com.cn/gfex/rihq/hqsj_tjsj.shtml")];
+    let headers = &[(
+        "Referer",
+        "http://www.gfex.com.cn/gfex/rihq/hqsj_tjsj.shtml",
+    )];
     let json = client
         .post_form_json(SOURCE_GFEX, "option_vol_gfex", url, params, Some(headers))
         .await?;

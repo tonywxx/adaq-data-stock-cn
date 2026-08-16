@@ -78,16 +78,20 @@ pub(crate) fn parse(resp: &Value) -> Result<Vec<CryptoCme>> {
         .and_then(|v| v.as_str())
         .unwrap_or("")
         .to_string();
-    let names = data
-        .get("keys")
-        .and_then(|k| k.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_JIN10,
-            message: "missing data.keys".into(),
-        })?;
+    let names =
+        data.get("keys")
+            .and_then(|k| k.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_JIN10,
+                message: "missing data.keys".into(),
+            })?;
     let col: Vec<String> = names
         .iter()
-        .filter_map(|n| n.get("name").and_then(|v| v.as_str()).map(|s| s.to_string()))
+        .filter_map(|n| {
+            n.get("name")
+                .and_then(|v| v.as_str())
+                .map(|s| s.to_string())
+        })
         .collect();
     let values = data
         .get("values")
@@ -118,7 +122,10 @@ pub(crate) fn parse(resp: &Value) -> Result<Vec<CryptoCme>> {
             Some(s) if !s.is_empty() => s.to_string(),
             _ => continue,
         };
-        let type_ = at(i_type).and_then(|v| v.as_str()).unwrap_or("").to_string();
+        let type_ = at(i_type)
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
         out.push(CryptoCme {
             date: date.clone(),
             product,
@@ -152,8 +159,7 @@ mod tests {
     fn parses_bitcoin_cme_fixture() {
         let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("tests/fixtures/crypto_bitcoin_cme.json");
-        let v: Value =
-            serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
+        let v: Value = serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
         let rows = parse(&v).unwrap();
         // fixture includes one malformed row (empty product) that must be skipped
         assert_eq!(rows.len(), 2);

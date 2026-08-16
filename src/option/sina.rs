@@ -70,18 +70,14 @@ pub async fn option_cffex_daily(client: &Client, symbol: &str) -> Result<Vec<Cff
 /// (`var <callback>=[...];`), returning it as a `Value`.
 fn dayline_to_value(text: &str) -> Result<Value> {
     let body = text.trim();
-    let start = body
-        .find('[')
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "dayline response missing '['".into(),
-        })?;
-    let end = body
-        .rfind(']')
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "dayline response missing ']'".into(),
-        })?;
+    let start = body.find('[').ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "dayline response missing '['".into(),
+    })?;
+    let end = body.rfind(']').ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "dayline response missing ']'".into(),
+    })?;
     serde_json::from_str(&body[start..=end]).map_err(Error::Json)
 }
 

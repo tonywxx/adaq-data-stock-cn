@@ -112,14 +112,38 @@ pub(crate) fn parse_macro_usa_rig_count(resp: &Value) -> Result<Vec<RigCount>> {
     for i in 0..n {
         out.push(RigCount {
             date: i.to_string(),
-            total_count: total.and_then(|a| a.get(i)).and_then(|c| c.get(0)).and_then(as_f64),
-            total_change: total.and_then(|a| a.get(i)).and_then(|c| c.get(1)).and_then(as_f64),
-            oil_count: oil.and_then(|a| a.get(i)).and_then(|c| c.get(0)).and_then(as_f64),
-            oil_change: oil.and_then(|a| a.get(i)).and_then(|c| c.get(1)).and_then(as_f64),
-            mixed_count: mixed.and_then(|a| a.get(i)).and_then(|c| c.get(0)).and_then(as_f64),
-            mixed_change: mixed.and_then(|a| a.get(i)).and_then(|c| c.get(1)).and_then(as_f64),
-            gas_count: gas.and_then(|a| a.get(i)).and_then(|c| c.get(0)).and_then(as_f64),
-            gas_change: gas.and_then(|a| a.get(i)).and_then(|c| c.get(1)).and_then(as_f64),
+            total_count: total
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(0))
+                .and_then(as_f64),
+            total_change: total
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(1))
+                .and_then(as_f64),
+            oil_count: oil
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(0))
+                .and_then(as_f64),
+            oil_change: oil
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(1))
+                .and_then(as_f64),
+            mixed_count: mixed
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(0))
+                .and_then(as_f64),
+            mixed_change: mixed
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(1))
+                .and_then(as_f64),
+            gas_count: gas
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(0))
+                .and_then(as_f64),
+            gas_change: gas
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(1))
+                .and_then(as_f64),
             source: SOURCE_JIN10,
         });
     }
@@ -161,19 +185,41 @@ pub async fn macro_usa_crude_inner(client: &Client) -> Result<Vec<CrudeInner>> {
 pub(crate) fn parse_macro_usa_crude_inner(resp: &Value) -> Result<Vec<CrudeInner>> {
     let values = jin10_values(resp)?;
     let domestic = values.get("美国国内原油总量").and_then(|v| v.as_array());
-    let lower48 = values.get("美国本土48州原油产量").and_then(|v| v.as_array());
-    let alaska = values.get("美国阿拉斯加州原油产量").and_then(|v| v.as_array());
+    let lower48 = values
+        .get("美国本土48州原油产量")
+        .and_then(|v| v.as_array());
+    let alaska = values
+        .get("美国阿拉斯加州原油产量")
+        .and_then(|v| v.as_array());
     let n = domestic.map(|a| a.len()).unwrap_or(0);
     let mut out = Vec::with_capacity(n);
     for i in 0..n {
         out.push(CrudeInner {
             date: i.to_string(),
-            domestic_total_output: domestic.and_then(|a| a.get(i)).and_then(|c| c.get(0)).and_then(as_f64),
-            domestic_total_change: domestic.and_then(|a| a.get(i)).and_then(|c| c.get(1)).and_then(as_f64),
-            lower48_output: lower48.and_then(|a| a.get(i)).and_then(|c| c.get(0)).and_then(as_f64),
-            lower48_change: lower48.and_then(|a| a.get(i)).and_then(|c| c.get(1)).and_then(as_f64),
-            alaska_output: alaska.and_then(|a| a.get(i)).and_then(|c| c.get(0)).and_then(as_f64),
-            alaska_change: alaska.and_then(|a| a.get(i)).and_then(|c| c.get(1)).and_then(as_f64),
+            domestic_total_output: domestic
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(0))
+                .and_then(as_f64),
+            domestic_total_change: domestic
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(1))
+                .and_then(as_f64),
+            lower48_output: lower48
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(0))
+                .and_then(as_f64),
+            lower48_change: lower48
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(1))
+                .and_then(as_f64),
+            alaska_output: alaska
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(0))
+                .and_then(as_f64),
+            alaska_change: alaska
+                .and_then(|a| a.get(i))
+                .and_then(|c| c.get(1))
+                .and_then(as_f64),
             source: SOURCE_JIN10,
         });
     }
@@ -203,13 +249,13 @@ pub struct CftcHolding {
 /// columns — we normalise to long format instead.
 fn parse_cftc(resp: &Value) -> Result<Vec<CftcHolding>> {
     let values = jin10_values(resp)?;
-    let keys = resp
-        .get("keys")
-        .and_then(|v| v.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_JIN10,
-            message: "missing keys".into(),
-        })?;
+    let keys =
+        resp.get("keys")
+            .and_then(|v| v.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_JIN10,
+                message: "missing keys".into(),
+            })?;
     let mut out = Vec::new();
     for (symbol, arr) in values {
         let Some(records) = arr.as_array() else {
@@ -240,7 +286,12 @@ fn parse_cftc(resp: &Value) -> Result<Vec<CftcHolding>> {
 pub async fn macro_usa_cftc_nc_holding(client: &Client) -> Result<Vec<CftcHolding>> {
     let url = format!("{BASE}/cftc_4.json");
     let v = client
-        .get_json(SOURCE_JIN10, "macro_usa_cftc_nc_holding", &url, &[("_", "1")])
+        .get_json(
+            SOURCE_JIN10,
+            "macro_usa_cftc_nc_holding",
+            &url,
+            &[("_", "1")],
+        )
         .await?;
     parse_macro_usa_cftc_nc_holding(&v)
 }
@@ -253,7 +304,12 @@ pub(crate) fn parse_macro_usa_cftc_nc_holding(resp: &Value) -> Result<Vec<CftcHo
 pub async fn macro_usa_cftc_c_holding(client: &Client) -> Result<Vec<CftcHolding>> {
     let url = format!("{BASE}/cftc_2.json");
     let v = client
-        .get_json(SOURCE_JIN10, "macro_usa_cftc_c_holding", &url, &[("_", "1")])
+        .get_json(
+            SOURCE_JIN10,
+            "macro_usa_cftc_c_holding",
+            &url,
+            &[("_", "1")],
+        )
         .await?;
     parse_macro_usa_cftc_c_holding(&v)
 }
@@ -276,7 +332,9 @@ pub async fn macro_usa_cftc_merchant_currency_holding(client: &Client) -> Result
     parse_macro_usa_cftc_merchant_currency_holding(&v)
 }
 
-pub(crate) fn parse_macro_usa_cftc_merchant_currency_holding(resp: &Value) -> Result<Vec<CftcHolding>> {
+pub(crate) fn parse_macro_usa_cftc_merchant_currency_holding(
+    resp: &Value,
+) -> Result<Vec<CftcHolding>> {
     parse_cftc(resp)
 }
 
@@ -294,7 +352,9 @@ pub async fn macro_usa_cftc_merchant_goods_holding(client: &Client) -> Result<Ve
     parse_macro_usa_cftc_merchant_goods_holding(&v)
 }
 
-pub(crate) fn parse_macro_usa_cftc_merchant_goods_holding(resp: &Value) -> Result<Vec<CftcHolding>> {
+pub(crate) fn parse_macro_usa_cftc_merchant_goods_holding(
+    resp: &Value,
+) -> Result<Vec<CftcHolding>> {
     parse_cftc(resp)
 }
 
@@ -335,8 +395,16 @@ pub(crate) fn parse_macro_usa_cme_merchant_goods_holding(resp: &Value) -> Result
             continue;
         };
         for rec in records {
-            let pz = rec.get(0).and_then(|v| v.as_str()).unwrap_or("").to_string();
-            let tc = rec.get(1).and_then(|v| v.as_str()).unwrap_or("").to_string();
+            let pz = rec
+                .get(0)
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .to_string();
+            let tc = rec
+                .get(1)
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .to_string();
             let volume = rec.get(5).and_then(as_f64);
             out.push(CmeHolding {
                 date: date.clone(),
@@ -387,7 +455,8 @@ mod tests {
 
     #[test]
     fn parses_macro_usa_cftc_nc_holding() {
-        let rows = parse_macro_usa_cftc_nc_holding(&fixture("macro_usa_cftc_nc_holding.json")).unwrap();
+        let rows =
+            parse_macro_usa_cftc_nc_holding(&fixture("macro_usa_cftc_nc_holding.json")).unwrap();
         assert_eq!(rows.len(), 12);
         assert_eq!(rows[0].symbol, "欧元");
         assert_eq!(rows[0].metric, "净持仓");
@@ -398,7 +467,8 @@ mod tests {
 
     #[test]
     fn parses_macro_usa_cftc_c_holding() {
-        let rows = parse_macro_usa_cftc_c_holding(&fixture("macro_usa_cftc_c_holding.json")).unwrap();
+        let rows =
+            parse_macro_usa_cftc_c_holding(&fixture("macro_usa_cftc_c_holding.json")).unwrap();
         assert_eq!(rows.len(), 12);
         assert_eq!(rows[0].symbol, "欧元");
         assert_eq!(rows[0].value, Some(100.0));
@@ -408,9 +478,10 @@ mod tests {
 
     #[test]
     fn parses_macro_usa_cftc_merchant_currency_holding() {
-        let rows =
-            parse_macro_usa_cftc_merchant_currency_holding(&fixture("macro_usa_cftc_merchant_currency_holding.json"))
-                .unwrap();
+        let rows = parse_macro_usa_cftc_merchant_currency_holding(&fixture(
+            "macro_usa_cftc_merchant_currency_holding.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 12);
         assert_eq!(rows[0].symbol, "欧元");
         assert_eq!(rows[6].date, "0");
@@ -419,9 +490,10 @@ mod tests {
 
     #[test]
     fn parses_macro_usa_cftc_merchant_goods_holding() {
-        let rows =
-            parse_macro_usa_cftc_merchant_goods_holding(&fixture("macro_usa_cftc_merchant_goods_holding.json"))
-                .unwrap();
+        let rows = parse_macro_usa_cftc_merchant_goods_holding(&fixture(
+            "macro_usa_cftc_merchant_goods_holding.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 12);
         assert_eq!(rows[0].symbol, "欧元");
         assert_eq!(rows[0].metric, "净持仓");
@@ -430,9 +502,10 @@ mod tests {
 
     #[test]
     fn parses_macro_usa_cme_merchant_goods_holding() {
-        let rows =
-            parse_macro_usa_cme_merchant_goods_holding(&fixture("macro_usa_cme_merchant_goods_holding.json"))
-                .unwrap();
+        let rows = parse_macro_usa_cme_merchant_goods_holding(&fixture(
+            "macro_usa_cme_merchant_goods_holding.json",
+        ))
+        .unwrap();
         assert_eq!(rows.len(), 3);
         assert_eq!(rows[0].date, "2024-01-01");
         assert_eq!(rows[0].variety, "黄金-GC");

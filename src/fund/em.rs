@@ -181,7 +181,13 @@ pub async fn fund_purchase_em(client: &Client) -> Result<Vec<FundPurchaseRow>> {
         ("sort", "fcode,asc"),
     ];
     let text = client
-        .get_text(SOURCE_EASTMONEY, "fund_purchase_em", JJJZ_URL, &params, None)
+        .get_text(
+            SOURCE_EASTMONEY,
+            "fund_purchase_em",
+            JJJZ_URL,
+            &params,
+            None,
+        )
         .await?;
     let json = parse_jjjz_json(&text)?;
     let datas = jjjz_datas(&json)?;
@@ -285,7 +291,11 @@ pub async fn fund_info_index_em(
         "全部" => "",
         "被动指数型" => "051",
         "增强指数型" => "052",
-        _ => return Err(Error::InvalidParam(format!("unknown indicator: {indicator}"))),
+        _ => {
+            return Err(Error::InvalidParam(format!(
+                "unknown indicator: {indicator}"
+            )));
+        }
     };
     let (fr_main, ftype, fr1_val) = if symbol == "股票指数" || symbol == "债券指数" {
         let parts: Vec<&str> = fr.split('|').collect();
@@ -336,12 +346,13 @@ pub async fn fund_info_index_em(
         message: "missing Data".into(),
     })?;
     let inner: Value = serde_json::from_str(&data_str).map_err(Error::Json)?;
-    let datas = inner.get("datas").and_then(|d| d.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
+    let datas = inner
+        .get("datas")
+        .and_then(|d| d.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_EASTMONEY,
             message: "missing datas".into(),
-        }
-    })?;
+        })?;
     Ok(parse_info_index(datas, symbol, indicator))
 }
 
@@ -557,18 +568,20 @@ pub async fn fund_financial_fund_daily_em(client: &Client) -> Result<Vec<FundFin
             Some(&headers),
         )
         .await?;
-    let data = v.get("Data").and_then(|d| d.as_object()).ok_or_else(|| {
-        Error::UpstreamChanged {
+    let data = v
+        .get("Data")
+        .and_then(|d| d.as_object())
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_EASTMONEY,
             message: "missing Data".into(),
-        }
-    })?;
-    let list = data.get("List").and_then(|l| l.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing Data.List".into(),
-        }
-    })?;
+        })?;
+    let list =
+        data.get("List")
+            .and_then(|l| l.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_EASTMONEY,
+                message: "missing Data.List".into(),
+            })?;
     let showday = data
         .get("showday")
         .and_then(|s| s.as_array())
@@ -820,8 +833,7 @@ fn parse_value_estimation(
     gxrq: Option<String>,
     gzrq: Option<String>,
 ) -> Vec<FundValueEstimationRow> {
-    list
-        .iter()
+    list.iter()
         .map(|item| FundValueEstimationRow {
             fund_code: fstr_keys(item, &["fcode", "fundcode"]),
             fund_name: fstr_keys(item, &["shortname", "fundname", "jjjc", "name"]),
@@ -885,20 +897,22 @@ pub async fn fund_value_estimation_em(
             Some(&headers),
         )
         .await?;
-    let data = v.get("Data").and_then(|d| d.as_object()).ok_or_else(|| {
-        Error::UpstreamChanged {
+    let data = v
+        .get("Data")
+        .and_then(|d| d.as_object())
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_EASTMONEY,
             message: "missing Data".into(),
-        }
-    })?;
+        })?;
     let gxrq = data.get("gxrq").and_then(val_str);
     let gzrq = data.get("gzrq").and_then(val_str);
-    let list = data.get("list").and_then(|l| l.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing Data.list".into(),
-        }
-    })?;
+    let list =
+        data.get("list")
+            .and_then(|l| l.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_EASTMONEY,
+                message: "missing Data.list".into(),
+            })?;
     Ok(parse_value_estimation(list, gxrq, gzrq))
 }
 
@@ -998,7 +1012,11 @@ pub async fn fund_hk_fund_hist_em(
     symbol: &str,
     indicator: &str,
 ) -> Result<Vec<FundHkHistRow>> {
-    let action = if indicator == "分红送配详情" { "3" } else { "2" };
+    let action = if indicator == "分红送配详情" {
+        "3"
+    } else {
+        "2"
+    };
     let params = [
         ("api", "HKFDApi"),
         ("m", "MethodJZ"),
@@ -1012,12 +1030,13 @@ pub async fn fund_hk_fund_hist_em(
     let v = client
         .get_json(SOURCE_EASTMONEY, "fund_hk_fund_hist_em", HK_URL, &params)
         .await?;
-    let data = v.get("Data").and_then(|d| d.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
+    let data = v
+        .get("Data")
+        .and_then(|d| d.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_EASTMONEY,
             message: "missing Data".into(),
-        }
-    })?;
+        })?;
     Ok(parse_hk_hist(data, indicator == "分红送配详情"))
 }
 
@@ -1088,18 +1107,20 @@ async fn lsjz_all(
         let v = client
             .get_json_with_headers(SOURCE_EASTMONEY, fn_name, LSJZ_URL, &params, Some(&headers))
             .await?;
-        let data = v.get("Data").and_then(|d| d.as_object()).ok_or_else(|| {
-            Error::UpstreamChanged {
-                origin: SOURCE_EASTMONEY,
-                message: "missing Data".into(),
-            }
-        })?;
-        let list = data.get("LSJZList").and_then(|l| l.as_array()).ok_or_else(|| {
-            Error::UpstreamChanged {
+        let data =
+            v.get("Data")
+                .and_then(|d| d.as_object())
+                .ok_or_else(|| Error::UpstreamChanged {
+                    origin: SOURCE_EASTMONEY,
+                    message: "missing Data".into(),
+                })?;
+        let list = data
+            .get("LSJZList")
+            .and_then(|l| l.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "missing Data.LSJZList".into(),
-            }
-        })?;
+            })?;
         if list.is_empty() {
             break;
         }

@@ -122,7 +122,9 @@ async fn fetch_xincaifu(client: &Client, year: &str) -> Result<Vec<XincaifuRow>>
         ("pageNo", "1"),
         ("from", "jsonp"),
     ];
-    let text = client.get_text(SOURCE, "xincaifu_rank", URL, params, None).await?;
+    let text = client
+        .get_text(SOURCE, "xincaifu_rank", URL, params, None)
+        .await?;
     let v = strip_jsonp(&text)?;
     parse_xincaifu_rank(&v)
 }

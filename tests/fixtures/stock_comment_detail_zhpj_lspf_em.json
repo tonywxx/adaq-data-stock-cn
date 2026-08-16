@@ -1,0 +1,8 @@
+{
+  "result": {
+    "data": [
+      {"DIAGNOSE_DATE":"2024-03-31","TOTAL_SCORE":80.0},
+      {"DIAGNOSE_DATE":"2024-03-30","TOTAL_SCORE":79.5}
+    ]
+  }
+}

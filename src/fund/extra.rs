@@ -62,7 +62,13 @@ pub struct FundOpenFundNameRow {
 /// parse the JSON array — no JS evaluation required (ADR-0005).
 pub async fn fund_open_fund_name_em(client: &Client) -> Result<Vec<FundOpenFundNameRow>> {
     let text = client
-        .get_text(SOURCE_EASTMONEY, "fund_open_fund_name_em", FUND_NAME_URL, &[], None)
+        .get_text(
+            SOURCE_EASTMONEY,
+            "fund_open_fund_name_em",
+            FUND_NAME_URL,
+            &[],
+            None,
+        )
         .await?;
     let body = text.strip_prefix("var r = ").unwrap_or(&text);
     let body = body.strip_suffix(';').unwrap_or(body).trim();
@@ -173,13 +179,13 @@ pub(crate) fn parse_fund_value_em(resp: &Value) -> Result<Vec<FundValueRow>> {
         message: "fund_value_em: missing Data".into(),
     })?;
     let estimate_date = fstr(data, "gzrq");
-    let list = data
-        .get("list")
-        .and_then(|l| l.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "fund_value_em: missing Data.list".into(),
-        })?;
+    let list =
+        data.get("list")
+            .and_then(|l| l.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_EASTMONEY,
+                message: "fund_value_em: missing Data.list".into(),
+            })?;
     let mut out = Vec::with_capacity(list.len());
     for item in list {
         out.push(FundValueRow {
@@ -239,8 +245,18 @@ pub async fn fund_hist_em(
             "start_date and end_date must be YYYYMMDD".into(),
         ));
     }
-    let sd = format!("{}-{}-{}", &start_date[0..4], &start_date[4..6], &start_date[6..8]);
-    let ed = format!("{}-{}-{}", &end_date[0..4], &end_date[4..6], &end_date[6..8]);
+    let sd = format!(
+        "{}-{}-{}",
+        &start_date[0..4],
+        &start_date[4..6],
+        &start_date[6..8]
+    );
+    let ed = format!(
+        "{}-{}-{}",
+        &end_date[0..4],
+        &end_date[4..6],
+        &end_date[6..8]
+    );
     let page_index = "1".to_string();
     let page_size = "10000".to_string();
     let ts = "0".to_string();
@@ -334,8 +350,18 @@ pub async fn fund_money_meta(
             "start_date and end_date must be YYYYMMDD".into(),
         ));
     }
-    let sd = format!("{}-{}-{}", &start_date[0..4], &start_date[4..6], &start_date[6..8]);
-    let ed = format!("{}-{}-{}", &end_date[0..4], &end_date[4..6], &end_date[6..8]);
+    let sd = format!(
+        "{}-{}-{}",
+        &start_date[0..4],
+        &start_date[4..6],
+        &start_date[6..8]
+    );
+    let ed = format!(
+        "{}-{}-{}",
+        &end_date[0..4],
+        &end_date[4..6],
+        &end_date[6..8]
+    );
     let page_index = "1".to_string();
     let page_size = "10000".to_string();
     let ts = "0".to_string();
@@ -361,7 +387,10 @@ pub async fn fund_money_meta(
     parse_fund_money_meta(&v, fund_code)
 }
 
-pub(crate) fn parse_fund_money_meta(resp: &Value, fund_code: &str) -> Result<Vec<FundMoneyMetaRow>> {
+pub(crate) fn parse_fund_money_meta(
+    resp: &Value,
+    fund_code: &str,
+) -> Result<Vec<FundMoneyMetaRow>> {
     let data = resp.get("Data").ok_or_else(|| Error::UpstreamChanged {
         origin: SOURCE_EASTMONEY,
         message: "fund_money_meta: missing Data".into(),
@@ -434,7 +463,10 @@ pub struct FundEtfCategorySinaRow {
 /// `symbol` is one of `{"封闭式基金", "ETF基金", "LOF基金"}`. The response is JSONP
 /// (`Callback([...])`); we slice from the first `[` to the last `]` and parse the
 /// JSON array — no JS evaluation (ADR-0005).
-pub async fn fund_etf_category_sina(client: &Client, symbol: &str) -> Result<Vec<FundEtfCategorySinaRow>> {
+pub async fn fund_etf_category_sina(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<FundEtfCategorySinaRow>> {
     let node = match symbol {
         "封闭式基金" => "close_fund",
         "ETF基金" => "etf_hq_fund",
@@ -464,10 +496,13 @@ pub async fn fund_etf_category_sina(client: &Client, symbol: &str) -> Result<Vec
         .await?;
     // The callback wrapper is `...CallbackList['...'](`, so the first `([`
     // marks the start of the actual data array (akshare uses `find("([")`).
-    let start = text.find("([").map(|i| i + 1).ok_or_else(|| Error::UpstreamChanged {
-        origin: SOURCE_SINA,
-        message: "fund_etf_category_sina: missing '([' in JSONP payload".into(),
-    })?;
+    let start = text
+        .find("([")
+        .map(|i| i + 1)
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_SINA,
+            message: "fund_etf_category_sina: missing '([' in JSONP payload".into(),
+        })?;
     let end = text.rfind(']').ok_or_else(|| Error::UpstreamChanged {
         origin: SOURCE_SINA,
         message: "fund_etf_category_sina: missing ']' in JSONP payload".into(),

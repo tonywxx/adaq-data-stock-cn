@@ -1,0 +1,42 @@
+{
+  "version": "49eeeb7404d13b449fbae3ab1c383d9d",
+  "result": {
+    "pages": 1368,
+    "data": [
+      {
+        "REPORT_DATE": "2026-08-14 00:00:00",
+        "INDICATOR_VALUE": 4538,
+        "CHANGE_RATE": 1.54396957,
+        "CHANGERATE_3M": -14.63506396,
+        "CHANGERATE_6M": 42.65954102,
+        "CHANGERATE_1Y": 37.34866828,
+        "CHANGERATE_2Y": 71.24528302,
+        "CHANGERATE_3Y": 189.04458599
+      },
+      {
+        "REPORT_DATE": "2026-08-13 00:00:00",
+        "INDICATOR_VALUE": 4469,
+        "CHANGE_RATE": -5.15704584,
+        "CHANGERATE_3M": -16.31086142,
+        "CHANGERATE_6M": 40.49041182,
+        "CHANGERATE_1Y": 36.25,
+        "CHANGERATE_2Y": 80.41986274,
+        "CHANGERATE_3Y": 180.7160804
+      },
+      {
+        "REPORT_DATE": "2026-08-12 00:00:00",
+        "INDICATOR_VALUE": 4712,
+        "CHANGE_RATE": -5.77884423,
+        "CHANGERATE_3M": -7.28059819,
+        "CHANGERATE_6M": 45.38722616,
+        "CHANGERATE_1Y": 44.49555351,
+        "CHANGERATE_2Y": 95.27559055,
+        "CHANGERATE_3Y": 195.9798995
+      }
+    ],
+    "count": 6838
+  },
+  "success": true,
+  "message": "ok",
+  "code": 0
+}

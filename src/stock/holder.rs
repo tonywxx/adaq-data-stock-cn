@@ -74,16 +74,16 @@ pub struct StockIndividualInfoRow {
 ///
 /// `symbol` is a bare A-share code (e.g. `"603777"`); `6`-prefixed codes map to
 /// the Shanghai secid (`1.603777`), everything else to Shenzhen (`0.<code>`).
-pub async fn stock_individual_info_em(client: &Client, symbol: &str) -> Result<Vec<StockIndividualInfoRow>> {
+pub async fn stock_individual_info_em(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<StockIndividualInfoRow>> {
     let market = if symbol.starts_with('6') { 1 } else { 0 };
     let secid = format!("{market}.{symbol}");
     let params = [
         ("fltt", "2"),
         ("invt", "2"),
-        (
-            "fields",
-            "f43,f57,f58,f84,f85,f116,f117,f127,f189",
-        ),
+        ("fields", "f43,f57,f58,f84,f85,f116,f117,f127,f189"),
         ("secid", secid.as_str()),
     ];
     let v = client
@@ -254,7 +254,9 @@ pub struct StockSectorSpotRow {
 ///
 /// Returns `Error::InvalidParam` for `"启明星行业"` (its response is GB2312 and
 /// this crate has no GB2312 decoder) and for unknown indicators.
-pub(crate) fn sector_request(indicator: &str) -> Result<(&'static str, Vec<(&'static str, &'static str)>)> {
+pub(crate) fn sector_request(
+    indicator: &str,
+) -> Result<(&'static str, Vec<(&'static str, &'static str)>)> {
     match indicator {
         "新浪行业" => Ok((
             "http://vip.stock.finance.sina.com.cn/q/view/newSinaHy.php",
@@ -284,7 +286,10 @@ pub(crate) fn sector_request(indicator: &str) -> Result<(&'static str, Vec<(&'st
 /// Port of `stock_sector_spot(indicator)`.
 ///
 /// `indicator` ∈ {"新浪行业", "概念", "地域", "行业"}.
-pub async fn stock_sector_spot(client: &Client, indicator: &str) -> Result<Vec<StockSectorSpotRow>> {
+pub async fn stock_sector_spot(
+    client: &Client,
+    indicator: &str,
+) -> Result<Vec<StockSectorSpotRow>> {
     let (url, params) = sector_request(indicator)?;
     let text = client
         .get_text(SOURCE_SINA, "stock_sector_spot", url, &params, None)
@@ -334,7 +339,6 @@ pub(crate) fn parse_sector(resp: &Value) -> Result<Vec<StockSectorSpotRow>> {
     }
     Ok(out)
 }
-
 
 // ===========================================================================
 // Tests — offline, against fixtures in tests/fixtures/
@@ -408,5 +412,4 @@ mod tests {
         assert!(sector_request("bogus").is_err());
         assert!(sector_request("新浪行业").is_ok());
     }
-
 }

@@ -35,10 +35,8 @@ const SOURCE_SINA: &str = "sina";
 // --- Sina spot (getHQNodeDataSimple) ---------------------------------------
 
 const SPOT_NODE: &str = "hskzz_z";
-const SPOT_URL: &str =
-    "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple";
-const SPOT_COUNT_URL: &str =
-    "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple";
+const SPOT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple";
+const SPOT_COUNT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple";
 const SPOT_PAGE_SIZE: u32 = 80;
 
 // --- Eastmoney kline / trends / datacenter ---------------------------------
@@ -228,13 +226,7 @@ pub async fn bond_zh_hs_cov_spot(client: &Client) -> Result<Vec<BondZhHsCovSpot>
             ("_s_r_a", "page"),
         ];
         let text = client
-            .get_text(
-                SOURCE_SINA,
-                "bond_zh_hs_cov_spot",
-                SPOT_URL,
-                &params,
-                None,
-            )
+            .get_text(SOURCE_SINA, "bond_zh_hs_cov_spot", SPOT_URL, &params, None)
             .await?;
         let v: Value = serde_json::from_str(&text).map_err(|e| Error::Parse {
             endpoint: "bond_zh_hs_cov_spot",
@@ -297,12 +289,7 @@ pub async fn bond_zh_hs_cov_min(
             ("ut", KLINE_UT),
         ];
         let v = client
-            .get_json(
-                SOURCE_EASTMONEY,
-                "bond_zh_hs_cov_min",
-                TRENDS_URL,
-                &params,
-            )
+            .get_json(SOURCE_EASTMONEY, "bond_zh_hs_cov_min", TRENDS_URL, &params)
             .await?;
         parse_cov_trends(&v)
     } else {
@@ -548,7 +535,7 @@ fn secid(symbol: &str) -> Result<String> {
         other => {
             return Err(Error::InvalidParam(format!(
                 "unsupported market prefix `{other}` (expected sh/sz)"
-            )))
+            )));
         }
     };
     Ok(format!("{m}.{code}"))
@@ -570,10 +557,7 @@ fn split_csv(s: &str) -> Vec<&str> {
 
 /// Index into a comma-split row, returning `None` for a missing/empty segment.
 fn field<'a>(parts: &'a [&'a str], i: usize) -> Option<&'a str> {
-    parts
-        .get(i)
-        .map(|s| s.trim())
-        .filter(|s| !s.is_empty())
+    parts.get(i).map(|s| s.trim()).filter(|s| !s.is_empty())
 }
 
 fn num_at(parts: &[&str], i: usize) -> Option<f64> {
@@ -753,7 +737,10 @@ mod tests {
         assert_eq!(rows[0].current_bond_price, Some(100.0));
         assert_eq!(rows[0].transfer_premium_ratio, Some(1.83));
         assert_eq!(rows[0].issue_scale, Some(6.0));
-        assert_eq!(rows[0].public_start_date.as_deref(), Some("2021-01-01 00:00:00"));
+        assert_eq!(
+            rows[0].public_start_date.as_deref(),
+            Some("2021-01-01 00:00:00")
+        );
         assert_eq!(rows[0].listing_date.as_deref(), Some("2021-02-01 00:00:00"));
         assert_eq!(rows[0].source, "eastmoney");
     }

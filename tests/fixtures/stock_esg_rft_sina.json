@@ -1,0 +1,10 @@
+{
+  "result": {
+    "data": {
+      "data": [
+        {"symbol":"600000","esg_score":62.3,"esg_score_date":"2024-03-31","env_score":60.1,"env_score_date":"2024-03-31","social_score":58.2,"social_score_date":"2024-03-31","governance_score":65.0,"governance_score_date":"2024-03-31","zy_score":3.2,"zy_score_date":"2024-03-31","industry":"银行","exchange":"SH"},
+        {"symbol":"000001","esg_score":70.0,"esg_score_date":"2024-03-31","env_score":68.0,"env_score_date":"2024-03-31","social_score":66.0,"social_score_date":"2024-03-31","governance_score":72.0,"governance_score_date":"2024-03-31","zy_score":2.1,"zy_score_date":"2024-03-31","industry":"银行","exchange":"SZ"}
+      ]
+    }
+  }
+}

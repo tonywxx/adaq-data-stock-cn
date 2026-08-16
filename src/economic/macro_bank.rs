@@ -281,7 +281,11 @@ mod tests {
 
     #[test]
     fn parses_macro_bank_usa_interest_rate() {
-        let rows = parse_interest_rate("美联储利率决议报告", &values_of("macro_bank_usa_interest_rate.json")).unwrap();
+        let rows = parse_interest_rate(
+            "美联储利率决议报告",
+            &values_of("macro_bank_usa_interest_rate.json"),
+        )
+        .unwrap();
         assert_eq!(rows.len(), 3);
 
         assert_eq!(rows[0].name, "美联储利率决议报告");

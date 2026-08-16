@@ -29,8 +29,8 @@
 //! malformed upstream rows are skipped (`continue`).
 
 pub mod energy;
-pub mod movie;
 pub mod fx;
+pub mod movie;
 pub mod movie_yien;
 
 pub use energy::*;

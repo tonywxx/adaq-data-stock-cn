@@ -89,8 +89,10 @@ async fn paged(
             .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
             .collect();
         owned.push(("pageNumber".to_string(), pn.to_string()));
-        let borrowed: Vec<(&str, &str)> =
-            owned.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
+        let borrowed: Vec<(&str, &str)> = owned
+            .iter()
+            .map(|(k, v)| (k.as_str(), v.as_str()))
+            .collect();
         let v = client
             .get_json(SOURCE_EASTMONEY, endpoint, BASE, &borrowed)
             .await?;
@@ -266,9 +268,7 @@ pub async fn stock_dzjy_mrmx(
     let stype = security_type_web(symbol)?;
     let start = fmt_date8(start_date);
     let end = fmt_date8(end_date);
-    let filter = format!(
-        "(SECURITY_TYPE_WEB={stype})(TRADE_DATE>='{start}')(TRADE_DATE<='{end}')"
-    );
+    let filter = format!("(SECURITY_TYPE_WEB={stype})(TRADE_DATE>='{start}')(TRADE_DATE<='{end}')");
     let params = [
         ("sortColumns", "SECURITY_CODE"),
         ("sortTypes", "1"),
@@ -601,10 +601,7 @@ fn dept_stat_period(symbol: &str) -> Result<&'static str> {
 /// Port of `stock_dzjy_hyyybtj(symbol)` — 大宗交易活跃营业部统计.
 ///
 /// `symbol` defaults to `"近3日"`.
-pub async fn stock_dzjy_hyyybtj(
-    client: &Client,
-    symbol: &str,
-) -> Result<Vec<StockDzjyHyyybtjRow>> {
+pub async fn stock_dzjy_hyyybtj(client: &Client, symbol: &str) -> Result<Vec<StockDzjyHyyybtjRow>> {
     let period = dept_stat_period(symbol)?;
     let filter = format!("(N_DATE=-{period})");
     let params = [

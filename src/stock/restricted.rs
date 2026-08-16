@@ -502,7 +502,8 @@ mod tests {
 
     #[test]
     fn parses_release_summary() {
-        let rows = parse_release_summary(&fixture("stock_restricted_release_summary_em.json")).unwrap();
+        let rows =
+            parse_release_summary(&fixture("stock_restricted_release_summary_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].free_date, Some("2022-11-08".to_string()));
         assert_eq!(rows[0].lift_stocks_num, Some(12.0));
@@ -517,7 +518,8 @@ mod tests {
 
     #[test]
     fn parses_release_detail() {
-        let rows = parse_release_detail(&fixture("stock_restricted_release_detail_em.json")).unwrap();
+        let rows =
+            parse_release_detail(&fixture("stock_restricted_release_detail_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].security_code, Some("600000".to_string()));
         assert_eq!(rows[0].security_name, Some("浦发银行".to_string()));
@@ -526,7 +528,10 @@ mod tests {
         assert_eq!(rows[0].lift_shares, Some(9.0 * 10000.0));
         assert_eq!(rows[0].lift_market_cap, Some(100.0 * 10000.0));
         assert_eq!(rows[0].free_ratio, Some(1.5));
-        assert_eq!(rows[0].free_shares_type, Some("首发原股东限售股份".to_string()));
+        assert_eq!(
+            rows[0].free_shares_type,
+            Some("首发原股东限售股份".to_string())
+        );
         assert_eq!(rows[1].b20_adjchrate, Some(-1.0));
     }
 
@@ -546,14 +551,16 @@ mod tests {
     #[test]
     fn parses_release_queue_empty() {
         // akshare returns an empty frame when result is null
-        let rows = parse_release_queue(&fixture("stock_restricted_release_queue_em_empty.json")).unwrap();
+        let rows =
+            parse_release_queue(&fixture("stock_restricted_release_queue_em_empty.json")).unwrap();
         assert!(rows.is_empty());
     }
 
     #[test]
     fn parses_release_stockholder() {
         let rows =
-            parse_release_stockholder(&fixture("stock_restricted_release_stockholder_em.json")).unwrap();
+            parse_release_stockholder(&fixture("stock_restricted_release_stockholder_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].holder_name, Some("张三".to_string()));
         assert_eq!(rows[0].add_listing_shares, Some(100.0));
@@ -561,7 +568,10 @@ mod tests {
         assert_eq!(rows[0].add_listing_cap, Some(800.0));
         assert_eq!(rows[0].lock_month, Some(12.0));
         assert_eq!(rows[0].residual_limited_shares, Some(10.0));
-        assert_eq!(rows[0].free_shares_type, Some("首发原股东限售股份".to_string()));
+        assert_eq!(
+            rows[0].free_shares_type,
+            Some("首发原股东限售股份".to_string())
+        );
         assert_eq!(rows[0].plan_feature, Some("已实施".to_string()));
         assert_eq!(rows[1].lock_month, Some(24.0));
     }

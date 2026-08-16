@@ -115,12 +115,7 @@ pub async fn news_report_time_baidu(
 
 /// Walk Baidu's paginated calendar API for `date` (format `YYYYMMDD`), returning the
 /// merged raw response (all pages concatenated into `Result.calendarInfo[*].list`).
-async fn baidu_calendar(
-    client: &Client,
-    date: &str,
-    cate: &str,
-    cookie: &str,
-) -> Result<Value> {
+async fn baidu_calendar(client: &Client, date: &str, cate: &str, cookie: &str) -> Result<Value> {
     if date.len() != 8 || !date.chars().all(|c| c.is_ascii_digit()) {
         return Err(Error::InvalidParam(format!(
             "date must be YYYYMMDD, got `{date}`"
@@ -152,7 +147,13 @@ async fn baidu_calendar(
 
     let params: Vec<(&str, &str)> = base.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
     let first_text = client
-        .get_text(SOURCE_BAIDU, "baidu_calendar", CALENDAR_URL, &params, Some(&headers))
+        .get_text(
+            SOURCE_BAIDU,
+            "baidu_calendar",
+            CALENDAR_URL,
+            &params,
+            Some(&headers),
+        )
         .await?;
     let mut merged: Value = serde_json::from_str(&first_text).map_err(Error::Json)?;
 
@@ -164,7 +165,13 @@ async fn baidu_calendar(
         let params: Vec<(&str, &str)> =
             base.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
         let text = client
-            .get_text(SOURCE_BAIDU, "baidu_calendar", CALENDAR_URL, &params, Some(&headers))
+            .get_text(
+                SOURCE_BAIDU,
+                "baidu_calendar",
+                CALENDAR_URL,
+                &params,
+                Some(&headers),
+            )
             .await?;
         let v: Value = serde_json::from_str(&text).map_err(Error::Json)?;
         merge_calendar_info(&mut merged, &v);
@@ -237,7 +244,10 @@ fn find_total(resp: &Value, target: &str) -> u64 {
 
 /// Map decoded calendar JSON to [`EventRow`]s (economic data), skipping rows without a title.
 pub(crate) fn parse(resp: &Value) -> Result<Vec<EventRow>> {
-    Ok(extract_all(resp).into_iter().filter_map(|item| parse_event(&item)).collect())
+    Ok(extract_all(resp)
+        .into_iter()
+        .filter_map(|item| parse_event(&item))
+        .collect())
 }
 
 fn parse_event(item: &Value) -> Option<EventRow> {
@@ -259,7 +269,10 @@ fn parse_event(item: &Value) -> Option<EventRow> {
 }
 
 pub(crate) fn parse_suspend(resp: &Value) -> Result<Vec<SuspendRow>> {
-    Ok(extract_all(resp).into_iter().filter_map(|item| parse_suspend_item(&item)).collect())
+    Ok(extract_all(resp)
+        .into_iter()
+        .filter_map(|item| parse_suspend_item(&item))
+        .collect())
 }
 
 fn parse_suspend_item(item: &Value) -> Option<SuspendRow> {
@@ -304,7 +317,10 @@ fn parse_dividend_item(item: &Value) -> Option<DividendRow> {
 }
 
 pub(crate) fn parse_report(resp: &Value) -> Result<Vec<ReportRow>> {
-    Ok(extract_all(resp).into_iter().filter_map(|item| parse_report_item(&item)).collect())
+    Ok(extract_all(resp)
+        .into_iter()
+        .filter_map(|item| parse_report_item(&item))
+        .collect())
 }
 
 fn parse_report_item(item: &Value) -> Option<ReportRow> {
@@ -331,7 +347,9 @@ mod tests {
     use std::path::PathBuf;
 
     fn fixture(name: &str) -> Value {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures").join(name);
+        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures")
+            .join(name);
         let txt = std::fs::read_to_string(path).unwrap();
         serde_json::from_str(&txt).unwrap()
     }

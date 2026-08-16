@@ -33,8 +33,7 @@ pub async fn daily(
     start_date: &str,
     end_date: &str,
 ) -> Result<Vec<HistRow>> {
-    if let Ok(rows) = eastmoney::daily(client, symbol, period, adjust, start_date, end_date).await
-    {
+    if let Ok(rows) = eastmoney::daily(client, symbol, period, adjust, start_date, end_date).await {
         return Ok(rows);
     }
     if let Ok(rows) = tencent::daily(client, symbol, period, adjust, start_date, end_date).await {

@@ -31,10 +31,8 @@ const SOURCE_INE: &str = "ine";
 const SOURCE_SHFE: &str = "shfe";
 
 const DCE_URL: &str = "http://www.dce.com.cn/dcereport/publicweb/tradepara/contractInfo";
-const GFEX_URL: &str =
-    "http://www.gfex.com.cn/u/interfacesWebTtQueryContractInfo/loadList";
-const INE_URL: &str =
-    "https://www.ine.cn/data/busiparamdata/future/ContractBaseInfo{date}.dat";
+const GFEX_URL: &str = "http://www.gfex.com.cn/u/interfacesWebTtQueryContractInfo/loadList";
+const INE_URL: &str = "https://www.ine.cn/data/busiparamdata/future/ContractBaseInfo{date}.dat";
 const SHFE_URL: &str =
     "https://www.shfe.com.cn/data/busiparamdata/future/ContractBaseInfo{date}.dat";
 
@@ -92,13 +90,13 @@ pub async fn futures_contract_info_dce(client: &Client) -> Result<Vec<DceContrac
 
 /// Parse DCE `data` array into contract rows.
 pub(crate) fn parse_dce_contract_info(resp: &Value) -> Result<Vec<DceContractRow>> {
-    let arr = resp
-        .get("data")
-        .and_then(|d| d.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_DCE,
-            message: "missing data array".into(),
-        })?;
+    let arr =
+        resp.get("data")
+            .and_then(|d| d.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_DCE,
+                message: "missing data array".into(),
+            })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(DceContractRow {
@@ -157,13 +155,13 @@ pub async fn futures_contract_info_gfex(client: &Client) -> Result<Vec<GfexContr
 
 /// Parse GFEX `data` array into contract rows.
 pub(crate) fn parse_gfex_contract_info(resp: &Value) -> Result<Vec<GfexContractRow>> {
-    let arr = resp
-        .get("data")
-        .and_then(|d| d.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_GFEX,
-            message: "missing data array".into(),
-        })?;
+    let arr =
+        resp.get("data")
+            .and_then(|d| d.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_GFEX,
+                message: "missing data array".into(),
+            })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(GfexContractRow {
@@ -209,31 +207,51 @@ pub struct ContractBaseInfoRow {
 }
 
 /// INE contract info (`futures_contract_info_ine`). `date` is `YYYYMMDD`.
-pub async fn futures_contract_info_ine(client: &Client, date: &str) -> Result<Vec<ContractBaseInfoRow>> {
+pub async fn futures_contract_info_ine(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<ContractBaseInfoRow>> {
     if date.len() != 8 || !date.chars().all(|c| c.is_ascii_digit()) {
         return Err(Error::InvalidParam("date must be YYYYMMDD".into()));
     }
     let url = INE_URL.replace("{date}", date);
     let v = client
-        .get_json(SOURCE_INE, "futures_contract_info_ine", &url, &[("rnd", "0.8312696798757147")])
+        .get_json(
+            SOURCE_INE,
+            "futures_contract_info_ine",
+            &url,
+            &[("rnd", "0.8312696798757147")],
+        )
         .await?;
     parse_contract_base_info(&v, SOURCE_INE)
 }
 
 /// SHFE contract info (`futures_contract_info_shfe`). `date` is `YYYYMMDD`.
-pub async fn futures_contract_info_shfe(client: &Client, date: &str) -> Result<Vec<ContractBaseInfoRow>> {
+pub async fn futures_contract_info_shfe(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<ContractBaseInfoRow>> {
     if date.len() != 8 || !date.chars().all(|c| c.is_ascii_digit()) {
         return Err(Error::InvalidParam("date must be YYYYMMDD".into()));
     }
     let url = SHFE_URL.replace("{date}", date);
     let v = client
-        .get_json_with_headers(SOURCE_SHFE, "futures_contract_info_shfe", &url, &[], Some(SHFE_HEADERS))
+        .get_json_with_headers(
+            SOURCE_SHFE,
+            "futures_contract_info_shfe",
+            &url,
+            &[],
+            Some(SHFE_HEADERS),
+        )
         .await?;
     parse_contract_base_info(&v, SOURCE_SHFE)
 }
 
 /// Parse an INE/SHFE `ContractBaseInfo` array (plus optional `update_date`).
-pub(crate) fn parse_contract_base_info(resp: &Value, origin: &'static str) -> Result<Vec<ContractBaseInfoRow>> {
+pub(crate) fn parse_contract_base_info(
+    resp: &Value,
+    origin: &'static str,
+) -> Result<Vec<ContractBaseInfoRow>> {
     let arr = resp
         .get("ContractBaseInfo")
         .and_then(|d| d.as_array())
@@ -241,7 +259,10 @@ pub(crate) fn parse_contract_base_info(resp: &Value, origin: &'static str) -> Re
             origin,
             message: "missing ContractBaseInfo array".into(),
         })?;
-    let update_date = resp.get("update_date").and_then(|v| v.as_str()).map(str::to_string);
+    let update_date = resp
+        .get("update_date")
+        .and_then(|v| v.as_str())
+        .map(str::to_string);
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(ContractBaseInfoRow {
@@ -327,7 +348,8 @@ mod tests {
 
     #[test]
     fn parse_ine_contract_base_info_ok() {
-        let rows = parse_contract_base_info(&fixture("futures_contract_info_ine.json"), SOURCE_INE).unwrap();
+        let rows = parse_contract_base_info(&fixture("futures_contract_info_ine.json"), SOURCE_INE)
+            .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].symbol, "sc2410");
         assert_eq!(rows[0].open_date, Some("20240902".into()));
@@ -339,7 +361,9 @@ mod tests {
 
     #[test]
     fn parse_shfe_contract_base_info_ok() {
-        let rows = parse_contract_base_info(&fixture("futures_contract_info_shfe.json"), SOURCE_SHFE).unwrap();
+        let rows =
+            parse_contract_base_info(&fixture("futures_contract_info_shfe.json"), SOURCE_SHFE)
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].symbol, "cu2410");
         assert_eq!(rows[0].open_date, Some("20240301".into()));

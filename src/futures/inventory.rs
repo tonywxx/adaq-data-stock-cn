@@ -36,12 +36,7 @@ pub async fn futures_inventory(client: &Client, symbol: &str) -> Result<Vec<Futu
         ("client", "WEB"),
     ];
     let pos = client
-        .get_json(
-            SOURCE_EASTMONEY,
-            "futures_inventory",
-            BASE,
-            &pos_params,
-        )
+        .get_json(SOURCE_EASTMONEY, "futures_inventory", BASE, &pos_params)
         .await?;
     let pos_data = pos
         .get("result")
@@ -52,10 +47,16 @@ pub async fn futures_inventory(client: &Client, symbol: &str) -> Result<Vec<Futu
             message: "missing result.data in RPT_FUTU_POSITIONCODE".into(),
         })?;
 
-    let mut type_to_code: std::collections::HashMap<String, String> = std::collections::HashMap::new();
-    let mut code_to_code: std::collections::HashMap<String, String> = std::collections::HashMap::new();
+    let mut type_to_code: std::collections::HashMap<String, String> =
+        std::collections::HashMap::new();
+    let mut code_to_code: std::collections::HashMap<String, String> =
+        std::collections::HashMap::new();
     for item in pos_data {
-        let tcode = item.get("TRADE_CODE").and_then(|v| v.as_str()).unwrap_or_default().to_string();
+        let tcode = item
+            .get("TRADE_CODE")
+            .and_then(|v| v.as_str())
+            .unwrap_or_default()
+            .to_string();
         if let Some(ttype) = item.get("TRADE_TYPE").and_then(|v| v.as_str()) {
             type_to_code.insert(ttype.to_string(), tcode.clone());
         }
@@ -78,7 +79,10 @@ pub async fn futures_inventory(client: &Client, symbol: &str) -> Result<Vec<Futu
     let filter = format!("(SECURITY_CODE=\"{product_id}\")(TRADE_DATE>='2020-10-28')");
     let stock_params = [
         ("reportName", "RPT_FUTU_STOCKDATA"),
-        ("columns", "SECURITY_CODE,TRADE_DATE,ON_WARRANT_NUM,ADDCHANGE"),
+        (
+            "columns",
+            "SECURITY_CODE,TRADE_DATE,ON_WARRANT_NUM,ADDCHANGE",
+        ),
         ("filter", &filter),
         ("pageNumber", "1"),
         ("pageSize", "500"),
@@ -144,8 +148,8 @@ mod tests {
 
     #[test]
     fn parses_futures_inventory_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/futures_inventory.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/futures_inventory.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_inventory(&v).unwrap();

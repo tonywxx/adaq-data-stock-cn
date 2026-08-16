@@ -123,8 +123,7 @@ mod tests {
 
     #[test]
     fn parses_lpr_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/lpr.json");
+        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/lpr.json");
         let v: Value = serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
         let rows = parse(&v).unwrap();
         assert_eq!(rows.len(), 2);

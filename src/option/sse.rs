@@ -62,7 +62,8 @@ pub async fn option_sse_list_sina(
     symbol: &str,
     exchange: &str,
 ) -> Result<Vec<SseContractMonthRow>> {
-    let url = "https://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getStockName";
+    let url =
+        "https://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getStockName";
     let params = [("exchange", exchange), ("cate", symbol)];
     let v = client
         .get_json(SOURCE_SINA, "option_sse_list_sina", url, &params)
@@ -127,7 +128,11 @@ pub async fn option_sse_expire_day_sina(
 ) -> Result<Vec<SseExpireDayRow>> {
     let date = format!("{}-{}", &trade_date[..4], &trade_date[4..]);
     let url = "https://stock.finance.sina.com.cn/futures/api/openapi.php/StockOptionService.getRemainderDay";
-    let params = [("exchange", exchange), ("cate", symbol), ("date", date.as_str())];
+    let params = [
+        ("exchange", exchange),
+        ("cate", symbol),
+        ("date", date.as_str()),
+    ];
     let v = client
         .get_json(SOURCE_SINA, "option_sse_expire_day_sina", url, &params)
         .await?;
@@ -143,7 +148,11 @@ pub async fn option_sse_expire_day_sina(
 
     let rows = if remainder < 0 {
         let cate = format!("XD{symbol}");
-        let params2 = [("exchange", exchange), ("cate", cate.as_str()), ("date", date.as_str())];
+        let params2 = [
+            ("exchange", exchange),
+            ("cate", cate.as_str()),
+            ("date", date.as_str()),
+        ];
         let v2 = client
             .get_json(SOURCE_SINA, "option_sse_expire_day_sina", url, &params2)
             .await?;
@@ -204,7 +213,11 @@ pub async fn option_sse_codes_sina(
     trade_date: &str,
     underlying: &str,
 ) -> Result<Vec<SseOptionCodeRow>> {
-    let suffix = if symbol == "看涨期权" { "OP_UP_" } else { "OP_DOWN_" };
+    let suffix = if symbol == "看涨期权" {
+        "OP_UP_"
+    } else {
+        "OP_DOWN_"
+    };
     let list = format!(
         "https://hq.sinajs.cn/list={}{}{}",
         suffix,
@@ -213,7 +226,13 @@ pub async fn option_sse_codes_sina(
     );
     let headers = [("Referer", SINA_REFERER_QUOTES)];
     let text = client
-        .get_text(SOURCE_SINA, "option_sse_codes_sina", &list, &[], Some(&headers))
+        .get_text(
+            SOURCE_SINA,
+            "option_sse_codes_sina",
+            &list,
+            &[],
+            Some(&headers),
+        )
         .await?;
     parse_sse_codes(&text)
 }
@@ -340,11 +359,20 @@ pub struct SseSpotPriceRow {
 ///
 /// `symbol` is the contract code (e.g. `"10003720"`); the upstream `CON_OP_`
 /// `hq.sinajs.cn` feed is comma-joined inside a quoted string.
-pub async fn option_sse_spot_price_sina(client: &Client, symbol: &str) -> Result<Vec<SseSpotPriceRow>> {
+pub async fn option_sse_spot_price_sina(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<SseSpotPriceRow>> {
     let list = format!("https://hq.sinajs.cn/list=CON_OP_{symbol}");
     let headers = [("Referer", SINA_REFERER_QUOTES)];
     let text = client
-        .get_text(SOURCE_SINA, "option_sse_spot_price_sina", &list, &[], Some(&headers))
+        .get_text(
+            SOURCE_SINA,
+            "option_sse_spot_price_sina",
+            &list,
+            &[],
+            Some(&headers),
+        )
         .await?;
     parse_sse_spot_price(&text)
 }
@@ -598,7 +626,13 @@ pub async fn option_sse_greeks_sina(client: &Client, symbol: &str) -> Result<Vec
     let list = format!("https://hq.sinajs.cn/list=CON_SO_{symbol}");
     let headers = [("Referer", SINA_REFERER_VIP)];
     let text = client
-        .get_text(SOURCE_SINA, "option_sse_greeks_sina", &list, &[], Some(&headers))
+        .get_text(
+            SOURCE_SINA,
+            "option_sse_greeks_sina",
+            &list,
+            &[],
+            Some(&headers),
+        )
         .await?;
     parse_sse_greeks(&text)
 }
@@ -663,7 +697,13 @@ pub async fn option_sse_minute_sina(client: &Client, symbol: &str) -> Result<Vec
     let params = [("symbol", sym.as_str())];
     let headers = [("Referer", SINA_REFERER_QUOTES)];
     let v = client
-        .get_json_with_headers(SOURCE_SINA, "option_sse_minute_sina", url, &params, Some(&headers))
+        .get_json_with_headers(
+            SOURCE_SINA,
+            "option_sse_minute_sina",
+            url,
+            &params,
+            Some(&headers),
+        )
         .await?;
     parse_sse_minute(&v)
 }
@@ -680,8 +720,14 @@ pub(crate) fn parse_sse_minute(resp: &Value) -> Result<Vec<SseMinuteRow>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(SseMinuteRow {
-            date: item.get("日期").and_then(|x| x.as_str()).map(|s| s.to_string()),
-            time: item.get("时间").and_then(|x| x.as_str()).map(|s| s.to_string()),
+            date: item
+                .get("日期")
+                .and_then(|x| x.as_str())
+                .map(|s| s.to_string()),
+            time: item
+                .get("时间")
+                .and_then(|x| x.as_str())
+                .map(|s| s.to_string()),
             price: item.get("价格").and_then(str_f64),
             volume: item.get("成交").and_then(str_f64),
             open_interest: item.get("持仓").and_then(str_f64),
@@ -726,7 +772,13 @@ pub async fn option_sse_daily_sina(client: &Client, symbol: &str) -> Result<Vec<
     let params = [("symbol", sym.as_str())];
     let headers = [("Referer", SINA_REFERER_QUOTES)];
     let text = client
-        .get_text(SOURCE_SINA, "option_sse_daily_sina", url, &params, Some(&headers))
+        .get_text(
+            SOURCE_SINA,
+            "option_sse_daily_sina",
+            url,
+            &params,
+            Some(&headers),
+        )
         .await?;
     parse_sse_daily(&text)
 }
@@ -792,7 +844,13 @@ pub async fn option_finance_minute_sina(
     let params = [("symbol", sym.as_str())];
     let headers = [("Referer", SINA_REFERER_QUOTES)];
     let v = client
-        .get_json_with_headers(SOURCE_SINA, "option_finance_minute_sina", url, &params, Some(&headers))
+        .get_json_with_headers(
+            SOURCE_SINA,
+            "option_finance_minute_sina",
+            url,
+            &params,
+            Some(&headers),
+        )
         .await?;
     parse_finance_minute(&v)
 }
@@ -816,8 +874,14 @@ pub(crate) fn parse_finance_minute(resp: &Value) -> Result<Vec<SseFinanceMinuteR
         let n = time.map(|t| t.len()).unwrap_or(0);
         for i in 0..n {
             out.push(SseFinanceMinuteRow {
-                date: date.and_then(|a| a.get(i)).and_then(|x| x.as_str()).map(|s| s.to_string()),
-                time: time.and_then(|a| a.get(i)).and_then(|x| x.as_str()).map(|s| s.to_string()),
+                date: date
+                    .and_then(|a| a.get(i))
+                    .and_then(|x| x.as_str())
+                    .map(|s| s.to_string()),
+                time: time
+                    .and_then(|a| a.get(i))
+                    .and_then(|x| x.as_str())
+                    .map(|s| s.to_string()),
                 price: price.and_then(|a| a.get(i)).and_then(vnum),
                 avg_price: avg.and_then(|a| a.get(i)).and_then(vnum),
                 volume: volume.and_then(|a| a.get(i)).and_then(vnum),
@@ -861,7 +925,10 @@ pub async fn option_minute_em(client: &Client, secid: &str) -> Result<Vec<SseMin
     let url = "https://push2.eastmoney.com/api/qt/stock/trends2/get";
     let params = [
         ("secid", secid),
-        ("fields1", "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f17"),
+        (
+            "fields1",
+            "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f17",
+        ),
         ("fields2", "f51,f53,f54,f55,f56,f57,f58"),
         ("iscr", "0"),
         ("iscca", "0"),

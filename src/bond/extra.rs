@@ -212,7 +212,10 @@ impl BondZhCovValueAnalysis {
 /// Convertible-bond value analysis from Eastmoney (`bond_zh_cov_value_analysis`).
 ///
 /// `symbol` is the convertible-bond code, e.g. `"113527"`.
-pub async fn bond_zh_cov_value_analysis(client: &Client, symbol: &str) -> Result<Vec<BondZhCovValueAnalysis>> {
+pub async fn bond_zh_cov_value_analysis(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<BondZhCovValueAnalysis>> {
     if symbol.is_empty() {
         return Err(Error::InvalidParam("symbol must not be empty".into()));
     }
@@ -239,7 +242,9 @@ pub async fn bond_zh_cov_value_analysis(client: &Client, symbol: &str) -> Result
     parse_bond_zh_cov_value_analysis(&v)
 }
 
-pub(crate) fn parse_bond_zh_cov_value_analysis(resp: &Value) -> Result<Vec<BondZhCovValueAnalysis>> {
+pub(crate) fn parse_bond_zh_cov_value_analysis(
+    resp: &Value,
+) -> Result<Vec<BondZhCovValueAnalysis>> {
     let data = resp
         .get("result")
         .and_then(|r| r.get("data"))
@@ -409,7 +414,10 @@ mod tests {
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].security_code, "123283");
         assert_eq!(rows[0].security_name, "丰茂转债");
-        assert_eq!(rows[0].public_start_date.as_deref(), Some("2026-08-18 00:00:00"));
+        assert_eq!(
+            rows[0].public_start_date.as_deref(),
+            Some("2026-08-18 00:00:00")
+        );
         assert_eq!(rows[0].corre_code.as_deref(), Some("371459"));
         assert_eq!(rows[0].convert_stock_code.as_deref(), Some("301459"));
         assert_eq!(rows[0].convert_stock_name.as_deref(), Some("丰茂股份"));

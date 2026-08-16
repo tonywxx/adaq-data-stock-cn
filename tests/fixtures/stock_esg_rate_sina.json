@@ -1,0 +1,18 @@
+{
+  "result": {
+    "data": {
+      "info": {
+        "total": 1,
+        "stocks": [
+          {"symbol":"600000","market":"SH","esg_info":[
+            {"agency_name":"中证指数","esg_score":"BBB","esg_dt":"2024Q1","remark":"-"},
+            {"agency_name":"商道融绿","esg_score":"A","esg_dt":"2024Q1","remark":"-"}
+          ]},
+          {"symbol":"000001","market":"SZ","esg_info":[
+            {"agency_name":"中证指数","esg_score":"A","esg_dt":"2024Q1","remark":"-"}
+          ]}
+        ]
+      }
+    }
+  }
+}

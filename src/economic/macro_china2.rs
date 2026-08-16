@@ -508,7 +508,9 @@ pub struct ReserveRequirementRatioRow {
 }
 
 /// 中国新增信贷数据 (`macro_china_new_financial_credit`, Eastmoney `RPT_ECONOMY_RMB_LOAN`, macro_china.py:2142).
-pub async fn macro_china_new_financial_credit(client: &Client) -> Result<Vec<NewFinancialCreditRow>> {
+pub async fn macro_china_new_financial_credit(
+    client: &Client,
+) -> Result<Vec<NewFinancialCreditRow>> {
     let data = emdc_fetch(
         client,
         "macro_china_new_financial_credit",
@@ -1023,7 +1025,8 @@ mod tests {
 
     #[test]
     fn parses_macro_china_new_financial_credit() {
-        let rows = parse_new_financial_credit(&data_of("macro_china_new_financial_credit.json")).unwrap();
+        let rows =
+            parse_new_financial_credit(&data_of("macro_china_new_financial_credit.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].month, "2024年03月");
         assert_eq!(rows[0].current, Some(12000.5));
@@ -1105,7 +1108,9 @@ mod tests {
 
     #[test]
     fn parses_macro_china_reserve_requirement_ratio() {
-        let rows = parse_reserve_requirement_ratio(&data_of("macro_china_reserve_requirement_ratio.json")).unwrap();
+        let rows =
+            parse_reserve_requirement_ratio(&data_of("macro_china_reserve_requirement_ratio.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].publish_date, Some("2024-03-01".to_string()));
         assert_eq!(rows[0].effective_date, Some("2024-03-15".to_string()));

@@ -30,8 +30,7 @@ const SOURCE_SHFE: &str = "shfe";
 /// Sina foreign-futures realtime quote endpoint (text).
 const SOURCE_SINA: &str = "sina";
 
-const SHFE_RANK_URL: &str =
-    "https://www.shfe.com.cn/data/tradedata/future/dailydata/pm{date}.dat";
+const SHFE_RANK_URL: &str = "https://www.shfe.com.cn/data/tradedata/future/dailydata/pm{date}.dat";
 const SINA_FOREIGN_URL: &str = "https://hq.sinajs.cn/";
 /// `Referer` required by Sina for the foreign-futures realtime endpoint.
 const SINA_HEADERS: &[(&str, &str)] = &[("Referer", "https://finance.sina.com.cn/")];
@@ -80,7 +79,10 @@ pub struct CoinLmeRealtimeRow {
 ///
 /// `symbols` are Sina subscribe codes such as `CAD` (LME copper), `AHD` (LME aluminium),
 /// `XAU` (London gold), `XAG` (London silver). A `Referer` header is required by Sina.
-pub async fn coin_lme_realtime(client: &Client, symbols: &[&str]) -> Result<Vec<CoinLmeRealtimeRow>> {
+pub async fn coin_lme_realtime(
+    client: &Client,
+    symbols: &[&str],
+) -> Result<Vec<CoinLmeRealtimeRow>> {
     if symbols.is_empty() {
         return Err(Error::InvalidParam("symbols must not be empty".into()));
     }
@@ -91,7 +93,13 @@ pub async fn coin_lme_realtime(client: &Client, symbols: &[&str]) -> Result<Vec<
         .join(",");
     let params = [("list", list.as_str())];
     let text = client
-        .get_text(SOURCE_SINA, "coin_lme_realtime", SINA_FOREIGN_URL, &params, Some(SINA_HEADERS))
+        .get_text(
+            SOURCE_SINA,
+            "coin_lme_realtime",
+            SINA_FOREIGN_URL,
+            &params,
+            Some(SINA_HEADERS),
+        )
         .await?;
     parse_coin_lme_realtime(&text)
 }
@@ -280,9 +288,8 @@ pub struct CoinFuturesKlineRow {
 /// `GC00Y` (COMEX gold), `SI00Y` (COMEX silver). The Eastmoney market code is resolved
 /// via akshare's `__futures_global_hist_market_code` table.
 pub async fn coin_foreign_hist(client: &Client, symbol: &str) -> Result<Vec<CoinFuturesKlineRow>> {
-    let market = foreign_market_code(symbol).ok_or_else(|| {
-        Error::InvalidParam(format!("unsupported foreign symbol: {symbol}"))
-    })?;
+    let market = foreign_market_code(symbol)
+        .ok_or_else(|| Error::InvalidParam(format!("unsupported foreign symbol: {symbol}")))?;
     let secid = format!("{market}.{symbol}");
     kline(client, &secid, "coin_foreign_hist").await
 }
@@ -299,7 +306,11 @@ pub async fn coin_futures_hist(client: &Client, secid: &str) -> Result<Vec<CoinF
     kline(client, secid, "coin_futures_hist").await
 }
 
-async fn kline(client: &Client, secid: &str, endpoint: &'static str) -> Result<Vec<CoinFuturesKlineRow>> {
+async fn kline(
+    client: &Client,
+    secid: &str,
+    endpoint: &'static str,
+) -> Result<Vec<CoinFuturesKlineRow>> {
     let params = [
         ("secid", secid),
         ("klt", "101"),
@@ -308,7 +319,10 @@ async fn kline(client: &Client, secid: &str, endpoint: &'static str) -> Result<V
         ("end", "20500000"),
         ("iscca", "1"),
         ("fields1", "f1,f2,f3,f4,f5,f6,f7,f8"),
-        ("fields2", "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64"),
+        (
+            "fields2",
+            "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64",
+        ),
         ("ut", "f057cbcbce2a86e2866ab8877db1d059"),
         ("forcect", "1"),
     ];
@@ -375,7 +389,10 @@ pub(crate) fn parse_kline(resp: &Value) -> Result<Vec<CoinFuturesKlineRow>> {
 /// (notably LME 3-month names such as `CAD`/`AHD`, which akshare also rejects —
 /// use [`coin_lme_realtime`] for those).
 fn foreign_market_code(symbol: &str) -> Option<i64> {
-    let base: String = symbol.chars().take_while(|c| c.is_ascii_alphabetic()).collect();
+    let base: String = symbol
+        .chars()
+        .take_while(|c| c.is_ascii_alphabetic())
+        .collect();
     let has = |arr: &[&str]| arr.contains(&base.as_str());
     if has(&["HG", "GC", "SI", "QI", "QO", "MGC", "LTH"]) {
         return Some(101);
@@ -440,7 +457,12 @@ pub struct CoinFuturesSymbolRow {
 /// -> per-chunk) and flattens every entry into a single list.
 pub async fn coin_futures_symbol_map(client: &Client) -> Result<Vec<CoinFuturesSymbolRow>> {
     let base = client
-        .get_json(SOURCE_EASTMONEY, "coin_futures_symbol_map", EM_REDIS_URL, &[("msgid", "gnweb")])
+        .get_json(
+            SOURCE_EASTMONEY,
+            "coin_futures_symbol_map",
+            EM_REDIS_URL,
+            &[("msgid", "gnweb")],
+        )
         .await?;
     let mut all: Vec<Value> = Vec::new();
     if let Some(markets) = base.as_array() {
@@ -479,12 +501,10 @@ pub async fn coin_futures_symbol_map(client: &Client) -> Result<Vec<CoinFuturesS
 
 /// Parse the flattened Eastmoney symbol-map array into rows.
 pub(crate) fn parse_symbol_map(resp: &Value) -> Result<Vec<CoinFuturesSymbolRow>> {
-    let arr = resp
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "symbol map is not an array".into(),
-        })?;
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "symbol map is not an array".into(),
+    })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(CoinFuturesSymbolRow {

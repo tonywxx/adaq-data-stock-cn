@@ -72,12 +72,12 @@ fn decode_sina_calendar(text: &str) -> Result<Vec<TradeDateRow>> {
         })?;
 
     let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    let cidx: std::collections::HashMap<char, i64> =
-        alphabet.chars().enumerate().map(|(i, c)| (c, i as i64)).collect();
-    let i_vec: Vec<i64> = enc
+    let cidx: std::collections::HashMap<char, i64> = alphabet
         .chars()
-        .filter_map(|c| cidx.get(&c).copied())
+        .enumerate()
+        .map(|(i, c)| (c, i as i64))
         .collect();
+    let i_vec: Vec<i64> = enc.chars().filter_map(|c| cidx.get(&c).copied()).collect();
 
     let mut dec = Decoder {
         i: i_vec,
@@ -141,8 +141,7 @@ impl Decoder {
                     let mut remaining = cval;
                     while remaining > 0 {
                         let h = std::cmp::min(6 - self.o, remaining);
-                        let chunk =
-                            (self.i[self.e as usize] >> self.o) & ((1i64 << h) - 1);
+                        let chunk = (self.i[self.e as usize] >> self.o) & ((1i64 << h) - 1);
                         uu |= chunk << (cval - remaining);
                         self.o += h;
                         if self.o >= 6 {
@@ -151,9 +150,7 @@ impl Decoder {
                         }
                         remaining -= h;
                     }
-                    if r2.get(s).copied().unwrap_or(0) != 0
-                        && uu >= self.d[(cval - 1) as usize]
-                    {
+                    if r2.get(s).copied().unwrap_or(0) != 0 && uu >= self.d[(cval - 1) as usize] {
                         uu -= self.d[(cval - 1) as usize];
                     }
                 } else {
@@ -257,8 +254,8 @@ mod tests {
 
     #[test]
     fn parses_decoded_calendar_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/tool_trade_date.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/tool_trade_date.json");
         let v: Value = serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
         let rows = parse(&v).unwrap();
         assert_eq!(rows.len(), 3);

@@ -18,8 +18,8 @@
 pub mod hk;
 pub mod us;
 
-pub use hk::{stock_hk_hist, stock_hk_spot_em, HkHistRow, HkSpotRow};
-pub use us::{stock_us_hist, stock_us_spot_em, UsHistRow, UsSpotRow};
+pub use hk::{HkHistRow, HkSpotRow, stock_hk_hist, stock_hk_spot_em};
+pub use us::{UsHistRow, UsSpotRow, stock_us_hist, stock_us_spot_em};
 
 use serde_json::Value;
 

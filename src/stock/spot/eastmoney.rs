@@ -40,10 +40,10 @@ pub async fn spot(client: &Client) -> Result<Vec<SpotQuote>> {
             .get("data")
             .and_then(|d| d.get("diff"))
             .and_then(|d| d.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing data.diff".into(),
-        })?;
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_EASTMONEY,
+                message: "missing data.diff".into(),
+            })?;
         if diff.is_empty() {
             break;
         }

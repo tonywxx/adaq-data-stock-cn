@@ -20,11 +20,11 @@ pub mod nlp_ownthink;
 pub mod stock_news;
 
 pub use baidu_calendar::{
-    news_economic_baidu, news_report_time_baidu, news_trade_notify_dividend_baidu,
-    news_trade_notify_suspend_baidu, DividendRow, EventRow, ReportRow, SuspendRow,
+    DividendRow, EventRow, ReportRow, SuspendRow, news_economic_baidu, news_report_time_baidu,
+    news_trade_notify_dividend_baidu, news_trade_notify_suspend_baidu,
 };
-pub use nlp_ownthink::{nlp_answer, nlp_ownthink, KnowledgeRow};
-pub use stock_news::{stock_news_em, NewsRow};
+pub use nlp_ownthink::{KnowledgeRow, nlp_answer, nlp_ownthink};
+pub use stock_news::{NewsRow, stock_news_em};
 
 /// Extract a string field from an upstream JSON object, defaulting to `""`.
 pub(crate) fn fstr(item: &serde_json::Value, k: &str) -> String {

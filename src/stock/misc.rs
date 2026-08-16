@@ -28,10 +28,8 @@ use crate::core::error::{Error, Result};
 // stock_zh_a_hist_min_em — Eastmoney minute K-lines
 // ===========================================================================
 
-const HIST_MIN_KLINE_URL: &str =
-    "https://push2his.eastmoney.com/api/qt/stock/kline/get";
-const HIST_MIN_TRENDS_URL: &str =
-    "https://push2his.eastmoney.com/api/qt/stock/trends2/get";
+const HIST_MIN_KLINE_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
+const HIST_MIN_TRENDS_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/trends2/get";
 const HIST_MIN_UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
 
 /// One Eastmoney minute K-line bar (akshare `stock_zh_a_hist_min_em`).
@@ -86,7 +84,7 @@ pub async fn stock_zh_a_hist_min_em(
         other => {
             return Err(Error::InvalidParam(format!(
                 "adjust must be '', 'qfq' or 'hfq', got {other}"
-            )))
+            )));
         }
     };
     let market = if symbol.starts_with('6') { 1 } else { 0 };
@@ -105,10 +103,7 @@ pub async fn stock_zh_a_hist_min_em(
     } else {
         let params = [
             ("fields1", "f1,f2,f3,f4,f5,f6"),
-            (
-                "fields2",
-                "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61",
-            ),
+            ("fields2", "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61"),
             ("ut", HIST_MIN_UT),
             ("klt", period),
             ("fqt", fqt),
@@ -239,7 +234,13 @@ pub async fn stock_zh_a_minute(
         ("datalen", "1970"),
     ];
     let text = client
-        .get_text(SOURCE_SINA, "stock_zh_a_minute", MINUTE_SINA_URL, &params, None)
+        .get_text(
+            SOURCE_SINA,
+            "stock_zh_a_minute",
+            MINUTE_SINA_URL,
+            &params,
+            None,
+        )
         .await?;
     parse_minute(&text)
 }
@@ -250,12 +251,10 @@ pub async fn stock_zh_a_minute(
 /// last `]` and parse the inner JSON array. Each element is an object keyed by
 /// `day`/`open`/`high`/`low`/`close`/`volume`/`amount`.
 pub(crate) fn parse_minute(text: &str) -> Result<Vec<MinuteRow>> {
-    let start = text
-        .find('[')
-        .ok_or_else(|| Error::Parse {
-            endpoint: "stock_zh_a_minute",
-            message: "no JSON array in response".into(),
-        })?;
+    let start = text.find('[').ok_or_else(|| Error::Parse {
+        endpoint: "stock_zh_a_minute",
+        message: "no JSON array in response".into(),
+    })?;
     let end = text.rfind(']').ok_or_else(|| Error::Parse {
         endpoint: "stock_zh_a_minute",
         message: "no closing bracket in response".into(),
@@ -291,10 +290,8 @@ pub(crate) fn parse_minute(text: &str) -> Result<Vec<MinuteRow>> {
 // stock_zh_a_new — Sina 次新股 (new-share) list
 // ===========================================================================
 
-const NEW_SHARE_COUNT_URL: &str =
-    "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount";
-const NEW_SHARE_DATA_URL: &str =
-    "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData";
+const NEW_SHARE_COUNT_URL: &str = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount";
+const NEW_SHARE_DATA_URL: &str = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData";
 
 /// One Sina new-share entry (akshare `stock_zh_a_new`).
 #[derive(Debug, Clone, serde::Serialize)]
@@ -392,8 +389,7 @@ pub(crate) fn parse_new_shares(resp: &Value) -> Result<Vec<NewShareRow>> {
 
 const STOP_EM_URL: &str = "https://40.push2.eastmoney.com/api/qt/clist/get";
 const STOP_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const STOP_FIELDS: &str =
-    "f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152";
+const STOP_FIELDS: &str = "f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152";
 
 /// One Eastmoney delisted / STAQ-net board entry (akshare `stock_zh_a_stop_em`).
 #[derive(Debug, Clone, serde::Serialize)]
@@ -635,10 +631,7 @@ fn num_field(item: &Value, k: &str) -> Option<f64> {
 /// Parse a CSV cell to `f64`, treating empty / null / nan / `--` as `None`.
 fn num_cell(s: &str) -> Option<f64> {
     let t = s.trim();
-    if t.is_empty()
-        || t.eq_ignore_ascii_case("null")
-        || t.eq_ignore_ascii_case("nan")
-        || t == "--"
+    if t.is_empty() || t.eq_ignore_ascii_case("null") || t.eq_ignore_ascii_case("nan") || t == "--"
     {
         None
     } else {

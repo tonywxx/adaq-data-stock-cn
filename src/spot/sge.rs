@@ -83,7 +83,8 @@ pub fn fnum(item: &Value, k: &str) -> Option<f64> {
 /// Convert a unix-epoch millisecond timestamp to a `YYYY-MM-DD` date string (UTC).
 fn ms_to_date(ms: f64) -> Option<String> {
     let secs = (ms / 1000.0) as i64;
-    chrono::DateTime::from_timestamp(secs, 0).map(|dt| dt.date_naive().format("%Y-%m-%d").to_string())
+    chrono::DateTime::from_timestamp(secs, 0)
+        .map(|dt| dt.date_naive().format("%Y-%m-%d").to_string())
 }
 
 /// 上海黄金交易所-数据资讯-行情走势-品种表
@@ -91,9 +92,9 @@ fn ms_to_date(ms: f64) -> Option<String> {
 /// Pure static table of SGE instrument symbols (no network call).
 pub fn spot_symbol_table_sge() -> Result<Vec<SymbolRow>> {
     let symbols = [
-        "Au99.99", "Au99.95", "Au100g", "Pt99.95", "Ag(T+D)", "Au(T+D)", "mAu(T+D)",
-        "Au(T+N1)", "Au(T+N2)", "Ag99.99", "iAu99.99", "Au99.5", "iAu100g", "iAu99.5",
-        "PGC30g", "NYAuTN06", "NYAuTN12",
+        "Au99.99", "Au99.95", "Au100g", "Pt99.95", "Ag(T+D)", "Au(T+D)", "mAu(T+D)", "Au(T+N1)",
+        "Au(T+N2)", "Ag99.99", "iAu99.99", "Au99.5", "iAu100g", "iAu99.5", "PGC30g", "NYAuTN06",
+        "NYAuTN12",
     ];
     let rows = symbols
         .into_iter()
@@ -112,27 +113,27 @@ pub fn spot_symbol_table_sge() -> Result<Vec<SymbolRow>> {
 /// (HH:MM), `data` (price) and a single `delaystr` update timestamp. Rows whose
 /// `time` is not earlier than the update time are dropped, then sorted by time.
 pub fn parse_quotations(resp: &Value) -> Result<Vec<QuotationRow>> {
-    let heyue = resp
-        .get("heyue")
-        .and_then(Value::as_array)
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SGE,
-            message: "missing heyue".into(),
-        })?;
-    let times = resp
-        .get("times")
-        .and_then(Value::as_array)
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SGE,
-            message: "missing times".into(),
-        })?;
-    let data = resp
-        .get("data")
-        .and_then(Value::as_array)
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SGE,
-            message: "missing data".into(),
-        })?;
+    let heyue =
+        resp.get("heyue")
+            .and_then(Value::as_array)
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_SGE,
+                message: "missing heyue".into(),
+            })?;
+    let times =
+        resp.get("times")
+            .and_then(Value::as_array)
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_SGE,
+                message: "missing times".into(),
+            })?;
+    let data =
+        resp.get("data")
+            .and_then(Value::as_array)
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_SGE,
+                message: "missing data".into(),
+            })?;
     let delaystr = fstr(resp, "delaystr").unwrap_or_default();
     let update_time = delaystr.split_whitespace().nth(1).unwrap_or("").to_string();
 
@@ -184,13 +185,13 @@ pub async fn spot_quotations_sge(client: &Client, symbol: &str) -> Result<Vec<Qu
 ///
 /// The response has a `time` list of `[date, open, close, low, high]` rows.
 pub fn parse_hist(resp: &Value) -> Result<Vec<HistRow>> {
-    let time = resp
-        .get("time")
-        .and_then(Value::as_array)
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SGE,
-            message: "missing time".into(),
-        })?;
+    let time =
+        resp.get("time")
+            .and_then(Value::as_array)
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_SGE,
+                message: "missing time".into(),
+            })?;
     let mut rows = Vec::with_capacity(time.len());
     for entry in time {
         let arr = entry.as_array().ok_or_else(|| Error::UpstreamChanged {

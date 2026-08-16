@@ -1,8 +1,10 @@
 {
+  "version": "v1.0",
   "result": {
+    "pages": 1,
     "data": [
       {
-        "REPORT_DATE": "2024-03-31",
+        "REPORT_DATE": "2024-03-01 00:00:00",
         "TIME": "2024-03",
         "MAKE_INDEX": 50.8,
         "MAKE_SAME": null,
@@ -10,14 +12,17 @@
         "NMAKE_SAME": 1.2
       },
       {
-        "REPORT_DATE": "2024-02-29",
+        "REPORT_DATE": "2024-02-01 00:00:00",
         "TIME": "2024-02",
         "MAKE_INDEX": 49.1,
         "MAKE_SAME": 0.5,
         "NMAKE_INDEX": 51.4,
-        "NMAKE_SAME": null
+        "NMAKE_SAME": 0.3
       }
     ],
-    "pages": 1
-  }
+    "count": 2
+  },
+  "success": true,
+  "message": "",
+  "code": 0
 }

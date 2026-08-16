@@ -47,7 +47,12 @@ pub async fn spot_category(client: &Client, category: &str) -> Result<Vec<IndexS
         ),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_zh_index_spot_em", SPOT_URL, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "stock_zh_index_spot_em",
+            SPOT_URL,
+            &params,
+        )
         .await?;
     parse_diff(&v)
 }

@@ -55,12 +55,10 @@ pub async fn fund_open_fund_info(
 }
 
 pub(crate) fn parse_nav(resp: &Value, symbol: &str, kind: NavKind) -> Result<Vec<OpenFundNavRow>> {
-    let arr = resp
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "expected a JSON array".into(),
-        })?;
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "expected a JSON array".into(),
+    })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         // Object form (net-worth trend): {x, y, equityReturn, ...}
@@ -125,10 +123,12 @@ fn extract_js_array(text: &str, var: &str) -> Result<String> {
         origin: SOURCE_EASTMONEY,
         message: format!("'=' not found after {var}"),
     })?;
-    let bracket = after[eq + 1..].find('[').ok_or_else(|| Error::UpstreamChanged {
-        origin: SOURCE_EASTMONEY,
-        message: format!("'[' not found after {var} ="),
-    })?;
+    let bracket = after[eq + 1..]
+        .find('[')
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_EASTMONEY,
+            message: format!("'[' not found after {var} ="),
+        })?;
     let open = start + var.len() + eq + 1 + bracket;
     let mut depth: i64 = 0;
     let mut end = None;

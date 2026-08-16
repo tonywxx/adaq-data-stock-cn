@@ -21,8 +21,7 @@ const SINA_HEADERS: &[(&str, &str)] = &[("Referer", "https://finance.sina.com.cn
 // ---------------------------------------------------------------------------
 
 /// Sina JSONP endpoint for a main-continuous daily kline.
-const MAIN_KLINE_URL: &str =
-    "https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_SYMBOL_DATE=/InnerFuturesNewService.getDailyKLine";
+const MAIN_KLINE_URL: &str = "https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_SYMBOL_DATE=/InnerFuturesNewService.getDailyKLine";
 
 /// Upstream hardcodes a cache-busting `trade_date` (`20210817`, formatted as
 /// `2021_08_17` in the callback). Kept faithful to akshare rather than guessing
@@ -77,7 +76,13 @@ pub async fn futures_main(
 
     let params = [("symbol", symbol), ("_", td_fmt.as_str())];
     let text = client
-        .get_text(SOURCE_SINA, "futures_main", url.as_str(), &params, Some(SINA_HEADERS))
+        .get_text(
+            SOURCE_SINA,
+            "futures_main",
+            url.as_str(),
+            &params,
+            Some(SINA_HEADERS),
+        )
         .await?;
     let json = strip_jsonp(&text).ok_or_else(|| Error::UpstreamChanged {
         origin: SOURCE_SINA,
@@ -129,7 +134,8 @@ pub(crate) fn parse_kline(resp: &Value) -> Result<Vec<FuturesMainRow>> {
 const DISPLAY_NODE_URL: &str = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQFuturesData";
 
 /// Sina JS that enumerates each exchange's tradable product nodes.
-const SUBSCRIBE_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/view/js/qihuohangqing.js";
+const SUBSCRIBE_URL: &str =
+    "http://vip.stock.finance.sina.com.cn/quotes_service/view/js/qihuohangqing.js";
 
 /// Exchanges iterated by `futures_display_main_sina`.
 const EXCHANGES: &[&str] = &["dce", "czce", "shfe", "cffex", "gfex"];
@@ -205,7 +211,10 @@ pub(crate) fn parse_display(resp: &Value) -> Result<Vec<FuturesDisplayRow>> {
         out.push(FuturesDisplayRow {
             name: name.map(str::to_string),
             symbol: symbol.map(str::to_string),
-            code: item.get("code").and_then(|v| v.as_str()).map(str::to_string),
+            code: item
+                .get("code")
+                .and_then(|v| v.as_str())
+                .map(str::to_string),
             source: SOURCE_SINA,
         });
     }
@@ -236,12 +245,13 @@ async fn subscribe_exchange_symbol(client: &Client, exchange: &str) -> Result<Ve
 /// The object is `{ exchange: [ <exchange-name>, [mark, name], [mark, name], ... ] }`;
 /// akshare uses `.iloc[:, 1]` (the `name`) as the `node` passed to `getHQFuturesData`.
 pub(crate) fn parse_subscribe(resp: &Value, exchange: &str) -> Result<Vec<String>> {
-    let arr = resp.get(exchange).and_then(|x| x.as_array()).ok_or_else(|| {
-        Error::UpstreamChanged {
+    let arr = resp
+        .get(exchange)
+        .and_then(|x| x.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_SINA,
             message: format!("missing product list for exchange `{exchange}`"),
-        }
-    })?;
+        })?;
     let mut nodes = Vec::new();
     // Skip element 0 (the exchange display name), keep column 1 of each entry.
     for item in arr.iter().skip(1) {

@@ -363,9 +363,7 @@ pub struct AmacManagerClassifyRow {
 }
 
 /// Private-fund manager classified disclosure (`amac_manager_classify_info`).
-pub async fn amac_manager_classify_info(
-    client: &Client,
-) -> Result<Vec<AmacManagerClassifyRow>> {
+pub async fn amac_manager_classify_info(client: &Client) -> Result<Vec<AmacManagerClassifyRow>> {
     let params = [("rand", RAND), ("page", "1"), ("size", "100")];
     let v = client
         .post_form_json(
@@ -430,7 +428,13 @@ pub struct AmacMemberSubInfoRow {
 pub async fn amac_member_sub_info(client: &Client) -> Result<Vec<AmacMemberSubInfoRow>> {
     let params = [("rand", RAND), ("page", "0"), ("size", "20")];
     let v = client
-        .post_form_json(SOURCE_AMAC, "amac_member_sub_info", POF_MEMBER_URL, &params, None)
+        .post_form_json(
+            SOURCE_AMAC,
+            "amac_member_sub_info",
+            POF_MEMBER_URL,
+            &params,
+            None,
+        )
         .await?;
     parse_member_sub_info(&v)
 }
@@ -548,7 +552,13 @@ pub struct AmacSecuritiesInfoRow {
 pub async fn amac_securities_info(client: &Client) -> Result<Vec<AmacSecuritiesInfoRow>> {
     let params = [("rand", RAND), ("page", "0"), ("size", "20")];
     let v = client
-        .post_form_json(SOURCE_AMAC, "amac_securities_info", SECURITIES_URL, &params, None)
+        .post_form_json(
+            SOURCE_AMAC,
+            "amac_securities_info",
+            SECURITIES_URL,
+            &params,
+            None,
+        )
         .await?;
     parse_securities_info(&v)
 }
@@ -646,7 +656,13 @@ pub struct AmacFundSubInfoRow {
 pub async fn amac_fund_sub_info(client: &Client) -> Result<Vec<AmacFundSubInfoRow>> {
     let params = [("rand", RAND), ("page", "0"), ("size", "20")];
     let v = client
-        .post_form_json(SOURCE_AMAC, "amac_fund_sub_info", SUBFUND_URL, &params, None)
+        .post_form_json(
+            SOURCE_AMAC,
+            "amac_fund_sub_info",
+            SUBFUND_URL,
+            &params,
+            None,
+        )
         .await?;
     parse_fund_sub_info(&v)
 }
@@ -802,9 +818,7 @@ pub struct AmacManagerCancelledRow {
 }
 
 /// Cancelled private-fund manager list (`amac_manager_cancelled_info`).
-pub async fn amac_manager_cancelled_info(
-    client: &Client,
-) -> Result<Vec<AmacManagerCancelledRow>> {
+pub async fn amac_manager_cancelled_info(client: &Client) -> Result<Vec<AmacManagerCancelledRow>> {
     let params = [("rand", RAND), ("page", "0"), ("size", "20")];
     let v = client
         .post_form_json(
@@ -853,7 +867,10 @@ mod tests {
     fn parses_amac_member_info() {
         let rows = parse_member_info(&fixture("amac_member_info.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].manager_name.as_deref(), Some("中国证券投资基金业协会"));
+        assert_eq!(
+            rows[0].manager_name.as_deref(),
+            Some("中国证券投资基金业协会")
+        );
         assert_eq!(rows[0].member_code.as_deref(), Some("AMAC001"));
         assert_eq!(rows[0].member_date, Some(1_700_000_000_000.0));
         assert_eq!(rows[0].mark_star.as_deref(), Some("0"));
@@ -862,9 +879,11 @@ mod tests {
 
     #[test]
     fn parses_amac_person_fund_org_list() {
-        let rows =
-            parse_person_fund_org_list(&fixture("amac_person_fund_org_list.json"), "公募基金管理公司")
-                .unwrap();
+        let rows = parse_person_fund_org_list(
+            &fixture("amac_person_fund_org_list.json"),
+            "公募基金管理公司",
+        )
+        .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].symbol, "公募基金管理公司");
         assert_eq!(rows[0].org_name.as_deref(), Some("华夏基金管理有限公司"));
@@ -877,14 +896,20 @@ mod tests {
     #[test]
     fn person_org_symbol_map_rejects_unknown() {
         assert!(person_org_symbol_map("nope").is_err());
-        assert_eq!(person_org_symbol_map("公募基金管理公司").unwrap(), "gmjjglgs");
+        assert_eq!(
+            person_org_symbol_map("公募基金管理公司").unwrap(),
+            "gmjjglgs"
+        );
     }
 
     #[test]
     fn parses_amac_manager_info() {
         let rows = parse_manager_info(&fixture("amac_manager_info.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].manager_name.as_deref(), Some("北京某私募管理有限公司"));
+        assert_eq!(
+            rows[0].manager_name.as_deref(),
+            Some("北京某私募管理有限公司")
+        );
         assert_eq!(rows[0].register_no.as_deref(), Some("P1000001"));
         assert_eq!(rows[0].register_province.as_deref(), Some("北京市"));
         assert_eq!(rows[0].establish_date, Some(1_380_000_000_000.0));
@@ -894,9 +919,13 @@ mod tests {
 
     #[test]
     fn parses_amac_manager_classify_info() {
-        let rows = parse_manager_classify_info(&fixture("amac_manager_classify_info.json")).unwrap();
+        let rows =
+            parse_manager_classify_info(&fixture("amac_manager_classify_info.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].manager_name.as_deref(), Some("上海某私募管理有限公司"));
+        assert_eq!(
+            rows[0].manager_name.as_deref(),
+            Some("上海某私募管理有限公司")
+        );
         assert_eq!(rows[0].fund_count, Some(12.0));
         assert_eq!(rows[0].has_special_tips, Some(false));
         assert_eq!(rows[0].has_credit_tips, Some(true));
@@ -917,7 +946,10 @@ mod tests {
     fn parses_amac_fund_info() {
         let rows = parse_fund_info(&fixture("amac_fund_info.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].fund_name.as_deref(), Some("聚宽一号私募证券投资基金"));
+        assert_eq!(
+            rows[0].fund_name.as_deref(),
+            Some("聚宽一号私募证券投资基金")
+        );
         assert_eq!(rows[0].manager_name.as_deref(), Some("聚宽投资"));
         assert_eq!(rows[0].working_state.as_deref(), Some("正在运作"));
         assert_eq!(rows[0].establish_date, Some(1_600_000_000_000.0));
@@ -983,7 +1015,8 @@ mod tests {
 
     #[test]
     fn parses_amac_manager_cancelled_info() {
-        let rows = parse_manager_cancelled_info(&fixture("amac_manager_cancelled_info.json")).unwrap();
+        let rows =
+            parse_manager_cancelled_info(&fixture("amac_manager_cancelled_info.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].org_name.as_deref(), Some("某已注销私募公司"));
         assert_eq!(rows[0].org_code.as_deref(), Some("91310000XXXX"));

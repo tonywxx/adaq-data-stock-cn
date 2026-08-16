@@ -11,11 +11,11 @@
 //! - [`stock_board_concept_name_em`](concept::stock_board_concept_name_em)
 //! - [`stock_board_concept_cons_em`](concept::stock_board_concept_cons_em)
 
-pub mod industry;
 pub mod concept;
+pub mod industry;
 
-pub use industry::{stock_board_industry_cons_em, stock_board_industry_name_em};
 pub use concept::{stock_board_concept_cons_em, stock_board_concept_name_em};
+pub use industry::{stock_board_industry_cons_em, stock_board_industry_name_em};
 
 use serde_json::Value;
 
@@ -85,7 +85,12 @@ pub(crate) async fn fetch_clist_page(
         ("fields", fields),
     ];
     client
-        .get_json(crate::core::client::SOURCE_EASTMONEY, endpoint, CLIST_BASE, &params)
+        .get_json(
+            crate::core::client::SOURCE_EASTMONEY,
+            endpoint,
+            CLIST_BASE,
+            &params,
+        )
         .await
 }
 

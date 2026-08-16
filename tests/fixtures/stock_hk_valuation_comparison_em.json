@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "03900.HK",
+        "CORRE_SECURITY_CODE": "03900.HK",
+        "CORRE_SECUCODE": "03900.HK",
+        "CORRE_SECURITY_NAME": "NDRG",
+        "PE_TTM": 9.8,
+        "PE_TTM_RANK": 5,
+        "PE_LYR": 10.2,
+        "PE_LYR_RANK": 6,
+        "PB_MQR": 0.85,
+        "PB_MQR_RANK": 4,
+        "PB_LYR": 0.9,
+        "PB_LYR_RANK": 5,
+        "PS_TTM": 2.1,
+        "PS_TTM_RANK": 7,
+        "PS_LYR": 2.2,
+        "PS_LYR_RANK": 8,
+        "PCE_TTM": 8.0,
+        "PCE_TTM_RANK": 3,
+        "PCE_LYR": 8.5,
+        "PCE_LYR_RANK": 4
+      },
+      {
+        "SECUCODE": "03900.HK",
+        "CORRE_SECURITY_CODE": "01299.HK",
+        "CORRE_SECUCODE": "01299.HK",
+        "CORRE_SECURITY_NAME": "友邦",
+        "PE_TTM": 15.0,
+        "PE_TTM_RANK": 12,
+        "PE_LYR": 16.0,
+        "PE_LYR_RANK": 13,
+        "PB_MQR": 1.8,
+        "PB_MQR_RANK": 10,
+        "PB_LYR": 1.9,
+        "PB_LYR_RANK": 11,
+        "PS_TTM": 3.0,
+        "PS_TTM_RANK": 14,
+        "PS_LYR": 3.1,
+        "PS_LYR_RANK": 15,
+        "PCE_TTM": 12.0,
+        "PCE_TTM_RANK": 9,
+        "PCE_LYR": 12.5,
+        "PCE_LYR_RANK": 10
+      }
+    ]
+  }
+}

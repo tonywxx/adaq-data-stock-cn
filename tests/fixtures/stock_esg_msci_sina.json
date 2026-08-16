@@ -1,0 +1,11 @@
+{
+  "result": {
+    "data": {
+      "total": 2,
+      "data": [
+        {"symbol":"600000","esg_rating":"BBB","env_score":5.2,"social_score":4.8,"governance_score":5.0,"quarter_date":"2024-03-31","market":"SH"},
+        {"symbol":"000001","esg_rating":"A","env_score":6.0,"social_score":5.5,"governance_score":5.8,"quarter_date":"2024-03-31","market":"SZ"}
+      ]
+    }
+  }
+}

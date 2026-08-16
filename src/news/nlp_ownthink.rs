@@ -35,29 +35,46 @@ pub async fn nlp_ownthink(
     };
     match indicator {
         "entity" => {
-            let s = data.get("entity").and_then(|v| v.as_str()).unwrap_or_default().to_string();
+            let s = data
+                .get("entity")
+                .and_then(|v| v.as_str())
+                .unwrap_or_default()
+                .to_string();
             if s.is_empty() {
                 Ok(Vec::new())
             } else {
-                Ok(vec![KnowledgeRow { field: "entity".into(), value: s }])
+                Ok(vec![KnowledgeRow {
+                    field: "entity".into(),
+                    value: s,
+                }])
             }
         }
         "desc" => {
-            let s = data.get("desc").and_then(|v| v.as_str()).unwrap_or_default().to_string();
-            Ok(vec![KnowledgeRow { field: "desc".into(), value: s }])
+            let s = data
+                .get("desc")
+                .and_then(|v| v.as_str())
+                .unwrap_or_default()
+                .to_string();
+            Ok(vec![KnowledgeRow {
+                field: "desc".into(),
+                value: s,
+            }])
         }
         "avp" => {
-            let arr = data
-                .get("avp")
-                .and_then(|a| a.as_array())
-                .ok_or_else(|| Error::UpstreamChanged {
+            let arr = data.get("avp").and_then(|a| a.as_array()).ok_or_else(|| {
+                Error::UpstreamChanged {
                     origin: SOURCE_OWNTHINK,
                     message: "missing data.avp".into(),
-                })?;
+                }
+            })?;
             Ok(arr
                 .iter()
                 .map(|pair| KnowledgeRow {
-                    field: pair.get(0).and_then(|v| v.as_str()).unwrap_or_default().to_string(),
+                    field: pair
+                        .get(0)
+                        .and_then(|v| v.as_str())
+                        .unwrap_or_default()
+                        .to_string(),
                     value: pair
                         .get(1)
                         .and_then(|v| v.as_str())
@@ -67,13 +84,12 @@ pub async fn nlp_ownthink(
                 .collect())
         }
         "tag" => {
-            let arr = data
-                .get("tag")
-                .and_then(|a| a.as_array())
-                .ok_or_else(|| Error::UpstreamChanged {
+            let arr = data.get("tag").and_then(|a| a.as_array()).ok_or_else(|| {
+                Error::UpstreamChanged {
                     origin: SOURCE_OWNTHINK,
                     message: "missing data.tag".into(),
-                })?;
+                }
+            })?;
             Ok(arr
                 .iter()
                 .map(|v| KnowledgeRow {
@@ -117,8 +133,16 @@ pub(crate) fn parse_avp(resp: &Value) -> Result<Vec<KnowledgeRow>> {
     Ok(arr
         .iter()
         .map(|pair| KnowledgeRow {
-            field: pair.get(0).and_then(|v| v.as_str()).unwrap_or_default().to_string(),
-            value: pair.get(1).and_then(|v| v.as_str()).unwrap_or_default().to_string(),
+            field: pair
+                .get(0)
+                .and_then(|v| v.as_str())
+                .unwrap_or_default()
+                .to_string(),
+            value: pair
+                .get(1)
+                .and_then(|v| v.as_str())
+                .unwrap_or_default()
+                .to_string(),
         })
         .collect())
 }
@@ -130,8 +154,8 @@ mod tests {
 
     #[test]
     fn parses_nlp_ownthink_avp() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/nlp_ownthink.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/nlp_ownthink.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_avp(&v).unwrap();

@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "03900",
+        "UPDATE_DATE": "2024-03-20",
+        "REPORT_TYPE": "年度",
+        "EX_DIVIDEND_DATE": "2024-05-10",
+        "DIVIDEND_DATE": "2024-06-01",
+        "TRANSFER_END_DATE": "2024-05-15",
+        "YEAR": "2023",
+        "PLAN_EXPLAIN": "派息每股0.5港元",
+        "IS_BFP": "0"
+      },
+      {
+        "SECURITY_CODE": "03900",
+        "UPDATE_DATE": "2023-09-10",
+        "REPORT_TYPE": "中期",
+        "EX_DIVIDEND_DATE": "2023-10-12",
+        "DIVIDEND_DATE": "2023-11-02",
+        "TRANSFER_END_DATE": "2023-10-18",
+        "YEAR": "2023",
+        "PLAN_EXPLAIN": "派息每股0.2港元",
+        "IS_BFP": "0"
+      }
+    ]
+  }
+}

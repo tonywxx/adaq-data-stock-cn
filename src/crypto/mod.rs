@@ -15,6 +15,6 @@ pub mod bitcoin_hold;
 pub mod extra;
 pub mod js_spot;
 
-pub use bitcoin_cme::{crypto_bitcoin_cme, CryptoCme};
-pub use bitcoin_hold::{crypto_bitcoin_hold_report, CryptoHold};
-pub use js_spot::{crypto_js_spot, CryptoSpot};
+pub use bitcoin_cme::{CryptoCme, crypto_bitcoin_cme};
+pub use bitcoin_hold::{CryptoHold, crypto_bitcoin_hold_report};
+pub use js_spot::{CryptoSpot, crypto_js_spot};

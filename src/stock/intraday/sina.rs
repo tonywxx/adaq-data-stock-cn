@@ -17,7 +17,9 @@ const PAGE_SIZE: u32 = 60;
 /// `direction` is left `None`. Normalizes to [`IntradayRow`].
 pub async fn sina(client: &Client, symbol: &str, date: &str) -> Result<Vec<IntradayRow>> {
     if date.len() < 8 {
-        return Err(Error::InvalidParam(format!("date must be YYYYMMDD, got: {date}")));
+        return Err(Error::InvalidParam(format!(
+            "date must be YYYYMMDD, got: {date}"
+        )));
     }
     let day = format!("{}-{}-{}", &date[..4], &date[4..6], &date[6..8]);
     let referer = format!(
@@ -38,7 +40,13 @@ pub async fn sina(client: &Client, symbol: &str, date: &str) -> Result<Vec<Intra
         ("day", &day),
     ];
     let count_text = client
-        .get_text(SOURCE_SINA, "stock_intraday_sina", COUNT_URL, &count_params, Some(&headers))
+        .get_text(
+            SOURCE_SINA,
+            "stock_intraday_sina",
+            COUNT_URL,
+            &count_params,
+            Some(&headers),
+        )
         .await?;
     let total: u32 = count_text
         .trim()
@@ -64,7 +72,13 @@ pub async fn sina(client: &Client, symbol: &str, date: &str) -> Result<Vec<Intra
             ("day", &day),
         ];
         let text = client
-            .get_text(SOURCE_SINA, "stock_intraday_sina", LIST_URL, &params, Some(&headers))
+            .get_text(
+                SOURCE_SINA,
+                "stock_intraday_sina",
+                LIST_URL,
+                &params,
+                Some(&headers),
+            )
             .await?;
         let v: Value = serde_json::from_str(&text).map_err(|e| Error::Parse {
             endpoint: "stock_intraday_sina",
@@ -76,12 +90,10 @@ pub async fn sina(client: &Client, symbol: &str, date: &str) -> Result<Vec<Intra
 }
 
 pub(crate) fn parse_rows(resp: &Value, symbol: &str) -> Result<Vec<IntradayRow>> {
-    let arr = resp
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "expected a JSON array".into(),
-        })?;
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "expected a JSON array".into(),
+    })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(IntradayRow {

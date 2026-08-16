@@ -306,7 +306,10 @@ async fn fetch_delisted_statement(
         return Ok(serde_json::json!({ "result": { "data": [] } }));
     }
     // 2) statement, filtered to the resolved dates.
-    let filter = format!("(SECUCODE=\"{secucode}\")(REPORT_DATE in ({}))", dates.join(","));
+    let filter = format!(
+        "(SECUCODE=\"{secucode}\")(REPORT_DATE in ({}))",
+        dates.join(",")
+    );
     client
         .get_json(
             SOURCE_EASTMONEY,
@@ -637,15 +640,17 @@ mod tests {
 
     #[test]
     fn parses_stock_profit_sheet_by_yearly_em() {
-        let rows = parse_stock_profit_sheet_by_yearly_em(&fixture(
-            "stock_profit_sheet_by_yearly_em.json",
-        ))
-        .unwrap();
+        let rows =
+            parse_stock_profit_sheet_by_yearly_em(&fixture("stock_profit_sheet_by_yearly_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 4);
         let m = find(&rows, "营业收入", "2024-12-31");
         assert_eq!(m.value, Some(170899000000.0));
         assert_eq!(find(&rows, "净利润", "2024-12-31").value, None);
-        assert_eq!(find(&rows, "净利润", "2023-12-31").value, Some(74734000000.0));
+        assert_eq!(
+            find(&rows, "净利润", "2023-12-31").value,
+            Some(74734000000.0)
+        );
     }
 
     #[test]
@@ -658,7 +663,10 @@ mod tests {
         let m = find(&rows, "营业收入", "2024-03-31");
         assert_eq!(m.value, Some(46405000000.0));
         assert_eq!(find(&rows, "净利润", "2024-03-31").value, None);
-        assert_eq!(find(&rows, "净利润", "2023-03-31").value, Some(20519000000.0));
+        assert_eq!(
+            find(&rows, "净利润", "2023-03-31").value,
+            Some(20519000000.0)
+        );
     }
 
     #[test]
@@ -670,7 +678,10 @@ mod tests {
         assert_eq!(rows.len(), 4);
         let m = find(&rows, "经营活动现金流量净额", "2024-12-31");
         assert_eq!(m.value, Some(9123700000.0));
-        assert_eq!(find(&rows, "投资活动现金流量净额", "2024-12-31").value, None);
+        assert_eq!(
+            find(&rows, "投资活动现金流量净额", "2024-12-31").value,
+            None
+        );
         assert_eq!(
             find(&rows, "投资活动现金流量净额", "2023-12-31").value,
             Some(-3344556.0)
@@ -686,7 +697,10 @@ mod tests {
         assert_eq!(rows.len(), 4);
         let m = find(&rows, "经营活动现金流量净额", "2024-03-31");
         assert_eq!(m.value, Some(1191200000.0));
-        assert_eq!(find(&rows, "投资活动现金流量净额", "2024-03-31").value, None);
+        assert_eq!(
+            find(&rows, "投资活动现金流量净额", "2024-03-31").value,
+            None
+        );
         assert_eq!(
             find(&rows, "投资活动现金流量净额", "2023-03-31").value,
             Some(-998870.0)
@@ -728,7 +742,10 @@ mod tests {
         assert_eq!(rows.len(), 4);
         let m = find(&rows, "经营活动现金流量净额", "2023-12-31");
         assert_eq!(m.value, Some(987654.0));
-        assert_eq!(find(&rows, "投资活动现金流量净额", "2023-12-31").value, None);
+        assert_eq!(
+            find(&rows, "投资活动现金流量净额", "2023-12-31").value,
+            None
+        );
         assert_eq!(
             find(&rows, "投资活动现金流量净额", "2022-12-31").value,
             Some(-54321.0)

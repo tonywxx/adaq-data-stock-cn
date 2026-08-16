@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "03900.HK",
+        "CORRE_SECURITY_CODE": "03900.HK",
+        "CORRE_SECUCODE": "03900.HK",
+        "CORRE_SECURITY_NAME": "NDRG",
+        "HKSDQMV": 350000000000,
+        "HKSDQMV_RANK": 2,
+        "HKTOTAL_MARKET_CAP": 340000000000,
+        "HKTOTAL_CAP_RANK": 2,
+        "OPERATE_INCOME": 500000000000,
+        "OPERATE_INCOME_RANK": 1,
+        "GROSS_PROFIT": 1200000000,
+        "GROSS_PROFIT_RANK": 1
+      },
+      {
+        "SECUCODE": "03900.HK",
+        "CORRE_SECURITY_CODE": "01299.HK",
+        "CORRE_SECUCODE": "01299.HK",
+        "CORRE_SECURITY_NAME": "友邦",
+        "HKSDQMV": 800000000000,
+        "HKSDQMV_RANK": 5,
+        "HKTOTAL_MARKET_CAP": 780000000000,
+        "HKTOTAL_CAP_RANK": 5,
+        "OPERATE_INCOME": 300000000000,
+        "OPERATE_INCOME_RANK": 4,
+        "GROSS_PROFIT": 1200000000,
+        "GROSS_PROFIT_RANK": 2
+      }
+    ]
+  }
+}

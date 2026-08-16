@@ -40,10 +40,8 @@ use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
 const SOURCE_ENDATA: &str = "endata";
-const YEAR_URL: &str =
-    "https://ys.endata.cn/enlib-api/api/movie/getMovie_BoxOffice_Year_List.do";
-const CINEMA_URL: &str =
-    "https://ys.endata.cn/enlib-api/api/cinema/getcinemaboxoffice_day_list.do";
+const YEAR_URL: &str = "https://ys.endata.cn/enlib-api/api/movie/getMovie_BoxOffice_Year_List.do";
+const CINEMA_URL: &str = "https://ys.endata.cn/enlib-api/api/cinema/getcinemaboxoffice_day_list.do";
 const MOVIE_REFERRER: &str = "https://ys.endata.cn/BoxOffice/Movie";
 const CINEMA_REFERRER: &str = "https://ys.endata.cn/BoxOffice/Org";
 const PAGE_SIZE: &str = "500";
@@ -314,9 +312,7 @@ pub async fn movie_boxoffice_cinema_daily(
     parse_movie_boxoffice_cinema_daily(&v)
 }
 
-pub fn parse_movie_boxoffice_cinema_daily(
-    resp: &Value,
-) -> Result<Vec<MovieBoxofficeCinemaDaily>> {
+pub fn parse_movie_boxoffice_cinema_daily(resp: &Value) -> Result<Vec<MovieBoxofficeCinemaDaily>> {
     if resp.get("status").and_then(|s| s.as_i64()) != Some(1) {
         return Err(Error::UpstreamChanged {
             origin: SOURCE_ENDATA,
@@ -373,9 +369,9 @@ mod tests {
 
     #[test]
     fn parses_yearly_first_week() {
-        let rows = parse_movie_boxoffice_yearly_first_week(
-            &fixture("movie_boxoffice_yearly_first_week.json"),
-        )
+        let rows = parse_movie_boxoffice_yearly_first_week(&fixture(
+            "movie_boxoffice_yearly_first_week.json",
+        ))
         .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].movie_name, "影片甲");
@@ -399,7 +395,8 @@ mod tests {
     #[test]
     fn parses_cinema_daily() {
         let rows =
-            parse_movie_boxoffice_cinema_daily(&fixture("movie_boxoffice_cinema_daily.json")).unwrap();
+            parse_movie_boxoffice_cinema_daily(&fixture("movie_boxoffice_cinema_daily.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].cinema_name, "影院甲");
         assert_eq!(rows[0].rank, Some(1));

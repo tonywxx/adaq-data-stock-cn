@@ -46,7 +46,13 @@ pub struct BondSpotDeal {
 pub async fn bond_spot_quote(client: &Client) -> Result<Vec<BondSpotQuote>> {
     let params = [("flag", "1"), ("lang", "cn")];
     let v = client
-        .post_form_json(SOURCE_CHINAMONEY, "bond_spot_quote", SPOT_QUOTE_URL, &params, None)
+        .post_form_json(
+            SOURCE_CHINAMONEY,
+            "bond_spot_quote",
+            SPOT_QUOTE_URL,
+            &params,
+            None,
+        )
         .await?;
     parse_spot_quote(&v)
 }
@@ -90,7 +96,13 @@ pub(crate) fn parse_spot_quote(resp: &Value) -> Result<Vec<BondSpotQuote>> {
 pub async fn bond_spot_deal(client: &Client) -> Result<Vec<BondSpotDeal>> {
     let params = [("flag", "1"), ("lang", "cn"), ("bondName", "")];
     let v = client
-        .post_form_json(SOURCE_CHINAMONEY, "bond_spot_deal", SPOT_DEAL_URL, &params, None)
+        .post_form_json(
+            SOURCE_CHINAMONEY,
+            "bond_spot_deal",
+            SPOT_DEAL_URL,
+            &params,
+            None,
+        )
         .await?;
     parse_spot_deal(&v)
 }

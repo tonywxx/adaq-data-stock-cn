@@ -50,11 +50,19 @@ pub(crate) fn fmt_date(s: &str) -> String {
 ///
 /// POSTs to the `FrrHis` endpoint; akshare requires `start_date`/`end_date`
 /// to sit within the same month.
-pub async fn repo_rate_hist(client: &Client, start_date: &str, end_date: &str) -> Result<Vec<RepoRate>> {
+pub async fn repo_rate_hist(
+    client: &Client,
+    start_date: &str,
+    end_date: &str,
+) -> Result<Vec<RepoRate>> {
     let url = "https://www.chinamoney.com.cn/ags/ms/cm-u-bk-currency/FrrHis";
     let sd = fmt_date(start_date);
     let ed = fmt_date(end_date);
-    let params = [("lang", "CN"), ("startDate", sd.as_str()), ("endDate", ed.as_str())];
+    let params = [
+        ("lang", "CN"),
+        ("startDate", sd.as_str()),
+        ("endDate", ed.as_str()),
+    ];
     let v = client
         .post_form_json(SOURCE_CHINAMONEY, "repo_rate_hist", url, &params, None)
         .await?;
@@ -152,7 +160,6 @@ pub(crate) fn parse_repo_rate_query_csv(text: &str, fdr: bool) -> Result<Vec<Rep
     Ok(out)
 }
 
-
 fn num(v: Option<&Value>) -> Option<f64> {
     v.and_then(|v| match v {
         Value::Number(n) => n.as_f64(),
@@ -167,7 +174,9 @@ mod tests {
     use std::path::PathBuf;
 
     fn fixture(name: &str) -> String {
-        let p = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures").join(name);
+        let p = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures")
+            .join(name);
         std::fs::read_to_string(p).unwrap()
     }
 

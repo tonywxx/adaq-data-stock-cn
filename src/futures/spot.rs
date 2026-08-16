@@ -63,10 +63,7 @@ pub async fn futures_zh_spot(client: &Client) -> Result<Vec<FuturesSpotRow>> {
             break;
         }
         out.extend(page_rows);
-        let total = v
-            .get("total")
-            .and_then(|t| t.as_u64())
-            .unwrap_or(0);
+        let total = v.get("total").and_then(|t| t.as_u64()).unwrap_or(0);
         if (page as u64 + 1) * PAGE_SIZE as u64 >= total {
             break;
         }
@@ -77,13 +74,13 @@ pub async fn futures_zh_spot(client: &Client) -> Result<Vec<FuturesSpotRow>> {
 }
 
 pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<FuturesSpotRow>> {
-    let list = resp
-        .get("list")
-        .and_then(|l| l.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing list".into(),
-        })?;
+    let list =
+        resp.get("list")
+            .and_then(|l| l.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_EASTMONEY,
+                message: "missing list".into(),
+            })?;
     let mut out = Vec::with_capacity(list.len());
     for item in list {
         let obj = match item.as_object() {
@@ -139,8 +136,8 @@ mod tests {
 
     #[test]
     fn parses_futures_zh_spot_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/futures_zh_spot.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/futures_zh_spot.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_spot(&v).unwrap();

@@ -1,0 +1,28 @@
+{
+  "data": {
+    "items": [
+      {
+        "public_date": 1715616000,
+        "country": "中国",
+        "title": "中国4月社会融资规模",
+        "importance": 3,
+        "actual": "1.2",
+        "forecast": "1.5",
+        "previous": "1.0",
+        "revised": null,
+        "uri": "https://wallstreetcn.com/x/1"
+      },
+      {
+        "public_date": 1715702400,
+        "country": "美国",
+        "title": "美国当周初请失业金人数",
+        "importance": 2,
+        "actual": "0.8",
+        "forecast": "0.9",
+        "previous": "1.0",
+        "revised": "0.95",
+        "uri": "https://wallstreetcn.com/x/2"
+      }
+    ]
+  }
+}

@@ -6,11 +6,7 @@ use crate::core::error::{Error, Result};
 /// Static, well-known Eastmoney `ut` token — no JS signing required (ADR-0005).
 const UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
 
-const PERIOD_MAP: &[(&str, &str)] = &[
-    ("daily", "101"),
-    ("weekly", "102"),
-    ("monthly", "103"),
-];
+const PERIOD_MAP: &[(&str, &str)] = &[("daily", "101"), ("weekly", "102"), ("monthly", "103")];
 
 const ADJUST_MAP: &[(&str, &str)] = &[("qfq", "1"), ("hfq", "2"), ("", "0")];
 
@@ -96,7 +92,10 @@ pub async fn option_daily(
 pub async fn option_minute(client: &Client, secid: &str) -> Result<Vec<OptionMinuteRow>> {
     let params = [
         ("secid", secid),
-        ("fields1", "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f17"),
+        (
+            "fields1",
+            "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f17",
+        ),
         ("fields2", "f51,f53,f54,f55,f56,f57,f58"),
         ("iscr", "0"),
         ("iscca", "0"),
@@ -113,11 +112,10 @@ pub async fn option_minute(client: &Client, secid: &str) -> Result<Vec<OptionMin
             None,
         )
         .await?;
-    let inner = strip_jsonp(&text)
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "trends2 response is not wrapped JSONP".into(),
-        })?;
+    let inner = strip_jsonp(&text).ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "trends2 response is not wrapped JSONP".into(),
+    })?;
     let v: Value = serde_json::from_str(inner).map_err(|e| Error::Parse {
         endpoint: "option_minute",
         message: e.to_string(),
@@ -249,8 +247,8 @@ mod tests {
 
     #[test]
     fn parses_eastmoney_option_daily_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/option_daily.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/option_daily.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse(&v).unwrap();
@@ -270,8 +268,8 @@ mod tests {
 
     #[test]
     fn parses_eastmoney_option_minute_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/option_minute.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/option_minute.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         let rows = parse_minute(&v, "1.10003720").unwrap();

@@ -42,7 +42,11 @@ pub async fn futures_hog_core(client: &Client, symbol: &str) -> Result<Vec<HogPo
         "外三元" => "1",
         "内三元" => "2",
         "土杂猪" => "3",
-        _ => return Err(Error::InvalidParam("symbol must be 外三元/内三元/土杂猪".into())),
+        _ => {
+            return Err(Error::InvalidParam(
+                "symbol must be 外三元/内三元/土杂猪".into(),
+            ));
+        }
     };
     let v = client
         .post_form_json(
@@ -63,9 +67,11 @@ pub async fn futures_hog_cost(client: &Client, symbol: &str) -> Result<Vec<HogPo
         "豆粕" => (HITS_URL, "5"),
         "二元母猪价格" => (MAP_URL, "1"),
         "仔猪价格" => (MAP_URL, "2"),
-        _ => return Err(Error::InvalidParam(
-            "symbol must be 玉米/豆粕/二元母猪价格/仔猪价格".into(),
-        )),
+        _ => {
+            return Err(Error::InvalidParam(
+                "symbol must be 玉米/豆粕/二元母猪价格/仔猪价格".into(),
+            ));
+        }
     };
     let v = client
         .post_form_json(
@@ -179,35 +185,70 @@ pub(crate) fn parse_hog_supply(resp: &Value, symbol: &str) -> Result<Vec<HogSupp
             .iter()
             .map(|r| {
                 let mut extra = std::collections::HashMap::new();
-                extra.insert("大豆进口金额".into(), cell_num(idx(r, 1)).unwrap_or(f64::NAN));
-                extra.insert("大豆播种面积".into(), cell_num(idx(r, 2)).unwrap_or(f64::NAN));
-                extra.insert("玉米进口金额".into(), cell_num(idx(r, 3)).unwrap_or(f64::NAN));
-                extra.insert("玉米播种面积".into(), cell_num(idx(r, 4)).unwrap_or(f64::NAN));
-                HogSupplyRow { period: cell_str(idx(r, 0)), date: None, value: None, extra }
+                extra.insert(
+                    "大豆进口金额".into(),
+                    cell_num(idx(r, 1)).unwrap_or(f64::NAN),
+                );
+                extra.insert(
+                    "大豆播种面积".into(),
+                    cell_num(idx(r, 2)).unwrap_or(f64::NAN),
+                );
+                extra.insert(
+                    "玉米进口金额".into(),
+                    cell_num(idx(r, 3)).unwrap_or(f64::NAN),
+                );
+                extra.insert(
+                    "玉米播种面积".into(),
+                    cell_num(idx(r, 4)).unwrap_or(f64::NAN),
+                );
+                HogSupplyRow {
+                    period: cell_str(idx(r, 0)),
+                    date: None,
+                    value: None,
+                    extra,
+                }
             })
             .collect()),
         "白条肉" => Ok(arr
             .iter()
             .map(|r| {
                 let mut extra = std::collections::HashMap::new();
-                extra.insert("白条肉平均出厂价格".into(), cell_num(idx(r, 1)).unwrap_or(f64::NAN));
+                extra.insert(
+                    "白条肉平均出厂价格".into(),
+                    cell_num(idx(r, 1)).unwrap_or(f64::NAN),
+                );
                 extra.insert("环比".into(), cell_num(idx(r, 2)).unwrap_or(f64::NAN));
                 extra.insert("同比".into(), cell_num(idx(r, 3)).unwrap_or(f64::NAN));
-                HogSupplyRow { period: cell_str(idx(r, 0)), date: None, value: None, extra }
+                HogSupplyRow {
+                    period: cell_str(idx(r, 0)),
+                    date: None,
+                    value: None,
+                    extra,
+                }
             })
             .collect()),
         "生猪产能" => Ok(arr
             .iter()
             .map(|r| {
                 let mut extra = std::collections::HashMap::new();
-                extra.insert("能繁母猪存栏".into(), cell_num(idx(r, 1)).unwrap_or(f64::NAN));
+                extra.insert(
+                    "能繁母猪存栏".into(),
+                    cell_num(idx(r, 1)).unwrap_or(f64::NAN),
+                );
                 extra.insert("猪肉产量".into(), cell_num(idx(r, 2)).unwrap_or(f64::NAN));
                 extra.insert("生猪存栏".into(), cell_num(idx(r, 3)).unwrap_or(f64::NAN));
                 extra.insert("生猪出栏".into(), cell_num(idx(r, 4)).unwrap_or(f64::NAN));
-                HogSupplyRow { period: cell_str(idx(r, 0)), date: None, value: None, extra }
+                HogSupplyRow {
+                    period: cell_str(idx(r, 0)),
+                    date: None,
+                    value: None,
+                    extra,
+                }
             })
             .collect()),
-        _ => Err(Error::InvalidParam(format!("unknown supply symbol: {symbol}"))),
+        _ => Err(Error::InvalidParam(format!(
+            "unknown supply symbol: {symbol}"
+        ))),
     }
 }
 
@@ -314,7 +355,8 @@ mod tests {
 
     #[test]
     fn parse_hog_supply_period_based_ok() {
-        let rows = parse_hog_supply(&fixture("futures_hog_supply_period.json"), "生猪产能").unwrap();
+        let rows =
+            parse_hog_supply(&fixture("futures_hog_supply_period.json"), "生猪产能").unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].period, Some("2024-01".into()));
         assert!(approx(rows[0].extra.get("能繁母猪存栏").copied(), 4150.0));

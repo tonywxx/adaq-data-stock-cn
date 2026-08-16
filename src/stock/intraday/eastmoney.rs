@@ -109,8 +109,8 @@ mod tests {
 
     #[test]
     fn parses_eastmoney_intraday_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/stock_intraday_em.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/stock_intraday_em.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let rows = parse_stream(&txt, "600000").unwrap();
         assert_eq!(rows.len(), 3);

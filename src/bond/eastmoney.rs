@@ -153,8 +153,7 @@ fn parse_us_rate_item(item: &Value) -> Option<BondZhUsRate> {
 const COV_COMP_URL: &str = "https://16.push2.eastmoney.com/api/qt/clist/get";
 /// Static Eastmoney `ut` token — no JS signing required (ADR-0005).
 const COV_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const COV_FIELDS: &str =
-    "f1,f152,f2,f3,f12,f13,f14,f227,f228,f229,f230,f231,f232,f233,f234,f235,f236,f237,f238,f239,f240,f241,f242,f26,f243";
+const COV_FIELDS: &str = "f1,f152,f2,f3,f12,f13,f14,f227,f228,f229,f230,f231,f232,f233,f234,f235,f236,f237,f238,f239,f240,f241,f242,f26,f243";
 
 /// Convertible-bond comparison row (`bond_cov_comparison`).
 #[derive(Debug, Clone, serde::Serialize)]
@@ -225,7 +224,12 @@ pub async fn bond_cov_comparison(client: &Client) -> Result<Vec<BondCovCompariso
         ("fields", COV_FIELDS),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "bond_cov_comparison", COV_COMP_URL, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "bond_cov_comparison",
+            COV_COMP_URL,
+            &params,
+        )
         .await?;
     parse_cov_comparison(&v)
 }

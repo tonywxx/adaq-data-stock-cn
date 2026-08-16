@@ -192,13 +192,13 @@ pub async fn option_current_cffex_em(client: &Client) -> Result<Vec<CffexOptionC
 }
 
 pub(crate) fn parse_current_cffex_em(resp: &Value) -> Result<Vec<CffexOptionCurrentRow>> {
-    let list = resp
-        .get("list")
-        .and_then(|l| l.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing list".into(),
-        })?;
+    let list =
+        resp.get("list")
+            .and_then(|l| l.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_EASTMONEY,
+                message: "missing list".into(),
+            })?;
     let mut out = Vec::with_capacity(list.len());
     for (i, item) in list.iter().enumerate() {
         out.push(CffexOptionCurrentRow {
@@ -439,10 +439,7 @@ pub struct SseDailyStatsRow {
 /// (akshare `option_daily_stats_sse`).
 ///
 /// `date` is `YYYYMMDD` (e.g. `"20240626"`).
-pub async fn option_daily_stats_sse(
-    client: &Client,
-    date: &str,
-) -> Result<Vec<SseDailyStatsRow>> {
+pub async fn option_daily_stats_sse(client: &Client, date: &str) -> Result<Vec<SseDailyStatsRow>> {
     let params = [
         ("isPagination", "false"),
         ("sqlId", "COMMON_SSE_ZQPZ_YSP_QQ_SJTJ_MRTJ_CX"),
@@ -582,12 +579,10 @@ pub(crate) fn parse_cffex_spot_sina(resp: &Value) -> Result<Vec<CffexOptionSpotR
 /// Parse one positional quote row. Call rows have 9 fields (index 7 = 行权价),
 /// put rows have 8 (no separate exercise-price field).
 fn parse_spot_row(row: &Value, side: &str) -> Result<CffexOptionSpotRow> {
-    let arr = row
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "spot row is not an array".into(),
-        })?;
+    let arr = row.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "spot row is not an array".into(),
+    })?;
     let get = |i: usize| arr.get(i);
     Ok(CffexOptionSpotRow {
         side: side.to_string(),
@@ -598,11 +593,7 @@ fn parse_spot_row(row: &Value, side: &str) -> Result<CffexOptionSpotRow> {
         ask_volume: num(get(4)),
         open_interest: num(get(5)),
         change: num(get(6)),
-        exercise_price: if side == "call" {
-            num(get(7))
-        } else {
-            None
-        },
+        exercise_price: if side == "call" { num(get(7)) } else { None },
         symbol: match if side == "call" { get(8) } else { get(7) } {
             Some(Value::String(s)) => Some(s.clone()),
             Some(Value::Number(n)) => Some(n.to_string()),

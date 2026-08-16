@@ -2,7 +2,7 @@
 
 use serde_json::Value;
 
-use crate::board::{fnum, fstr, fetch_clist_page, BoardConsRow, BoardRow, PAGE_SIZE};
+use crate::board::{BoardConsRow, BoardRow, PAGE_SIZE, fetch_clist_page, fnum, fstr};
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
@@ -35,7 +35,10 @@ pub async fn stock_board_concept_name_em(client: &Client) -> Result<Vec<BoardRow
 ///
 /// `symbol` may be a `BKxxxx` board code or a Chinese board name (resolved via
 /// [`stock_board_concept_name_em`]). Port of akshare `stock_board_concept_cons_em`.
-pub async fn stock_board_concept_cons_em(client: &Client, symbol: &str) -> Result<Vec<BoardConsRow>> {
+pub async fn stock_board_concept_cons_em(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<BoardConsRow>> {
     let code = resolve_code(client, symbol).await?;
     fetch_cons(
         client,

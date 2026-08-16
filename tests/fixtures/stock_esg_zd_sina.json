@@ -1,0 +1,11 @@
+{
+  "result": {
+    "data": {
+      "total": 2,
+      "data": [
+        {"ticker":"600000","esg_score":75.0,"report_date":"2024-03-31","environmental_score":74.0,"social_score":73.0,"governance_score":76.0},
+        {"ticker":"000001","esg_score":80.0,"report_date":"2024-03-31","environmental_score":79.0,"social_score":78.0,"governance_score":81.0}
+      ]
+    }
+  }
+}

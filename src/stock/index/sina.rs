@@ -5,8 +5,7 @@ use crate::core::error::{Error, Result};
 use crate::stock::index::IndexSpotQuote;
 
 const COUNT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple?node=hs_s";
-const SPOT_URL: &str =
-    "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple";
+const SPOT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple";
 const PAGE_SIZE: u32 = 80;
 const NODE: &str = "hs_s";
 
@@ -62,12 +61,10 @@ pub async fn spot(client: &Client) -> Result<Vec<IndexSpotQuote>> {
 }
 
 pub(crate) fn parse_rows(resp: &Value) -> Result<Vec<IndexSpotQuote>> {
-    let arr = resp
-        .as_array()
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "expected a JSON array".into(),
-        })?;
+    let arr = resp.as_array().ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "expected a JSON array".into(),
+    })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(IndexSpotQuote {

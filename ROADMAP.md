@@ -120,7 +120,22 @@
 | 78 | 迁徙 `event`(百度迁徙,新增顶层领域) | DEFERRED | 0 | 0 |
 | 79 | 视频 `video`(艺恩,新增顶层领域) | DEFERRED | 0 | 0 |
 
-**累计**:79 个领域、498 个公开函数、490 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+| 80 | 中国宏观扩展2 `economic::macro_china_more`(东财 datacenter:财金/航运/农产品/油价等) | ✅ DONE | 7 | 10 ✅ |
+| 81 | 美国宏观扩展 `economic::macro_usa_more`(Jin10 `datacenter-api` 需 `x-csrf-token`) | DEFERRED | 0 | 0 |
+| 82 | 宏观杂项 `economic::macro_misc`(华尔街见闻日历 / 外汇情绪) | ✅ DONE | 2 | 2 ✅ |
+| 83 | 国证指数 `index::cons`(国证系列现货 / 历史) | ✅ DONE | 3 | 4 ✅ |
+| 84 | 指数扩展 `index::extra`(柯桥时尚 / 郑商所 / 央行动力 / 义乌指数等) | ✅ DONE | 11 | 11 ✅ |
+| 85 | 港股美股中资 `index::stock_hk_us_zh`(恒生 / 道琼斯 / 中资股) | ✅ DONE | 5 | 5 ✅ |
+| 86 | A股个股信息 `stock::info`(概况 / 退市 / 限售) | ✅ DONE | 6 | 6 ✅ |
+| 87 | 港股行情 `stock::hk`(东财 / 新浪 现货 / 概况 / 财务) | ✅ DONE | 10 | 10 ✅ |
+| 88 | 美股行情 `stock::us`(东财 目标价 / 粉单) | ✅ DONE | 3 | 2 ✅ |
+| 89 | A股资金流 `stock::fund_flow`(东财 主力 / 板块 / 行业) | ✅ DONE | 6 | 11 ✅ |
+| 90 | 板块行情 `stock::board`(东财 行业 / 概念 spot / hist / kline) | ✅ DONE | 16 | 11 ✅ |
+| 91 | ESG 评论热度 `stock::esg_comment_hot`(新浪 / 华证 / MSCI / 中证 / 商道融绿) | ✅ DONE | 9 | 10 ✅ |
+
+**累计**:91 个领域、534 个公开(已落地)函数、578 个离线解析测试,`cargo build` / `cargo test` / `cargo clippy` 全绿。
+
+> 第 80-91 行新增 12 个叶子模块(在既有 `economic` / `index` / `stock` 顶层域下),共 78 个公开函数、88 个离线解析测试(由 lead 预置模块骨架后 dispatch 12 个并行 worker 落地)。其中 `economic::macro_usa_more` 整模块因 Jin10 `datacenter-api` 需 `x-csrf-token` 会话鉴权,全部 40 个美国宏观函数 DEFERRED;`stock::fund_flow` 与 `stock::board` 的解析器被多个对外函数复用,故测试数高于函数数。
 
 > 第 68-79 行新增 12 个顶层领域、22 个公开函数、24 个离线解析测试(由 lead 直接 dispatch 10 个并行 worker 落地,覆盖纯 HTTP 长尾):`currency`(`currency_*` 走 currencyscoop 纯 JSON API、`fx_c_swap_cm` 走外汇交易中心 POST;`currency_boc_sina`/`currency_boc_safe`/`currency_pair_map`/`fx_quote_baidu` 为 HTML/Excel/反爬 → DEFERRED);`reits`(东财 push2/push2his,无 DEFERRED);`futures_derivative`(大商所/广期所/上期能源/上期所 合约信息为公开 JSON、新浪主力 JSONP、东财 hog datacenter 全落地;`cffex`/`czce` 为 XML、`futures_hold_pos_sina`/`futures_spot_sys` 为 `pd.read_html`、`futures_display_main_sina` 依赖 `demjson` → DEFERRED);`article`(`fred_md`/`fred_qd` 走 FRED S3 CSV;EPU/FF/RV 为 Excel/HTML/JS → DEFERRED);`hf`(`hf_sp_500` 走 GitHub 公开 CSV,无 DEFERRED);`fortune`(仅 `xincaifu_rank` 新财富 JSONP 落地,Bloomberg/胡润/福布斯 为 HTML、`business`/`online_value_artist` 需 JS 解密 → DEFERRED);`qdii`(集思录 `qdii_a/e_index_jsl` 公开 JSON,无 DEFERRED);`air`/`qhkc`/`bank`/`event`/`video` 全 DEFERRED(XML/HTML/JS 签名/API 下线/反爬)。
 

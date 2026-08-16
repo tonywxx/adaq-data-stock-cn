@@ -99,19 +99,12 @@ pub async fn rate_interbank(
             ("pageNum", page_s.as_str()),
         ];
         let v = client
-            .get_json(
-                SOURCE_EASTMONEY,
-                "rate_interbank",
-                BASE,
-                &params,
-            )
+            .get_json(SOURCE_EASTMONEY, "rate_interbank", BASE, &params)
             .await?;
-        let result = v
-            .get("result")
-            .ok_or_else(|| Error::UpstreamChanged {
-                origin: SOURCE_EASTMONEY,
-                message: "missing result".into(),
-            })?;
+        let result = v.get("result").ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_EASTMONEY,
+            message: "missing result".into(),
+        })?;
         let data = result
             .get("data")
             .and_then(|d| d.as_array())
@@ -171,12 +164,18 @@ mod tests {
 
     #[test]
     fn parses_interbank_fixture() {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("tests/fixtures/rate_interbank_em.json");
+        let path =
+            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/rate_interbank_em.json");
         let txt = std::fs::read_to_string(path).unwrap();
         let v: Value = serde_json::from_str(&txt).unwrap();
         // Mirror the production parse path by reading result.data.
-        let data = v.get("result").unwrap().get("data").unwrap().as_array().unwrap();
+        let data = v
+            .get("result")
+            .unwrap()
+            .get("data")
+            .unwrap()
+            .as_array()
+            .unwrap();
         let rows: Vec<InterbankRate> = data
             .iter()
             .map(|item| InterbankRate {

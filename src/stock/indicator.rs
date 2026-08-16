@@ -275,7 +275,9 @@ pub async fn stock_zh_valuation_comparison_em(
 
 /// Parse an Eastmoney datacenter `result.data` array into
 /// [`StockZhValuationComparisonRow`]s. `result: null` / `data: null` → empty.
-pub(crate) fn parse_valuation_comparison(resp: &Value) -> Result<Vec<StockZhValuationComparisonRow>> {
+pub(crate) fn parse_valuation_comparison(
+    resp: &Value,
+) -> Result<Vec<StockZhValuationComparisonRow>> {
     let data = match resp.get("result").and_then(|r| r.get("data")) {
         Some(Value::Array(a)) => a,
         Some(Value::Null) | None => return Ok(Vec::new()),
@@ -283,7 +285,7 @@ pub(crate) fn parse_valuation_comparison(resp: &Value) -> Result<Vec<StockZhValu
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "result.data is not an array".into(),
-            })
+            });
         }
     };
     let mut out = Vec::with_capacity(data.len());
@@ -403,7 +405,7 @@ pub(crate) fn parse_value_em(resp: &Value) -> Result<Vec<StockValueEmRow>> {
             return Err(Error::UpstreamChanged {
                 origin: SOURCE_EASTMONEY,
                 message: "result.data is not an array".into(),
-            })
+            });
         }
     };
     let mut out = Vec::with_capacity(data.len());

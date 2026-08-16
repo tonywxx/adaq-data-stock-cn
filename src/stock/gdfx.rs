@@ -167,7 +167,9 @@ pub async fn stock_gdfx_free_holding_statistics_em(
     parse_free_holding_statistics(&v)
 }
 
-pub(crate) fn parse_free_holding_statistics(resp: &Value) -> Result<Vec<GdfxFreeHoldingStatistics>> {
+pub(crate) fn parse_free_holding_statistics(
+    resp: &Value,
+) -> Result<Vec<GdfxFreeHoldingStatistics>> {
     let data = result_data(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
@@ -801,7 +803,10 @@ pub async fn stock_gdfx_free_holding_analyse_em(
     let d = fmt_date8(date)?;
     let filter = format!("(END_DATE='{d}')");
     let params = [
-        ("reportName", "RPT_CUSTOM_F10_EH_FREEHOLDERS_JOIN_FREEHOLDER_SHAREANALYSIS"),
+        (
+            "reportName",
+            "RPT_CUSTOM_F10_EH_FREEHOLDERS_JOIN_FREEHOLDER_SHAREANALYSIS",
+        ),
         ("columns", "ALL;D10_ADJCHRATE,D30_ADJCHRATE,D60_ADJCHRATE"),
         ("pageSize", "500"),
         ("pageNumber", "1"),
@@ -895,7 +900,10 @@ pub async fn stock_gdfx_holding_analyse_em(
     let d = fmt_date8(date)?;
     let filter = format!("(END_DATE='{d}')");
     let params = [
-        ("reportName", "RPT_CUSTOM_DMSK_HOLDERS_JOIN_HOLDER_SHAREANALYSIS"),
+        (
+            "reportName",
+            "RPT_CUSTOM_DMSK_HOLDERS_JOIN_HOLDER_SHAREANALYSIS",
+        ),
         ("columns", "ALL;D10_ADJCHRATE,D30_ADJCHRATE,D60_ADJCHRATE"),
         ("pageSize", "500"),
         ("pageNumber", "1"),
@@ -1111,9 +1119,14 @@ mod tests {
 
     #[test]
     fn parses_free_holding_statistics() {
-        let rows = parse_free_holding_statistics(&fixture("stock_gdfx_free_holding_statistics_em.json")).unwrap();
+        let rows =
+            parse_free_holding_statistics(&fixture("stock_gdfx_free_holding_statistics_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("香港中央结算有限公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("香港中央结算有限公司".to_string())
+        );
         assert_eq!(rows[0].statistics_times, Some(12));
         assert_eq!(rows[0].d10_avg, Some(2.35));
         assert_eq!(rows[0].d60_min, Some(-1.5));
@@ -1122,18 +1135,26 @@ mod tests {
 
     #[test]
     fn parses_holding_statistics() {
-        let rows = parse_holding_statistics(&fixture("stock_gdfx_holding_statistics_em.json")).unwrap();
+        let rows =
+            parse_holding_statistics(&fixture("stock_gdfx_holding_statistics_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("中国证券金融股份有限公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("中国证券金融股份有限公司".to_string())
+        );
         assert_eq!(rows[0].d30_max, Some(5.1));
         assert_eq!(rows[1].statistics_times, Some(3));
     }
 
     #[test]
     fn parses_free_holding_change() {
-        let rows = parse_free_holding_change(&fixture("stock_gdfx_free_holding_change_em.json")).unwrap();
+        let rows =
+            parse_free_holding_change(&fixture("stock_gdfx_free_holding_change_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("中央汇金资产管理有限责任公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("中央汇金资产管理有限责任公司".to_string())
+        );
         assert_eq!(rows[0].hold_num_total, Some(100.0));
         assert_eq!(rows[0].hold_num_new, Some(10.0));
         assert_eq!(rows[0].market_cap, Some(5000.0));
@@ -1144,7 +1165,10 @@ mod tests {
     fn parses_holding_change() {
         let rows = parse_holding_change(&fixture("stock_gdfx_holding_change_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("全国社保基金一零二组合".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("全国社保基金一零二组合".to_string())
+        );
         assert_eq!(rows[0].hold_num_increase, Some(20.0));
         assert_eq!(rows[0].hold_num_unchanged, Some(8.0));
         assert_eq!(rows[1].hold_stocks, Some("600000,000001".to_string()));
@@ -1155,7 +1179,10 @@ mod tests {
         let rows = parse_free_top_10(&fixture("stock_gdfx_free_top_10_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].rank, Some(1));
-        assert_eq!(rows[0].holder_name, Some("香港中央结算有限公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("香港中央结算有限公司".to_string())
+        );
         assert_eq!(rows[0].holder_nature, Some("境外法人".to_string()));
         assert_eq!(rows[0].hold_num, Some(12345678.0));
         assert_eq!(rows[0].hold_ratio, Some(12.34));
@@ -1168,7 +1195,10 @@ mod tests {
         let rows = parse_top_10(&fixture("stock_gdfx_top_10_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
         assert_eq!(rows[0].rank, Some(1));
-        assert_eq!(rows[0].holder_name, Some("中国移动通信集团有限公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("中国移动通信集团有限公司".to_string())
+        );
         assert_eq!(rows[0].shares_type, Some("限售流通股".to_string()));
         assert_eq!(rows[0].hold_num, Some(99999999.0));
         assert_eq!(rows[0].hold_ratio, Some(45.6));
@@ -1177,9 +1207,13 @@ mod tests {
 
     #[test]
     fn parses_free_holding_detail() {
-        let rows = parse_free_holding_detail(&fixture("stock_gdfx_free_holding_detail_em.json")).unwrap();
+        let rows =
+            parse_free_holding_detail(&fixture("stock_gdfx_free_holding_detail_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("香港中央结算有限公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("香港中央结算有限公司".to_string())
+        );
         assert_eq!(rows[0].security_code, Some("600000".to_string()));
         assert_eq!(rows[0].security_name, Some("浦发银行".to_string()));
         assert_eq!(rows[0].end_date, Some("2021-09-30".to_string()));
@@ -1195,7 +1229,10 @@ mod tests {
     fn parses_holding_detail() {
         let rows = parse_holding_detail(&fixture("stock_gdfx_holding_detail_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("全国社保基金一零二组合".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("全国社保基金一零二组合".to_string())
+        );
         assert_eq!(rows[0].holder_newtype, Some("社保".to_string()));
         assert_eq!(rows[0].rank, Some(3));
         assert_eq!(rows[0].security_code, Some("000001".to_string()));
@@ -1209,9 +1246,13 @@ mod tests {
 
     #[test]
     fn parses_free_holding_analyse() {
-        let rows = parse_free_holding_analyse(&fixture("stock_gdfx_free_holding_analyse_em.json")).unwrap();
+        let rows = parse_free_holding_analyse(&fixture("stock_gdfx_free_holding_analyse_em.json"))
+            .unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("香港中央结算有限公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("香港中央结算有限公司".to_string())
+        );
         assert_eq!(rows[0].security_code, Some("600519".to_string()));
         assert_eq!(rows[0].hold_num, Some(8888888.0));
         assert_eq!(rows[0].d10_adjchrate, Some(3.2));
@@ -1224,7 +1265,10 @@ mod tests {
     fn parses_holding_analyse() {
         let rows = parse_holding_analyse(&fixture("stock_gdfx_holding_analyse_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("中国移动通信集团有限公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("中国移动通信集团有限公司".to_string())
+        );
         assert_eq!(rows[0].holder_type_org, Some("国有法人".to_string()));
         assert_eq!(rows[0].security_code, Some("600941".to_string()));
         assert_eq!(rows[0].hold_num_change, Some(0.0));
@@ -1235,11 +1279,19 @@ mod tests {
 
     #[test]
     fn parses_free_holding_teamwork() {
-        let rows = parse_free_holding_teamwork(&fixture("stock_gdfx_free_holding_teamwork_em.json")).unwrap();
+        let rows =
+            parse_free_holding_teamwork(&fixture("stock_gdfx_free_holding_teamwork_em.json"))
+                .unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("全国社保基金一零二组合".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("全国社保基金一零二组合".to_string())
+        );
         assert_eq!(rows[0].holder_type, Some("社保".to_string()));
-        assert_eq!(rows[0].coop_holder_name, Some("全国社保基金一零三组合".to_string()));
+        assert_eq!(
+            rows[0].coop_holder_name,
+            Some("全国社保基金一零三组合".to_string())
+        );
         assert_eq!(rows[0].coop_num, Some(6.0));
         assert_eq!(rows[1].coop_holder_type, Some("基金".to_string()));
     }
@@ -1248,8 +1300,14 @@ mod tests {
     fn parses_holding_teamwork() {
         let rows = parse_holding_teamwork(&fixture("stock_gdfx_holding_teamwork_em.json")).unwrap();
         assert_eq!(rows.len(), 2);
-        assert_eq!(rows[0].holder_name, Some("中国证券金融股份有限公司".to_string()));
-        assert_eq!(rows[0].coop_holder_name, Some("中央汇金资产管理有限责任公司".to_string()));
+        assert_eq!(
+            rows[0].holder_name,
+            Some("中国证券金融股份有限公司".to_string())
+        );
+        assert_eq!(
+            rows[0].coop_holder_name,
+            Some("中央汇金资产管理有限责任公司".to_string())
+        );
         assert_eq!(rows[0].coop_num, Some(9.0));
         assert_eq!(rows[1].stock_detail, Some("个股详情数据".to_string()));
     }

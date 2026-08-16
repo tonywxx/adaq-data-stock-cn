@@ -1,0 +1,11 @@
+{
+  "result": {
+    "data": {
+      "total": 2,
+      "data": [
+        {"date":"2024-03-31","symbol":"600000","market":"SH","name":"浦发银行","esg_score":78.5,"esg_score_grade":"BBB","e_score":80.1,"e_score_grade":"BBB","s_score":75.2,"s_score_grade":"BB","g_score":79.0,"g_score_grade":"BBB"},
+        {"date":"2024-03-31","symbol":"000001","market":"SZ","name":"平安银行","esg_score":82.0,"esg_score_grade":"A","e_score":81.0,"e_score_grade":"A","s_score":80.0,"s_score_grade":"A","g_score":83.0,"g_score_grade":"A"}
+      ]
+    }
+  }
+}

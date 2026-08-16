@@ -38,17 +38,17 @@ const SOURCE_SHFE: &str = "shfe";
 /// GFEX daily position-rank endpoints (JSON, multi-page POST).
 const SOURCE_GFEX: &str = "gfex";
 
-const SHFE_RANK_URL: &str =
-    "https://www.shfe.com.cn/data/tradedata/future/dailydata/pm{date}.dat";
+const SHFE_RANK_URL: &str = "https://www.shfe.com.cn/data/tradedata/future/dailydata/pm{date}.dat";
 /// akshare `cons.shfe_headers`.
-const SHFE_HEADERS: &[(&str, &str)] =
-    &[("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)")];
+const SHFE_HEADERS: &[(&str, &str)] = &[(
+    "User-Agent",
+    "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)",
+)];
 
 const GFEX_VARS_URL: &str = "http://www.gfex.com.cn/u/interfacesWebVariety/loadList";
 const GFEX_CONTRACT_URL: &str =
     "http://www.gfex.com.cn/u/interfacesWebTiMemberDealPosiQuotes/loadListContract_id";
-const GFEX_DATA_URL: &str =
-    "http://www.gfex.com.cn/u/interfacesWebTiMemberDealPosiQuotes/loadList";
+const GFEX_DATA_URL: &str = "http://www.gfex.com.cn/u/interfacesWebTiMemberDealPosiQuotes/loadList";
 /// akshare GFEX `User-Agent` header.
 const GFEX_HEADERS: &[(&str, &str)] = &[(
     "User-Agent",
@@ -109,7 +109,13 @@ pub async fn get_shfe_rank_table(
     }
     let url = SHFE_RANK_URL.replace("{date}", date);
     let v = client
-        .get_json_with_headers(SOURCE_SHFE, "get_shfe_rank_table", &url, &[], Some(SHFE_HEADERS))
+        .get_json_with_headers(
+            SOURCE_SHFE,
+            "get_shfe_rank_table",
+            &url,
+            &[],
+            Some(SHFE_HEADERS),
+        )
         .await?;
     let rows = parse_shfe_rank(&v, date)?;
     match vars_list {
@@ -230,7 +236,13 @@ pub async fn futures_gfex_position_rank(
 /// Fetch the full GFEX variety list (`__futures_gfex_vars_list`).
 async fn gfex_vars_list(client: &Client) -> Result<Vec<String>> {
     let v = client
-        .post_form_json(SOURCE_GFEX, "futures_gfex_position_rank", GFEX_VARS_URL, &[], Some(GFEX_HEADERS))
+        .post_form_json(
+            SOURCE_GFEX,
+            "futures_gfex_position_rank",
+            GFEX_VARS_URL,
+            &[],
+            Some(GFEX_HEADERS),
+        )
         .await?;
     let mut out = Vec::new();
     if let Some(arr) = v.get("data").and_then(|d| d.as_array()) {

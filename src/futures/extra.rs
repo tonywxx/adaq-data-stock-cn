@@ -54,10 +54,13 @@ const SINA_FOREIGN_DATE: &str = "2025_3_5";
 /// `=(` and the last `);` and return the slice in between, which is a plain JSON
 /// array that [`serde_json`] can parse.
 fn strip_jsonp_array(text: &str) -> Result<&str> {
-    let start = text.find("=(").map(|i| i + 2).ok_or_else(|| Error::UpstreamChanged {
-        origin: SOURCE_SINA,
-        message: "JSONP array wrapper `=(` not found".into(),
-    })?;
+    let start = text
+        .find("=(")
+        .map(|i| i + 2)
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_SINA,
+            message: "JSONP array wrapper `=(` not found".into(),
+        })?;
     let end = text.rfind(");").ok_or_else(|| Error::UpstreamChanged {
         origin: SOURCE_SINA,
         message: "JSONP array terminator `);` not found".into(),
@@ -116,7 +119,10 @@ pub struct FuturesZhDailySinaRow {
 ///
 /// `symbol` is a Sina futures symbol such as `"RB0"` (main continuous) or
 /// `"RB2410"`. Returns the full daily K-line history for that symbol.
-pub async fn futures_zh_daily_sina(client: &Client, symbol: &str) -> Result<Vec<FuturesZhDailySinaRow>> {
+pub async fn futures_zh_daily_sina(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<FuturesZhDailySinaRow>> {
     let callback = format!("var%20_V{SINA_DAILY_DATE}");
     let url = format!(
         "https://stock2.finance.sina.com.cn/futures/api/jsonp.php/{callback}=/InnerFuturesNewService.getDailyKLine"
@@ -130,10 +136,19 @@ pub async fn futures_zh_daily_sina(client: &Client, symbol: &str) -> Result<Vec<
     let params: [(&str, &str); 2] = [("symbol", symbol), ("type", &type_param)];
     let headers: [(&str, &str); 2] = [
         ("Referer", "https://finance.sina.com.cn/"),
-        ("User-Agent", "Mozilla/5.0 (compatible; adaq-data-stock-cn/0.1)"),
+        (
+            "User-Agent",
+            "Mozilla/5.0 (compatible; adaq-data-stock-cn/0.1)",
+        ),
     ];
     let text = client
-        .get_text(SOURCE_SINA, "futures_zh_daily_sina", &url, &params, Some(&headers))
+        .get_text(
+            SOURCE_SINA,
+            "futures_zh_daily_sina",
+            &url,
+            &params,
+            Some(&headers),
+        )
         .await?;
     parse_zh_daily_sina_text(&text)
 }
@@ -207,10 +222,19 @@ pub async fn futures_foreign(client: &Client, symbol: &str) -> Result<Vec<Future
     ];
     let headers: [(&str, &str); 2] = [
         ("Referer", "https://finance.sina.com.cn/"),
-        ("User-Agent", "Mozilla/5.0 (compatible; adaq-data-stock-cn/0.1)"),
+        (
+            "User-Agent",
+            "Mozilla/5.0 (compatible; adaq-data-stock-cn/0.1)",
+        ),
     ];
     let text = client
-        .get_text(SOURCE_SINA, "futures_foreign", &url, &params, Some(&headers))
+        .get_text(
+            SOURCE_SINA,
+            "futures_foreign",
+            &url,
+            &params,
+            Some(&headers),
+        )
         .await?;
     parse_foreign_text(&text)
 }
@@ -270,7 +294,10 @@ pub struct FuturesInventoryEmRow {
 /// the explicit `futures_inventory_em` name for parity with the akshare
 /// `futures_inventory_em` module; consolidate into the `inventory` module if
 /// desired.
-pub async fn futures_inventory_em(client: &Client, symbol: &str) -> Result<Vec<FuturesInventoryEmRow>> {
+pub async fn futures_inventory_em(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<FuturesInventoryEmRow>> {
     let map_params: [(&str, &str); 7] = [
         ("reportName", "RPT_FUTU_POSITIONCODE"),
         ("columns", "TRADE_MARKET_CODE,TRADE_CODE,TRADE_TYPE"),
@@ -281,14 +308,22 @@ pub async fn futures_inventory_em(client: &Client, symbol: &str) -> Result<Vec<F
         ("client", "WEB"),
     ];
     let map = client
-        .get_json(SOURCE_EASTMONEY, "futures_inventory_em_map", EM_URL, &map_params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "futures_inventory_em_map",
+            EM_URL,
+            &map_params,
+        )
         .await?;
     let product_id = resolve_inventory_symbol(&map, symbol)?;
 
     let filter = format!("(SECURITY_CODE=\"{product_id}\")(TRADE_DATE>='2020-10-28')");
     let params: [(&str, &str); 9] = [
         ("reportName", "RPT_FUTU_STOCKDATA"),
-        ("columns", "SECURITY_CODE,TRADE_DATE,ON_WARRANT_NUM,ADDCHANGE"),
+        (
+            "columns",
+            "SECURITY_CODE,TRADE_DATE,ON_WARRANT_NUM,ADDCHANGE",
+        ),
         ("filter", &filter),
         ("pageNumber", "1"),
         ("pageSize", "500"),
@@ -317,8 +352,14 @@ fn resolve_inventory_symbol(map: &Value, symbol: &str) -> Result<String> {
     let mut type_to_code: HashMap<String, String> = HashMap::new();
     let mut codes: HashSet<String> = HashSet::new();
     for item in data {
-        let t = item.get("TRADE_TYPE").and_then(|v| v.as_str()).unwrap_or_default();
-        let c = item.get("TRADE_CODE").and_then(|v| v.as_str()).unwrap_or_default();
+        let t = item
+            .get("TRADE_TYPE")
+            .and_then(|v| v.as_str())
+            .unwrap_or_default();
+        let c = item
+            .get("TRADE_CODE")
+            .and_then(|v| v.as_str())
+            .unwrap_or_default();
         if !t.is_empty() {
             type_to_code.insert(t.to_string(), c.to_string());
         }
@@ -387,7 +428,7 @@ pub async fn futures_comex_inventory(
         other => {
             return Err(Error::InvalidParam(format!(
                 "unknown COMEX symbol: {other} (expected 黄金 or 白银)"
-            )))
+            )));
         }
     };
     let filter = format!("(INDICATOR_ID1=\"{indicator}\")(@STORAGE_TON<>\"NULL\")");

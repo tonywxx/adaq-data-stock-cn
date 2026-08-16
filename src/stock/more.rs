@@ -291,16 +291,18 @@ pub(crate) fn high_low_request(symbol: &str) -> Result<(String, &'static str)> {
             "stock_a_high_low_statistics: symbol must be one of {HIGH_LOW_SYMBOLS:?}, got {symbol:?}"
         )));
     }
-    let url = format!(
-        "https://www.legulegu.com/stockdata/member-ship/get-high-low-statistics/{symbol}"
-    );
+    let url =
+        format!("https://www.legulegu.com/stockdata/member-ship/get-high-low-statistics/{symbol}");
     Ok((url, SOURCE_LEGULEGU))
 }
 
 /// Port of `stock_a_high_low_statistics(symbol)`.
 ///
 /// `symbol` ∈ {"all", "sz50", "hs300", "zz500"}; it is embedded in the URL path.
-pub async fn stock_a_high_low_statistics(client: &Client, symbol: &str) -> Result<Vec<StockAHighLowRow>> {
+pub async fn stock_a_high_low_statistics(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<StockAHighLowRow>> {
     let (url, source) = high_low_request(symbol)?;
     let v = client
         .get_json(source, "stock_a_high_low_statistics", &url, &[])
@@ -457,7 +459,9 @@ pub struct StockAccountStatisticsRow {
 /// Queries Eastmoney datacenter report `RPT_STOCK_OPEN_DATA`. Up to `pageSize`
 /// (500) rows are returned, sorted by `STATISTICS_DATE` descending (akshare
 /// then re-sorts ascending; we keep the upstream order and let callers sort).
-pub async fn stock_account_statistics_em(client: &Client) -> Result<Vec<StockAccountStatisticsRow>> {
+pub async fn stock_account_statistics_em(
+    client: &Client,
+) -> Result<Vec<StockAccountStatisticsRow>> {
     let params = [
         ("reportName", "RPT_STOCK_OPEN_DATA"),
         ("columns", "ALL"),
@@ -586,22 +590,20 @@ pub async fn stock_zt_pool_em(client: &Client, date: &str) -> Result<Vec<StockZt
 ///
 /// `data: null` → empty `Vec` (mirrors akshare returning an empty frame).
 pub(crate) fn parse_zt_pool(resp: &Value) -> Result<Vec<StockZtPoolRow>> {
-    let data = resp
-        .get("data")
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing data at stock_zt_pool_em".into(),
-        })?;
+    let data = resp.get("data").ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_EASTMONEY,
+        message: "missing data at stock_zt_pool_em".into(),
+    })?;
     if data.is_null() {
         return Ok(Vec::new());
     }
-    let pool = data
-        .get("pool")
-        .and_then(|p| p.as_array())
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_EASTMONEY,
-            message: "missing data.pool at stock_zt_pool_em".into(),
-        })?;
+    let pool =
+        data.get("pool")
+            .and_then(|p| p.as_array())
+            .ok_or_else(|| Error::UpstreamChanged {
+                origin: SOURCE_EASTMONEY,
+                message: "missing data.pool at stock_zt_pool_em".into(),
+            })?;
     let mut out = Vec::with_capacity(pool.len());
     for item in pool {
         let code = fstr(item, "c");
@@ -609,8 +611,14 @@ pub(crate) fn parse_zt_pool(resp: &Value) -> Result<Vec<StockZtPoolRow>> {
         if code.is_empty() || name.is_empty() {
             continue;
         }
-        let zt_days = item.get("zt").and_then(|z| z.get("days")).and_then(|v| v.as_i64());
-        let zt_ct = item.get("zt").and_then(|z| z.get("ct")).and_then(|v| v.as_i64());
+        let zt_days = item
+            .get("zt")
+            .and_then(|z| z.get("days"))
+            .and_then(|v| v.as_i64());
+        let zt_ct = item
+            .get("zt")
+            .and_then(|z| z.get("ct"))
+            .and_then(|v| v.as_i64());
         let zt_stat = match (zt_days, zt_ct) {
             (Some(d), Some(c)) => Some(format!("{d}/{c}")),
             _ => None,

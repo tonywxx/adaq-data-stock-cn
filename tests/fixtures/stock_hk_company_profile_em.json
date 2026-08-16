@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "result": {
+    "data": [
+      {
+        "SECUCODE": "03900.HK",
+        "SECURITY_CODE": "03900",
+        "ORG_NAME": "Example Holdings Ltd",
+        "ORG_EN_ABBR": "Example",
+        "REG_PLACE": "香港",
+        "REG_ADDRESS": "香港中环金融街1号",
+        "FOUND_DATE": "1964-01-01",
+        "BELONG_INDUSTRY": "银行",
+        "CHAIRMAN": "张三",
+        "SECRETARY": "李四",
+        "EMP_NUM": 12345,
+        "ADDRESS": "香港中环金融街1号",
+        "ORG_WEB": "https://example.com",
+        "ORG_EMAIL": "ir@example.com",
+        "YEAR_SETTLE_DAY": "12-31",
+        "ORG_TEL": "852-12345678",
+        "ACCOUNT_FIRM": "KPMG",
+        "ORG_FAX": "852-87654321",
+        "ORG_PROFILE": "一家示例控股公司。"
+      }
+    ]
+  }
+}

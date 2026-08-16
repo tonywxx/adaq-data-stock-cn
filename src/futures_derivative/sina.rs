@@ -22,8 +22,7 @@ use crate::core::error::{Error, Result};
 const SOURCE_SINA: &str = "sina";
 
 /// Sina main-continuous daily-KLine JSONP endpoint.
-const SINA_MAIN_URL: &str =
-    "https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_{symbol}{trade_date}=/InnerFuturesNewService.getDailyKLine";
+const SINA_MAIN_URL: &str = "https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_{symbol}{trade_date}=/InnerFuturesNewService.getDailyKLine";
 
 /// akshare hardcodes the callback's date stamp; the payload is the full history.
 const CALLBACK_DATE: &str = "20210817";
@@ -64,9 +63,7 @@ pub async fn futures_main_sina(
     start_date: Option<&str>,
     end_date: Option<&str>,
 ) -> Result<Vec<SinaMainRow>> {
-    let url = format!(
-        "{SINA_MAIN_URL}?symbol={symbol}&_={CALLBACK_DATE}"
-    );
+    let url = format!("{SINA_MAIN_URL}?symbol={symbol}&_={CALLBACK_DATE}");
     let text = client
         .get_text(SOURCE_SINA, "futures_main_sina", &url, &[], None)
         .await?;
@@ -88,18 +85,14 @@ pub async fn futures_main_sina(
 /// (`var <cb>=[ ... ];`), returning it as a `Value`.
 fn strip_jsonp_array(text: &str) -> Result<Value> {
     let body = text.trim();
-    let start = body
-        .find('[')
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "main KLine response missing '['".into(),
-        })?;
-    let end = body
-        .rfind(']')
-        .ok_or_else(|| Error::UpstreamChanged {
-            origin: SOURCE_SINA,
-            message: "main KLine response missing ']'".into(),
-        })?;
+    let start = body.find('[').ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "main KLine response missing '['".into(),
+    })?;
+    let end = body.rfind(']').ok_or_else(|| Error::UpstreamChanged {
+        origin: SOURCE_SINA,
+        message: "main KLine response missing ']'".into(),
+    })?;
     serde_json::from_str(&body[start..=end]).map_err(Error::Json)
 }
 

@@ -81,7 +81,13 @@ pub struct BocSpotRow {
 /// dependency-free HTML table extractor (no `scraper` needed).
 pub async fn currency_boc(client: &Client) -> Result<Vec<BocSpotRow>> {
     let text = client
-        .get_text(SOURCE_BOC, "currency_boc", BOC_SPOT_URL, &[], Some(BOC_HEADERS))
+        .get_text(
+            SOURCE_BOC,
+            "currency_boc",
+            BOC_SPOT_URL,
+            &[],
+            Some(BOC_HEADERS),
+        )
         .await?;
     parse_boc_spot(&text)
 }
@@ -155,11 +161,15 @@ pub async fn currency_hist(
     }
     let sd = format!(
         "{}-{}-{}",
-        &start_date[0..4], &start_date[4..6], &start_date[6..8]
+        &start_date[0..4],
+        &start_date[4..6],
+        &start_date[6..8]
     );
     let ed = format!(
         "{}-{}-{}",
-        &end_date[0..4], &end_date[4..6], &end_date[6..8]
+        &end_date[0..4],
+        &end_date[4..6],
+        &end_date[6..8]
     );
     let params = [
         ("money_code", code),
@@ -334,7 +344,10 @@ fn extract_cells(row_html: &str) -> Vec<String> {
 /// Decode a single table-cell's inner HTML into plain text: strip tags,
 /// normalize whitespace, and decode the few HTML entities we expect.
 fn decode_cell(s: &str) -> String {
-    let with_br = s.replace("<br>", " ").replace("<br/>", " ").replace("<br />", " ");
+    let with_br = s
+        .replace("<br>", " ")
+        .replace("<br/>", " ")
+        .replace("<br />", " ");
     let stripped = strip_tags(&with_br);
     let decoded = stripped
         .replace("&nbsp;", " ")
