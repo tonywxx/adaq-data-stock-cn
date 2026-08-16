@@ -1,0 +1,59 @@
+{
+  "data": {
+    "total_hits": 50000,
+    "list": [
+      {
+        "art_code": "ARTICLE_ID_1",
+        "codes": [
+          {
+            "ann_type": "A,SHA",
+            "inner_code": "28794850941525",
+            "market_code": "1",
+            "short_name": "山东高速",
+            "stock_code": "600350"
+          }
+        ],
+        "columns": [
+          { "column_code": "001002007003009004", "column_name": "回购进展情况" }
+        ],
+        "display_time": "2024-05-06 18:00:00",
+        "eiTime": "2024-05-06 18:00:00",
+        "language": "cn",
+        "listing_state": "1",
+        "notice_date": "2024-05-06",
+        "product_code": "600350",
+        "sort_date": "20240506",
+        "source_type": "1",
+        "title": "关于回购股份的进展公告",
+        "title_ch": "关于回购股份的进展公告",
+        "title_en": ""
+      },
+      {
+        "art_code": "ARTICLE_ID_2",
+        "codes": [
+          {
+            "ann_type": "A,SZA",
+            "inner_code": "28794850941526",
+            "market_code": "2",
+            "short_name": "美的集团",
+            "stock_code": "000333"
+          }
+        ],
+        "columns": [
+          { "column_code": "001002007003009001", "column_name": "年度股东大会" }
+        ],
+        "display_time": "2024-05-06 20:00:00",
+        "eiTime": "2024-05-06 20:00:00",
+        "language": "cn",
+        "listing_state": "1",
+        "notice_date": "2024-05-06",
+        "product_code": "000333",
+        "sort_date": "20240506",
+        "source_type": "1",
+        "title": "2023年年度股东大会决议公告",
+        "title_ch": "2023年年度股东大会决议公告",
+        "title_en": ""
+      }
+    ]
+  }
+}

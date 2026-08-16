@@ -1,0 +1,7 @@
+{
+  "o_cursor": [
+    {"VARNAME":"铜$$COPPER","VARSORT":"10","REGNAME":"上海$$Shanghai","REGSORT":"0","WHABBRNAME":"国储天威$$Guochutianwei","WHROWS":"12","WGHTUNIT":"2","WRTWGHTS":"25","WRTCHANGE":"0","ROWORDER":"16","ROWSTATUS":"0"},
+    {"VARNAME":"铜$$COPPER","VARSORT":"10","REGNAME":"上海$$Shanghai","REGSORT":"0","WHABBRNAME":"中储吴淞$$Zhongchu Wusong","WHROWS":"12","WGHTUNIT":"2","WRTWGHTS":"5710","WRTCHANGE":"-100","ROWORDER":"25","ROWSTATUS":"0"},
+    {"VARNAME":"铜$$COPPER","VARSORT":"10","REGNAME":"上海$$Shanghai","REGSORT":"0","WHABBRNAME":"上港物流$$SIPG Logistics","WHROWS":"12","WGHTUNIT":"2","WRTWGHTS":"3199","WRTCHANGE":"0","ROWORDER":"27","ROWSTATUS":"0"}
+  ]
+}

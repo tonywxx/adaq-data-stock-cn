@@ -1,0 +1,28 @@
+{
+  "result": {
+    "data": [
+      {
+        "COUNTRY": "德国",
+        "INDICATOR_ID": "EMG00179154",
+        "INDICATOR_NAME": "德国IFO商业景气指数",
+        "REPORT_DATE_CH": "2024-03",
+        "REPORT_DATE": "2024-03-01T00:00:00",
+        "PUBLISH_DATE": "2024-03-25T00:00:00",
+        "VALUE": 87.4,
+        "PRE_VALUE": 85.5,
+        "INDICATOR_IDOLD": ""
+      },
+      {
+        "COUNTRY": "德国",
+        "INDICATOR_ID": "EMG00179154",
+        "INDICATOR_NAME": "德国IFO商业景气指数",
+        "REPORT_DATE_CH": "2024-02",
+        "REPORT_DATE": "2024-02-01T00:00:00",
+        "PUBLISH_DATE": "2024-02-23T00:00:00",
+        "VALUE": 85.5,
+        "PRE_VALUE": 85.2,
+        "INDICATOR_IDOLD": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "_note": "synthetic fixture for futures_rule_em (akshare futures_rule_em.py:14). Eastmoney GetPZJYInfo returns Data as a list of objects with arbitrary columns; the flattened row preserves them all (real field names are inferred, upsteam column set is dynamic).",
+  "Data": [
+    {"品种代码":"AU","品种名称":"黄金","交易单位":"1000克/手","报价单位":"元(人民币)/克","最小变动价位":"0.02元/克"},
+    {"品种代码":"AG","品种名称":"白银","交易单位":"15千克/手","报价单位":"元(人民币)/千克","最小变动价位":"1元/千克"}
+  ]
+}

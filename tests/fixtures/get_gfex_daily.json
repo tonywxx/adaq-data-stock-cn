@@ -1,0 +1,6 @@
+{
+  "data": [
+    {"variety": "工业硅", "varietyOrder": "SI", "delivMonth": "2301", "open": "18000", "high": "18100", "low": "17900", "close": "18050", "volumn": "5000", "openInterest": "10000", "turnover": "9.0e8", "clearPrice": "18100", "lastClear": "18000"},
+    {"variety": "碳酸锂", "varietyOrder": "LC", "delivMonth": "2301", "open": "100000", "high": "101000", "low": "99000", "close": "100500", "volumn": "3000", "openInterest": "6000", "turnover": "3.0e8", "clearPrice": "101000", "lastClear": "100000"}
+  ]
+}

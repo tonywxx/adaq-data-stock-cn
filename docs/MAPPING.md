@@ -1,1764 +1,1375 @@
-# 对标表(Benchmark Map)
-
-本表是本库端点与 akshare 公开接口的对照,兼作**覆盖率追踪器**与**上游同步锚点**(见 ADR-0012)。
-
-- `本库路径`:实现该端点的 Rust 路径(实现后填写)。
-- `akshare 源文件:行`:akshare 中对应该函数的源位置(用于 `scripts/sync-akshare` 比对)。
-- `状态`:`TODO` / `WIP` / `DONE` / `DEFERRED`(需签名逆向)。
-
-## Milestone 1
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_zh_a_spot_em` | `src/stock/spot/eastmoney.rs::spot` | 东财 | `stock_feature/stock_hist_em.py` | DONE |
-| `stock_zh_a_spot` | `src/stock/spot/sina.rs::spot` | 新浪 | `stock/stock_zh_a_sina.py` | DONE |
-| `stock_zh_a_spot_tx` | `src/stock/spot/tencent.rs::spot` | 腾讯 | `stock/stock_zh_a_tx.py` | DONE |
-| `stock_zh_a_hist` | `src/stock/hist/eastmoney.rs::daily` | 东财 | `stock_feature/stock_hist_em.py` | DONE |
-| `stock_zh_a_hist_tx` | `src/stock/hist/tencent.rs::daily` | 腾讯 | `stock_feature/stock_hist_tx.py` | DONE |
-| `stock_intraday_em` | `src/stock/intraday/eastmoney.rs::em` | 东财 | `stock/stock_intraday_em.py` | DONE |
-| `stock_intraday_sina` | `src/stock/intraday/sina.rs::sina` | 新浪 | `stock/stock_intraday_sina.py` | DONE |
-| `stock_zh_index_spot_em` | `src/stock/index/eastmoney.rs::spot` | 东财 | `index/index_stock_zh.py` | DONE |
-| `stock_zh_index_spot_sina` | `src/stock/index/sina.rs::spot` | 新浪 | `index/index_stock_zh.py` | DONE |
-| `index_zh_a_hist` | `src/stock/index/eastmoney.rs::daily` | 东财 | `index/index_zh_em.py` | DONE |
-| `stock_zh_a_daily` | _(待填)_ | 新浪 | `stock/stock_zh_a_sina.py` | DEFERRED |
-
-> 行号锚点为规划值,`scripts/sync-akshare` 运行时会刷新并与 registry 比对,产出"新增/变更/移除"报告。
-
-## Forex(外汇)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `forex_spot_em` | `src/forex/eastmoney.rs::spot` | 东财 | `akshare/forex/forex_em.py` | DONE |
-| `forex_hist_em` | `src/forex/eastmoney.rs::hist` | 东财 | `akshare/forex/forex_em.py` | DONE |
-
-## Rate(利率)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `rate_interbank` | `src/rate/eastmoney.rs::rate_interbank` | 东财 | `akshare/interest_rate/interbank_rate_em.py` | DONE |
-| `rate.repo_rate_hist` | `src/rate/chinamoney.rs::repo_rate_hist` | 外汇交易中心 | `akshare/rate/rate_china.py` | DONE |
-| `rate.repo_rate_query` | `src/rate/chinamoney.rs::repo_rate_query` | 外汇交易中心 | `akshare/rate/rate_china.py` | DONE |
-
-## Bond(债券)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `bond_zh_us_rate` | `src/bond/eastmoney.rs::bond_zh_us_rate` | 东财 | `akshare/bond/bond_em.py` | DONE |
-| `bond_cov_comparison` | `src/bond/eastmoney.rs::bond_cov_comparison` | 东财 | `akshare/bond/bond_zh_cov.py` | DONE |
-| `bond_spot_quote` | `src/bond/chinamoney.rs::bond_spot_quote` | 外汇交易中心 | `akshare/bond/bond_china.py` | DONE |
-| `bond_spot_deal` | `src/bond/chinamoney.rs::bond_spot_deal` | 外汇交易中心 | `akshare/bond/bond_china.py` | DONE |
-
-## Crypto(数字货币)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `crypto_js_spot` | `src/crypto/js_spot.rs::crypto_js_spot` | 金十 | `akshare/economic/macro_other.py` | DONE |
-| `crypto_bitcoin_cme` | `src/crypto/bitcoin_cme.rs::crypto_bitcoin_cme` | 金十 | `akshare/crypto/crypto_bitcoin_cme.py` | DONE |
-| `crypto_bitcoin_hold_report` | `src/crypto/bitcoin_hold.rs::crypto_bitcoin_hold_report` | 金十 | `akshare/crypto/crypto_hold.py` | DONE |
-
-## Economic / Macro(宏观)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `macro_china_gdp` | `src/economic/china.rs::macro_china_gdp` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_cpi` | `src/economic/china.rs::macro_china_cpi` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_ppi` | `src/economic/china.rs::macro_china_ppi` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_money_supply` | `src/economic/china.rs::macro_china_money_supply` | 东财 | `akshare/economic/macro_china.py` | DONE |
-
-## Futures(期货)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `futures_zh_daily` | `src/futures/daily.rs::daily` | 东财 | `akshare/futures/futures_hist_em.py` | DONE |
-| `futures_zh_spot` | `src/futures/spot.rs::spot` | 东财 | `akshare/futures/futures_hf_em.py` | DONE |
-| `futures_inventory` | `src/futures/inventory.rs::inventory` | 东财 | `akshare/futures/futures_inventory_em.py` | DONE |
-
-## Option(期权)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `option_daily` | `src/option/eastmoney.rs::option_daily` | 东财 | `akshare/option/option_em.py` | DONE |
-| `option_minute` | `src/option/eastmoney.rs::option_minute` | 东财 | `akshare/option/option_em.py` | DONE |
-| `option_sina_spot` | `src/option/sina.rs::option_sina_spot` | 新浪 | `akshare/option/option_finance_sina.py` | DONE |
-| `option_cffex_daily` | `src/option/sina.rs::option_cffex_daily` | 新浪 | `akshare/option/option_finance_sina.py` | DONE |
-
-## Fund(基金)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `fund_etf_spot_em` | `src/fund/etf.rs::fund_etf_spot_em` | 东财 | `akshare/fund/fund_etf_em.py` | DONE |
-| `fund_etf_hist_em` | `src/fund/etf.rs::fund_etf_hist_em` | 东财 | `akshare/fund/fund_etf_em.py` | DONE |
-| `fund_lof_spot_em` | `src/fund/lof.rs::fund_lof_spot_em` | 东财 | `akshare/fund/fund_lof_em.py` | DONE |
-| `fund_open_fund_info` | `src/fund/open_fund.rs::fund_open_fund_info` | 东财 | `akshare/fund/fund_em.py` | DONE |
-
-## Stock 扩展(基本面 / 跨市场)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_profit_sheet_by_report_em` | `src/stock/fundamental/eastmoney.rs` | 东财 | `akshare/stock_feature/stock_three_report_em.py` | DONE |
-| `stock_balance_sheet_by_report_em` | `src/stock/fundamental/eastmoney.rs` | 东财 | `akshare/stock_feature/stock_three_report_em.py` | DONE |
-| `stock_cash_flow_sheet_by_report_em` | `src/stock/fundamental/eastmoney.rs` | 东财 | `akshare/stock_feature/stock_three_report_em.py` | DONE |
-| `stock_financial_analysis_indicator_em` | `src/stock/fundamental/eastmoney.rs` | 东财 | `akshare/stock_fundamental/stock_finance_sina.py` | DONE |
-| `stock_hk_spot_em` | `src/stock/cross/hk.rs::stock_hk_spot_em` | 东财 | `akshare/stock_feature/stock_hist_em.py` | DONE |
-| `stock_hk_hist` | `src/stock/cross/hk.rs::stock_hk_hist` | 东财 | `akshare/stock_feature/stock_hist_em.py` | DONE |
-| `stock_us_spot_em` | `src/stock/cross/us.rs::stock_us_spot_em` | 东财 | `akshare/stock_feature/stock_hist_em.py` | DONE |
-| `stock_us_hist` | `src/stock/cross/us.rs::stock_us_hist` | 东财 | `akshare/stock_feature/stock_hist_em.py` | DONE |
-
-## Stock 扩展:新浪日线 / 杂项(长尾补全)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_zh_a_daily` | `src/stock/daily_sina.rs::stock_zh_a_daily` | 新浪 | `akshare/stock/stock_zh_a_sina.py` | DONE |
-| `stock_zh_a_gdhs` | `src/stock/extra.rs::stock_zh_a_gdhs` | 东财 | `akshare/stock_feature/stock_holder_num.py` | DONE |
-| `stock_dividend` | `src/stock/extra.rs::stock_dividend` | 巨潮/cninfo | `akshare/stock/stock_dividend.py` | DONE |
-| `stock_rank_em` | `src/stock/extra.rs::stock_rank_em` | 东财 app | `akshare/stock/stock_rank_em.py` | DONE |
-
-## Board(板块)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_board_industry_name_em` | `src/board/industry.rs::stock_board_industry_name_em` | 东财 | `akshare/stock/board.py` | DONE |
-| `stock_board_industry_cons_em` | `src/board/industry.rs::stock_board_industry_cons_em` | 东财 | `akshare/stock/board.py` | DONE |
-| `stock_board_concept_name_em` | `src/board/concept.rs::stock_board_concept_name_em` | 东财 | `akshare/stock/board.py` | DONE |
-| `stock_board_concept_cons_em` | `src/board/concept.rs::stock_board_concept_cons_em` | 东财 | `akshare/stock/board.py` | DONE |
-
-## Calendar(交易日历)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `tool_trade_date_hist_sina` | `src/calendar/mod.rs::tool_trade_date` | 新浪 | `akshare/tool/trade_date_hist.py` | DONE |
-
-## LPR
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `rate_zh_1y_lpr` / `rate_zh_5y_lpr`(聚合为 `lpr`) | `src/lpr/mod.rs::lpr` | 全国银行间同业拆借中心 | `akshare/rate/rate_lpr.py` | DONE |
-
-## News(资讯 / NLP)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `news_economic_baidu` | `src/news/baidu_calendar.rs::news_economic_baidu` | 百度财经 | `akshare/news/news_baidu.py` | DONE |
-| `news_trade_notify_suspend_baidu` | `src/news/baidu_calendar.rs::news_trade_notify_suspend_baidu` | 百度财经 | `akshare/news/news_baidu.py` | DONE |
-| `news_trade_notify_dividend_baidu` | `src/news/baidu_calendar.rs::news_trade_notify_dividend_baidu` | 百度财经 | `akshare/news/news_baidu.py` | DONE |
-| `news_report_time_baidu` | `src/news/baidu_calendar.rs::news_report_time_baidu` | 百度财经 | `akshare/news/news_baidu.py` | DONE |
-| `stock_news_em` | `src/news/stock_news.rs::stock_news_em` | 东财 | `akshare/news/news_stock_em.py` | DONE |
-| `nlp_ownthink` | `src/news/nlp_ownthink.rs::nlp_ownthink` | OwnThink | `akshare/nlp/nlp_ownthink.py` | DONE |
-| `nlp_answer` | `src/news/nlp_ownthink.rs::nlp_answer` | OwnThink | `akshare/nlp/nlp_ownthink.py` | DONE |
-
-## Alt(另类数据)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `energy_oil_hist` | `src/alt/energy.rs::energy_oil_hist` | 金十/上期所 | `akshare/energy/energy_oil.py` | DONE |
-| `energy_oil_detail` | `src/alt/energy.rs::energy_oil_detail` | 金十/上期所 | `akshare/energy/energy_oil.py` | DONE |
-| `movie_boxoffice_daily` | `src/alt/movie.rs::movie_boxoffice_daily` | 艺恩 | `akshare/movie/movie_boxoffice_em.py` | DONE |
-| `movie_boxoffice_realtime` | `src/alt/movie.rs::movie_boxoffice_realtime` | 艺恩 | `akshare/movie/movie_boxoffice_em.py` | DONE |
-| `movie_boxoffice_monthly` | `src/alt/movie.rs::movie_boxoffice_monthly` | 艺恩 | `akshare/movie/movie_boxoffice_em.py` | DONE |
-| `movie_boxoffice_yearly` | `src/alt/movie.rs::movie_boxoffice_yearly` | 艺恩 | `akshare/movie/movie_boxoffice_em.py` | DONE |
-| `fx_spot_quote` | `src/alt/fx.rs::fx_spot_quote` | 外汇交易中心 | `akshare/alt_fx.py` | DONE |
-| `fx_pair_quote` | `src/alt/fx.rs::fx_pair_quote` | 外汇交易中心 | `akshare/alt_fx.py` | DONE |
-| `bank_fx_spot`(别名) | `src/alt/fx.rs::bank_fx_spot` | 外汇交易中心 | `akshare/alt_fx.py` | DONE |
-
-## Stock 杂项(misc)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_zh_a_hist_min_em` | `src/stock/misc.rs::stock_zh_a_hist_min_em` | 东财 | `akshare/stock_feature/stock_hist_em.py` | DONE |
-| `stock_zh_a_minute` | `src/stock/misc.rs::stock_zh_a_minute` | 新浪 | `akshare/stock/stock_zh_a_sina.py` | DONE |
-| `stock_zh_a_new` | `src/stock/misc.rs::stock_zh_a_new` | 新浪/东财 | `akshare/stock/stock_zh_a_special.py` | DONE |
-| `stock_zh_a_stop` | `src/stock/misc.rs::stock_zh_a_stop` | 东财 | `akshare/stock/stock_zh_a_special.py` | DONE |
-| `stock_summary` | `src/stock/misc.rs::stock_summary` | 东财 | (东财 clist 概况) | DONE |
-
-## Stock 指数扩展
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `index_zh_a_spot` | `src/stock/index/extra.rs::index_zh_a_spot` | 东财 | `akshare/index/index_stock_zh.py` | DONE |
-| `index_zh_a_daily` | `src/stock/index/extra.rs::index_zh_a_daily` | 东财 | `akshare/index/index_zh_a_hist.py` | DONE |
-| `stock_zh_index_daily` | `src/stock/index/extra.rs::stock_zh_index_daily` | 腾讯 | `akshare/stock/stock_zh_index_daily.py` | DONE |
-| `index_stock_cons` | `src/stock/index/extra.rs::index_stock_cons` | 东财 | `akshare/index/index_stock_cons.py` | DONE |
-
-## Futures 扩展
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `futures_zh_daily_sina` | `src/futures/extra.rs::futures_zh_daily_sina` | 新浪 | `akshare/futures/futures_zh_sina.py` | DONE |
-| `futures_foreign` | `src/futures/extra.rs::futures_foreign` | 新浪 | `akshare/futures/futures_foreign.py` | DONE |
-| `futures_inventory_em` | `src/futures/extra.rs::futures_inventory_em` | 东财 | `akshare/futures/futures_inventory_em.py` | DONE |
-| `futures_comex_inventory` | `src/futures/extra.rs::futures_comex_inventory` | 东财 | `akshare/futures/futures_comex_em.py` | DONE |
-
-## Fund 扩展
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `fund_name`(→ `fund_open_fund_name_em`) | `src/fund/extra.rs::fund_open_fund_name_em` | 东财 | `akshare/fund/fund_em.py` | DONE |
-| `fund_value_em` | `src/fund/extra.rs::fund_value_em` | 东财 | `akshare/fund/fund_em.py` | DONE |
-| `fund_hist_em` | `src/fund/extra.rs::fund_hist_em` | 东财 | `akshare/fund/fund_em.py` | DONE |
-| `fund_money_meta` | `src/fund/extra.rs::fund_money_meta` | 东财 | `akshare/fund/fund_em.py` | DONE |
-| `fund_etf_category_sina` | `src/fund/extra.rs::fund_etf_category_sina` | 新浪 | `akshare/fund/fund_etf_sina.py` | DONE |
-
-## Forex 扩展(中行 / 人民币掉期)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `currency_boc` | `src/forex/extra.rs::currency_boc` | 中国银行 | `akshare/currency/currency_boc.py` | DONE |
-| `currency_hist` | `src/forex/extra.rs::currency_hist` | 中行(新浪) | `akshare/currency/currency_china_bank_sina.py` | DONE |
-| `fx_swap_quote` | `src/forex/extra.rs::fx_swap_quote` | 外汇交易中心 | `akshare/fx/fx_quote.py` | DONE |
-
-## Crypto 扩展(Binance / OKX)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `crypto_hist`(Binance/OKX) | `src/crypto/extra.rs::crypto_hist` | Binance/OKX | (公开 REST) | DONE |
-| `crypto_spot`(Binance/OKX) | `src/crypto/extra.rs::crypto_spot` | Binance/OKX | (公开 REST) | DONE |
-| `crypto_info` | `src/crypto/extra.rs::crypto_info` | Binance | (公开 REST) | DONE |
-| `crypto_name_map` | `src/crypto/extra.rs::crypto_name_map` | Binance | (公开 REST) | DONE |
-
-## Stock 沪深港通 (hsgt)
-
-> 9 个 `stock_hsgt_*` 端点集中落地于 `src/stock/hsgt.rs`(东财 `datacenter-web` 纯 JSON,`stock_hsgt_fund_min_em` 走 push2)。其中 `stock_hsgt_hold_stock_em` / `stock_hsgt_stock_statistics_em`(`RPT_MUTUAL_STOCK_NORTHSTA`,本机构出口 IP 限流)与 `stock_hsgt_fund_min_em`(push2 地域封锁)三个端点的 fixtures 为合成数据,已在 fixture 文件 `_note` 与模块头注释中标注,需在首次联网运行时以真实响应校准。
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_hsgt_fund_flow_summary_em` | `src/stock/hsgt.rs::stock_hsgt_fund_flow_summary_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:18` | DONE |
-| `stock_hsgt_hist_em` | `src/stock/hsgt.rs::stock_hsgt_hist_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1070` | DONE |
-| `stock_hsgt_hold_stock_em` | `src/stock/hsgt.rs::stock_hsgt_hold_stock_em` | 东财 (synthetic fixture) | `akshare/stock_feature/stock_hsgt_em.py:171` | DONE |
-| `stock_hsgt_stock_statistics_em` | `src/stock/hsgt.rs::stock_hsgt_stock_statistics_em` | 东财 (synthetic fixture) | `akshare/stock_feature/stock_hsgt_em.py:336` | DONE |
-| `stock_hsgt_institution_statistics_em` | `src/stock/hsgt.rs::stock_hsgt_institution_statistics_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:778` | DONE |
-| `stock_hsgt_board_rank_em` | `src/stock/hsgt.rs::stock_hsgt_board_rank_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1190` | DONE |
-| `stock_hsgt_individual_em` | `src/stock/hsgt.rs::stock_hsgt_individual_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1512` | DONE |
-| `stock_hsgt_individual_detail_em` | `src/stock/hsgt.rs::stock_hsgt_individual_detail_em` | 东财 | `akshare/stock_feature/stock_hsgt_em.py:1527` | DONE |
-| `stock_hsgt_fund_min_em` | `src/stock/hsgt.rs::stock_hsgt_fund_min_em` | 东财 (synthetic fixture) | `akshare/stock_hsgt_min_em.py:13` | DONE |
-
-## Stock 涨停板池扩展 (board_zt)
-
-> akshare `stock_ztb_em.py` 的 6 个东方财富 `push2ex` 涨停/跌停股池端点。其中 `stock_zt_pool_em`(涨停股池,`getTopicZTPool`)已在 `src/stock/more.rs` 落地;本批补齐其余 5 个 sibling:`getYesterdayZTPool`(昨日涨停)/`getTopicQSPool`(强势)/`getTopicCXPooll`(次新)/`getTopicZBPool`(炸板)/`getTopicDTPool`(跌停),统一落地于 `src/stock_feature/board_zt.rs`。响应信封为 `data.pool`(数组),`p`/`ztp` 原始单位为 1/1000(解析时 ÷1000 对齐 akshare),时间字段 `fbt`/`lbt`/`yfbt` 整数补零为 HHMMSS,`zttj` 为 `{"days","ct"}` → `"days/ct"`。上游仅保留近期数据,空 `pool` / `data:null` → 空 `Vec`(对齐 akshare 空表)。
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_zt_pool_em`(涨停股池) | `src/stock/more.rs::stock_zt_pool_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:24` | DONE |
-| `stock_zt_pool_previous_em`(昨日涨停) | `src/stock_feature/board_zt.rs::stock_zt_pool_previous_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:110` | DONE |
-| `stock_zt_pool_strong_em`(强势股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_strong_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:187` | DONE |
-| `stock_zt_pool_sub_new_em`(次新股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_sub_new_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:276` | DONE |
-| `stock_zt_pool_zbgc_em`(炸板股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_zbgc_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:357` | DONE |
-| `stock_zt_pool_dtgc_em`(跌停股池) | `src/stock_feature/board_zt.rs::stock_zt_pool_dtgc_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:439` | DONE |
-
-## Stock 个股信息 / 主营构成 / 板块(holder)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_individual_info_em` | `src/stock/holder.rs::stock_individual_info_em` | 东财 | `akshare/stock/stock_info_em.py` | DONE |
-| `stock_zygc_em`(主营构成) | `src/stock/holder.rs::stock_zygc_em` | 东财 | `akshare/stock_fundamental/stock_zygc.py` | DONE |
-| `stock_sector_spot` | `src/stock/holder.rs::stock_sector_spot` | 新浪 | `akshare/stock/stock_industry.py` | DONE |
-
-## Stock 融资融券 / 业绩报表(margin)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_margin_sse`(→ `stock_margin_sh`) | `src/stock/margin.rs::stock_margin_sh` | 上交所 | `akshare/stock_feature/stock_margin_sse.py` | DONE |
-| `stock_margin_szse`(→ `stock_margin_sz`) | `src/stock/margin.rs::stock_margin_sz` | 深交所 | `akshare/stock_feature/stock_margin_szse.py` | DONE |
-| `stock_yjbb_em` | `src/stock/margin.rs::stock_yjbb_em` | 东财 | `akshare/stock_feature/stock_yjbb_em.py` | DONE |
-| `stock_margin_account_info`(两融账户信息) | `src/stock_feature/margin_research.rs::stock_margin_account_info` | 东财 | `akshare/stock_feature/stock_margin_em.py:15` | DONE |
-
-## Bond 扩展
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `bond_zh_cov` | `src/bond/extra.rs::bond_zh_cov` | 东财 | `akshare/bond/bond_zh_cov.py` | DONE |
-| `bond_zh_cov_value_analysis` | `src/bond/extra.rs::bond_zh_cov_value_analysis` | 东财 | `akshare/bond/bond_zh_cov.py` | DONE |
-| `bond_sh_buy_back_em` | `src/bond/extra.rs::bond_sh_buy_back_em` | 东财 | `akshare/bond/bond_buy_back_em.py` | DONE |
-| `bond_sz_buy_back_em` | `src/bond/extra.rs::bond_sz_buy_back_em` | 东财 | `akshare/bond/bond_buy_back_em.py` | DONE |
-
-## Economic 宏观扩展
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `macro_china_new_house_price` | `src/economic/extra.rs::macro_china_new_house_price` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_lpr` | `src/economic/extra.rs::macro_china_lpr` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_enterprise_boom_index` | `src/economic/extra.rs::macro_china_enterprise_boom_index` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_national_tax_receipts` | `src/economic/extra.rs::macro_china_national_tax_receipts` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_qyspjg` | `src/economic/extra.rs::macro_china_qyspjg` | 东财 | `akshare/economic/macro_china.py` | DONE |
-| `macro_china_fdi` | `src/economic/extra.rs::macro_china_fdi` | 东财 | `akshare/economic/macro_china.py` | DONE |
-
-## Futures 主力 / 合约列表(main, 新浪)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `futures_main_sina`(→ `futures_main`) | `src/futures/main.rs::futures_main` | 新浪 | `akshare/futures/futures_main.py` | DONE |
-| `futures_display_main_sina`(→ `futures_display`) | `src/futures/main.rs::futures_display` | 新浪 | `akshare/futures/futures_display.py` | DONE |
-
-## Option 扩展(option::extra)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `option_current_em` | `src/option/extra.rs::option_current_em` | 东财 | `akshare/option/option_em.py:14` | DONE |
-| `option_current_cffex_em` | `src/option/extra.rs::option_current_cffex_em` | 东财 | `akshare/option/option_em.py:112` | DONE |
-| `option_risk_indicator_sse` | `src/option/extra.rs::option_risk_indicator_sse` | 上交所 | `akshare/option/option_risk_indicator_sse.py:12` | DONE |
-| `option_current_day_sse` | `src/option/extra.rs::option_current_day_sse` | 上交所 | `akshare/option/option_current_sse.py:13` | DONE |
-| `option_daily_stats_sse` | `src/option/extra.rs::option_daily_stats_sse` | 深交所 | `akshare/option/option_daily_stats_sse_szse.py:15` | DONE |
-| `option_cffex_spot_sina`(统一 sz50/hs300/zz1000 三只标的) | `src/option/extra.rs::option_cffex_spot_sina` | 新浪 | `akshare/option/option_finance_sina.py:77/150/223` | DONE |
-
-## Fund 扩展2(fund::more)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `fund_aum_trend_em` | `src/fund/more.rs::fund_aum_trend_em` | 东财 | `akshare/fund/fund_aum_em.py:45` | DONE |
-| `fund_name_em` | `src/fund/more.rs::fund_name_em` | 东财 | `akshare/fund/fund_em.py:218` | DONE |
-| `fund_fh_em` | `src/fund/more.rs::fund_fh_em` | 东财 | `akshare/fund/fund_fhsp_em.py:15` | DONE |
-| `fund_scale_change_em` | `src/fund/more.rs::fund_scale_change_em` | 东财 | `akshare/fund/fund_scale_em.py:15` | DONE |
-| `fund_hold_structure_em` | `src/fund/more.rs::fund_hold_structure_em` | 东财 | `akshare/fund/fund_scale_em.py:71` | DONE |
-| `fund_manager_em` | `src/fund/more.rs::fund_manager_em` | 东财 | `akshare/fund/fund_manager.py:16` | DONE |
-
-## Stock 更多(stock::more)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_zh_a_st_em` | `src/stock/more.rs::stock_zh_a_st_em` | 东财 | `akshare/stock/stock_zh_a_special.py:20` | DONE |
-| `stock_a_high_low_statistics` | `src/stock/more.rs::stock_a_high_low_statistics` | 乐咕 | `akshare/stock_feature/stock_a_high_low.py:15` | DONE |
-| `stock_a_below_net_asset_statistics` | `src/stock/more.rs::stock_a_below_net_asset_statistics` | 乐咕 | `akshare/stock_feature/stock_a_below_net_asset_statistics.py:15` | DONE |
-| `stock_account_statistics_em` | `src/stock/more.rs::stock_account_statistics_em` | 东财 | `akshare/stock_feature/stock_account_em.py:14` | DONE |
-| `stock_zt_pool_em` | `src/stock/more.rs::stock_zt_pool_em` | 东财 | `akshare/stock_feature/stock_ztb_em.py:24` | DONE |
-
-## Index 更多(stock::index::more)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `index_global_spot_em` | `src/stock/index/more.rs::index_global_spot_em` | 东财 | `akshare/index/index_global_em.py:15` | DONE |
-| `index_global_hist_em` | `src/stock/index/more.rs::index_global_hist_em` | 东财 | `akshare/index/index_global_em.py:95` | DONE |
-| `index_zh_a_hist_min_em` | `src/stock/index/more.rs::index_zh_a_hist_min_em` | 东财 | `akshare/index/index_zh_em.py:178` | DONE |
-| `stock_zh_index_hist_csindex` | `src/stock/index/more.rs::stock_zh_index_hist_csindex` | 中证 | `akshare/index/index_stock_zh_csindex.py:13` | DONE |
-| `index_pmi_cx`(统一 com/man/ser 三口径) | `src/stock/index/more.rs::index_pmi_cx` | 财新 | `akshare/index/index_cx.py:13/41/69` | DONE |
-
-## Economic 宏观第二批(economic::macro2)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `macro_china_pmi_yearly`(→ `macro_china_pmi`) | `src/economic/macro2.rs::macro_china_pmi` | 东财 | `akshare/economic/macro_china.py:544` | DONE |
-| `macro_china_gdzctz` | `src/economic/macro2.rs::macro_china_gdzctz` | 东财 | `akshare/economic/macro_china.py:2674` | DONE |
-| `macro_china_gyzjz` | `src/economic/macro2.rs::macro_china_gyzjz` | 东财 | `akshare/economic/macro_china.py:3051` | DONE |
-| `macro_china_consumer_goods_retail` | `src/economic/macro2.rs::macro_china_consumer_goods_retail` | 东财 | `akshare/economic/macro_china.py:3180` | DONE |
-| `macro_usa_cpi_yoy` | `src/economic/macro2.rs::macro_usa_cpi_yoy` | 东财 | `akshare/economic/macro_usa.py:129` | DONE |
-| `macro_usa_phs` | `src/economic/macro2.rs::macro_usa_phs` | 东财 | `akshare/economic/macro_usa.py:79` | DONE |
-
-## Coin 金属 / 外盘(coin,新增顶层域)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `futures_hq_sina`(LME 实时,统一到 `coin_lme_realtime`) | `src/coin/mod.rs::coin_lme_realtime` | 新浪 | `akshare/futures/futures_hq_sina.py:72` | DONE |
-| `futures_shfe_position_rank`(→ `coin_shfe_rank`) | `src/coin/mod.rs::coin_shfe_rank` | 上期所 | `akshare/futures/cot.py:275`(`get_shfe_rank_table`) | DONE |
-| `futures_foreign_hist`(→ `coin_foreign_hist`,本库走东财 push2his) | `src/coin/mod.rs::coin_foreign_hist` | 东财 | `akshare/futures/futures_foreign.py:20` | DONE |
-| `futures_hist_em`(→ `coin_futures_hist`) | `src/coin/mod.rs::coin_futures_hist` | 东财 | `akshare/futures/futures_hist_em.py:91` | DONE |
-| `futures_rule_em`(→ `coin_futures_symbol_map`) | `src/coin/mod.rs::coin_futures_symbol_map` | 东财 | `akshare/futures/futures_rule_em.py:14` | DONE |
-
-## 国际宏观(economic::macro_intl,东财 datacenter)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `macro_uk_halifax_monthly` | `src/economic/macro_intl.rs::macro_uk_halifax_monthly` | 东财 | `akshare/economic/macro_uk.py:70` | DONE |
-| `macro_uk_halifax_yearly` | `src/economic/macro_intl.rs::macro_uk_halifax_yearly` | 东财 | `akshare/economic/macro_uk.py:82` | DONE |
-| `macro_uk_trade` | `src/economic/macro_intl.rs::macro_uk_trade` | 东财 | `akshare/economic/macro_uk.py:94` | DONE |
-| `macro_uk_bank_rate` | `src/economic/macro_intl.rs::macro_uk_bank_rate` | 东财 | `akshare/economic/macro_uk.py:106` | DONE |
-| `macro_uk_core_cpi_yearly` | `src/economic/macro_intl.rs::macro_uk_core_cpi_yearly` | 东财 | `akshare/economic/macro_uk.py:118` | DONE |
-| `macro_uk_core_cpi_monthly` | `src/economic/macro_intl.rs::macro_uk_core_cpi_monthly` | 东财 | `akshare/economic/macro_uk.py:130` | DONE |
-| `macro_uk_cpi_yearly` | `src/economic/macro_intl.rs::macro_uk_cpi_yearly` | 东财 | `akshare/economic/macro_uk.py:142` | DONE |
-| `macro_uk_cpi_monthly` | `src/economic/macro_intl.rs::macro_uk_cpi_monthly` | 东财 | `akshare/economic/macro_uk.py:154` | DONE |
-| `macro_uk_retail_monthly` | `src/economic/macro_intl.rs::macro_uk_retail_monthly` | 东财 | `akshare/economic/macro_uk.py:166` | DONE |
-| `macro_uk_retail_yearly` | `src/economic/macro_intl.rs::macro_uk_retail_yearly` | 东财 | `akshare/economic/macro_uk.py:178` | DONE |
-| `macro_uk_rightmove_yearly` | `src/economic/macro_intl.rs::macro_uk_rightmove_yearly` | 东财 | `akshare/economic/macro_uk.py:190` | DONE |
-| `macro_uk_rightmove_monthly` | `src/economic/macro_intl.rs::macro_uk_rightmove_monthly` | 东财 | `akshare/economic/macro_uk.py:202` | DONE |
-| `macro_uk_gdp_quarterly` | `src/economic/macro_intl.rs::macro_uk_gdp_quarterly` | 东财 | `akshare/economic/macro_uk.py:214` | DONE |
-| `macro_uk_gdp_yearly` | `src/economic/macro_intl.rs::macro_uk_gdp_yearly` | 东财 | `akshare/economic/macro_uk.py:226` | DONE |
-| `macro_uk_unemployment_rate` | `src/economic/macro_intl.rs::macro_uk_unemployment_rate` | 东财 | `akshare/economic/macro_uk.py:238` | DONE |
-| `macro_canada_new_house_rate` | `src/economic/macro_intl.rs::macro_canada_new_house_rate` | 东财 | `akshare/economic/macro_canada.py:14` | DONE |
-| `macro_canada_unemployment_rate` | `src/economic/macro_intl.rs::macro_canada_unemployment_rate` | 东财 | `akshare/economic/macro_canada.py:65` | DONE |
-| `macro_canada_trade` | `src/economic/macro_intl.rs::macro_canada_trade` | 东财 | `akshare/economic/macro_canada.py:116` | DONE |
-| `macro_canada_retail_rate_monthly` | `src/economic/macro_intl.rs::macro_canada_retail_rate_monthly` | 东财 | `akshare/economic/macro_canada.py:167` | DONE |
-| `macro_canada_bank_rate` | `src/economic/macro_intl.rs::macro_canada_bank_rate` | 东财 | `akshare/economic/macro_canada.py:218` | DONE |
-| `macro_canada_core_cpi_yearly` | `src/economic/macro_intl.rs::macro_canada_core_cpi_yearly` | 东财 | `akshare/economic/macro_canada.py:269` | DONE |
-| `macro_canada_core_cpi_monthly` | `src/economic/macro_intl.rs::macro_canada_core_cpi_monthly` | 东财 | `akshare/economic/macro_canada.py:320` | DONE |
-| `macro_canada_cpi_yearly` | `src/economic/macro_intl.rs::macro_canada_cpi_yearly` | 东财 | `akshare/economic/macro_canada.py:371` | DONE |
-| `macro_canada_cpi_monthly` | `src/economic/macro_intl.rs::macro_canada_cpi_monthly` | 东财 | `akshare/economic/macro_canada.py:422` | DONE |
-| `macro_canada_gdp_monthly` | `src/economic/macro_intl.rs::macro_canada_gdp_monthly` | 东财 | `akshare/economic/macro_canada.py:473` | DONE |
-| `macro_australia_retail_rate_monthly` | `src/economic/macro_intl.rs::macro_australia_retail_rate_monthly` | 东财 | `akshare/economic/macro_australia.py:14` | DONE |
-| `macro_australia_trade` | `src/economic/macro_intl.rs::macro_australia_trade` | 东财 | `akshare/economic/macro_australia.py:65` | DONE |
-| `macro_australia_unemployment_rate` | `src/economic/macro_intl.rs::macro_australia_unemployment_rate` | 东财 | `akshare/economic/macro_australia.py:116` | DONE |
-| `macro_australia_ppi_quarterly` | `src/economic/macro_intl.rs::macro_australia_ppi_quarterly` | 东财 | `akshare/economic/macro_australia.py:167` | DONE |
-| `macro_australia_cpi_quarterly` | `src/economic/macro_intl.rs::macro_australia_cpi_quarterly` | 东财 | `akshare/economic/macro_australia.py:218` | DONE |
-| `macro_australia_cpi_yearly` | `src/economic/macro_intl.rs::macro_australia_cpi_yearly` | 东财 | `akshare/economic/macro_australia.py:269` | DONE |
-| `macro_australia_bank_rate` | `src/economic/macro_intl.rs::macro_australia_bank_rate` | 东财 | `akshare/economic/macro_australia.py:320` | DONE |
-| `macro_japan_bank_rate` | `src/economic/macro_intl.rs::macro_japan_bank_rate` | 东财 | `akshare/economic/macro_japan.py:70` | DONE |
-| `macro_japan_cpi_yearly` | `src/economic/macro_intl.rs::macro_japan_cpi_yearly` | 东财 | `akshare/economic/macro_japan.py:82` | DONE |
-| `macro_japan_core_cpi_yearly` | `src/economic/macro_intl.rs::macro_japan_core_cpi_yearly` | 东财 | `akshare/economic/macro_japan.py:94` | DONE |
-| `macro_japan_unemployment_rate` | `src/economic/macro_intl.rs::macro_japan_unemployment_rate` | 东财 | `akshare/economic/macro_japan.py:106` | DONE |
-| `macro_japan_head_indicator` | `src/economic/macro_intl.rs::macro_japan_head_indicator` | 东财 | `akshare/economic/macro_japan.py:118` | DONE |
-| `macro_germany_ifo` | `src/economic/macro_intl.rs::macro_germany_ifo` | 东财 | `akshare/economic/macro_germany.py:69` | DONE |
-| `macro_germany_cpi_monthly` | `src/economic/macro_intl.rs::macro_germany_cpi_monthly` | 东财 | `akshare/economic/macro_germany.py:81` | DONE |
-| `macro_germany_cpi_yearly` | `src/economic/macro_intl.rs::macro_germany_cpi_yearly` | 东财 | `akshare/economic/macro_germany.py:93` | DONE |
-| `macro_germany_trade_adjusted` | `src/economic/macro_intl.rs::macro_germany_trade_adjusted` | 东财 | `akshare/economic/macro_germany.py:105` | DONE |
-| `macro_germany_gdp` | `src/economic/macro_intl.rs::macro_germany_gdp` | 东财 | `akshare/economic/macro_germany.py:117` | DONE |
-| `macro_germany_retail_sale_monthly` | `src/economic/macro_intl.rs::macro_germany_retail_sale_monthly` | 东财 | `akshare/economic/macro_germany.py:129` | DONE |
-| `macro_germany_retail_sale_yearly` | `src/economic/macro_intl.rs::macro_germany_retail_sale_yearly` | 东财 | `akshare/economic/macro_germany.py:141` | DONE |
-| `macro_germany_zew` | `src/economic/macro_intl.rs::macro_germany_zew` | 东财 | `akshare/economic/macro_germany.py:153` | DONE |
-| `macro_swiss_svme` | `src/economic/macro_intl.rs::macro_swiss_svme` | 东财 | `akshare/economic/macro_swiss.py:70` | DONE |
-| `macro_swiss_trade` | `src/economic/macro_intl.rs::macro_swiss_trade` | 东财 | `akshare/economic/macro_swiss.py:82` | DONE |
-| `macro_swiss_cpi_yearly` | `src/economic/macro_intl.rs::macro_swiss_cpi_yearly` | 东财 | `akshare/economic/macro_swiss.py:94` | DONE |
-| `macro_swiss_gdp_quarterly` | `src/economic/macro_intl.rs::macro_swiss_gdp_quarterly` | 东财 | `akshare/economic/macro_swiss.py:106` | DONE |
-| `macro_swiss_gbd_yearly` | `src/economic/macro_intl.rs::macro_swiss_gbd_yearly` | 东财 | `akshare/economic/macro_swiss.py:118` | DONE |
-| `macro_swiss_gbd_bank_rate` | `src/economic/macro_intl.rs::macro_swiss_gbd_bank_rate` | 东财 | `akshare/economic/macro_swiss.py:130` | DONE |
-| `macro_china_hk_cpi` | `src/economic/macro_intl.rs::macro_china_hk_cpi` | 东财 | `akshare/economic/macro_china_hk.py:69` | DONE |
-| `macro_china_hk_cpi_ratio` | `src/economic/macro_intl.rs::macro_china_hk_cpi_ratio` | 东财 | `akshare/economic/macro_china_hk.py:80` | DONE |
-| `macro_china_hk_rate_of_unemployment` | `src/economic/macro_intl.rs::macro_china_hk_rate_of_unemployment` | 东财 | `akshare/economic/macro_china_hk.py:91` | DONE |
-| `macro_china_hk_gbp` | `src/economic/macro_intl.rs::macro_china_hk_gbp` | 东财 | `akshare/economic/macro_china_hk.py:102` | DONE |
-| `macro_china_hk_gbp_ratio` | `src/economic/macro_intl.rs::macro_china_hk_gbp_ratio` | 东财 | `akshare/economic/macro_china_hk.py:113` | DONE |
-| `macro_china_hk_building_volume` | `src/economic/macro_intl.rs::macro_china_hk_building_volume` | 东财 | `akshare/economic/macro_china_hk.py:124` | DONE |
-| `macro_china_hk_building_amount` | `src/economic/macro_intl.rs::macro_china_hk_building_amount` | 东财 | `akshare/economic/macro_china_hk.py:135` | DONE |
-| `macro_china_hk_trade_diff_ratio` | `src/economic/macro_intl.rs::macro_china_hk_trade_diff_ratio` | 东财 | `akshare/economic/macro_china_hk.py:146` | DONE |
-| `macro_china_hk_ppi` | `src/economic/macro_intl.rs::macro_china_hk_ppi` | 东财 | `akshare/economic/macro_china_hk.py:157` | DONE |
-
-## 指数 Caixin(index::cx,财新)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `index_dei_cx` | `src/index/cx.rs::index_dei_cx` | 财新 | `akshare/index/index_cx.py:97` | DONE |
-| `index_ii_cx` | `src/index/cx.rs::index_ii_cx` | 财新 | `akshare/index/index_cx.py:125` | DONE |
-| `index_si_cx` | `src/index/cx.rs::index_si_cx` | 财新 | `akshare/index/index_cx.py:153` | DONE |
-| `index_fi_cx` | `src/index/cx.rs::index_fi_cx` | 财新 | `akshare/index/index_cx.py:181` | DONE |
-| `index_bi_cx` | `src/index/cx.rs::index_bi_cx` | 财新 | `akshare/index/index_cx.py:209` | DONE |
-| `index_nei_cx` | `src/index/cx.rs::index_nei_cx` | 财新 | `akshare/index/index_cx.py:237` | DONE |
-| `index_li_cx` | `src/index/cx.rs::index_li_cx` | 财新 | `akshare/index/index_cx.py:265` | DONE |
-| `index_ci_cx` | `src/index/cx.rs::index_ci_cx` | 财新 | `akshare/index/index_cx.py:293` | DONE |
-| `index_ti_cx` | `src/index/cx.rs::index_ti_cx` | 财新 | `akshare/index/index_cx.py:321` | DONE |
-| `index_neaw_cx` | `src/index/cx.rs::index_neaw_cx` | 财新 | `akshare/index/index_cx.py:349` | DONE |
-| `index_awpr_cx` | `src/index/cx.rs::index_awpr_cx` | 财新 | `akshare/index/index_cx.py:377` | DONE |
-| `index_cci_cx` | `src/index/cx.rs::index_cci_cx` | 财新 | `akshare/index/index_cx.py:405` | DONE |
-| `index_qli_cx` | `src/index/cx.rs::index_qli_cx` | 财新 | `akshare/index/index_cx.py:437` | DONE |
-| `index_ai_cx` | `src/index/cx.rs::index_ai_cx` | 财新 | `akshare/index/index_cx.py:469` | DONE |
-| `index_bei_cx` | `src/index/cx.rs::index_bei_cx` | 财新 | `akshare/index/index_cx.py:501` | DONE |
-| `index_neei_cx` | `src/index/cx.rs::index_neei_cx` | 财新 | `akshare/index/index_cx.py:533` | DONE |
-
-## A股股东分析(stock::gdfx,东财)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_gdfx_free_holding_statistics_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_statistics_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:15` | DONE |
-| `stock_gdfx_holding_statistics_em` | `src/stock/gdfx.rs::stock_gdfx_holding_statistics_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:119` | DONE |
-| `stock_gdfx_free_holding_change_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_change_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:222` | DONE |
-| `stock_gdfx_holding_change_em` | `src/stock/gdfx.rs::stock_gdfx_holding_change_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:313` | DONE |
-| `stock_gdfx_free_top_10_em` | `src/stock/gdfx.rs::stock_gdfx_free_top_10_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:393` | DONE |
-| `stock_gdfx_top_10_em` | `src/stock/gdfx.rs::stock_gdfx_top_10_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:452` | DONE |
-| `stock_gdfx_free_holding_detail_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_detail_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:505` | DONE |
-| `stock_gdfx_holding_detail_em` | `src/stock/gdfx.rs::stock_gdfx_holding_detail_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:595` | DONE |
-| `stock_gdfx_free_holding_analyse_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_analyse_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:691` | DONE |
-| `stock_gdfx_holding_analyse_em` | `src/stock/gdfx.rs::stock_gdfx_holding_analyse_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:789` | DONE |
-| `stock_gdfx_free_holding_teamwork_em` | `src/stock/gdfx.rs::stock_gdfx_free_holding_teamwork_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:892` | DONE |
-| `stock_gdfx_holding_teamwork_em` | `src/stock/gdfx.rs::stock_gdfx_holding_teamwork_em` | 东财 | `akshare/stock_feature/stock_gdfx_em.py:955` | DONE |
-
-## A股龙虎榜(stock::lhb,东财)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_lhb_detail_em` | `src/stock/lhb.rs::stock_lhb_detail_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:14` | DONE |
-| `stock_lhb_stock_statistic_em` | `src/stock/lhb.rs::stock_lhb_stock_statistic_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:137` | DONE |
-| `stock_lhb_jgmmtj_em` | `src/stock/lhb.rs::stock_lhb_jgmmtj_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:226` | DONE |
-| `stock_lhb_jgstatistic_em` | `src/stock/lhb.rs::stock_lhb_jgstatistic_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:335` | DONE |
-| `stock_lhb_hyyyb_em` | `src/stock/lhb.rs::stock_lhb_hyyyb_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:433` | DONE |
-| `stock_lhb_yybph_em` | `src/stock/lhb.rs::stock_lhb_yybph_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:512` | DONE |
-| `stock_lhb_traderstatistic_em` | `src/stock/lhb.rs::stock_lhb_traderstatistic_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:648` | DONE |
-| `stock_lhb_stock_detail_date_em` | `src/stock/lhb.rs::stock_lhb_stock_detail_date_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:723` | DONE |
-| `stock_lhb_stock_detail_em` | `src/stock/lhb.rs::stock_lhb_stock_detail_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:766` | DONE |
-| `stock_lhb_yyb_detail_em` | `src/stock/lhb.rs::stock_lhb_yyb_detail_em` | 东财 | `akshare/stock_feature/stock_lhb_em.py:904` | DONE |
-
-## 基金业协会(fund::amac,AMAC)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `amac_member_info` | `src/fund/amac.rs::amac_member_info` | AMAC | `akshare/fund/fund_amac.py:44` | DONE |
-| `amac_person_fund_org_list` | `src/fund/amac.rs::amac_person_fund_org_list` | AMAC | `akshare/fund/fund_amac.py:96` | DONE |
-| `amac_manager_info` | `src/fund/amac.rs::amac_manager_info` | AMAC | `akshare/fund/fund_amac.py:240` | DONE |
-| `amac_manager_classify_info` | `src/fund/amac.rs::amac_manager_classify_info` | AMAC | `akshare/fund/fund_amac.py:294` | DONE |
-| `amac_member_sub_info` | `src/fund/amac.rs::amac_member_sub_info` | AMAC | `akshare/fund/fund_amac.py:365` | DONE |
-| `amac_fund_info` | `src/fund/amac.rs::amac_fund_info` | AMAC | `akshare/fund/fund_amac.py:415` | DONE |
-| `amac_securities_info` | `src/fund/amac.rs::amac_securities_info` | AMAC | `akshare/fund/fund_amac.py:476` | DONE |
-| `amac_aoin_info` | `src/fund/amac.rs::amac_aoin_info` | AMAC | `akshare/fund/fund_amac.py:530` | DONE |
-| `amac_fund_sub_info` | `src/fund/amac.rs::amac_fund_sub_info` | AMAC | `akshare/fund/fund_amac.py:577` | DONE |
-| `amac_fund_account_info` | `src/fund/amac.rs::amac_fund_account_info` | AMAC | `akshare/fund/fund_amac.py:629` | DONE |
-| `amac_futures_info` | `src/fund/amac.rs::amac_futures_info` | AMAC | `akshare/fund/fund_amac.py:737` | DONE |
-| `amac_manager_cancelled_info` | `src/fund/amac.rs::amac_manager_cancelled_info` | AMAC | `akshare/fund/fund_amac.py:792` | DONE |
-
-## 美国宏观(economic::macro_usa,Jin10 公开 JSON)
-
-全部函数走 `cdn.jin10.com` 明文 JSON,无需 JS/签名/Token。其余 Jin10 端点(datacenter-api.jin10.com)需 `x-csrf-token` 鉴权,已在对应条目下标注 DEFERRED。
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `macro_usa_rig_count` | `src/economic/macro_usa.rs::macro_usa_rig_count` | Jin10 | `akshare/economic/macro_usa.py:466` | DONE |
-| `macro_usa_crude_inner` | `src/economic/macro_usa.rs::macro_usa_crude_inner` | Jin10 | `akshare/economic/macro_usa.py:961` | DONE |
-| `macro_usa_cftc_nc_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_nc_holding` | Jin10 | `akshare/economic/macro_usa.py:997` | DONE |
-| `macro_usa_cftc_c_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_c_holding` | Jin10 | `akshare/economic/macro_usa.py:1026` | DONE |
-| `macro_usa_cftc_merchant_currency_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_merchant_currency_holding` | Jin10 | `akshare/economic/macro_usa.py:1055` | DONE |
-| `macro_usa_cftc_merchant_goods_holding` | `src/economic/macro_usa.rs::macro_usa_cftc_merchant_goods_holding` | Jin10 | `akshare/economic/macro_usa.py:1084` | DONE |
-| `macro_usa_cme_merchant_goods_holding` | `src/economic/macro_usa.rs::macro_usa_cme_merchant_goods_holding` | Jin10 | `akshare/economic/macro_usa.py:1113` | DONE |
-
-> `macro_usa_cpi_yoy` / `macro_usa_phs` 等其余 Jin10 函数因 `datacenter-api.jin10.com` 鉴权(需 `x-csrf-token`)而 DEFERRED;约 40 个宏观函数待补。
-
-## 中债指数(bond::cbond,中债登 yield.chinabond.com.cn)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `bond_new_composite_index_cbond` | `src/bond/cbond.rs::bond_new_composite_index_cbond` | 中债登 | `akshare/bond/bond_cbond.py:130` | DONE |
-| `bond_composite_index_cbond` | `src/bond/cbond.rs::bond_composite_index_cbond` | 中债登 | `akshare/bond/bond_cbond.py:214` | DONE |
-| `bond_treasury_index_cbond` | `src/bond/cbond.rs::bond_treasury_index_cbond` | 中债登 | `akshare/bond/bond_cbond.py:72` | DONE |
-| `bond_index_general_cbond` | `src/bond/cbond.rs::bond_index_general_cbond` | 中债登 | `akshare/bond/bond_cbond.py:28` | DONE |
-
-> `bond_available_index_cbond`(`bond_cbond.py:14`)为本地 `INDEX_MAPPING` 常量构造 DataFrame,无 HTTP,不纳入;`bond_china_yield`/`bond_spot_*` 在 `bond_china.py`(HTML 解析);`bond_euro.py`/`bond_usa.py` 在本 checkout 中 ABSENT → DEFERRED。
-
-## 限售股解禁(stock::restricted,东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_restricted_release_summary_em` | `src/stock/restricted.rs::stock_restricted_release_summary_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:14` | DONE |
-| `stock_restricted_release_detail_em` | `src/stock/restricted.rs::stock_restricted_release_detail_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:106` | DONE |
-| `stock_restricted_release_queue_em` | `src/stock/restricted.rs::stock_restricted_release_queue_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:209` | DONE |
-| `stock_restricted_release_stockholder_em` | `src/stock/restricted.rs::stock_restricted_release_stockholder_em` | 东财 | `akshare/stock_fundamental/stock_restricted_em.py:301` | DONE |
-
-## 估值指标(stock::indicator,百度/东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_zh_valuation_baidu` | `src/stock/indicator.rs::stock_zh_valuation_baidu` | 百度股市通 | `akshare/stock_feature/stock_zh_valuation_baidu.py:13` | DONE |
-| `stock_zh_valuation_comparison_em` | `src/stock/indicator.rs::stock_zh_valuation_comparison_em` | 东财 | `akshare/stock/stock_zh_comparison_em.py:72` | DONE |
-| `stock_value_em` | `src/stock/indicator.rs::stock_value_em` | 东财 | `akshare/stock_feature/stock_value_em.py:14` | DONE |
-
-> `stock_industry_pe_ratio_cninfo`(`stock_industry_pe_cninfo.py`)为 HTML 抓取 → DEFERRED。
-
-## 期权-新浪(option::sina,Sina)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `option_cffex_daily` | `src/option/sina.rs::option_cffex_daily` | 新浪 | `akshare/option_finance_sina.py`(`option_cffex_*_daily_sina`) | DONE |
-
-> `option_cffex_*_daily_sina` 系列(sz50/hs300/zz1000)共享同一上游 JSONP 端点,已统一为 `option_cffex_daily(symbol)`;`option_cffex_spot_sina` 已在 `option/extra.rs` 实现;`option_sina.py` 在本 checkout 中 ABSENT,CFFEX 列表函数为 HTML 抓取 → DEFERRED。
-
-## 大宗交易(stock::dzjy,东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_dzjy_sctj` | `src/stock/dzjy.rs::stock_dzjy_sctj` | 东财 | `akshare/stock/stock_dzjy_em.py:13` | DONE |
-| `stock_dzjy_mrmx` | `src/stock/dzjy.rs::stock_dzjy_mrmx` | 东财 | `akshare/stock/stock_dzjy_em.py:72` | DONE |
-| `stock_dzjy_mrtj` | `src/stock/dzjy.rs::stock_dzjy_mrtj` | 东财 | `akshare/stock/stock_dzjy_em.py:213` | DONE |
-| `stock_dzjy_hygtj` | `src/stock/dzjy.rs::stock_dzjy_hygtj` | 东财 | `akshare/stock/stock_dzjy_em.py:295` | DONE |
-| `stock_dzjy_hyyybtj` | `src/stock/dzjy.rs::stock_dzjy_hyyybtj` | 东财 | `akshare/stock/stock_dzjy_em.py:402` | DONE |
-| `stock_dzjy_yybph` | `src/stock/dzjy.rs::stock_dzjy_yybph` | 东财 | `akshare/stock/stock_dzjy_em.py:484` | DONE |
-
-## 财务报表(stock::financial,东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_zcfz_em` | `src/stock/financial.rs::stock_zcfz_em` | 东财 | `akshare/stock_feature/stock_report_em.py:20` | DONE |
-| `stock_zcfz_bj_em` | `src/stock/financial.rs::stock_zcfz_bj_em` | 东财 | `akshare/stock_feature/stock_report_em.py:161` | DONE |
-| `stock_lrb_em` | `src/stock/financial.rs::stock_lrb_em` | 东财 | `akshare/stock_feature/stock_report_em.py:302` | DONE |
-| `stock_xjll_em` | `src/stock/financial.rs::stock_xjll_em` | 东财 | `akshare/stock_feature/stock_report_em.py:438` | DONE |
-
-> 归一化为 `(证券,项目,报告期,值)` 行,适配动态报告期列;`stock::fundamental::eastmoney` 的 `*_by_report_em` 来自 `stock_three_report_em.py`,与此处不同文件,无重复。
-
-## 市盈率(stock::sy,东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_sy_profile_em` | `src/stock/sy.rs::stock_sy_profile_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:19` | DONE |
-| `stock_sy_yq_em` | `src/stock/sy.rs::stock_sy_yq_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:84` | DONE |
-| `stock_sy_jz_em` | `src/stock/sy.rs::stock_sy_jz_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:193` | DONE |
-| `stock_sy_em` | `src/stock/sy.rs::stock_sy_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:294` | DONE |
-| `stock_sy_hy_em` | `src/stock/sy.rs::stock_sy_hy_em` | 东财 | `akshare/stock_feature/stock_sy_em.py:386` | DONE |
-
-## 股权质押(stock::gpzy,东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_gpzy_profile_em` | `src/stock/gpzy.rs::stock_gpzy_profile_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:21` | DONE |
-| `stock_gpzy_pledge_ratio_em` | `src/stock/gpzy.rs::stock_gpzy_pledge_ratio_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:88` | DONE |
-| `stock_gpzy_pledge_ratio_detail_em` | `src/stock/gpzy.rs::stock_gpzy_pledge_ratio_detail_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:304` | DONE |
-| `stock_gpzy_individual_pledge_ratio_detail_em` | `src/stock/gpzy.rs::stock_gpzy_individual_pledge_ratio_detail_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:308` | DONE |
-| `stock_gpzy_distribute_statistics_company_em` | `src/stock/gpzy.rs::stock_gpzy_distribute_statistics_company_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:312` | DONE |
-| `stock_gpzy_distribute_statistics_bank_em` | `src/stock/gpzy.rs::stock_gpzy_distribute_statistics_bank_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:381` | DONE |
-| `stock_gpzy_industry_data_em` | `src/stock/gpzy.rs::stock_gpzy_industry_data_em` | 东财 | `akshare/stock_feature/stock_gpzy_em.py:450` | DONE |
-
-> 私有 helper `_get_page_num_*` / `_stock_gpzy_pledge_ratio_detail_em` 已内联;`bond_cov_comparison` 等已在 `bond::eastmoney` 移植,本模块仅取未移植的 5 个可转债函数。
-
-## 可转债(bond::cov,新浪 / 东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `bond_zh_hs_cov_spot` | `src/bond/cov.rs::bond_zh_hs_cov_spot` | 新浪 | `akshare/bond/bond_zh_cov.py:46` | DONE |
-| `bond_zh_hs_cov_daily` | `src/bond/cov.rs::bond_zh_hs_cov_daily` | 东财(push2his) | `akshare/bond/bond_zh_cov.py:65` | DONE |
-| `bond_zh_hs_cov_min` | `src/bond/cov.rs::bond_zh_hs_cov_min` | 东财 | `akshare/bond/bond_zh_cov.py:131` | DONE |
-| `bond_zh_hs_cov_pre_min` | `src/bond/cov.rs::bond_zh_hs_cov_pre_min` | 东财 | `akshare/bond/bond_zh_cov.py:264` | DONE |
-| `bond_zh_cov_info` | `src/bond/cov.rs::bond_zh_cov_info` | 东财 | `akshare/bond/bond_zh_cov.py:542` | DONE |
-
-> `bond_zh_hs_cov_daily` 上游新浪 `klc_kl.js` 需 `py_mini_racer` JS 解密,纯 Rust 不可移植,故改用东财 `push2his` `data.klines`(列结构一致);`bond_zh_cov`/`bond_cov_comparison`/`bond_zh_cov_value_analysis` 已在 `bond::eastmoney` 移植,跳过。
-
-## 发行与申购(stock::fundamental::registration,东方财富)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_register_all_em` | `src/stock/fundamental/registration.rs::stock_register_all_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:16` | DONE |
-| `stock_register_kcb_em` | `src/stock/fundamental/registration.rs::stock_register_kcb_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:89` | DONE |
-| `stock_register_cyb_em` | `src/stock/fundamental/registration.rs::stock_register_cyb_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:163` | DONE |
-| `stock_register_bj_em` | `src/stock/fundamental/registration.rs::stock_register_bj_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:237` | DONE |
-| `stock_register_sh_em` | `src/stock/fundamental/registration.rs::stock_register_sh_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:311` | DONE |
-| `stock_register_sz_em` | `src/stock/fundamental/registration.rs::stock_register_sz_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:385` | DONE |
-| `stock_register_db_em` | `src/stock/fundamental/registration.rs::stock_register_db_em` | 东财 | `akshare/stock_fundamental/stock_register_em.py:459` | DONE |
-| `stock_ipo_declare_em` | `src/stock/fundamental/registration.rs::stock_ipo_declare_em` | 东财 | `akshare/stock_fundamental/stock_ipo_declare.py:16` | DONE |
-| `stock_ipo_review_em` | `src/stock/fundamental/registration.rs::stock_ipo_review_em` | 东财 | `akshare/stock_fundamental/stock_ipo_review.py:18` | DONE |
-| `stock_ipo_tutor_em` | `src/stock/fundamental/registration.rs::stock_ipo_tutor_em` | 东财 | `akshare/stock_fundamental/stock_ipo_tutor.py:18` | DONE |
-| `stock_profit_forecast_em` | `src/stock/fundamental/registration.rs::stock_profit_forecast_em` | 东财 | `akshare/stock_fundamental/stock_profit_forecast_em.py:15` | DONE |
-
-## 中国宏观扩展(economic::macro_china2,东方财富 datacenter)
-
-取 `akshare/economic/macro_china.py` 中 25 个东财 `datacenter-web` `RPT_*` 纯 HTTP 函数。Jin10 `reportType` 令牌门控(`macro_china_gdp_yearly`/`cpi_yearly`/`ppi_yearly`/`cx_pmi_yearly`/`non_man_pmi`/`fx_reserves_yearly`/`m2_yearly`/`exports_yoy`/`imports_yoy`/`trade_balance`/`industrial_production_yoy` 等)与 Sina `MacPage_Service.get_pagedata`(~10 个)均 DEFERRED;`macro_china_gdp`/`cpi`/`money_supply`/`ppi` 已在 `economic::china` 移植。
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `macro_china_bank_financing` | `src/economic/macro_china2.rs::macro_china_bank_financing` | 东财 | `akshare/economic/macro_china.py:1241` | DONE |
-| `macro_china_insurance_income` | `src/economic/macro_china2.rs::macro_china_insurance_income` | 东财 | `akshare/economic/macro_china.py:1287` | DONE |
-| `macro_china_mobile_number` | `src/economic/macro_china2.rs::macro_china_mobile_number` | 东财 | `akshare/economic/macro_china.py:1333` | DONE |
-| `macro_china_vegetable_basket` | `src/economic/macro_china2.rs::macro_china_vegetable_basket` | 东财 | `akshare/economic/macro_china.py:1380` | DONE |
-| `macro_china_agricultural_product` | `src/economic/macro_china2.rs::macro_china_agricultural_product` | 东财 | `akshare/economic/macro_china.py:1435` | DONE |
-| `macro_china_agricultural_index` | `src/economic/macro_china2.rs::macro_china_agricultural_index` | 东财 | `akshare/economic/macro_china.py:1490` | DONE |
-| `macro_china_energy_index` | `src/economic/macro_china2.rs::macro_china_energy_index` | 东财 | `akshare/economic/macro_china.py:1545` | DONE |
-| `macro_china_commodity_price_index` | `src/economic/macro_china2.rs::macro_china_commodity_price_index` | 东财 | `akshare/economic/macro_china.py:1600` | DONE |
-| `macro_global_sox_index` | `src/economic/macro_china2.rs::macro_global_sox_index` | 东财 | `akshare/economic/macro_china.py:1655` | DONE |
-| `macro_china_yw_electronic_index` | `src/economic/macro_china2.rs::macro_china_yw_electronic_index` | 东财 | `akshare/economic/macro_china.py:1710` | DONE |
-| `macro_china_construction_index` | `src/economic/macro_china2.rs::macro_china_construction_index` | 东财 | `akshare/economic/macro_china.py:1765` | DONE |
-| `macro_china_construction_price_index` | `src/economic/macro_china2.rs::macro_china_construction_price_index` | 东财 | `akshare/economic/macro_china.py:1823` | DONE |
-| `macro_china_lpi_index` | `src/economic/macro_china2.rs::macro_china_lpi_index` | 东财 | `akshare/economic/macro_china.py:1878` | DONE |
-| `macro_china_bdti_index` | `src/economic/macro_china2.rs::macro_china_bdti_index` | 东财 | `akshare/economic/macro_china.py:1933` | DONE |
-| `macro_china_bsi_index` | `src/economic/macro_china2.rs::macro_china_bsi_index` | 东财 | `akshare/economic/macro_china.py:1988` | DONE |
-| `macro_china_new_financial_credit` | `src/economic/macro_china2.rs::macro_china_new_financial_credit` | 东财 | `akshare/economic/macro_china.py:2142` | DONE |
-| `macro_china_fx_gold` | `src/economic/macro_china2.rs::macro_china_fx_gold` | 东财 | `akshare/economic/macro_china.py:2190` | DONE |
-| `macro_china_stock_market_cap` | `src/economic/macro_china2.rs::macro_china_stock_market_cap` | 东财 | `akshare/economic/macro_china.py:2256` | DONE |
-| `macro_china_hgjck` | `src/economic/macro_china2.rs::macro_china_hgjck` | 东财 | `akshare/economic/macro_china.py:2723` | DONE |
-| `macro_china_czsr` | `src/economic/macro_china2.rs::macro_china_czsr` | 东财 | `akshare/economic/macro_china.py:2814` | DONE |
-| `macro_china_whxd` | `src/economic/macro_china2.rs::macro_china_whxd` | 东财 | `akshare/economic/macro_china.py:2867` | DONE |
-| `macro_china_wbck` | `src/economic/macro_china2.rs::macro_china_wbck` | 东财 | `akshare/economic/macro_china.py:2917` | DONE |
-| `macro_china_xfzxx` | `src/economic/macro_china2.rs::macro_china_xfzxx` | 东财 | `akshare/economic/macro_china.py:2966` | DONE |
-| `macro_china_reserve_requirement_ratio` | `src/economic/macro_china2.rs::macro_china_reserve_requirement_ratio` | 东财 | `akshare/economic/macro_china.py:3096` | DONE |
-| `macro_china_real_estate` | `src/economic/macro_china2.rs::macro_china_real_estate` | 东财 | `akshare/economic/macro_china.py:3699` | DONE |
-
-## 期权波动率(index::qvix,optbbs 纯 CSV)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `index_option_50etf_qvix` | `src/index/qvix.rs::index_option_50etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:28` | DONE |
-| `index_option_50etf_min_qvix` | `src/index/qvix.rs::index_option_50etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:51` | DONE |
-| `index_option_300etf_qvix` | `src/index/qvix.rs::index_option_300etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:68` | DONE |
-| `index_option_300etf_min_qvix` | `src/index/qvix.rs::index_option_300etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:91` | DONE |
-| `index_option_500etf_qvix` | `src/index/qvix.rs::index_option_500etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:108` | DONE |
-| `index_option_500etf_min_qvix` | `src/index/qvix.rs::index_option_500etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:131` | DONE |
-| `index_option_cyb_qvix` | `src/index/qvix.rs::index_option_cyb_qvix` | optbbs | `akshare/index/index_option_qvix.py:148` | DONE |
-| `index_option_cyb_min_qvix` | `src/index/qvix.rs::index_option_cyb_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:171` | DONE |
-| `index_option_kcb_qvix` | `src/index/qvix.rs::index_option_kcb_qvix` | optbbs | `akshare/index/index_option_qvix.py:188` | DONE |
-| `index_option_kcb_min_qvix` | `src/index/qvix.rs::index_option_kcb_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:211` | DONE |
-| `index_option_100etf_qvix` | `src/index/qvix.rs::index_option_100etf_qvix` | optbbs | `akshare/index/index_option_qvix.py:228` | DONE |
-| `index_option_100etf_min_qvix` | `src/index/qvix.rs::index_option_100etf_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:251` | DONE |
-| `index_option_300index_qvix` | `src/index/qvix.rs::index_option_300index_qvix` | optbbs | `akshare/index/index_option_qvix.py:268` | DONE |
-| `index_option_300index_min_qvix` | `src/index/qvix.rs::index_option_300index_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:291` | DONE |
-| `index_option_1000index_qvix` | `src/index/qvix.rs::index_option_1000index_qvix` | optbbs | `akshare/index/index_option_qvix.py:308` | DONE |
-| `index_option_1000index_min_qvix` | `src/index/qvix.rs::index_option_1000index_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:331` | DONE |
-| `index_option_50index_qvix` | `src/index/qvix.rs::index_option_50index_qvix` | optbbs | `akshare/index/index_option_qvix.py:348` | DONE |
-| `index_option_50index_min_qvix` | `src/index/qvix.rs::index_option_50index_min_qvix` | optbbs | `akshare/index/index_option_qvix.py:371` | DONE |
-
-## 上交所期权(option::sse,新浪 JSONP)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `option_sse_list_sina` | `src/option/sse.rs::option_sse_list_sina` | 新浪 | `akshare/option/option_finance_sina.py:422` | DONE |
-| `option_sse_expire_day_sina` | `src/option/sse.rs::option_sse_expire_day_sina` | 新浪 | `akshare/option/option_finance_sina.py:441` | DONE |
-| `option_sse_codes_sina` | `src/option/sse.rs::option_sse_codes_sina` | 新浪 | `akshare/option/option_finance_sina.py:477` | DONE |
-| `option_sse_spot_price_sina` | `src/option/sse.rs::option_sse_spot_price_sina` | 新浪 | `akshare/option/option_finance_sina.py:542` | DONE |
-| `option_sse_underlying_spot_price_sina` | `src/option/sse.rs::option_sse_underlying_spot_price_sina` | 新浪 | `akshare/option/option_finance_sina.py:621` | DONE |
-| `option_sse_greeks_sina` | `src/option/sse.rs::option_sse_greeks_sina` | 新浪 | `akshare/option/option_finance_sina.py:686` | DONE |
-| `option_sse_minute_sina` | `src/option/sse.rs::option_sse_minute_sina` | 新浪 | `akshare/option/option_finance_sina.py:732` | DONE |
-| `option_sse_daily_sina` | `src/option/sse.rs::option_sse_daily_sina` | 新浪 | `akshare/option/option_finance_sina.py:776` | DONE |
-| `option_finance_minute_sina` | `src/option/sse.rs::option_finance_minute_sina` | 新浪 | `akshare/option/option_finance_sina.py:816` | DONE |
-| `option_minute_em` | `src/option/sse.rs::option_minute_em` | 东财 | `akshare/option/option_finance_sina.py:865` | DONE |
-
-> CFFEX 列表(`option_cffex_*_list_sina`)为 HTML 抓取 → DEFERRED;已统一的 `option_cffex_*_spot_sina`/`_daily_sina` 不重复移植;`option_minute_em` 入参为 `secid`(调用方自行经 `option_current_em` 解析)。
-
-## 三大报表(stock::financial_three,东方财富 emweb/datacenter)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_balance_sheet_by_yearly_em` | `src/stock/financial_three.rs::stock_balance_sheet_by_yearly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:84` | DONE |
-| `stock_profit_sheet_by_yearly_em` | `src/stock/financial_three.rs::stock_profit_sheet_by_yearly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:191` | DONE |
-| `stock_profit_sheet_by_quarterly_em` | `src/stock/financial_three.rs::stock_profit_sheet_by_quarterly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:240` | DONE |
-| `stock_cash_flow_sheet_by_yearly_em` | `src/stock/financial_three.rs::stock_cash_flow_sheet_by_yearly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:342` | DONE |
-| `stock_cash_flow_sheet_by_quarterly_em` | `src/stock/financial_three.rs::stock_cash_flow_sheet_by_quarterly_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:393` | DONE |
-| `stock_balance_sheet_by_report_delisted_em` | `src/stock/financial_three.rs::stock_balance_sheet_by_report_delisted_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:474` | DONE |
-| `stock_profit_sheet_by_report_delisted_em` | `src/stock/financial_three.rs::stock_profit_sheet_by_report_delisted_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:507` | DONE |
-| `stock_cash_flow_sheet_by_report_delisted_em` | `src/stock/financial_three.rs::stock_cash_flow_sheet_by_report_delisted_em` | 东财 | `akshare/stock_feature/stock_three_report_em.py:540` | DONE |
-
-> 归一化为 `(项目,报告期,值)` 行;私有 emweb HTML helper `_stock_balance_sheet_by_report_ctype_em` 及依赖它的三个非退市 `*_by_report_em` DEFERRED;`stock::fundamental::eastmoney` 的 `*_by_report_em` 来自不同文件,无重复。
-
-## 财务(同花顺/港股/美股)(stock::fundamental::finance_more)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_financial_debt_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_debt_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:58` | DONE |
-| `stock_financial_benefit_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_benefit_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:92` | DONE |
-| `stock_financial_cash_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_cash_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:130` | DONE |
-| `stock_financial_abstract_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_abstract_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:194` | DONE |
-| `stock_financial_debt_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_debt_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:291` | DONE |
-| `stock_financial_benefit_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_benefit_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:380` | DONE |
-| `stock_financial_cash_new_ths` | `src/stock/fundamental/finance_more.rs::stock_financial_cash_new_ths` | 同花顺 | `akshare/stock_fundamental/stock_finance_ths.py:477` | DONE |
-| `stock_financial_hk_report_em` | `src/stock/fundamental/finance_more.rs::stock_financial_hk_report_em` | 东财 | `akshare/stock_fundamental/stock_finance_hk_em.py:13` | DONE |
-| `stock_financial_hk_analysis_indicator_em` | `src/stock/fundamental/finance_more.rs::stock_financial_hk_analysis_indicator_em` | 东财 | `akshare/stock_fundamental/stock_finance_hk_em.py:108` | DONE |
-| `stock_financial_us_report_em` | `src/stock/fundamental/finance_more.rs::stock_financial_us_report_em` | 东财 | `akshare/stock_fundamental/stock_finance_us_em.py:110` | DONE |
-| `stock_financial_us_analysis_indicator_em` | `src/stock/fundamental/finance_more.rs::stock_financial_us_analysis_indicator_em` | 东财 | `akshare/stock_fundamental/stock_finance_us_em.py:158` | DONE |
-
-> `stock_financial_abstract_ths` / `stock_management_change_ths` / `stock_shareholder_change_ths` 为同花顺 `.phtml` HTML 抓取 → DEFERRED。
-
-## A股实时行情 spot/min (`stock::stock_hist_em`,东财 push2)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `stock_zh_a_spot_em` | `src/stock/stock_hist_em.rs::stock_zh_a_spot_em` | 东财 push2 clist | `stock_feature/stock_hist_em.py:15` | DONE |
-| `stock_sh_a_spot_em` | `src/stock/stock_hist_em.rs::stock_sh_a_spot_em` | 东财 push2 clist | `:124` | DONE |
-| `stock_sz_a_spot_em` | `src/stock/stock_hist_em.rs::stock_sz_a_spot_em` | 东财 push2 clist | `:232` | DONE |
-| `stock_bj_a_spot_em` | `src/stock/stock_hist_em.rs::stock_bj_a_spot_em` | 东财 push2 clist | `:340` | DONE |
-| `stock_new_a_spot_em` | `src/stock/stock_hist_em.rs::stock_new_a_spot_em` | 东财 push2 clist | `:448` | DONE |
-| `stock_cy_a_spot_em` | `src/stock/stock_hist_em.rs::stock_cy_a_spot_em` | 东财 push2 clist | `:561` | DONE |
-| `stock_kc_a_spot_em` | `src/stock/stock_hist_em.rs::stock_kc_a_spot_em` | 东财 push2 clist | `:670` | DONE |
-| `stock_zh_ab_comparison_em` | `src/stock/stock_hist_em.rs::stock_zh_ab_comparison_em` | 东财 push2 clist | `:779` | DONE |
-| `stock_zh_b_spot_em` | `src/stock/stock_hist_em.rs::stock_zh_b_spot_em` | 东财 push2 clist | `:844` | DONE |
-| `stock_zh_a_hist_pre_min_em` | `src/stock/stock_hist_em.rs::stock_zh_a_hist_pre_min_em` | 东财 push2 trends2 | `:1170` | DONE |
-| `stock_hk_main_board_spot_em` | `src/stock/stock_hist_em.rs::stock_hk_main_board_spot_em` | 东财 push2 clist | `:1310` | DONE |
-| `stock_hk_hist_min_em` | `src/stock/stock_hist_em.rs::stock_hk_hist_min_em` | 东财 push2 trends2/kline | `:1467` | DONE |
-| `stock_us_hist_min_em` | `src/stock/stock_hist_em.rs::stock_us_hist_min_em` | 东财 push2 trends2 | `:1758` | DONE |
-
-> 注:`stock_zh_a_hist` / `stock_hk_hist` / `stock_us_hist` / `stock_zh_a_hist_min_em` 已在 `stock::hist` / `stock::spot` 移植,本批不重复。
-
-## 基金列表/净值/规模 (`fund::em`,东方财富)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `fund_purchase_em` | `src/fund/em.rs::fund_purchase_em` | 东财 `Fund_JJJZ_Data.aspx` | `fund/fund_em.py:151` | DONE |
-| `fund_info_index_em` | `src/fund/em.rs::fund_info_index_em` | 东财 `GetRankList` | `:234` | DONE |
-| `fund_open_fund_daily_em` | `src/fund/em.rs::fund_open_fund_daily_em` | 东财 `Fund_JJJZ_Data.aspx` | `:386` | DONE |
-| `fund_money_fund_info_em` | `src/fund/em.rs::fund_money_fund_info_em` | 东财 `f10/lsjz` | `:741` | DONE |
-| `fund_financial_fund_daily_em` | `src/fund/em.rs::fund_financial_fund_daily_em` | 东财 `GetLCJJJZ` | `:800` | DONE |
-| `fund_financial_fund_info_em` | `src/fund/em.rs::fund_financial_fund_info_em` | 东财 `f10/lsjz` | `:873` | DONE |
-| `fund_graded_fund_daily_em` | `src/fund/em.rs::fund_graded_fund_daily_em` | 东财 `Fund_JJJZ_Data.aspx` | `:938` | DONE |
-| `fund_graded_fund_info_em` | `src/fund/em.rs::fund_graded_fund_info_em` | 东财 `f10/lsjz` | `:1008` | DONE |
-| `fund_etf_fund_info_em` | `src/fund/em.rs::fund_etf_fund_info_em` | 东财 `f10/lsjz` | `:1097` | DONE |
-| `fund_value_estimation_em` | `src/fund/em.rs::fund_value_estimation_em` | 东财 `GetFundGZList` | `:1161` | DONE |
-| `fund_hk_fund_hist_em` | `src/fund/em.rs::fund_hk_fund_hist_em` | 东财海外 `OpenApiHander.ashx` | `:1260` | DONE |
-
-> DEFERRED:`fund_money_fund_daily_em`(:707)、`fund_etf_fund_daily_em`(:1064) 为 gb2312 `pd.read_html` 抓取;`fund_open_fund_info_em`(:452) 已在 `fund::open_fund` 移植。
-
-## 各国央行利率 (`economic::macro_bank`,金十)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `macro_bank_usa_interest_rate` | `src/economic/macro_bank.rs::macro_bank_usa_interest_rate` | 金十 `datacenter-api` | `economic/macro_bank.py:101` | DONE |
-| `macro_bank_euro_interest_rate` | `src/economic/macro_bank.rs::macro_bank_euro_interest_rate` | 金十 | `:112` | DONE |
-| `macro_bank_newzealand_interest_rate` | `src/economic/macro_bank.rs::macro_bank_newzealand_interest_rate` | 金十 | `:124` | DONE |
-| `macro_bank_china_interest_rate` | `src/economic/macro_bank.rs::macro_bank_china_interest_rate` | 金十 | `:136` | DONE |
-| `macro_bank_switzerland_interest_rate` | `src/economic/macro_bank.rs::macro_bank_switzerland_interest_rate` | 金十 | `:148` | DONE |
-| `macro_bank_english_interest_rate` | `src/economic/macro_bank.rs::macro_bank_english_interest_rate` | 金十 | `:160` | DONE |
-| `macro_bank_australia_interest_rate` | `src/economic/macro_bank.rs::macro_bank_australia_interest_rate` | 金十 | `:172` | DONE |
-| `macro_bank_japan_interest_rate` | `src/economic/macro_bank.rs::macro_bank_japan_interest_rate` | 金十 | `:184` | DONE |
-| `macro_bank_russia_interest_rate` | `src/economic/macro_bank.rs::macro_bank_russia_interest_rate` | 金十 | `:196` | DONE |
-| `macro_bank_india_interest_rate` | `src/economic/macro_bank.rs::macro_bank_india_interest_rate` | 金十 | `:208` | DONE |
-| `macro_bank_brazil_interest_rate` | `src/economic/macro_bank.rs::macro_bank_brazil_interest_rate` | 金十 | `:220` | DONE |
-
-## 宏观 NBS 中国 + 欧元区 (`economic::macro_nbs_euro`,金十)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `macro_euro_gdp_yoy` | `src/economic/macro_nbs_euro.rs::macro_euro_gdp_yoy` | 金十 `reports/list_v2` | `economic/macro_euro.py:24` | DONE |
-| `macro_euro_cpi_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_cpi_mom` | 金十 | `:81` | DONE |
-| `macro_euro_cpi_yoy` | `src/economic/macro_nbs_euro.rs::macro_euro_cpi_yoy` | 金十 | `:137` | DONE |
-| `macro_euro_ppi_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_ppi_mom` | 金十 | `:196` | DONE |
-| `macro_euro_retail_sales_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_retail_sales_mom` | 金十 | `:254` | DONE |
-| `macro_euro_employment_change_qoq` | `src/economic/macro_nbs_euro.rs::macro_euro_employment_change_qoq` | 金十 | `:313` | DONE |
-| `macro_euro_unemployment_rate_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_unemployment_rate_mom` | 金十 | `:369` | DONE |
-| `macro_euro_trade_balance` | `src/economic/macro_nbs_euro.rs::macro_euro_trade_balance` | 金十 | `:428` | DONE |
-| `macro_euro_current_account_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_current_account_mom` | 金十 | `:487` | DONE |
-| `macro_euro_industrial_production_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_industrial_production_mom` | 金十 | `:546` | DONE |
-| `macro_euro_manufacturing_pmi` | `src/economic/macro_nbs_euro.rs::macro_euro_manufacturing_pmi` | 金十 | `:605` | DONE |
-| `macro_euro_services_pmi` | `src/economic/macro_nbs_euro.rs::macro_euro_services_pmi` | 金十 | `:664` | DONE |
-| `macro_euro_zew_economic_sentiment` | `src/economic/macro_nbs_euro.rs::macro_euro_zew_economic_sentiment` | 金十 | `:723` | DONE |
-| `macro_euro_sentix_investor_confidence` | `src/economic/macro_nbs_euro.rs::macro_euro_sentix_investor_confidence` | 金十 | `:781` | DONE |
-
-> DEFERRED:`macro_china_nbs_nation`(:517)、`macro_china_nbs_region`(:566) 需 `curl_cffi` 会话预热 + 多步目录树导航;`macro_euro_lme_holding`(:839)、`macro_euro_lme_stock`(:870) 为 LME 嵌套字符串元组 `eval` 解析。
-
-## 申万研究指数 (`index::research_sw`,申万研究 API)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `index_hist_sw` | `src/index/research_sw.rs::index_hist_sw` | 申万 `index_publish/trend` | `index/index_research_sw.py:29` | DONE |
-| `index_min_sw` | `src/index/research_sw.rs::index_min_sw` | 申万 `details/timelines` | `:93` | DONE |
-| `index_component_sw` | `src/index/research_sw.rs::index_component_sw` | 申万 `component_stocks` | `:139` | DONE |
-| `index_realtime_sw` | `src/index/research_sw.rs::index_realtime_sw` | 申万 `current` | `:241` | DONE |
-| `index_analysis_daily_sw` | `src/index/research_sw.rs::index_analysis_daily_sw` | 申万 `index_analysis_report` | `:319` | DONE |
-| `index_analysis_week_month_sw` | `src/index/research_sw.rs::index_analysis_week_month_sw` | 申万 `week_month_datetime` | `:397` | DONE |
-| `index_analysis_weekly_sw` | `src/index/research_sw.rs::index_analysis_weekly_sw` | 申万 `index_analysis_reports` | `:423` | DONE |
-| `index_analysis_monthly_sw` | `src/index/research_sw.rs::index_analysis_monthly_sw` | 申万 `index_analysis_reports` | `:498` | DONE |
-
-> DEFERRED:`index_realtime_sw` 的 `大类风格指数`/`金创指数` 子路径为 JSON-body POST(`Client` 仅支持 GET / form POST),`market表征`/`一级行业`/`二级行业`/`风格指数` 4 个 symbol 全落地。
-
-## 商品期权 (`option::commodity`,交易所)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `option_hist_shfe` | `src/option/commodity.rs::option_hist_shfe` | 上期所 `tradedata/option` JSON | `option/option_commodity.py:365` | DONE |
-| `option_vol_shfe` | `src/option/commodity.rs::option_vol_shfe` | 上期所 JSON | `:445` | DONE |
-| `option_hist_gfex` | `src/option/commodity.rs::option_hist_gfex` | 广期所 POST | `:504` | DONE |
-| `option_vol_gfex` | `src/option/commodity.rs::option_vol_gfex` | 广期所 POST | `:593` | DONE |
-
-> DEFERRED:`option_hist_dce`(:32) 为 DCE JSON-body POST(`Client` 无此能力);`option_hist_czce`(:187) 为 `|` 分隔 `pd.read_table` HTML 抓取。
-
-## 期货持仓排名 (`futures::cot`,交易所)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `get_shfe_rank_table` | `src/futures/cot.rs::get_shfe_rank_table` | 上期所 `pm{date}.dat` JSON | `futures/cot.py:275` | DONE |
-| `futures_gfex_position_rank` | `src/futures/cot.rs::futures_gfex_position_rank` | 广期所 JSON(3 POST) | `:1292` | DONE |
-
-> DEFERRED:`get_rank_sum_daily`(:56)、`get_rank_sum`(:110)、`get_rank_table_czce`(:408,Excel)、`get_dce_rank_table`(:566,Excel/HTML)、`get_cffex_rank_table`(:716,GBK CSV 无 charset)、`futures_dce_position_rank`(:818,ZIP)、`futures_dce_position_rank_other`(:1052,HTML) 依赖 Excel/HTML/ZIP/GBK 解析,均跳过。
-
-## 上海黄金交易所 (`spot::sge`,SGE)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `spot_symbol_table_sge` | `src/spot/sge.rs::spot_symbol_table_sge` | SGE 静态表 | `spot/spot_sge.py:17` | DONE |
-| `spot_quotations_sge` | `src/spot/sge.rs::spot_quotations_sge` | SGE `graph/quotations` | `:50` | DONE |
-| `spot_hist_sge` | `src/spot/sge.rs::spot_hist_sge` | SGE `graph/Dailyhq` | `:109` | DONE |
-| `spot_golden_benchmark_sge` | `src/spot/sge.rs::spot_golden_benchmark_sge` | SGE `graph/DayilyJzj` | `:163` | DONE |
-| `spot_silver_benchmark_sge` | `src/spot/sge.rs::spot_silver_benchmark_sge` | SGE `graph/DayilyShsilverJzj` | `:194` | DONE |
-
-## 乘联会汽车 (`other::car_cpca`,CPCA)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `car_market_total_cpca` | `src/other/car_cpca.rs::car_market_total_cpca` | CPCA `chartlist` | `other/other_car_cpca.py:13` | DONE |
-| `car_market_man_rank_cpca` | `src/other/car_cpca.rs::car_market_man_rank_cpca` | CPCA `chartlist` | `:391` | DONE |
-| `car_market_cate_cpca` | `src/other/car_cpca.rs::car_market_cate_cpca` | CPCA `chartlist` | `:646` | DONE |
-| `car_market_country_cpca` | `src/other/car_cpca.rs::car_market_country_cpca` | CPCA `chartlist` | `:665` | DONE |
-| `car_market_segment_cpca` | `src/other/car_cpca.rs::car_market_segment_cpca` | CPCA `chartlist` | `:685` | DONE |
-| `car_market_fuel_cpca` | `src/other/car_cpca.rs::car_market_fuel_cpca` | CPCA `chartlist` | `:722` | DONE |
-
-## 艺恩票房 (`alt::movie_yien`,endata)
-
-| akshare 函数 | Rust 路径 | 上游 | akshare 行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `get_current_week` | `src/alt/movie_yien.rs::get_current_week` | 纯日期 helper | `movie/movie_yien.py:50` | DONE |
-| `movie_boxoffice_yearly_first_week` | `src/alt/movie_yien.rs::movie_boxoffice_yearly_first_week` | 艺恩 POST | `:502` | DONE |
-| `movie_boxoffice_cinema_daily` | `src/alt/movie_yien.rs::movie_boxoffice_cinema_daily` | 艺恩 POST | `:581` | DONE |
-
-> DEFERRED:`decrypt`(:65) 需 `py_mini_racer` JS;`movie_boxoffice_weekly`(:340)、`movie_boxoffice_cinema_weekly`(:642) 上游权限错误;`movie_boxoffice_realtime/_daily/_monthly/_yearly` 已在 `alt::movie` 移植,不重复。
-
-## Wave 1 新增顶层领域(纯 HTTP 长尾)
-
-### 货币 / 外汇 `currency`(currencyscoop / 外汇交易中心)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `currency_latest` | `src/currency/api.rs::currency_latest` | currencyscoop | `currency/currency.py:14` | DONE |
-| `currency_history` | `src/currency/api.rs::currency_history` | currencyscoop | `currency/currency.py:39` | DONE |
-| `currency_time_series` | `src/currency/api.rs::currency_time_series` | currencyscoop | `currency/currency.py:66` | DONE |
-| `currency_currencies` | `src/currency/api.rs::currency_currencies` | currencyscoop | `currency/currency.py:107` | DONE |
-| `currency_convert` | `src/currency/api.rs::currency_convert` | currencyscoop | `currency/currency.py:126` | DONE |
-| `fx_c_swap_cm` | `src/currency/api.rs::fx_c_swap_cm` | 外汇交易中心 | `fx/fx_c_swap_cm.py:25` | DONE |
-| `currency_boc_sina` | _(待填)_ | 新浪 | `currency/currency_china_bank_sina.py:57` | DEFERRED |
-| `currency_boc_safe` | _(待填)_ | 安全外汇储备 | `currency/currency_safe.py:18` | DEFERRED |
-| `currency_pair_map` | _(待填)_ | investing | `fx/currency_investing.py:16` | DEFERRED |
-| `fx_quote_baidu` | _(待填)_ | 百度 | `fx/fx_quote_baidu.py:13` | DEFERRED |
-
-> DEFERRED:`currency_boc_sina`/`currency_boc_safe` 为 `pd.read_html`+Excel 抓取;`currency_pair_map` 为 investing.com 反爬 HTML;`fx_quote_baidu` 需 `acs-token` 反爬(返回 403)。
-
-### REITs `reits`(东方财富 push2)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `reits_realtime_em` | `src/reits/em.rs::reits_realtime_em` | 东财 push2 | `reits/reits_basic.py:45` | DONE |
-| `reits_hist_em` | `src/reits/em.rs::reits_hist_em` | 东财 push2his | `reits/reits_basic.py:116` | DONE |
-
-### 期货衍生品 `futures_derivative`(交易所 / 新浪)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `futures_contract_info_dce` | `src/futures_derivative/contract_info.rs::futures_contract_info_dce` | 大商所 | `futures_derivative/futures_contract_info_dce.py:13` | DONE |
-| `futures_contract_info_gfex` | `src/futures_derivative/contract_info.rs::futures_contract_info_gfex` | 广期所 | `futures_derivative/futures_contract_info_gfex.py:13` | DONE |
-| `futures_contract_info_ine` | `src/futures_derivative/contract_info.rs::futures_contract_info_ine` | 上期能源 | `futures_derivative/futures_contract_info_ine.py:13` | DONE |
-| `futures_contract_info_shfe` | `src/futures_derivative/contract_info.rs::futures_contract_info_shfe` | 上期所 | `futures_derivative/futures_contract_info_shfe.py:13` | DONE |
-| `futures_main_sina` | `src/futures_derivative/sina.rs::futures_main_sina` | 新浪 | `futures_derivative/futures_index_sina.py:103` | DONE |
-| `futures_hog_core` | `src/futures_derivative/hog.rs::futures_hog_core` | 东财 datacenter | `futures_derivative/futures_hog.py:13` | DONE |
-| `futures_hog_cost` | `src/futures_derivative/hog.rs::futures_hog_cost` | 东财 datacenter | `futures_derivative/futures_hog.py:57` | DONE |
-| `futures_hog_supply` | `src/futures_derivative/hog.rs::futures_hog_supply` | 东财 datacenter | `futures_derivative/futures_hog.py:116` | DONE |
-| `futures_contract_info_cffex` | _(待填)_ | 中金所 | `futures_derivative/futures_contract_info_cffex.py:15` | DEFERRED |
-| `futures_contract_info_czce` | _(待填)_ | 郑商所 | `futures_derivative/futures_contract_info_czce.py:15` | DEFERRED |
-| `futures_hold_pos_sina` | _(待填)_ | 新浪 | `futures_derivative/futures_cot_sina.py:15` | DEFERRED |
-| `futures_display_main_sina` | _(待填)_ | 新浪 | `futures_derivative/futures_index_sina.py:89` | DEFERRED |
-| `futures_spot_sys` | _(待填)_ | 上期所 | `futures_derivative/futures_spot_sys.py:36` | DEFERRED |
-
-> DEFERRED:`futures_contract_info_cffex`/`futures_contract_info_czce` 上游为 XML,需 XML crate;`futures_hold_pos_sina` 为 `pd.read_html`;`futures_display_main_sina` 依赖 `demjson` 解析 JS 文件;`futures_spot_sys` 为 `pd.read_html` 抓取。
-
-### 文章 / 学术指标 `article`(FRED / EPU / RV)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `fred_md` | `src/article/fred.rs::fred_md` | FRED S3 CSV | `article/fred_md.py:13` | DONE |
-| `fred_qd` | `src/article/fred.rs::fred_qd` | FRED S3 CSV | `article/fred_md.py:28` | DONE |
-| `article_epu_index` | _(待填)_ | EPU | `article/epu_index.py:12` | DEFERRED |
-| `article_ff_crr` | _(待填)_ | FF | `article/ff_factor.py:17` | DEFERRED |
-| `article_oman_rv` | _(待填)_ | RV | `article/risk_rv.py:18` | DEFERRED |
-| `article_oman_rv_short` | _(待填)_ | RV | `article/risk_rv.py:78` | DEFERRED |
-| `article_rlab_rv` | _(待填)_ | RV | `article/risk_rv.py:117` | DEFERRED |
-
-> DEFERRED:`article_epu_index` 默认 symbol 为 Excel 透视表;`article_ff_crr` 为 HTML 表;`article_oman_rv`/`_short` 为 HTML 内嵌 JS 对象;`article_rlab_rv` 为 HTML 正文抓取。
-
-### 高频 `hf`(GitHub 公开 CSV)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `hf_sp_500` | `src/hf/sp500.rs::hf_sp_500` | GitHub CSV | `hf/hf_sp500.py:14` | DONE |
-
-### 财富榜 `fortune`(新财富 / Bloomberg / 胡润 / 福布斯)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `xincaifu_rank` | `src/fortune/xincaifu.rs::xincaifu_rank` | 新财富 JSONP | `fortune/fortune_xincaifu_500.py:15` | DONE |
-| `index_bloomberg_billionaires` | _(待填)_ | Bloomberg | `fortune/fortune_bloomberg.py:65` | DEFERRED |
-| `index_bloomberg_billionaires_hist` | _(待填)_ | Bloomberg | `fortune/fortune_bloomberg.py:14` | DEFERRED |
-| `forbes_rank` | _(待填)_ | 福布斯 | `fortune/fortune_forbes_500.py:14` | DEFERRED |
-| `hurun_rank` | _(待填)_ | 胡润 | `fortune/fortune_hurun.py:16` | DEFERRED |
-| `business_value_artist` | _(待填)_ | 艺恩 | `movie/artist_yien.py:65` | DEFERRED |
-| `online_value_artist` | _(待填)_ | 艺恩 | `movie/artist_yien.py:103` | DEFERRED |
-
-> DEFERRED:`index_bloomberg_*`/`forbes_rank`/`hurun_rank` 为 HTML 表抓取;`business_value_artist`/`online_value_artist` 需 `py_mini_racer` JS 解密。
-
-### QDII `qdii`(集思录)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `qdii_a_index_jsl` | `src/qdii/jsl.rs::qdii_a_index_jsl` | 集思录 | `qdii/qdii_jsl.py:160` | DONE |
-| `qdii_e_index_jsl` | `src/qdii/jsl.rs::qdii_e_index_jsl` | 集思录 | `qdii/qdii_jsl.py:14` | DONE |
-
-### 空气质量 `air`(百度 AQICN)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `air_quality_hebei` | _(待填)_ | 河北 | `air/air_hebei.py:23` | DEFERRED |
-| `air_city_table` | _(待填)_ | 真气网 | `air/air_zhenqi.py:64` | DEFERRED |
-| `air_quality_rank` | _(待填)_ | 真气网 | `air/air_zhenqi.py:219` | DEFERRED |
-| `air_quality_hist` | _(待填)_ | 真气网 | `air/air_zhenqi.py:142` | DEFERRED |
-| `air_quality_watch_point` | _(待填)_ | 真气网 | `air/air_zhenqi.py:99` | DEFERRED |
-
-> DEFERRED:`air_quality_hebei` 为 XML;`air_city_table`/`air_quality_rank` 为 `pd.read_html`;`air_quality_hist`/`air_quality_watch_point` 需 JS 签名(`outcrypto.js`/`crypto.js`)。
-
-### 奇货可查 `qhkc`(qhkch.com)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `get_qhkc_fund_bs` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_fund.py:23` | DEFERRED |
-| `get_qhkc_fund_position` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_fund.py:121` | DEFERRED |
-| `get_qhkc_fund_money_change` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_fund.py:319` | DEFERRED |
-| `get_qhkc_index` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_index.py:21` | DEFERRED |
-| `get_qhkc_index_trend` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_index.py:77` | DEFERRED |
-| `get_qhkc_index_profit_loss` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_index.py:149` | DEFERRED |
-| `qhkc_tool_foreign` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_tool.py:17` | DEFERRED |
-| `qhkc_tool_gdp` | _(待填)_ | 奇货可查 | `qhkc_web/qhkc_tool.py:111` | DEFERRED |
-
-> DEFERRED:qhkch.com 公开 JSON API 已下线(返回 `{"code":404}`),且 `qhkc_tool_gdp` 为 `pd.read_html` 抓取,需 token/鉴权。
-
-### 银行 / 迁徙 / 视频(DEFERRED 占位)
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-| --- | --- | --- | --- | --- |
-| `bank_fjcf_table_detail` | _(待填)_ | 银保监会 | `bank/bank_cbirc_2020.py:111` | DEFERRED |
-| `migration_area_baidu` | _(待填)_ | 百度迁徙 | `event/migration.py:16` | DEFERRED |
-| `migration_scale_baidu` | _(待填)_ | 百度迁徙 | `event/migration.py:56` | DEFERRED |
-| `video_tv` | _(待填)_ | 艺恩 | `movie/video_yien.py:65` | DEFERRED |
-| `video_variety_show` | _(待填)_ | 艺恩 | `movie/video_yien.py:96` | DEFERRED |
-
-> DEFERRED:`bank_fjcf_table_detail` 为 `pd.read_html`;`migration_*` 为百度反爬 JSONP(无 `ak` token);`video_*` 需 `py_mini_racer` JS 解密。
-
-## Wave 2 新增叶子模块(既有 `economic` / `index` / `stock` 顶层域下)
-
-> 第 80-91 行领域(见 ROADMAP.md)。除 `economic::macro_usa_more` 整模块 DEFERRED 外,其余 11 个模块共 78 个公开函数已落地,均含离线 fixtures 解析测试。
-
-### 中国宏观扩展2 `economic::macro_china_more`(东财 datacenter / Jin10 / SGE)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `macro_china_shibor_all` | `src/economic/macro_china_more.rs::macro_china_shibor_all` | 东财 datacenter | DONE |
-| `macro_china_hk_market_info` | `src/economic/macro_china_more.rs::macro_china_hk_market_info` | Jin10 | DONE |
-| `macro_china_rmb` | `src/economic/macro_china_more.rs::macro_china_rmb` | Jin10 | DONE |
-| `macro_china_market_margin_sh` | `src/economic/macro_china_more.rs::macro_china_market_margin_sh` | Jin10 | DONE |
-| `macro_china_market_margin_sz` | `src/economic/macro_china_more.rs::macro_china_market_margin_sz` | Jin10 | DONE |
-| `macro_china_au_report` | `src/economic/macro_china_more.rs::macro_china_au_report` | SGE | DONE |
-
-### 宏观杂项 `economic::macro_misc`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `macro_info_ws` | `src/economic/macro_misc.rs::macro_info_ws` | 华尔街见闻 `macro_info_ws.py:38` | DONE |
-| `macro_fx_sentiment` | `src/economic/macro_misc.rs::macro_fx_sentiment` | `macro_other.py:53` | DONE |
-
-### 美国宏观扩展 `economic::macro_usa_more`
-
-> DEFERRED:Jin10 `datacenter-api.jin10.com` 需 `x-csrf-token` 会话鉴权,整模块 40 个美国宏观函数(`macro_usa_*`、各州/城市指标等)均推迟,待签名逆向或 token 会话机制落地(ADR-0005)。
-
-### 国证指数 `index::cons`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `index_stock_cons_sina` | `src/index/cons.rs::index_stock_cons_sina` | `index_cons.py:20` | DONE |
-| `index_all_cni` | `src/index/cons.rs::index_all_cni` | `index_cni.py:16` | DONE |
-| `index_hist_cni` | `src/index/cons.rs::index_hist_cni` | `index_cni.py:67` | DONE |
-
-### 指数扩展 `index::extra`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `index_sugar_msweet` / `index_inner_quote_sugar_msweet` / `index_outer_quote_sugar_msweet` | `src/index/extra.rs` | 郑商所 msweet | DONE |
-| `index_kq_fz` / `index_kq_fashion` | `src/index/extra.rs` | 柯桥指数 | DONE |
-| `index_eri` | `src/index/extra.rs` | 央行动力指数 | DONE |
-| `index_yw` | `src/index/extra.rs` | 义乌指数 | DONE |
-| `index_price_cflp` / `index_volume_cflp` | `src/index/extra.rs` | 中国物流与采购联合会 | DONE |
-| `index_global_hist_sina` / `index_global_name_table` | `src/index/extra.rs` | 新浪全球指数 | DONE |
-
-### 港股美股中资 `index::stock_hk_us_zh`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_hk_index_spot_em` / `stock_hk_index_daily_em` | `src/index/stock_hk_us_zh.rs` | 东财 `index_stock_hk.py:54` | DONE |
-| `stock_hk_index_spot_sina` | `src/index/stock_hk_us_zh.rs` | 新浪 `index_stock_hk.py:148` | DONE |
-| `stock_zh_index_daily_em` / `stock_zh_index_daily_tx` | `src/index/stock_hk_us_zh.rs` | 东财/腾讯 `index_stock_zh.py:354` | DONE |
-
-### A股个股信息 `stock::info`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_info_a_code_name` | `src/stock/info.rs` | 东财 | DONE |
-| `stock_info_bj_name_code` / `stock_info_sh_name_code` / `stock_info_sz_name_code` | `src/stock/info.rs` | 北交/上交所/深交所 | DONE |
-| `stock_info_sh_delist` / `stock_info_sz_delist` | `src/stock/info.rs` | 东财 datacenter | DONE |
-
-### 港股行情 `stock::hk`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_hk_famous_spot_em` / `stock_hk_ggt_components_em` | `src/stock/hk.rs::famous_spot_em` / `ggt_components_em` | 东财 push2 | DONE |
-| `stock_hk_spot` | `src/stock/hk.rs::spot` | 新浪 `index_stock_hk.py:235` | DONE |
-| `stock_hk_security_profile_em` / `company_profile_em` / `financial_indicator_em` / `dividend_payout_em` / `growth_comparison_em` / `valuation_comparison_em` / `scale_comparison_em` | `src/stock/hk.rs` | 东财 datacenter | DONE |
-
-### 美股行情 `stock::us`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_us_famous_spot_em` / `stock_us_famous_spot_em_opts` | `src/stock/us.rs` | 东财/ushknews `stock_us_js.py:13` | DONE |
-| `stock_us_pink_spot_em` | `src/stock/us.rs` | 东财 `stock_us_pink.py:15` | DONE |
-
-### A股资金流 `stock::fund_flow`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_main_fund_flow` | `src/stock/fund_flow.rs` | 东财 push2 | DONE |
-| `stock_concept_fund_flow_hist` / `stock_sector_fund_flow_hist` | `src/stock/fund_flow.rs` | 东财 datacenter | DONE |
-| `stock_sector_fund_flow_rank` / `stock_sector_fund_flow_summary` / `stock_sector_detail` | `src/stock/fund_flow.rs` | 东财 push2 | DONE |
-| `stock_individual_fund_flow` | `src/stock/fund_flow.rs` | 东财 push2his | DONE(`stock/stock_fund_em.py:20`; `market`∈sh/sz/bj→secid 前缀) |
-| `stock_market_fund_flow` | `src/stock/fund_flow.rs` | 东财 push2his | DONE(`stock/stock_fund_em.py:347`; `secid=1.000001`+`secid2=0.399001`) |
-| `stock_individual_fund_flow_rank` | `src/stock/fund_flow.rs` | 东财 push2 | DONE(`stock/stock_fund_em.py:122`; `indicator`∈今日/3日/5日/10日) |
-
-### 板块行情 `stock::board`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_board_industry_spot_em` / `stock_board_concept_spot_em` | `src/stock/board.rs` | 东财 push2 clist | DONE |
-| `stock_board_industry_hist_em` / `stock_board_concept_hist_em`(含 `_opts` 变体) | `src/stock/board.rs` | 东财 push2his | DONE |
-| `stock_board_industry_hist_min_em` / `stock_board_concept_hist_min_em`(含 `_trends` / `_opts` 变体) | `src/stock/board.rs` | 东财 push2 trends2 | DONE |
-
-### ESG 评论热度 `stock::esg_comment_hot`
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_esg_hz_sina` / `stock_esg_msci_sina` / `stock_esg_zd_sina` / `stock_esg_rft_sina` / `stock_esg_rate_sina` | `src/stock/esg_comment_hot.rs` | 新浪 ESG | DONE |
-| `stock_comment_em` / `stock_comment_detail_scrd_focus_em` / `stock_comment_detail_zhpj_lspf_em` / `stock_comment_detail_scrd_desire_em` | `src/stock/esg_comment_hot.rs` | 东财 ESG 评论 | DONE |
-
-## 已实现波动率 `cal`(Wave 3)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `volatility_yz_rv` | `src/cal/mod.rs` | `cal/rv.py:92` | DONE(纯 Yang-Zhang RV 计算,无 I/O) |
-| `rv_from_stock_zh_a_hist_min_em` | `src/cal/mod.rs` | `cal/rv.py:13` | DONE(包装 `stock::misc::stock_zh_a_hist_min_em`) |
-| `rv_from_futures_zh_minute_sina` | _(未移植)_ | `cal/rv.py:61` | DEFERRED(依赖未移植的 `futures_zh_minute_sina`) |
-
-## 股票特征 `stock_feature`(Wave 3)
-
-`stock_feature` 在本库为自定义顶层域,映射 akshare `stock_feature/*` 与 `stock/*` 的指标类子模块。
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_analyst_rank_em` / `stock_analyst_detail_em` | `src/stock_feature/indicators_a.rs` | `stock_analyst_em.py` | DONE |
-| `stock_comment_detail_zlkp_jgcyd_em` | `src/stock_feature/indicators_a.rs` | `stock_comment_em.py` | DONE |
-| `stock_concept_cons_futu` | `src/stock_feature/indicators_a.rs` | `stock_concept_futu.py` | DONE(仅特朗普概念股纯 JSON 路径;其余 HTML 路径 DEFERRED) |
-| `stock_dxsyl_em` | `src/stock_feature/indicators_a.rs` | `stock_dxsyl_em.py` | DONE |
-| `stock_fhps_em` / `stock_fhps_detail_em` | `src/stock_feature/indicators_a.rs` | `stock_fhps_em.py` | DONE |
-| `stock_changes_em` / `stock_board_change_em` | `src/stock_feature/indicators_a.rs` | `stock_pankou_em.py` | DONE |
-| `get_cookie_csrf` / `get_token_lg` / `stock_a_all_pb` / `stock_a_congestion_lg` / `stock_a_gxl_lg` / `stock_a_ttm_lyr` / `stock_buffett_index_lg` / `stock_ebs_lg` | `src/stock_feature/indicators_b.rs` | `stock_a_indicator.py` / `stock_*_lg.py` | DEFERRED(乐股 token + cookie-csrf / `py_mini_racer` JS) |
-| `stock_board_concept_index_ths` / `_info_ths` / `_name_ths` / `_summary_ths` / `stock_board_industry_index_ths` / `_info_ths` / `_name_ths` / `_summary_ths` | `src/stock_feature/indicators_b.rs` | `stock_board_*_ths.py` | DEFERRED(THS `py_mini_racer` JS 签名 + HTML 抓取) |
-| `stock_classify_board` / `stock_classify_sina` | `src/stock_feature/indicators_b.rs` | `stock_classify_sina.py` | DEFERRED(JSON 内嵌 `<font>` HTML 经 BeautifulSoup 解析) |
-| `stock_cyq_em` | `src/stock_feature/indicators_b.rs` | `stock_cyq_em.py` | DEFERRED(`py_mini_racer` JS 引擎计算筹码分布) |
-| `stock_fund_flow_big_deal` | `src/stock_feature/indicators_b.rs` | `stock_fund_flow.py` | DEFERRED(THS `py_mini_racer` JS + HTML 抓取) |
-| `stock_fhps_detail_ths` | `src/stock_feature/indicators_b.rs` | `stock_fhps_ths.py` | DEFERRED(`pd.read_html` + THS) |
-| 融资融券 / 研报 族(`stock_margin_em.*`、`stock_research_report_em.*` 等) | `src/stock_feature/margin_research.rs` | `stock_margin_em.py` / `stock_research_report_em.py` | 未移植(后续 `stock` 专注波次;多为东财 datacenter JSON,可行) |
-| 涨停板池 族(`stock_zt_pool_em` / `stock_zt_pool_sina` / `stock_zt_pool_previous` / `stock_zt_pool_strong` / `stock_zt_pool_sub_new` / `stock_zt_pool_dt` / `stock_zt_pool_hist` 等) | `src/stock_feature/board_zt.rs` | `stock_zt_pool_em.py` / `stock_zt_pool_sina.py` / `stock_zt_pool_hist.py` | 未移植(后续 `stock` 专注波次;多为东财 datacenter / 新浪 JSON,可行) |
-
-## 碳排放 `energy`(Wave 3)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `energy_carbon_domestic` / `energy_carbon_bj` / `energy_carbon_sz` / `energy_carbon_eu` / `energy_carbon_hb` / `energy_carbon_gz` | `src/energy/mod.rs` | `energy/energy_carbon.py` | DEFERRED(全部 `pd.read_html` / BeautifulSoup 多页爬取 + `demjson` JS 解码,无纯 JSON API) |
-
-## 接口检索 `registry`(Wave 3)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `interface_info` / `list_categories` / `search` | `src/registry/mod.rs` | `registry.py` | DEFERRED(akshare 内部 `interfaces.json` 注册表元数据检索,非行情 API,无网络 I/O) |
-
-## 资源加载 `datasets`(Wave 3)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `get_ths_js` / `get_crypto_info_csv` / `get_registry_json` | `src/datasets/mod.rs` | `datasets.py` | DEFERRED(akshare 包内 `importlib.resources` 资源路径解析器,非数据 API) |
-
-## Tushare Pro 桥 `pro`(Wave 3)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `pro_api` | `src/pro/mod.rs` | `pro/__init__.py` | DEFERRED(第三方 Tushare token/session 封装,需用户令牌,Schema 无界) |
-
-## 新浪期货 `futures::sina`(Wave 4)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `futures_zh_spot_sina` | `src/futures/sina.rs` | `futures_zh_sina.py` | DONE(`hq.sinajs.cn` `var hq_str_*` 行解析) |
-| `futures_zh_minute_sina` | `src/futures/sina.rs` | `futures_zh_sina.py` | DONE(纯文本 CSV 行解析,`cal` 依赖此函数) |
-| `futures_main_sina` | _(已移植)_ | `futures_zh_sina.py` | 跳过(已在 `futures_derivative::sina` 移植,避免重复) |
-| `futures_zh_daily_sina` | _(已移植)_ | `futures_zh_sina.py` | 跳过(已在 `futures::extra` 移植,避免重复) |
-| `futures_display_main_sina` | `src/futures/sina.rs` | `futures_zh_sina.py` | DEFERRED(`demjson` JS 包裹对象解析) |
-
-## 交易所期权 `option::exchange`(Wave 4)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `option_hist_yearly_czce` | `src/option/exchange.rs` | `option_czce.py` | DONE(CZCE `|` 分隔文本,跳过 小计/合计、去千分位) |
-| `option_finance_sse_underlying` | `src/option/exchange.rs` | `option_finance.py` | DONE(SSE 标的 ETF 现货,位置 JSON) |
-| `option_finance_board_sse` | `src/option/exchange.rs` | `option_finance.py` | DONE(SSE ETF 期权板,位置 JSON) |
-| `option_current_cffex_em` | _(已移植)_ | `option_em.py` | 跳过(已在 `option::extra` 移植,避免重复) |
-| `option_hist_dce` / `option_hist_czce` / `option_current_em` / `option_finance_board`(SZSE/CFFEX 分支) | `src/option/exchange.rs` | `option_*.py` | DEFERRED(JSON-body POST / 多页爬取 / Excel / 未文档化 CSV) |
-
-## 中国债券 `bond::zh`(Wave 4)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `bond_gb_zh_sina` / `bond_gb_us_sina` | `src/bond/zh.rs` | `bond_gb_sina.py` | DONE(新浪国债收益率,`result.data`) |
-| `bond_debt_nafmii` | `src/bond/zh.rs` | `bond_nafmii.py` | DONE(NAFMII 注册信息,`rows`) |
-| `bond_zh_us_rate` / `bond_spot_quote` / `bond_spot_deal` / `bond_zh_hs_cov_*` | _(已移植)_ | `bond_*.py` | 跳过(已在 `bond::eastmoney`/`chinamoney`/`cov` 移植) |
-| `bond_china_yield` / `bond_cash_summary_sse` / `bond_deal_summary_sse` / `bond_cb_profile_sina` / `bond_cb_summary_sina` | `src/bond/zh.rs` | `bond_*.py` | DEFERRED(HTML/`pd.read_html`/Excel) |
-| `bond_china_close_return` / `macro_china_swap_rate` | `src/bond/zh.rs` | `bond_*.py` | DEFERRED(ChinaMoney token/cookie 引导) |
-| `bond_zh_hs_spot` | `src/bond/zh.rs` | `bond_*.py` | DEFERRED(`demjson` 非严格 JSON,与 `bond_zh_hs_cov_spot` 重叠) |
-
-## 金十 CDN 宏观 `economic::macro_china3`(Wave 4)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `macro_china_gdp_yearly` / `macro_china_cpi_yearly` / `macro_china_cpi_monthly` / `macro_china_ppi_yearly` / `macro_china_exports_yoy` / `macro_china_imports_yoy` / `macro_china_trade_balance` / `macro_china_industrial_production_yoy` / `macro_china_pmi_yearly` / `macro_china_cx_pmi_yearly` / `macro_china_cx_services_pmi_yearly` / `macro_china_non_man_pmi` / `macro_china_fx_reserves_yearly` / `macro_china_m2_yearly` | `src/economic/macro_china3.rs` | `economic/cons.py`(`cdn.jin10.com` 免 token CDN) | DONE(JS 包裹数组解析,共享 `Jin10JsIndicatorRow`) |
-| `society_electricity` / `society_traffic_volume` / `postal_telecommunicational` / `international_tourism_fx` / `passenger_load_factor` / `freight_index` / `central_bank_balance` / `insurance` / `supply_of_money` / `foreign_exchange_gold` / `retail_price_index` | `src/economic/macro_china3.rs` | `macro_china.py` | DEFERRED(Sina `MacPage` JSONP token) |
-| `macro_china_shrzgm` / `macro_china_urban_unemployment` / `macro_china_daily_energy` | `src/economic/macro_china3.rs` | `macro_china.py` | DEFERRED(Mofcom/stat.gov POST / Sina JS 文本切片) |
-| `macro_china.py` 内其余东财 `RPT_*` / `data_center/reports` 端点 | _(已移植)_ | `macro_china.py` | 跳过(已在 `economic::china`/`macro2`/`macro_china2`/`macro_china_more` 移植) |
-
-## 指数历史/实时/全球 `index::index_more`(Wave 4)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `index_zh_a_hist` / `index_zh_a_daily` | `src/index/index_more.rs` | `index_zh_em.py` | DONE(东财 push2his kline) |
-| `index_zh_a_hist_min_em` | `src/index/index_more.rs` | `index_zh_em.py` | DONE(东财 push2his trends2 + kline) |
-| `index_zh_a_spot` | `src/index/index_more.rs` | `index_stock_zh.py` | DONE(东财 push2 实时,`fltt` 实值) |
-| `index_global_spot_em` / `index_global_hist_em` | `src/index/index_more.rs` | `index_global_em.py` | DONE(东财 push2 / push2his,全球指数 ÷100) |
-| `index_value_name` / `index_vix` / `index_institute_*` | _(不存在)_ | `index_*.py` | 本 checkout 无此文件(包已重组),无需移植 |
-| `index_sw` / `index_drewry` / `index_stock_zh_csindex` / `index_stock_us_sina` / `stock_hk_index_daily_sina` / `index_research_fund_sw` | `src/index/index_more.rs` | `index_*.py` | DEFERRED(HTML/Excel/JS 签名) |
-
-## A股长尾 `stock::more2`(Wave 5)
-
-| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
-| --- | --- | --- | --- |
-| `stock_zh_ah_spot_em` | `src/stock/more2.rs::stock_zh_ah_spot_em` | `stock/stock_zh_ah_spot_em.py` | DONE(东财 AH 实时,`datacenter-web`) |
-| `stock_hsgt_sh_hk_spot_em` | `src/stock/more2.rs::stock_hsgt_sh_hk_spot_em` | `stock/stock_hsgt_em.py` | DONE(沪港通港股实时,`datacenter-web`) |
-| `stock_zh_kcb_report_em` | `src/stock/more2.rs::stock_zh_kcb_report_em` | `stock/stock_kcb_report_em.py` | DONE(科创板报告,分页 `from_page..=to_page`) |
-| `stock_repurchase_em` | `src/stock/more2.rs::stock_repurchase_em` | `stock/stock_repurchase_em.py` | DONE(回购,`datacenter-web`) |
-| `stock_gsrl_gsdt_em` | `src/stock/more2.rs::stock_gsrl_gsdt_em` | `stock/stock_gsrl_gsdt_em.py` | DONE(限售股解禁明细,`datacenter-web`) |
-| `stock_zh_a_new_em` | `src/stock/more2.rs::stock_zh_a_new_em` | `stock/stock_zh_a_new_em.py` | DONE(新股,`datacenter-web`) |
-| `stock_hold_management_detail_em` | `src/stock/more2.rs::stock_hold_management_detail_em` | `stock/stock_hold_management_em.py` | DONE(持仓管理明细,`datacenter-web`) |
-| `stock_yysj_em` | `src/stock/more2.rs::stock_yysj_em` | `stock/stock_yysj_em.py` | DONE(预约披露时间,`datacenter-web`) |
-| `stock_jgdy_detail_em` | `src/stock/more2.rs::stock_jgdy_detail_em` | `stock/stock_jgdy_em.py` | DONE(机构调研明细,`datacenter-web`) |
-| `stock_gddh_em` | `src/stock/more2.rs::stock_gddh_em` | `stock/stock_gddh_em.py` | DONE(股东大会,`datacenter-web`) |
-| `stock_qsjy_em` | `src/stock/more2.rs::stock_qsjy_em` | `stock/stock_qsjy_em.py` | DONE(千股跌停,`datacenter-web`) |
-| `stock_qbzf_em` | `src/stock/more2.rs::stock_qbzf_em` | `stock/stock_qbzf_em.py` | DONE(全市场涨停,`datacenter-web`) |
-| `stock_zdhtmx_em` | `src/stock/more2.rs::stock_zdhtmx_em` | `stock/stock_zdhtmx_em.py` | DONE(龙虎榜明细,`datacenter-web`) |
-| `stock_zh_scale_comparison_em` | `src/stock/more2.rs::stock_zh_scale_comparison_em` | `stock/stock_zh_a_gdhs_em.py` | DONE(市值规模比较,`datacenter-web`) |
-| `stock_zh_a_gdhs_detail_em` | `src/stock/more2.rs::stock_zh_a_gdhs_detail_em` | `stock/stock_zh_a_gdhs_em.py` | DONE(股东户数明细,`datacenter-web`) |
-
-## 基金长尾 `fund::more2`(Wave 5)
-
-| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
-| --- | --- | --- | --- |
-| `fund_etf_hist_min_em` | `src/fund/more2.rs::fund_etf_hist_min_em` | `fund/fund_etf_em.py` | DONE(东财 push2his trends2/kline 分钟) |
-| `fund_lof_hist_min_em` | `src/fund/more2.rs::fund_lof_hist_min_em` | `fund/fund_lof_em.py` | DONE(东财 push2his 分钟) |
-| `fund_money_rank_em` | `src/fund/more2.rs::fund_money_rank_em` | `fund/fund_rank_em.py` | DONE(货币基金排名,`datacenter-web`) |
-| `fund_lcx_rank_em` | `src/fund/more2.rs::fund_lcx_rank_em` | `fund/fund_rank_em.py` | DONE(理财基金排名,`datacenter-web`) |
-| `fund_new_found_em` | `src/fund/more2.rs::fund_new_found_em` | `fund/fund_init_em.py` | DONE(新成立基金,`datacenter-web`) |
-| `fund_announcement_dividend_em` | `src/fund/more2.rs::fund_announcement_dividend_em` | `fund/fund_announcement_em.py` | DONE(分红公告,`datacenter-web`) |
-| `fund_announcement_report_em` | `src/fund/more2.rs::fund_announcement_report_em` | `fund/fund_announcement_em.py` | DONE(定期报告公告,`datacenter-web`) |
-| `fund_announcement_personnel_em` | `src/fund/more2.rs::fund_announcement_personnel_em` | `fund/fund_announcement_em.py` | DONE(人事变动公告,`datacenter-web`) |
-| `fund_etf_scale_sse` | `src/fund/more2.rs::fund_etf_scale_sse` | `fund/fund_etf_sse.py` | DONE(上交所 ETF 份额/规模,`datacenter-web`) |
-| `fund_cf_em` | `src/fund/more2.rs::fund_cf_em` | `fund/fund_fhsp_em.py` | DONE(基金拆分折算,`var jjcf_data` 三层包裹解析) |
-| `fund_fh_rank_em` | `src/fund/more2.rs::fund_fh_rank_em` | `fund/fund_fhsp_em.py` | DONE(累计分红排名,`var fhph_data` 三层包裹解析) |
-| `fund_scale_open_sina` | `src/fund/more2.rs::fund_scale_open_sina` | `fund/fund_scale_sina.py` | DONE(开放式规模,新浪 JSONP) |
-| `fund_scale_close_sina` | `src/fund/more2.rs::fund_scale_close_sina` | `fund/fund_scale_sina.py` | DONE(封闭式规模,新浪 JSONP) |
-| `fund_scale_structured_sina` | `src/fund/more2.rs::fund_scale_structured_sina` | `fund/fund_scale_sina.py` | DONE(分级子基金规模,新浪 JSONP) |
-| `fund_etf_category_ths` | `src/fund/more2.rs::fund_etf_category_ths` | `fund/fund_etf_ths.py` | DONE(同花顺 ETF 分类净值,`datacenter-web`) |
-| `fund_etf_spot_ths` | `src/fund/more2.rs::fund_etf_spot_ths` | `fund/fund_etf_ths.py` | DONE(同花顺 ETF 实时,`datacenter-web`) |
-
-## A股基本面长尾 `stock::fundamental::more`(Wave 5)
-
-| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
-| --- | --- | --- | --- |
-| `stock_financial_report_sina` | `src/stock/fundamental/more.rs::stock_financial_report_sina` | `stock_fundamental/stock_finance_sina.py:24` | DONE(新浪三大报表,`report_list` 字典序) |
-| `stock_financial_abstract` | `src/stock/fundamental/more.rs::stock_financial_abstract` | `stock_fundamental/stock_finance_sina.py:94` | DONE(新浪关键指标,`report_list` 字典序) |
-| `stock_zh_a_gbjg_em` | `src/stock/fundamental/more.rs::stock_zh_a_gbjg_em` | `stock_fundamental/stock_gbjg_em.py:62` | DONE(东财股本结构,`RPT_F10_EH_EQUITY`) |
-| `stock_report_fund_hold` | `src/stock/fundamental/more.rs::stock_report_fund_hold` | `stock/stock_fund_hold.py:13` | DONE(东财基金持仓,`zlsj/list`) |
-| `stock_report_fund_hold_detail` | `src/stock/fundamental/more.rs::stock_report_fund_hold_detail` | `stock/stock_fund_hold.py:110` | DONE(东财基金持仓明细,`zlsj/list`) |
-
-## 东方财富个股人气榜 `stock::hot_rank`(Wave 6)
-
-| akshare 函数 | 本库路径 | 源(akshare) | 状态 |
-| --- | --- | --- | --- |
-| `stock_hot_rank_em` | `src/stock/hot_rank.rs::stock_hot_rank_em` | `stock/stock_hot_rank_em.py:16` | DONE(emappdata `getAllCurrentList` + push2 `ulist.np/get` 实时价) |
-| `stock_hot_up_em` | `src/stock/hot_rank.rs::stock_hot_up_em` | `stock/stock_hot_up_em.py:13` | DONE(emappdata `getAllHisRcList` + push2 实时价,含 `hrc` 排名变动) |
-| `stock_hot_rank_detail_em` | `src/stock/hot_rank.rs::stock_hot_rank_detail_em` | `stock/stock_hot_rank_em.py:53` | DONE(emappdata `getHisList` + `getHisProfileList`) |
-| `stock_hot_rank_detail_realtime_em` | `src/stock/hot_rank.rs::stock_hot_rank_detail_realtime_em` | `stock/stock_hot_rank_em.py:90` | DONE(emappdata `getCurrentList`) |
-| `stock_hot_keyword_em` | `src/stock/hot_rank.rs::stock_hot_keyword_em` | `stock/stock_hot_rank_em.py:124` | DONE(emappdata `getHotStockRankList`) |
-| `stock_hot_rank_latest_em` | `src/stock/hot_rank.rs::stock_hot_rank_latest_em` | `stock/stock_hot_rank_em.py:158` | DONE(emappdata `getCurrentLatest`,`data` 字典→`(item,value)`) |
-| `stock_hot_rank_relate_em` | `src/stock/hot_rank.rs::stock_hot_rank_relate_em` | `stock/stock_hot_rank_em.py:191` | DONE(emappdata `getFollowStockRankList`) |
-| `stock_hk_hot_rank_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_em` | `stock/stock_hk_hot_rank_em.py:16` | DONE(emappdata `getAllCurrHkUsList` + push2 `116.` 实时价,`marketType=000003`) |
-| `stock_hk_hot_rank_detail_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_detail_em` | `stock/stock_hk_hot_rank_em.py:53` | DONE(emappdata `getHisHkUsList`) |
-| `stock_hk_hot_rank_detail_realtime_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_detail_realtime_em` | `stock/stock_hk_hot_rank_em.py:90` | DONE(emappdata `getCurrentHkUsList`) |
-| `stock_hk_hot_rank_latest_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_latest_em` | `stock/stock_hk_hot_rank_em.py:124` | DONE(emappdata `getCurrentHkUsLatest`,`data` 字典→`(item,value)`) |
-
-## 雪球 `stock_xq`(DEFERRED)
-
-| akshare 函数 | 本库路径 | 源 | 状态 |
-| --- | --- | --- | --- |
-| `stock_individual_spot_xq` | _(未移植)_ | `stock/stock_xq.py:81` | DEFERRED(需 `xq_a_token` 登录态 cookie,第三方会话令牌) |
-
-> 其余 `stock_*_xq`(雪球)族同理需 `xq_a_token`,整族 DEFERRED。
-
-## 对标补全 (Reconciliation — 自动补齐缺失行)
-
-> 以下为 `docs/MAPPING.md` 此前缺失的公共 API 行,按 akshare 顶层域归并。`DONE` 表示本库已实现(路径见本库路径列);`DEFERRED` 表示按 ADR-0005/0008 设计推迟(JS 签名 / 第三方令牌 / HTML·Excel 抓取 / cninfo 鉴权 / Jin10 x-csrf 等),详细原因见各模块 `//! ## DEFERRED` 段。
-
-### air
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `sunrise_daily` | _(待填)_ | 百度 | `air/sunrise_tad.py:40` | DEFERRED |
-| `sunrise_monthly` | _(待填)_ | 百度 | `air/sunrise_tad.py:73` | DEFERRED |
-
-### bond
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `bond_buy_back_hist_em` | `bond::wv_bond_misc::bond_buy_back_hist_em` | 东财/集思录/中债 | `bond/bond_buy_back_em.py:158` | DONE |
-| `bond_cb_adj_logs_jsl` | _(待填)_ | 东财/集思录/中债 | `bond/bond_convert.py:297` | DEFERRED |
-| `bond_cb_index_jsl` | _(待填)_ | 东财/集思录/中债 | `bond/bond_convert.py:17` | DEFERRED |
-| `bond_cb_jsl` | `bond::jisilu::bond_cb_jsl` | 东财/集思录/中债 | `bond/bond_convert.py:31` | DONE |
-| `bond_cb_redeem_jsl` | `bond::jisilu::bond_cb_redeem_jsl` | 东财/集思录/中债 | `bond/bond_convert.py:165` | DONE |
-| `bond_china_close_return_map` | `bond::chinamoney_pub::bond_china_close_return_map` | 东财/集思录/中债 | `bond/bond_china_money.py:93` | DONE |
-| `bond_corporate_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:222` | DEFERRED |
-| `bond_cov_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:322` | DEFERRED |
-| `bond_cov_stock_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:481` | DEFERRED |
-| `bond_info_cm` | `bond::wv_bond_misc::bond_info_cm` | 东财/集思录/中债 | `bond/bond_info_cm.py:65` | DONE |
-| `bond_info_cm_query` | `bond::wv_bond_misc::bond_info_cm_query` | 东财/集思录/中债 | `bond/bond_info_cm.py:19` | DONE |
-| `bond_info_detail_cm` | `bond::wv_bond_misc::bond_info_detail_cm` | 东财/集思录/中债 | `bond/bond_info_cm.py:183` | DONE |
-| `bond_local_government_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:126` | DEFERRED |
-| `bond_treasure_issue_cninfo` | _(待填)_ | 东财/集思录/中债 | `bond/bond_issue_cninfo.py:30` | DEFERRED |
-| `bond_zh_cov_info_ths` | `bond::wv_bond_misc::bond_zh_cov_info_ths` | 东财/集思录/中债 | `bond/bond_cb_ths.py:13` | DONE |
-| `bond_zh_hs_daily` | _(待填)_ | 东财/集思录/中债 | `bond/bond_zh_sina.py:118` | DEFERRED |
-| `macro_china_bond_public` | _(待填)_ | 东财/集思录/中债 | `bond/bond_china_money.py:313` | DEFERRED |
-
-### economic
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `macro_china_central_bank_balance` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3526` | DEFERRED |
-| `macro_china_foreign_exchange_gold` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3628` | DEFERRED |
-| `macro_china_freight_index` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3481` | DEFERRED |
-| `macro_china_insurance` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3560` | DEFERRED |
-| `macro_china_international_tourism_fx` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3381` | DEFERRED |
-| `macro_china_passenger_load_factor` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3415` | DEFERRED |
-| `macro_china_postal_telecommunicational` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3347` | DEFERRED |
-| `macro_china_retail_price_index` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3663` | DEFERRED |
-| `macro_china_society_electricity` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3236` | DEFERRED |
-| `macro_china_society_traffic_volume` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3289` | DEFERRED |
-| `macro_china_supply_of_money` | _(待填)_ | 东财/Jin10 | `economic/macro_china.py:3594` | DEFERRED |
-| `macro_cnbs` | _(待填)_ | 东财/Jin10 | `economic/marco_cnbs.py:12` | DEFERRED |
-| `macro_cons_gold` | _(待填)_ | 东财/Jin10 | `economic/macro_constitute.py:17` | DEFERRED |
-| `macro_cons_opec_month` | _(待填)_ | 东财/Jin10 | `economic/macro_constitute.py:147` | DEFERRED |
-| `macro_cons_silver` | _(待填)_ | 东财/Jin10 | `economic/macro_constitute.py:82` | DEFERRED |
-| `macro_rmb_deposit` | _(待填)_ | 东财/Jin10 | `economic/macro_finance_ths.py:82` | DEFERRED |
-| `macro_rmb_loan` | _(待填)_ | 东财/Jin10 | `economic/macro_finance_ths.py:50` | DEFERRED |
-| `macro_shipping_bci` | `economic::macro_econ::macro_shipping_bci` | 东财/Jin10 | `economic/macro_china.py:2098` | DONE |
-| `macro_shipping_bcti` | `economic::macro_econ::macro_shipping_bcti` | 东财/Jin10 | `economic/macro_china.py:2131` | DONE |
-| `macro_shipping_bdi` | `economic::macro_econ::macro_shipping_bdi` | 东财/Jin10 | `economic/macro_china.py:2109` | DONE |
-| `macro_shipping_bpi` | `economic::macro_econ::macro_shipping_bpi` | 东财/Jin10 | `economic/macro_china.py:2120` | DONE |
-| `macro_stock_finance` | _(待填)_ | 东财/Jin10 | `economic/macro_finance_ths.py:15` | DEFERRED |
-| `macro_usa_adp_employment` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:374` | DEFERRED |
-| `macro_usa_api_crude_stock` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:534` | DEFERRED |
-| `macro_usa_building_permits` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:763` | DEFERRED |
-| `macro_usa_business_inventories` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:668` | DEFERRED |
-| `macro_usa_cb_consumer_confidence` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:862` | DEFERRED |
-| `macro_usa_core_cpi_monthly` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:205` | DEFERRED |
-| `macro_usa_core_pce_price` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:392` | DEFERRED |
-| `macro_usa_core_ppi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:515` | DEFERRED |
-| `macro_usa_cpi_monthly` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:186` | DEFERRED |
-| `macro_usa_current_account` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:448` | DEFERRED |
-| `macro_usa_durable_goods_orders` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:611` | DEFERRED |
-| `macro_usa_eia_crude_rate` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:923` | DEFERRED |
-| `macro_usa_exist_home_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:782` | DEFERRED |
-| `macro_usa_export_price` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:281` | DEFERRED |
-| `macro_usa_factory_orders` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:630` | DEFERRED |
-| `macro_usa_gdp_monthly` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:167` | DEFERRED |
-| `macro_usa_house_price_index` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:801` | DEFERRED |
-| `macro_usa_house_starts` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:725` | DEFERRED |
-| `macro_usa_import_price` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:262` | DEFERRED |
-| `macro_usa_industrial_production` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:592` | DEFERRED |
-| `macro_usa_initial_jobless` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:942` | DEFERRED |
-| `macro_usa_ism_non_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:687` | DEFERRED |
-| `macro_usa_ism_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:573` | DEFERRED |
-| `macro_usa_job_cuts` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:338` | DEFERRED |
-| `macro_usa_lmci` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:301` | DEFERRED |
-| `macro_usa_michigan_consumer_sentiment` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:902` | DEFERRED |
-| `macro_usa_nahb_house_market_index` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:706` | DEFERRED |
-| `macro_usa_new_home_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:744` | DEFERRED |
-| `macro_usa_nfib_small_business` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:881` | DEFERRED |
-| `macro_usa_non_farm` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:356` | DEFERRED |
-| `macro_usa_pending_home_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:841` | DEFERRED |
-| `macro_usa_personal_spending` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:224` | DEFERRED |
-| `macro_usa_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:554` | DEFERRED |
-| `macro_usa_ppi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:496` | DEFERRED |
-| `macro_usa_real_consumer_spending` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:410` | DEFERRED |
-| `macro_usa_retail_sales` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:243` | DEFERRED |
-| `macro_usa_services_pmi` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:649` | DEFERRED |
-| `macro_usa_trade_balance` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:430` | DEFERRED |
-| `macro_usa_unemployment_rate` | _(待填)_ | 东财/Jin10 | `economic/macro_usa.py:320` | DEFERRED |
-
-### fund
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `amac_fund_abs` | `fund::wv_fund_misc::amac_fund_abs` | 东财/集思录 | `fund/fund_amac.py:678` | DONE |
-| `amac_person_bond_org_list` | `fund::wv_fund_misc::amac_person_bond_org_list` | 东财/集思录 | `fund/fund_amac.py:198` | DONE |
-| `fund_aum_em` | _(待填)_ | 东财/集思录 | `fund/fund_aum_em.py:14` | DEFERRED |
-| `fund_aum_hist_em` | _(待填)_ | 东财/集思录 | `fund/fund_aum_em.py:64` | DEFERRED |
-| `fund_balance_position_lg` | _(待填)_ | 东财/集思录 | `fund/fund_position_lg.py:51` | DEFERRED |
-| `fund_etf_dividend_sina` | _(待填)_ | 东财/集思录 | `fund/fund_etf_sina.py:152` | DEFERRED |
-| `fund_etf_hist_sina` | _(待填)_ | 东财/集思录 | `fund/fund_etf_sina.py:116` | DEFERRED |
-| `fund_etf_scale_szse` | _(待填)_ | 东财/集思录 | `fund/fund_etf_szse.py:15` | DEFERRED |
-| `fund_exchange_rank_em` | `fund::wv_fund_misc::fund_exchange_rank_em` | 东财/集思录 | `fund/fund_rank_em.py:151` | DONE |
-| `fund_fee_em` | _(待填)_ | 东财/集思录 | `fund/fund_fee_em.py:17` | DEFERRED |
-| `fund_hk_rank_em` | `fund::wv_fund_misc::fund_hk_rank_em` | 东财/集思录 | `fund/fund_rank_em.py:427` | DONE |
-| `fund_individual_achievement_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:78` | DEFERRED |
-| `fund_individual_analysis_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:132` | DEFERRED |
-| `fund_individual_basic_info_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:13` | DEFERRED |
-| `fund_individual_detail_hold_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:270` | DEFERRED |
-| `fund_individual_detail_info_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:224` | DEFERRED |
-| `fund_individual_profit_probability_xq` | _(待填)_ | 东财/集思录 | `fund/fund_xq.py:185` | DEFERRED |
-| `fund_info_ths` | _(待填)_ | 东财/集思录 | `fund/fund_info_ths.py:16` | DEFERRED |
-| `fund_linghuo_position_lg` | _(待填)_ | 东财/集思录 | `fund/fund_position_lg.py:89` | DEFERRED |
-| `fund_lof_hist_em` | `fund::wv_fund_misc::fund_lof_hist_em` | 东财/集思录 | `fund/fund_lof_em.py:120` | DONE |
-| `fund_new_found_ths` | `fund::wv_fund_misc::fund_new_found_ths` | 东财/集思录 | `fund/fund_init_ths.py:15` | DONE |
-| `fund_open_fund_rank_em` | `fund::wv_fund_misc::fund_open_fund_rank_em` | 东财/集思录 | `fund/fund_rank_em.py:33` | DONE |
-| `fund_overview_em` | _(待填)_ | 东财/集思录 | `fund/fund_overview_em.py:15` | DEFERRED |
-| `fund_portfolio_bond_hold_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:166` | DEFERRED |
-| `fund_portfolio_change_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:290` | DEFERRED |
-| `fund_portfolio_hold_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:84` | DEFERRED |
-| `fund_portfolio_industry_allocation_em` | _(待填)_ | 东财/集思录 | `fund/fund_portfolio_em.py:217` | DEFERRED |
-| `fund_rating_all` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:14` | DEFERRED |
-| `fund_rating_ja` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:276` | DEFERRED |
-| `fund_rating_sh` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:91` | DEFERRED |
-| `fund_rating_zs` | _(待填)_ | 东财/集思录 | `fund/fund_rating.py:189` | DEFERRED |
-| `fund_report_asset_allocation_cninfo` | _(待填)_ | 东财/集思录 | `fund/fund_report_cninfo.py:161` | DEFERRED |
-| `fund_report_industry_allocation_cninfo` | _(待填)_ | 东财/集思录 | `fund/fund_report_cninfo.py:97` | DEFERRED |
-| `fund_report_stock_cninfo` | _(待填)_ | 东财/集思录 | `fund/fund_report_cninfo.py:30` | DEFERRED |
-| `fund_scale_daily_szse` | _(待填)_ | 东财/集思录 | `fund/fund_scale_szse.py:27` | DEFERRED |
-| `fund_stock_position_lg` | _(待填)_ | 东财/集思录 | `fund/fund_position_lg.py:15` | DEFERRED |
-
-### futures
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `futures_comm_info` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_comm_qihuo.py:172` | DEFERRED |
-| `futures_comm_js` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_comm_js.py:15` | DEFERRED |
-| `futures_contract_detail` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_contract_detail.py:16` | DEFERRED |
-| `futures_contract_detail_em` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_contract_detail.py:41` | DEFERRED |
-| `futures_delivery_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:244` | DEFERRED |
-| `futures_delivery_dce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:57` | DEFERRED |
-| `futures_delivery_match_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:198` | DEFERRED |
-| `futures_delivery_match_dce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:128` | DEFERRED |
-| `futures_delivery_shfe` | `futures::exchange_shfe::futures_delivery_shfe` | 东财/新浪/交易所 | `futures/futures_to_spot.py:269` | DONE |
-| `futures_fees_info` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_comm_ctp.py:17` | DEFERRED |
-| `futures_foreign_commodity_realtime` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_hq_sina.py:103` | DEFERRED |
-| `futures_foreign_commodity_subscribe_exchange_symbol` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_hq_sina.py:38` | DEFERRED |
-| `futures_foreign_detail` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_foreign.py:45` | DEFERRED |
-| `futures_gfex_warehouse_receipt` | `futures::exchange_gfex::futures_gfex_warehouse_receipt` | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:159` | DONE |
-| `futures_global_hist_em` | `futures::global_em_hist::futures_global_hist_em` | 东财/新浪/交易所 | `futures/futures_hf_em.py:171` | DONE |
-| `futures_global_spot_em` | `futures::global_spot_em::futures_global_spot_em` | 东财/新浪/交易所 | `futures/futures_hf_em.py:87` | DONE |
-| `futures_hist_daily_cffex` | `futures::wv_futures_cffex::futures_hist_daily_cffex` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:697` | DONE |
-| `futures_hist_table_em` | `futures::global_em_hist::futures_hist_table_em` | 东财/新浪/交易所 | `futures/futures_hist_em.py:77` | DONE |
-| `futures_hq_subscribe_exchange_symbol` | `futures::sina_hq::futures_hq_subscribe_exchange_symbol` | 东财/新浪/交易所 | `futures/futures_hq_sina.py:58` | DONE |
-| `futures_index_ccidx` | `futures::wv_futures_index::futures_index_ccidx` | 东财/新浪/交易所 | `futures/futures_index_ccidx.py:13` | DONE |
-| `futures_news_shmet` | `futures::wv_futures_news::futures_news_shmet` | 东财/新浪/交易所 | `futures/futures_news_shmet.py:13` | DONE |
-| `futures_rule` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_rule.py:15` | DEFERRED |
-| `futures_settle` | `futures::wv_futures_settle::futures_settle` | 东财/新浪/交易所 | `futures/futures_settle.py:481` | DONE |
-| `futures_settle_cffex` | `futures::wv_futures_settle::futures_settle_cffex` | 东财/新浪/交易所 | `futures/futures_settle.py:175` | DONE |
-| `futures_settle_czce` | `futures::wv_futures_settle::futures_settle_czce` | 东财/新浪/交易所 | `futures/futures_settle.py:227` | DONE |
-| `futures_settle_gfex` | `futures::wv_futures_settle::futures_settle_gfex` | 东财/新浪/交易所 | `futures/futures_settle.py:288` | DONE |
-| `futures_settle_ine` | `futures::wv_futures_settle::futures_settle_ine` | 东财/新浪/交易所 | `futures/futures_settle.py:420` | DONE |
-| `futures_settle_shfe` | `futures::wv_futures_settle::futures_settle_shfe` | 东财/新浪/交易所 | `futures/futures_settle.py:359` | DONE |
-| `futures_settlement_price_sgx` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_settlement_price_sgx.py:63` | DEFERRED |
-| `futures_shfe_warehouse_receipt` | `futures::warehouse_receipt_shfe::futures_shfe_warehouse_receipt` | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:104` | DONE |
-| `futures_spot_price` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_basis.py:79` | DEFERRED |
-| `futures_spot_price_daily` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_basis.py:31` | DEFERRED |
-| `futures_spot_price_previous` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_basis.py:300` | DEFERRED |
-| `futures_spot_stock` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_spot_stock_em.py:15` | DEFERRED |
-| `futures_stock_shfe_js` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_stock_js.py:14` | DEFERRED |
-| `futures_symbol_mark` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_zh_sina.py:28` | DEFERRED |
-| `futures_to_spot_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:155` | DEFERRED |
-| `futures_to_spot_dce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_to_spot.py:97` | DEFERRED |
-| `futures_to_spot_shfe` | `futures::exchange_shfe::futures_to_spot_shfe` | 东财/新浪/交易所 | `futures/futures_to_spot.py:14` | DONE |
-| `futures_warehouse_receipt_czce` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:23` | DEFERRED |
-| `futures_warehouse_receipt_dce` | `futures::exchange_dce::futures_warehouse_receipt_dce` | 东财/新浪/交易所 | `futures/futures_warehouse_receipt.py:61` | DONE |
-| `futures_zh_realtime` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_zh_sina.py:91` | DEFERRED |
-| `get_cffex_daily` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_daily_bar.py:108` | DEFERRED |
-| `get_czce_daily` | `futures::exchange_czce::get_czce_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:341` | DONE |
-| `get_dce_daily` | `futures::exchange_dce::get_dce_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:527` | DONE |
-| `get_futures_daily` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_daily_bar.py:637` | DEFERRED |
-| `get_gfex_daily` | `futures::exchange_gfex::get_gfex_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:199` | DONE |
-| `get_ine_daily` | `futures::exchange_ine::get_ine_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:275` | DONE |
-| `get_receipt` | _(待填)_ | 东财/新浪/交易所 | `futures/receipt.py:571` | DEFERRED |
-| `get_roll_yield` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_roll_yield.py:23` | DEFERRED |
-| `get_roll_yield_bar` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_roll_yield.py:74` | DEFERRED |
-| `get_shfe_daily` | `futures::exchange_shfe::get_shfe_daily` | 东财/新浪/交易所 | `futures/futures_daily_bar.py:453` | DONE |
-| `match_main_contract` | _(待填)_ | 东财/新浪/交易所 | `futures/futures_zh_sina.py:171` | DEFERRED |
-
-### index
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `drewry_wci_index` | _(待填)_ | 东财/申万 | `index/index_drewry.py:17` | DEFERRED |
-| `index_code_id_map_em` | `index::index_more::index_code_id_map_em` | 东财/申万 | `index/index_zh_em.py:17` | DONE |
-| `index_csindex_all` | _(待填)_ | 东财/申万 | `index/index_csindex.py:16` | DEFERRED |
-| `index_detail_cni` | _(待填)_ | 东财/申万 | `index/index_cni.py:134` | DEFERRED |
-| `index_detail_hist_adjust_cni` | _(待填)_ | 东财/申万 | `index/index_cni.py:191` | DEFERRED |
-| `index_detail_hist_cni` | _(待填)_ | 东财/申万 | `index/index_cni.py:164` | DEFERRED |
-| `index_hist_fund_sw` | `index::wv_index_fund_sw::index_hist_fund_sw` | 东财/申万 | `index/index_research_fund_sw.py:61` | DONE |
-| `index_hog_spot_price` | `index::wv_index_misc::index_hog_spot_price` | 东财/申万 | `index/index_hog.py:13` | DONE |
-| `index_news_sentiment_scope` | `index::wv_index_misc::index_news_sentiment_scope` | 东财/申万 | `index/index_zh_a_scope.py:13` | DONE |
-| `index_pmi_com_cx` | `index::cx_pmi::index_pmi_com_cx` | 东财/申万 | `index/index_cx.py:13` | DONE |
-| `index_pmi_man_cx` | `index::cx_pmi::index_pmi_man_cx` | 东财/申万 | `index/index_cx.py:41` | DONE |
-| `index_pmi_ser_cx` | `index::cx_pmi::index_pmi_ser_cx` | 东财/申万 | `index/index_cx.py:69` | DONE |
-| `index_realtime_fund_sw` | `index::wv_index_fund_sw::index_realtime_fund_sw` | 东财/申万 | `index/index_research_fund_sw.py:15` | DONE |
-| `index_stock_cons_csindex` | _(待填)_ | 东财/申万 | `index/index_cons.py:126` | DEFERRED |
-| `index_stock_cons_weight_csindex` | _(待填)_ | 东财/申万 | `index/index_cons.py:160` | DEFERRED |
-| `index_stock_info` | _(待填)_ | 东财/申万 | `index/index_cons.py:70` | DEFERRED |
-| `index_us_stock_sina` | _(待填)_ | 东财/申万 | `index/index_stock_us_sina.py:18` | DEFERRED |
-| `spot_goods` | `index::wv_index_misc::spot_goods` | 东财/申万 | `index/index_spot.py:13` | DONE |
-| `stock_a_code_to_symbol` | `index::cons::stock_a_code_to_symbol` | 东财/申万 | `index/index_cons.py:196` | DONE |
-| `stock_zh_index_value_csindex` | _(待填)_ | 东财/申万 | `index/index_stock_zh_csindex.py:72` | DEFERRED |
-| `sw_index_first_info` | _(待填)_ | 东财/申万 | `index/index_sw.py:38` | DEFERRED |
-| `sw_index_second_info` | _(待填)_ | 东财/申万 | `index/index_sw.py:96` | DEFERRED |
-| `sw_index_third_cons` | _(待填)_ | 东财/申万 | `index/index_sw.py:220` | DEFERRED |
-| `sw_index_third_info` | _(待填)_ | 东财/申万 | `index/index_sw.py:158` | DEFERRED |
-
-### news
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `news_cctv` | _(待填)_ | 百度/东财 | `news/news_cctv.py:17` | DEFERRED |
-
-### option
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `option_comm_info` | _(待填)_ | 东财/新浪 | `option/option_comm_qihuo.py:38` | DEFERRED |
-| `option_comm_symbol` | _(待填)_ | 东财/新浪 | `option/option_comm_qihuo.py:18` | DEFERRED |
-| `option_commodity_contract_sina` | _(待填)_ | 东财/新浪 | `option/option_commodity_sina.py:16` | DEFERRED |
-| `option_commodity_contract_table_sina` | _(待填)_ | 东财/新浪 | `option/option_commodity_sina.py:55` | DEFERRED |
-| `option_commodity_hist_sina` | _(待填)_ | 东财/新浪 | `option/option_commodity_sina.py:139` | DEFERRED |
-| `option_contract_info_ctp` | `option::wv_option_misc::option_contract_info_ctp` | 东财/新浪 | `option/option_contract_info_ctp.py:13` | DONE |
-| `option_current_day_szse` | _(待填)_ | 东财/新浪 | `option/option_current_szse.py:14` | DEFERRED |
-| `option_daily_stats_szse` | `option::wv_option_misc::option_daily_stats_szse` | 东财/新浪 | `option/option_daily_stats_sse_szse.py:85` | DONE |
-| `option_lhb_em` | `option::wv_option_misc::option_lhb_em` | 东财/新浪 | `option/option_lhb_em.py:13` | DONE |
-| `option_margin` | _(待填)_ | 东财/新浪 | `option/option_margin.py:38` | DEFERRED |
-| `option_margin_symbol` | _(待填)_ | 东财/新浪 | `option/option_margin.py:18` | DEFERRED |
-| `option_premium_analysis_em` | `option::wv_option_misc::option_premium_analysis_em` | 东财/新浪 | `option/option_premium_analysis_em.py:14` | DONE |
-| `option_risk_analysis_em` | `option::wv_option_misc::option_risk_analysis_em` | 东财/新浪 | `option/option_risk_analysis_em.py:14` | DONE |
-| `option_value_analysis_em` | `option::wv_option_misc::option_value_analysis_em` | 东财/新浪 | `option/option_value_analysis_em.py:14` | DONE |
-
-### other
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `car_sale_rank_gasgoo` | `other::wv_other_misc::car_sale_rank_gasgoo` | — | `other/other_car_gasgoo.py:15` | DONE |
-| `game_hot_rank_taptap` | `other::wv_other_misc::game_hot_rank_taptap` | — | `other/other_taptap.py:72` | DONE |
-
-### qdii
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `qdii_e_comm_jsl` | `qdii::e_comm_jsl::qdii_e_comm_jsl` | 集思录 | `qdii/qdii_jsl.py:88` | DONE |
-
-### rate
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `repo_rate_hist` | `rate::chinamoney::repo_rate_hist` | 外汇交易中心 | `rate/repo_rate.py:45` | DONE |
-| `repo_rate_query` | `rate::chinamoney::repo_rate_query` | 外汇交易中心 | `rate/repo_rate.py:12` | DONE |
-
-### reits
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `reits_hist_min_em` | `reits::wv_reits_misc::reits_hist_min_em` | 东财 | `reits/reits_basic.py:173` | DONE |
-
-### spot
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `spot_corn_price_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:137` | DEFERRED |
-| `spot_hog_crossbred_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:113` | DEFERRED |
-| `spot_hog_lean_price_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:65` | DEFERRED |
-| `spot_hog_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:14` | DEFERRED |
-| `spot_hog_three_way_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:89` | DEFERRED |
-| `spot_hog_year_trend_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:41` | DEFERRED |
-| `spot_mixed_feed_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:185` | DEFERRED |
-| `spot_price_qh` | _(待填)_ | 上期所/QB | `spot/spot_price_qh.py:79` | DEFERRED |
-| `spot_price_table_qh` | `spot::price_qh::spot_price_table_qh` | 上期所/QB | `spot/spot_price_qh.py:55` | DONE |
-| `spot_soybean_price_soozhu` | _(待填)_ | 上期所/QB | `spot/spot_hog_soozhu.py:161` | DEFERRED |
-
-### stock
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `get_us_stock_name` | _(待填)_ | 东财/新浪 | `stock/stock_us_sina.py:55` | DEFERRED |
-| `stock_allotment_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_allotment_cninfo.py:30` | DEFERRED |
-| `stock_bid_ask_em` | `stock::wv_stock_misc2::stock_bid_ask_em` | 东财/新浪 | `stock/stock_ask_bid_em.py:13` | DONE |
-| `stock_cg_equity_mortgage_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_cg_equity_mortgage.py:30` | DEFERRED |
-| `stock_cg_guarantee_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_cg_guarantee.py:30` | DEFERRED |
-| `stock_cg_lawsuit_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_cg_lawsuit.py:31` | DEFERRED |
-| `stock_dividend_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_dividend_cninfo.py:30` | DEFERRED |
-| `stock_hk_company_profile_em` | `stock::hk_profile_em::stock_hk_company_profile_em` | 东财/新浪 | `stock/stock_profile_em.py:79` | DONE |
-| `stock_hk_daily` | _(待填)_ | 东财/新浪 | `stock/stock_hk_sina.py:109` | DEFERRED |
-| `stock_hk_dividend_payout_em` | `stock::hk_profile_em::stock_hk_dividend_payout_em` | 东财/新浪 | `stock/stock_profile_em.py:237` | DONE |
-| `stock_hk_fhpx_detail_ths` | _(待填)_ | 东财/新浪 | `stock/stock_hk_fhpx_ths.py:15` | DEFERRED |
-| `stock_hk_financial_indicator_em` | `stock::hk_profile_em::stock_hk_financial_indicator_em` | 东财/新浪 | `stock/stock_profile_em.py:153` | DONE |
-| `stock_hk_growth_comparison_em` | `stock::hk_comparison_em::stock_hk_growth_comparison_em` | 东财/新浪 | `stock/stock_hk_comparison_em.py:13` | DONE |
-| `stock_hk_scale_comparison_em` | `stock::hk_comparison_em::stock_hk_scale_comparison_em` | 东财/新浪 | `stock/stock_hk_comparison_em.py:118` | DONE |
-| `stock_hk_valuation_comparison_em` | `stock::hk_comparison_em::stock_hk_valuation_comparison_em` | 东财/新浪 | `stock/stock_hk_comparison_em.py:61` | DONE |
-| `stock_hold_change_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_control_cninfo.py:198` | DEFERRED |
-| `stock_hold_control_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_control_cninfo.py:35` | DEFERRED |
-| `stock_hold_management_detail_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_control_cninfo.py:106` | DEFERRED |
-| `stock_hold_management_person_em` | `stock::wv_stock_misc1::stock_hold_management_person_em` | 东财/新浪 | `stock/stock_hold_control_em.py:111` | DONE |
-| `stock_hold_num_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_hold_num_cninfo.py:30` | DEFERRED |
-| `stock_hot_search_baidu` | `stock::hot_search_baidu::stock_hot_search_baidu` | 东财/新浪 | `stock/stock_hot_search_baidu.py:15` | DONE |
-| `stock_industry_category_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_industry_cninfo.py:32` | DEFERRED |
-| `stock_industry_change_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_industry_cninfo.py:105` | DEFERRED |
-| `stock_industry_clf_hist_sw` | _(待填)_ | 东财/新浪 | `stock/stock_industry_sw.py:17` | DEFERRED |
-| `stock_info_change_name` | _(待填)_ | 东财/新浪 | `stock/stock_info.py:411` | DEFERRED |
-| `stock_info_sz_change_name` | _(待填)_ | 东财/新浪 | `stock/stock_info.py:384` | DEFERRED |
-| `stock_ipo_summary_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_ipo_summary_cninfo.py:30` | DEFERRED |
-| `stock_js_weibo_nlp_time` | _(待填)_ | 东财/新浪 | `stock/stock_weibo_nlp.py:20` | DEFERRED |
-| `stock_js_weibo_report` | _(待填)_ | 东财/新浪 | `stock/stock_weibo_nlp.py:49` | DEFERRED |
-| `stock_new_gh_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_new_cninfo.py:30` | DEFERRED |
-| `stock_new_ipo_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_new_cninfo.py:76` | DEFERRED |
-| `stock_news_main_cx` | `stock::news_cx::stock_news_main_cx` | 东财/新浪 | `stock/stock_news_cx.py:13` | DONE |
-| `stock_price_js` | `stock::wv_stock_misc1::stock_price_js` | 东财/新浪 | `stock/stock_us_js.py:13` | DONE |
-| `stock_profile_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_profile_cninfo.py:30` | DEFERRED |
-| `stock_rank_forecast_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_rank_forecast.py:30` | DEFERRED |
-| `stock_share_change_cninfo` | _(待填)_ | 东财/新浪 | `stock/stock_share_changes_cninfo.py:31` | DEFERRED |
-| `stock_share_hold_change_bse` | `stock::wv_stock_misc1::stock_share_hold_change_bse` | 东财/新浪 | `stock/stock_share_hold.py:196` | DONE |
-| `stock_share_hold_change_sse` | `stock::wv_stock_misc1::stock_share_hold_change_sse` | 东财/新浪 | `stock/stock_share_hold.py:21` | DONE |
-| `stock_share_hold_change_szse` | `stock::wv_stock_misc1::stock_share_hold_change_szse` | 东财/新浪 | `stock/stock_share_hold.py:118` | DONE |
-| `stock_sse_deal_daily` | `stock::sse_summary::stock_sse_deal_daily` | 东财/新浪 | `stock/stock_summary.py:251` | DONE |
-| `stock_sse_summary` | `stock::sse_summary::stock_sse_summary` | 东财/新浪 | `stock/stock_summary.py:207` | DONE |
-| `stock_staq_net_stop` | `stock::staq_net_stop::stock_staq_net_stop` | 东财/新浪 | `stock/stock_stop.py:13` | DONE |
-| `stock_szse_area_summary` | _(待填)_ | 东财/新浪 | `stock/stock_summary.py:53` | DEFERRED |
-| `stock_szse_sector_summary` | _(待填)_ | 东财/新浪 | `stock/stock_summary.py:110` | DEFERRED |
-| `stock_szse_summary` | _(待填)_ | 东财/新浪 | `stock/stock_summary.py:22` | DEFERRED |
-| `stock_us_daily` | _(待填)_ | 东财/新浪 | `stock/stock_us_sina.py:117` | DEFERRED |
-| `stock_us_spot` | _(待填)_ | 东财/新浪 | `stock/stock_us_sina.py:86` | DEFERRED |
-| `stock_zh_a_cdr_daily` | _(待填)_ | 东财/新浪 | `stock/stock_zh_a_sina.py:307` | DEFERRED |
-| `stock_zh_a_stop_em` | `stock::zh_a_stop_em::stock_zh_a_stop_em` | 东财/新浪 | `stock/stock_zh_a_special.py:200` | DONE |
-| `stock_zh_a_tick_tx_js` | `stock::wv_stock_misc1::stock_zh_a_tick_tx_js` | 东财/新浪 | `stock/stock_zh_a_tick_tx.py:16` | DONE |
-| `stock_zh_ah_daily` | `stock::wv_stock_misc1::stock_zh_ah_daily` | 东财/新浪 | `stock/stock_zh_ah_tx.py:157` | DONE |
-| `stock_zh_ah_name` | `stock::wv_stock_misc1::stock_zh_ah_name` | 东财/新浪 | `stock/stock_zh_ah_tx.py:110` | DONE |
-| `stock_zh_ah_spot` | `stock::wv_stock_misc1::stock_zh_ah_spot` | 东财/新浪 | `stock/stock_zh_ah_tx.py:40` | DONE |
-| `stock_zh_b_daily` | _(待填)_ | 东财/新浪 | `stock/stock_zh_b_sina.py:124` | DEFERRED |
-| `stock_zh_b_minute` | `stock::zh_b_minute::stock_zh_b_minute` | 东财/新浪 | `stock/stock_zh_b_sina.py:281` | DONE |
-| `stock_zh_b_spot` | _(待填)_ | 东财/新浪 | `stock/stock_zh_b_sina.py:48` | DEFERRED |
-| `stock_zh_dupont_comparison_em` | `stock::wv_stock_misc2::stock_zh_dupont_comparison_em` | 东财/新浪 | `stock/stock_zh_comparison_em.py:162` | DONE |
-| `stock_zh_growth_comparison_em` | `stock::wv_stock_misc2::stock_zh_growth_comparison_em` | 东财/新浪 | `stock/stock_zh_comparison_em.py:13` | DONE |
-| `stock_zh_kcb_daily` | `stock::wv_stock_misc2::stock_zh_kcb_daily` | 东财/新浪 | `stock/stock_zh_kcb_sina.py:123` | DONE |
-| `stock_zh_kcb_spot` | `stock::wv_stock_misc2::stock_zh_kcb_spot` | 东财/新浪 | `stock/stock_zh_kcb_sina.py:42` | DONE |
-
-### stock_feature
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_board_concept_info_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_concept_ths.py:91` | DEFERRED |
-| `stock_board_concept_name_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_concept_ths.py:71` | DEFERRED |
-| `stock_board_concept_summary_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_concept_ths.py:273` | DEFERRED |
-| `stock_board_industry_info_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:88` | DEFERRED |
-| `stock_board_industry_name_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:68` | DEFERRED |
-| `stock_board_industry_summary_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:331` | DEFERRED |
-| `stock_fund_flow_concept` | _(待填)_ | 东财/百度 | `stock_feature/stock_fund_flow.py:137` | DEFERRED |
-| `stock_fund_flow_individual` | _(待填)_ | 东财/百度 | `stock_feature/stock_fund_flow.py:41` | DEFERRED |
-| `stock_fund_flow_industry` | _(待填)_ | 东财/百度 | `stock_feature/stock_fund_flow.py:243` | DEFERRED |
-| `stock_ggcg_em` | `stock_feature::wv_sf_misc3::stock_ggcg_em` | 东财/百度 | `stock_feature/stock_gdzjc_em.py:15` | DONE |
-| `stock_hk_gxl_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_gxl_lg.py:54` | DEFERRED |
-| `stock_hk_indicator_eniu` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_indicator.py:54` | DEFERRED |
-| `stock_hk_valuation_baidu` | `stock_feature::wv_sf_misc2::stock_hk_valuation_baidu` | 东财/百度 | `stock_feature/stock_hk_valuation_baidu.py:14` | DONE |
-| `stock_hot_deal_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_hot_xq.py:207` | DEFERRED |
-| `stock_hot_follow_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_hot_xq.py:81` | DEFERRED |
-| `stock_hot_tweet_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_hot_xq.py:144` | DEFERRED |
-| `stock_index_pb_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:507` | DEFERRED |
-| `stock_index_pe_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:398` | DEFERRED |
-| `stock_info_cjzc_em` | `stock_feature::wv_sf_misc3::stock_info_cjzc_em` | 东财/百度 | `stock_feature/stock_info.py:21` | DONE |
-| `stock_info_global_cls` | _(待填)_ | 东财/百度 | `stock_feature/stock_info.py:195` | DEFERRED |
-| `stock_info_global_em` | `stock_feature::wv_sf_misc3::stock_info_global_em` | 东财/百度 | `stock_feature/stock_info.py:61` | DONE |
-| `stock_info_global_futu` | `stock_feature::wv_sf_misc3::stock_info_global_futu` | 东财/百度 | `stock_feature/stock_info.py:127` | DONE |
-| `stock_info_global_sina` | `stock_feature::wv_sf_misc3::stock_info_global_sina` | 东财/百度 | `stock_feature/stock_info.py:96` | DONE |
-| `stock_info_global_ths` | `stock_feature::wv_sf_misc3::stock_info_global_ths` | 东财/百度 | `stock_feature/stock_info.py:162` | DONE |
-| `stock_inner_trade_xq` | _(待填)_ | 东财/百度 | `stock_feature/stock_inner_trade_xq.py:72` | DEFERRED |
-| `stock_ipo_benefit_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:274` | DEFERRED |
-| `stock_irm_ans_cninfo` | `stock_feature::wv_sf_misc1::stock_irm_ans_cninfo` | 东财/百度 | `stock_feature/stock_irm_cninfo.py:140` | DONE |
-| `stock_irm_cninfo` | `stock_feature::wv_sf_misc1::stock_irm_cninfo` | 东财/百度 | `stock_feature/stock_irm_cninfo.py:31` | DONE |
-| `stock_jgdy_tj_em` | `stock_feature::wv_sf_misc1::stock_jgdy_tj_em` | 东财/百度 | `stock_feature/stock_jgdy_em.py:16` | DONE |
-| `stock_lh_yyb_capital` | _(待填)_ | 东财/百度 | `stock_feature/stock_lh_yybpm.py:42` | DEFERRED |
-| `stock_lh_yyb_control` | _(待填)_ | 东财/百度 | `stock_feature/stock_lh_yybpm.py:65` | DEFERRED |
-| `stock_lh_yyb_most` | _(待填)_ | 东财/百度 | `stock_feature/stock_lh_yybpm.py:19` | DEFERRED |
-| `stock_lhb_detail_daily_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:18` | DEFERRED |
-| `stock_lhb_ggtj_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:91` | DEFERRED |
-| `stock_lhb_jgmx_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:208` | DEFERRED |
-| `stock_lhb_jgzz_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:166` | DEFERRED |
-| `stock_lhb_yytj_sina` | _(待填)_ | 东财/百度 | `stock_feature/stock_lhb_sina.py:128` | DEFERRED |
-| `stock_margin_bse` | `stock_feature::wv_sf_misc1::stock_margin_bse` | 东财/百度 | `stock_feature/stock_margin_bse.py:71` | DONE |
-| `stock_margin_detail_bse` | `stock_feature::wv_sf_misc1::stock_margin_detail_bse` | 东财/百度 | `stock_feature/stock_margin_bse.py:129` | DONE |
-| `stock_margin_detail_sse` | `stock_feature::wv_sf_misc3::stock_margin_detail_sse` | 东财/百度 | `stock_feature/stock_margin_sse.py:137` | DONE |
-| `stock_margin_detail_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_margin_szse.py:95` | DEFERRED |
-| `stock_margin_ratio_pa` | `stock_feature::wv_sf_misc3::stock_margin_ratio_pa` | 东财/百度 | `stock_feature/stock_margin_sse.py:13` | DONE |
-| `stock_margin_underlying_info_bse` | `stock_feature::wv_sf_misc1::stock_margin_underlying_info_bse` | 东财/百度 | `stock_feature/stock_margin_bse.py:190` | DONE |
-| `stock_margin_underlying_info_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_margin_szse.py:15` | DEFERRED |
-| `stock_market_activity_legu` | _(待填)_ | 东财/百度 | `stock_feature/stock_market_legu.py:18` | DEFERRED |
-| `stock_market_pb_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:461` | DEFERRED |
-| `stock_market_pe_lg` | _(待填)_ | 东财/百度 | `stock_feature/stock_a_pe_and_pb.py:322` | DEFERRED |
-| `stock_pg_em` | `stock_feature::wv_sf_misc1::stock_pg_em` | 东财/百度 | `stock_feature/stock_zf_pg.py:99` | DONE |
-| `stock_rank_cxd_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:111` | DEFERRED |
-| `stock_rank_cxfl_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:309` | DEFERRED |
-| `stock_rank_cxg_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:35` | DEFERRED |
-| `stock_rank_cxsl_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:401` | DEFERRED |
-| `stock_rank_ljqd_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:782` | DEFERRED |
-| `stock_rank_ljqs_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:694` | DEFERRED |
-| `stock_rank_lxsz_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:187` | DEFERRED |
-| `stock_rank_lxxd_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:248` | DEFERRED |
-| `stock_rank_xstp_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:493` | DEFERRED |
-| `stock_rank_xxtp_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:594` | DEFERRED |
-| `stock_rank_xzjp_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_technology_ths.py:870` | DEFERRED |
-| `stock_report_disclosure` | `stock_feature::wv_sf_misc2::stock_report_disclosure` | 东财/百度 | `stock_feature/stock_yjyg_cninfo.py:13` | DONE |
-| `stock_research_report_em` | `stock_feature::wv_sf_misc2::stock_research_report_em` | 东财/百度 | `stock_feature/stock_research_report_em.py:16` | DONE |
-| `stock_sgt_reference_exchange_rate_sse` | `stock_feature::wv_sf_sgt::stock_sgt_reference_exchange_rate_sse` | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:76` | DONE |
-| `stock_sgt_reference_exchange_rate_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:47` | DEFERRED |
-| `stock_sgt_settlement_exchange_rate_sse` | `stock_feature::wv_sf_sgt::stock_sgt_settlement_exchange_rate_sse` | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:134` | DONE |
-| `stock_sgt_settlement_exchange_rate_szse` | _(待填)_ | 东财/百度 | `stock_feature/stock_hsgt_exchange_rate.py:18` | DEFERRED |
-| `stock_sns_sseinfo` | _(待填)_ | 东财/百度 | `stock_feature/stock_sns_sseinfo.py:56` | DEFERRED |
-| `stock_tfp_em` | `stock_feature::wv_sf_misc2::stock_tfp_em` | 东财/百度 | `stock_feature/stock_tfp_em.py:13` | DONE |
-| `stock_us_valuation_baidu` | `stock_feature::wv_sf_misc1::stock_us_valuation_baidu` | 东财/百度 | `stock_feature/stock_us_valuation_baidu.py:16` | DONE |
-| `stock_xgsglb_em` | `stock_feature::wv_sf_misc3::stock_xgsglb_em` | 东财/百度 | `stock_feature/stock_dxsyl_em.py:128` | DONE |
-| `stock_xgsr_ths` | _(待填)_ | 东财/百度 | `stock_feature/stock_board_industry_ths.py:222` | DEFERRED |
-| `stock_yjkb_em` | `stock_feature::wv_sf_misc1::stock_yjkb_em` | 东财/百度 | `stock_feature/stock_yjyg_em.py:17` | DONE |
-| `stock_yjyg_em` | `stock_feature::wv_sf_misc1::stock_yjyg_em` | 东财/百度 | `stock_feature/stock_yjyg_em.py:135` | DONE |
-| `stock_yzxdr_em` | `stock_feature::wv_sf_misc2::stock_yzxdr_em` | 东财/百度 | `stock_feature/stock_yzxdr_em.py:16` | DONE |
-| `stock_zh_a_disclosure_relation_cninfo` | `stock_feature::wv_sf_misc1::stock_zh_a_disclosure_relation_cninfo` | 东财/百度 | `stock_feature/stock_disclosure_cninfo.py:205` | DONE |
-| `stock_zh_a_disclosure_report_cninfo` | `stock_feature::wv_sf_misc1::stock_zh_a_disclosure_report_cninfo` | 东财/百度 | `stock_feature/stock_disclosure_cninfo.py:129` | DONE |
-| `stock_zh_vote_baidu` | `stock_feature::wv_sf_misc2::stock_zh_vote_baidu` | 东财/百度 | `stock_feature/stock_zh_vote_baidu.py:13` | DONE |
-
-### stock_fundamental
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `stock_add_stock` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:499` | DEFERRED |
-| `stock_circulate_stock_holder` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:563` | DEFERRED |
-| `stock_financial_analysis_indicator` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:228` | DEFERRED |
-| `stock_fund_stock_holder` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:638` | DEFERRED |
-| `stock_history_dividend` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:327` | DEFERRED |
-| `stock_history_dividend_detail` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:360` | DEFERRED |
-| `stock_hk_profit_forecast_et` | _(待填)_ | 东财 | `stock_fundamental/stock_profit_forecast_hk_etnet.py:15` | DEFERRED |
-| `stock_individual_basic_info_hk_xq` | _(待填)_ | 东财 | `stock_fundamental/stock_basic_info_xq.py:129` | DEFERRED |
-| `stock_individual_basic_info_us_xq` | _(待填)_ | 东财 | `stock_fundamental/stock_basic_info_xq.py:106` | DEFERRED |
-| `stock_individual_basic_info_xq` | _(待填)_ | 东财 | `stock_fundamental/stock_basic_info_xq.py:83` | DEFERRED |
-| `stock_individual_notice_report` | `stock::fundamental::wv_fund_misc::stock_individual_notice_report` | 东财 | `stock_fundamental/stock_notice.py:151` | DONE |
-| `stock_institute_hold` | _(待填)_ | 东财 | `stock_fundamental/stock_hold.py:17` | DEFERRED |
-| `stock_institute_hold_detail` | _(待填)_ | 东财 | `stock_fundamental/stock_hold.py:58` | DEFERRED |
-| `stock_institute_recommend` | _(待填)_ | 东财 | `stock_fundamental/stock_recommend.py:14` | DEFERRED |
-| `stock_institute_recommend_detail` | _(待填)_ | 东财 | `stock_fundamental/stock_recommend.py:76` | DEFERRED |
-| `stock_ipo_hk_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_ipo_ths.py:81` | DEFERRED |
-| `stock_ipo_info` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:483` | DEFERRED |
-| `stock_ipo_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_ipo_ths.py:14` | DEFERRED |
-| `stock_main_stock_holder` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:696` | DEFERRED |
-| `stock_notice_report` | `stock::fundamental::wv_fund_misc::stock_notice_report` | 东财 | `stock_fundamental/stock_notice.py:133` | DONE |
-| `stock_profit_forecast_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_profit_forecast_ths.py:17` | DEFERRED |
-| `stock_register_bj` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:237` | DEFERRED |
-| `stock_register_cyb` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:163` | DEFERRED |
-| `stock_register_db` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:459` | DEFERRED |
-| `stock_register_kcb` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:89` | DEFERRED |
-| `stock_register_sh` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:311` | DEFERRED |
-| `stock_register_sz` | _(待填)_ | 东财 | `stock_fundamental/stock_register_em.py:385` | DEFERRED |
-| `stock_restricted_release_queue_sina` | _(待填)_ | 东财 | `stock_fundamental/stock_finance_sina.py:531` | DEFERRED |
-| `stock_zyjs_ths` | _(待填)_ | 东财 | `stock_fundamental/stock_zyjs_ths.py:14` | DEFERRED |
-
-### utils
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `get_token` | _(待填)_ | — | `utils/token_process.py:22` | DEFERRED |
-| `set_token` | _(待填)_ | — | `utils/token_process.py:15` | DEFERRED |
-
-### zz
-
-| akshare 函数 | 本库路径 | 源 | akshare 源文件:行 | 状态 |
-|---|---|---|---|---|
-| `futures_inventory_99` | _(待填)_ | — | — | DEFERRED |
-| `macro_usa_spcs20` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_hs300_daily_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_hs300_list_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_hs300_spot_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_sz50_daily_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_sz50_list_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_sz50_spot_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_zz1000_daily_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_zz1000_list_sina` | _(待填)_ | — | — | DEFERRED |
-| `option_cffex_zz1000_spot_sina` | _(待填)_ | — | — | DEFERRED |
+# 对标表 (Benchmark Map)
+
+本表是本库端点与 akshare 公开接口的完整对照,兼作**覆盖率追踪器**与**上游同步锚点**(见 ADR-0012)。
+
+> 本文件由 `scripts/sync-akshare` 思路自动生成:逐一对齐 akshare 顶层 `def`(1172 个公开函数)与本库 `src/` 实现。
+> 状态:`DONE`=已移植;`DEFERRED`=需签名/令牌/JS/HTML,按 ADR-0008 推迟;`INTERNAL`=akshare 内部辅助函数,非对外数据端点。
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+
+## air
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `air_city_table` | `src/air/air_gaps.rs::air_city_table` | `air/air_zhenqi.py:64` | DONE |  |
+| `air_quality_hebei` | — | `air/air_hebei.py:23` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `air_quality_hist` | — | `air/air_zhenqi.py:142` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `air_quality_rank` | `src/air/air_gaps.rs::air_quality_rank` | `air/air_zhenqi.py:219` | DONE |  |
+| `air_quality_watch_point` | — | `air/air_zhenqi.py:99` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `has_month_data` | — | `air/air_zhenqi.py:53` | INTERNAL | akshare internal helper, not a data endpoint |
+| `sunrise_city_list` | — | `air/sunrise_tad.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `sunrise_daily` | — | `air/sunrise_tad.py:40` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `sunrise_monthly` | — | `air/sunrise_tad.py:73` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+
+## article
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `article_epu_index` | `src/article/excel_gaps.rs::article_epu_index` | `article/epu_index.py:12` | DONE |  |
+| `article_ff_crr` | `src/article/article_gaps.rs::article_ff_crr` | `article/ff_factor.py:17` | DONE |  |
+| `article_oman_rv` | — | `article/risk_rv.py:18` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `article_oman_rv_short` | — | `article/risk_rv.py:78` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `article_rlab_rv` | `src/article/article_gaps.rs::article_rlab_rv` | `article/risk_rv.py:117` | DONE |  |
+| `fred_md` | `article/fred.rs::fred_md` | `article/fred_md.py:13` | DONE |  |
+| `fred_qd` | `article/fred.rs::fred_qd` | `article/fred_md.py:28` | DONE |  |
+
+## bank
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `bank_fjcf_page_url` | — | `bank/bank_cbirc_2020.py:76` | DEFERRED | token/JS/HTML-gated |
+| `bank_fjcf_table_detail` | `src/bank/bank_gaps.rs::bank_fjcf_table_detail` | `bank/bank_cbirc_2020.py:111` | DONE |  |
+| `bank_fjcf_total_num` | — | `bank/bank_cbirc_2020.py:22` | DEFERRED | token/JS/HTML-gated |
+| `bank_fjcf_total_page` | — | `bank/bank_cbirc_2020.py:47` | DEFERRED | token/JS/HTML-gated |
+
+## bond
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `bond_available_index_cbond` | `bond/wv_bond_misc.rs::bond_available_index_cbond` | `bond/bond_cbond.py:14` | DONE |  |
+| `bond_buy_back_hist_em` | `bond/wv_bond_misc.rs::bond_buy_back_hist_em` | `bond/bond_buy_back_em.py:158` | DONE |  |
+| `bond_cash_summary_sse` | `src/bond/excel_gaps.rs::bond_cash_summary_sse` | `bond/bond_summary.py:15` | DONE |  |
+| `bond_cb_adj_logs_jsl` | — | `bond/bond_convert.py:297` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `bond_cb_index_jsl` | — | `bond/bond_convert.py:17` | DEFERRED | token/JS/HTML-gated |
+| `bond_cb_jsl` | `bond/jisilu.rs::bond_cb_jsl` | `bond/bond_convert.py:31` | DONE |  |
+| `bond_cb_profile_sina` | — | `bond/bond_cb_sina.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `bond_cb_redeem_jsl` | `bond/jisilu.rs::bond_cb_redeem_jsl` | `bond/bond_convert.py:165` | DONE |  |
+| `bond_cb_summary_sina` | — | `bond/bond_cb_sina.py:31` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `bond_china_close_return` | `src (present)` | `bond/bond_china_money.py:127` | DONE |  |
+| `bond_china_close_return_map` | `bond/chinamoney_pub.rs::bond_china_close_return_map` | `bond/bond_china_money.py:93` | DONE |  |
+| `bond_china_yield` | — | `bond/bond_china.py:142` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `bond_composite_index_cbond` | `bond/cbond.rs::bond_composite_index_cbond` | `bond/bond_cbond.py:214` | DONE |  |
+| `bond_corporate_issue_cninfo` | — | `bond/bond_issue_cninfo.py:222` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `bond_cov_comparison` | `bond/eastmoney.rs::bond_cov_comparison` | `bond/bond_zh_cov.py:465` | DONE |  |
+| `bond_cov_issue_cninfo` | — | `bond/bond_issue_cninfo.py:322` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `bond_cov_stock_issue_cninfo` | — | `bond/bond_issue_cninfo.py:481` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `bond_deal_summary_sse` | `src/bond/excel_gaps.rs::bond_deal_summary_sse` | `bond/bond_summary.py:50` | DONE |  |
+| `bond_debt_nafmii` | `bond/zh.rs::bond_debt_nafmii` | `bond/bond_nafmii.py:13` | DONE |  |
+| `bond_gb_us_sina` | `bond/zh.rs::bond_gb_us_sina` | `bond/bond_gb_sina.py:54` | DONE |  |
+| `bond_gb_zh_sina` | `bond/zh.rs::bond_gb_zh_sina` | `bond/bond_gb_sina.py:13` | DONE |  |
+| `bond_index_general_cbond` | `bond/cbond.rs::bond_index_general_cbond` | `bond/bond_cbond.py:28` | DONE |  |
+| `bond_info_cm` | `bond/wv_bond_misc.rs::bond_info_cm` | `bond/bond_info_cm.py:65` | DONE |  |
+| `bond_info_cm_query` | `bond/wv_bond_misc.rs::bond_info_cm_query` | `bond/bond_info_cm.py:19` | DONE |  |
+| `bond_info_detail_cm` | `bond/wv_bond_misc.rs::bond_info_detail_cm` | `bond/bond_info_cm.py:183` | DONE |  |
+| `bond_local_government_issue_cninfo` | — | `bond/bond_issue_cninfo.py:126` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `bond_new_composite_index_cbond` | `bond/cbond.rs::bond_new_composite_index_cbond` | `bond/bond_cbond.py:130` | DONE |  |
+| `bond_sh_buy_back_em` | `bond/extra.rs::bond_sh_buy_back_em` | `bond/bond_buy_back_em.py:14` | DONE |  |
+| `bond_spot_deal` | `bond/chinamoney.rs::bond_spot_deal` | `bond/bond_china.py:84` | DONE |  |
+| `bond_spot_quote` | `bond/chinamoney.rs::bond_spot_quote` | `bond/bond_china.py:20` | DONE |  |
+| `bond_sz_buy_back_em` | `bond/extra.rs::bond_sz_buy_back_em` | `bond/bond_buy_back_em.py:86` | DONE |  |
+| `bond_treasure_issue_cninfo` | — | `bond/bond_issue_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `bond_treasury_index_cbond` | `bond/cbond.rs::bond_treasury_index_cbond` | `bond/bond_cbond.py:72` | DONE |  |
+| `bond_zh_cov` | `bond/extra.rs::bond_zh_cov` | `bond/bond_zh_cov.py:309` | DONE |  |
+| `bond_zh_cov_info` | `bond/cov.rs::bond_zh_cov_info` | `bond/bond_zh_cov.py:542` | DONE |  |
+| `bond_zh_cov_info_ths` | `bond/wv_bond_misc.rs::bond_zh_cov_info_ths` | `bond/bond_cb_ths.py:13` | DONE |  |
+| `bond_zh_cov_value_analysis` | `bond/extra.rs::bond_zh_cov_value_analysis` | `bond/bond_zh_cov.py:627` | DONE |  |
+| `bond_zh_hs_cov_daily` | `bond/cov.rs::bond_zh_hs_cov_daily` | `bond/bond_zh_cov.py:65` | DONE |  |
+| `bond_zh_hs_cov_min` | `bond/cov.rs::bond_zh_hs_cov_min` | `bond/bond_zh_cov.py:131` | DONE |  |
+| `bond_zh_hs_cov_pre_min` | `bond/cov.rs::bond_zh_hs_cov_pre_min` | `bond/bond_zh_cov.py:264` | DONE |  |
+| `bond_zh_hs_cov_spot` | `bond/cov.rs::bond_zh_hs_cov_spot` | `bond/bond_zh_cov.py:46` | DONE |  |
+| `bond_zh_hs_daily` | — | `bond/bond_zh_sina.py:118` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `bond_zh_hs_spot` | — | `bond/bond_zh_sina.py:45` | DEFERRED | token/JS/HTML-gated |
+| `bond_zh_us_rate` | `bond/eastmoney.rs::bond_zh_us_rate` | `bond/bond_em.py:14` | DONE |  |
+| `get_zh_bond_hs_page_count` | — | `bond/bond_zh_sina.py:27` | INTERNAL | akshare internal helper, not a data endpoint |
+| `macro_china_bond_public` | `bond/chinamoney.rs::macro_china_bond_public` | `bond/bond_china_money.py:313` | DONE |  |
+| `macro_china_swap_rate` | `src/economic/macro_gaps.rs::macro_china_swap_rate` | `bond/bond_china_money.py:192` | DONE |  |
+
+## cal
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `rv_from_futures_zh_minute_sina` | `cal/mod.rs::rv_from_futures_zh_minute_sina` | `cal/rv.py:61` | DONE |  |
+| `rv_from_stock_zh_a_hist_min_em` | `cal/mod.rs::rv_from_stock_zh_a_hist_min_em` | `cal/rv.py:13` | DONE |  |
+| `volatility_yz_rv` | `cal/mod.rs::volatility_yz_rv` | `cal/rv.py:92` | DONE |  |
+
+## crypto
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `crypto_bitcoin_cme` | `crypto/bitcoin_cme.rs::crypto_bitcoin_cme` | `crypto/crypto_bitcoin_cme.py:13` | DONE |  |
+| `crypto_bitcoin_hold_report` | `crypto/bitcoin_hold.rs::crypto_bitcoin_hold_report` | `crypto/crypto_hold.py:13` | DONE |  |
+
+## currency
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `currency_boc_safe` | — | `currency/currency_safe.py:18` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `currency_boc_sina` | — | `currency/currency_china_bank_sina.py:57` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `currency_convert` | `currency/api.rs::currency_convert` | `currency/currency.py:126` | DONE |  |
+| `currency_currencies` | `currency/api.rs::currency_currencies` | `currency/currency.py:107` | DONE |  |
+| `currency_history` | `currency/api.rs::currency_history` | `currency/currency.py:39` | DONE |  |
+| `currency_latest` | `currency/api.rs::currency_latest` | `currency/currency.py:14` | DONE |  |
+| `currency_time_series` | `currency/api.rs::currency_time_series` | `currency/currency.py:66` | DONE |  |
+
+## datasets.py
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `get_crypto_info_csv` | — | `datasets.py:23` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_registry_json` | — | `datasets.py:34` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_ths_js` | — | `datasets.py:12` | INTERNAL | akshare internal helper, not a data endpoint |
+
+## economic
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `crypto_js_spot` | `crypto/js_spot.rs::crypto_js_spot` | `economic/macro_other.py:14` | DONE |  |
+| `macro_australia_bank_rate` | `economic/macro_intl.rs::macro_australia_bank_rate` | `economic/macro_australia.py:320` | DONE |  |
+| `macro_australia_cpi_quarterly` | `economic/macro_intl.rs::macro_australia_cpi_quarterly` | `economic/macro_australia.py:218` | DONE |  |
+| `macro_australia_cpi_yearly` | `economic/macro_intl.rs::macro_australia_cpi_yearly` | `economic/macro_australia.py:269` | DONE |  |
+| `macro_australia_ppi_quarterly` | `economic/macro_intl.rs::macro_australia_ppi_quarterly` | `economic/macro_australia.py:167` | DONE |  |
+| `macro_australia_retail_rate_monthly` | `economic/macro_intl.rs::macro_australia_retail_rate_monthly` | `economic/macro_australia.py:14` | DONE |  |
+| `macro_australia_trade` | `economic/macro_intl.rs::macro_australia_trade` | `economic/macro_australia.py:65` | DONE |  |
+| `macro_australia_unemployment_rate` | `economic/macro_intl.rs::macro_australia_unemployment_rate` | `economic/macro_australia.py:116` | DONE |  |
+| `macro_bank_australia_interest_rate` | `src (present)` | `economic/macro_bank.py:172` | DONE |  |
+| `macro_bank_brazil_interest_rate` | `src (present)` | `economic/macro_bank.py:220` | DONE |  |
+| `macro_bank_china_interest_rate` | `src (present)` | `economic/macro_bank.py:136` | DONE |  |
+| `macro_bank_english_interest_rate` | `src (present)` | `economic/macro_bank.py:160` | DONE |  |
+| `macro_bank_euro_interest_rate` | `src (present)` | `economic/macro_bank.py:112` | DONE |  |
+| `macro_bank_india_interest_rate` | `src (present)` | `economic/macro_bank.py:208` | DONE |  |
+| `macro_bank_japan_interest_rate` | `src (present)` | `economic/macro_bank.py:184` | DONE |  |
+| `macro_bank_newzealand_interest_rate` | `src (present)` | `economic/macro_bank.py:124` | DONE |  |
+| `macro_bank_russia_interest_rate` | `src (present)` | `economic/macro_bank.py:196` | DONE |  |
+| `macro_bank_switzerland_interest_rate` | `src (present)` | `economic/macro_bank.py:148` | DONE |  |
+| `macro_bank_usa_interest_rate` | `src (present)` | `economic/macro_bank.py:101` | DONE |  |
+| `macro_canada_bank_rate` | `economic/macro_intl.rs::macro_canada_bank_rate` | `economic/macro_canada.py:218` | DONE |  |
+| `macro_canada_core_cpi_monthly` | `economic/macro_intl.rs::macro_canada_core_cpi_monthly` | `economic/macro_canada.py:320` | DONE |  |
+| `macro_canada_core_cpi_yearly` | `economic/macro_intl.rs::macro_canada_core_cpi_yearly` | `economic/macro_canada.py:269` | DONE |  |
+| `macro_canada_cpi_monthly` | `economic/macro_intl.rs::macro_canada_cpi_monthly` | `economic/macro_canada.py:422` | DONE |  |
+| `macro_canada_cpi_yearly` | `economic/macro_intl.rs::macro_canada_cpi_yearly` | `economic/macro_canada.py:371` | DONE |  |
+| `macro_canada_gdp_monthly` | `economic/macro_intl.rs::macro_canada_gdp_monthly` | `economic/macro_canada.py:473` | DONE |  |
+| `macro_canada_new_house_rate` | `economic/macro_intl.rs::macro_canada_new_house_rate` | `economic/macro_canada.py:14` | DONE |  |
+| `macro_canada_retail_rate_monthly` | `economic/macro_intl.rs::macro_canada_retail_rate_monthly` | `economic/macro_canada.py:167` | DONE |  |
+| `macro_canada_trade` | `economic/macro_intl.rs::macro_canada_trade` | `economic/macro_canada.py:116` | DONE |  |
+| `macro_canada_unemployment_rate` | `economic/macro_intl.rs::macro_canada_unemployment_rate` | `economic/macro_canada.py:65` | DONE |  |
+| `macro_china_agricultural_index` | `src (present)` | `economic/macro_china.py:1490` | DONE |  |
+| `macro_china_agricultural_product` | `src (present)` | `economic/macro_china.py:1435` | DONE |  |
+| `macro_china_au_report` | `economic/macro_china_more.rs::macro_china_au_report` | `economic/macro_china.py:953` | DONE |  |
+| `macro_china_bank_financing` | `src (present)` | `economic/macro_china.py:1241` | DONE |  |
+| `macro_china_bdti_index` | `src (present)` | `economic/macro_china.py:1933` | DONE |  |
+| `macro_china_bsi_index` | `src (present)` | `economic/macro_china.py:1988` | DONE |  |
+| `macro_china_central_bank_balance` | — | `economic/macro_china.py:3526` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_commodity_price_index` | `src (present)` | `economic/macro_china.py:1600` | DONE |  |
+| `macro_china_construction_index` | `src (present)` | `economic/macro_china.py:1765` | DONE |  |
+| `macro_china_construction_price_index` | `src (present)` | `economic/macro_china.py:1823` | DONE |  |
+| `macro_china_consumer_goods_retail` | `economic/macro2.rs::macro_china_consumer_goods_retail` | `economic/macro_china.py:3180` | DONE |  |
+| `macro_china_cpi` | `economic/china.rs::macro_china_cpi` | `economic/macro_china.py:2425` | DONE |  |
+| `macro_china_cpi_monthly` | `src (present)` | `economic/macro_china.py:421` | DONE |  |
+| `macro_china_cpi_yearly` | `src (present)` | `economic/macro_china.py:402` | DONE |  |
+| `macro_china_cx_pmi_yearly` | `src (present)` | `economic/macro_china.py:563` | DONE |  |
+| `macro_china_cx_services_pmi_yearly` | `src (present)` | `economic/macro_china.py:582` | DONE |  |
+| `macro_china_czsr` | `economic/macro_china2.rs::macro_china_czsr` | `economic/macro_china.py:2814` | DONE |  |
+| `macro_china_daily_energy` | `src/economic/macro_gaps.rs::macro_china_daily_energy` | `economic/macro_china.py:750` | DONE |  |
+| `macro_china_energy_index` | `src (present)` | `economic/macro_china.py:1545` | DONE |  |
+| `macro_china_enterprise_boom_index` | `economic/extra.rs::macro_china_enterprise_boom_index` | `economic/macro_china.py:1138` | DONE |  |
+| `macro_china_exports_yoy` | `src (present)` | `economic/macro_china.py:459` | DONE |  |
+| `macro_china_fdi` | `economic/extra.rs::macro_china_fdi` | `economic/macro_china.py:203` | DONE |  |
+| `macro_china_foreign_exchange_gold` | — | `economic/macro_china.py:3628` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_freight_index` | `src/economic/macro_gaps.rs::macro_china_freight_index` | `economic/macro_china.py:3481` | DONE |  |
+| `macro_china_fx_gold` | `economic/macro_china2.rs::macro_china_fx_gold` | `economic/macro_china.py:2190` | DONE |  |
+| `macro_china_fx_reserves_yearly` | `src (present)` | `economic/macro_china.py:620` | DONE |  |
+| `macro_china_gdp` | `economic/china.rs::macro_china_gdp` | `economic/macro_china.py:2500` | DONE |  |
+| `macro_china_gdp_yearly` | `src (present)` | `economic/macro_china.py:383` | DONE |  |
+| `macro_china_gdzctz` | `economic/macro2.rs::macro_china_gdzctz` | `economic/macro_china.py:2674` | DONE |  |
+| `macro_china_gyzjz` | `economic/macro2.rs::macro_china_gyzjz` | `economic/macro_china.py:3051` | DONE |  |
+| `macro_china_hgjck` | `economic/macro_china2.rs::macro_china_hgjck` | `economic/macro_china.py:2723` | DONE |  |
+| `macro_china_hk_building_amount` | `economic/macro_intl.rs::macro_china_hk_building_amount` | `economic/macro_china_hk.py:135` | DONE |  |
+| `macro_china_hk_building_volume` | `economic/macro_intl.rs::macro_china_hk_building_volume` | `economic/macro_china_hk.py:124` | DONE |  |
+| `macro_china_hk_core` | `economic/wv_macro_core.rs::macro_china_hk_core` | `economic/macro_china_hk.py:13` | DONE |  |
+| `macro_china_hk_cpi` | `economic/macro_intl.rs::macro_china_hk_cpi` | `economic/macro_china_hk.py:69` | DONE |  |
+| `macro_china_hk_cpi_ratio` | `economic/macro_intl.rs::macro_china_hk_cpi_ratio` | `economic/macro_china_hk.py:80` | DONE |  |
+| `macro_china_hk_gbp` | `economic/macro_intl.rs::macro_china_hk_gbp` | `economic/macro_china_hk.py:102` | DONE |  |
+| `macro_china_hk_gbp_ratio` | `economic/macro_intl.rs::macro_china_hk_gbp_ratio` | `economic/macro_china_hk.py:113` | DONE |  |
+| `macro_china_hk_market_info` | `economic/macro_china_more.rs::macro_china_hk_market_info` | `economic/macro_china.py:704` | DONE |  |
+| `macro_china_hk_ppi` | `economic/macro_intl.rs::macro_china_hk_ppi` | `economic/macro_china_hk.py:157` | DONE |  |
+| `macro_china_hk_rate_of_unemployment` | `economic/macro_intl.rs::macro_china_hk_rate_of_unemployment` | `economic/macro_china_hk.py:91` | DONE |  |
+| `macro_china_hk_trade_diff_ratio` | `economic/macro_intl.rs::macro_china_hk_trade_diff_ratio` | `economic/macro_china_hk.py:146` | DONE |  |
+| `macro_china_imports_yoy` | `src (present)` | `economic/macro_china.py:480` | DONE |  |
+| `macro_china_industrial_production_yoy` | `src (present)` | `economic/macro_china.py:522` | DONE |  |
+| `macro_china_insurance` | `src (present)` | `economic/macro_china.py:3560` | DONE |  |
+| `macro_china_insurance_income` | `src (present)` | `economic/macro_china.py:1287` | DONE |  |
+| `macro_china_international_tourism_fx` | — | `economic/macro_china.py:3381` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_lpi_index` | `src (present)` | `economic/macro_china.py:1878` | DONE |  |
+| `macro_china_lpr` | `economic/extra.rs::macro_china_lpr` | `economic/macro_china.py:1012` | DONE |  |
+| `macro_china_m2_yearly` | `src (present)` | `economic/macro_china.py:639` | DONE |  |
+| `macro_china_market_margin_sh` | `economic/macro_china_more.rs::macro_china_market_margin_sh` | `economic/macro_china.py:919` | DONE |  |
+| `macro_china_market_margin_sz` | `economic/macro_china_more.rs::macro_china_market_margin_sz` | `economic/macro_china.py:888` | DONE |  |
+| `macro_china_mobile_number` | `src (present)` | `economic/macro_china.py:1333` | DONE |  |
+| `macro_china_money_supply` | `economic/china.rs::macro_china_money_supply` | `economic/macro_china.py:2342` | DONE |  |
+| `macro_china_national_tax_receipts` | `economic/extra.rs::macro_china_national_tax_receipts` | `economic/macro_china.py:1206` | DONE |  |
+| `macro_china_nbs_nation` | — | | `economic/macro_china_nbs.py:517` | DEFERRED | needs NBS catalog resolution (dynamic cid/root_id/route from path) |
+| `macro_china_nbs_region` | — | | `economic/macro_china_nbs.py:566` | DEFERRED | needs NBS catalog resolution (dynamic cid/root_id/route from path) |
+| `macro_china_new_financial_credit` | `economic/macro_china2.rs::macro_china_new_financial_credit` | `economic/macro_china.py:2142` | DONE |  |
+| `macro_china_new_house_price` | `economic/extra.rs::macro_china_new_house_price` | `economic/macro_china.py:1059` | DONE |  |
+| `macro_china_non_man_pmi` | `src (present)` | `economic/macro_china.py:601` | DONE |  |
+| `macro_china_passenger_load_factor` | — | `economic/macro_china.py:3415` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_pmi` | `economic/macro2.rs::macro_china_pmi` | `economic/macro_china.py:2622` | DONE |  |
+| `macro_china_pmi_yearly` | `src (present)` | `economic/macro_china.py:544` | DONE |  |
+| `macro_china_postal_telecommunicational` | — | `economic/macro_china.py:3347` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_ppi` | `economic/china.rs::macro_china_ppi` | `economic/macro_china.py:2577` | DONE |  |
+| `macro_china_ppi_yearly` | `src (present)` | `economic/macro_china.py:440` | DONE |  |
+| `macro_china_qyspjg` | `economic/extra.rs::macro_china_qyspjg` | `economic/macro_china.py:108` | DONE |  |
+| `macro_china_real_estate` | `src (present)` | `economic/macro_china.py:3699` | DONE |  |
+| `macro_china_reserve_requirement_ratio` | `economic/macro_china2.rs::macro_china_reserve_requirement_ratio` | `economic/macro_china.py:3096` | DONE |  |
+| `macro_china_retail_price_index` | — | `economic/macro_china.py:3663` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_rmb` | `economic/macro_china_more.rs::macro_china_rmb` | `economic/macro_china.py:780` | DONE |  |
+| `macro_china_shibor_all` | `economic/macro_china_more.rs::macro_china_shibor_all` | `economic/macro_china.py:658` | DONE |  |
+| `macro_china_shrzgm` | `src/economic/macro_more3.rs::macro_china_shrzgm` | `economic/macro_china.py:258` | DONE |  |
+| `macro_china_society_electricity` | — | `economic/macro_china.py:3236` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_society_traffic_volume` | — | `economic/macro_china.py:3289` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_stock_market_cap` | `economic/macro_china2.rs::macro_china_stock_market_cap` | `economic/macro_china.py:2256` | DONE |  |
+| `macro_china_supply_of_money` | — | `economic/macro_china.py:3594` | DEFERRED | token/JS/HTML-gated |
+| `macro_china_trade_balance` | `src (present)` | `economic/macro_china.py:502` | DONE |  |
+| `macro_china_urban_unemployment` | `src/economic/macro_more3.rs::macro_china_urban_unemployment` | `economic/macro_china.py:318` | DONE |  |
+| `macro_china_vegetable_basket` | `src (present)` | `economic/macro_china.py:1380` | DONE |  |
+| `macro_china_wbck` | `economic/macro_china2.rs::macro_china_wbck` | `economic/macro_china.py:2917` | DONE |  |
+| `macro_china_whxd` | `economic/macro_china2.rs::macro_china_whxd` | `economic/macro_china.py:2867` | DONE |  |
+| `macro_china_xfzxx` | `economic/macro_china2.rs::macro_china_xfzxx` | `economic/macro_china.py:2966` | DONE |  |
+| `macro_china_yw_electronic_index` | `src (present)` | `economic/macro_china.py:1710` | DONE |  |
+| `macro_cnbs` | `src/economic/excel_gaps.rs::macro_cnbs` | `economic/marco_cnbs.py:12` | DONE |  |
+| `macro_cons_gold` | `src/economic/macro_more3.rs::macro_cons_gold` | `economic/macro_constitute.py:17` | DONE |  |
+| `macro_cons_opec_month` | `src/economic/macro_more3.rs::macro_cons_opec_month` | `economic/macro_constitute.py:147` | DONE |  |
+| `macro_cons_silver` | `src/economic/macro_more3.rs::macro_cons_silver` | `economic/macro_constitute.py:82` | DONE |  |
+| `macro_euro_cpi_mom` | `src (present)` | `economic/macro_euro.py:81` | DONE |  |
+| `macro_euro_cpi_yoy` | `src (present)` | `economic/macro_euro.py:137` | DONE |  |
+| `macro_euro_current_account_mom` | `src (present)` | `economic/macro_euro.py:487` | DONE |  |
+| `macro_euro_employment_change_qoq` | `src (present)` | `economic/macro_euro.py:313` | DONE |  |
+| `macro_euro_gdp_yoy` | `src (present)` | `economic/macro_euro.py:24` | DONE |  |
+| `macro_euro_industrial_production_mom` | `src (present)` | `economic/macro_euro.py:546` | DONE |  |
+| `macro_euro_lme_holding` | `src/economic/macro_gaps.rs::macro_euro_lme_holding` | `economic/macro_euro.py:839` | DONE |  |
+| `macro_euro_lme_stock` | `src/economic/macro_gaps.rs::macro_euro_lme_stock` | `economic/macro_euro.py:870` | DONE |  |
+| `macro_euro_manufacturing_pmi` | `src (present)` | `economic/macro_euro.py:605` | DONE |  |
+| `macro_euro_ppi_mom` | `src (present)` | `economic/macro_euro.py:196` | DONE |  |
+| `macro_euro_retail_sales_mom` | `src (present)` | `economic/macro_euro.py:254` | DONE |  |
+| `macro_euro_sentix_investor_confidence` | `src (present)` | `economic/macro_euro.py:781` | DONE |  |
+| `macro_euro_services_pmi` | `src (present)` | `economic/macro_euro.py:664` | DONE |  |
+| `macro_euro_trade_balance` | `src (present)` | `economic/macro_euro.py:428` | DONE |  |
+| `macro_euro_unemployment_rate_mom` | `src (present)` | `economic/macro_euro.py:369` | DONE |  |
+| `macro_euro_zew_economic_sentiment` | `src (present)` | `economic/macro_euro.py:723` | DONE |  |
+| `macro_fx_sentiment` | `economic/macro_misc.rs::macro_fx_sentiment` | `economic/macro_other.py:53` | DONE |  |
+| `macro_germany_core` | `economic/wv_macro_core.rs::macro_germany_core` | `economic/macro_germany.py:12` | DONE |  |
+| `macro_germany_cpi_monthly` | `economic/macro_intl.rs::macro_germany_cpi_monthly` | `economic/macro_germany.py:81` | DONE |  |
+| `macro_germany_cpi_yearly` | `economic/macro_intl.rs::macro_germany_cpi_yearly` | `economic/macro_germany.py:93` | DONE |  |
+| `macro_germany_gdp` | `economic/macro_intl.rs::macro_germany_gdp` | `economic/macro_germany.py:117` | DONE |  |
+| `macro_germany_ifo` | `economic/macro_intl.rs::macro_germany_ifo` | `economic/macro_germany.py:69` | DONE |  |
+| `macro_germany_retail_sale_monthly` | `economic/macro_intl.rs::macro_germany_retail_sale_monthly` | `economic/macro_germany.py:129` | DONE |  |
+| `macro_germany_retail_sale_yearly` | `economic/macro_intl.rs::macro_germany_retail_sale_yearly` | `economic/macro_germany.py:141` | DONE |  |
+| `macro_germany_trade_adjusted` | `economic/macro_intl.rs::macro_germany_trade_adjusted` | `economic/macro_germany.py:105` | DONE |  |
+| `macro_germany_zew` | `economic/macro_intl.rs::macro_germany_zew` | `economic/macro_germany.py:153` | DONE |  |
+| `macro_global_sox_index` | `src (present)` | `economic/macro_china.py:1655` | DONE |  |
+| `macro_info_ws` | `economic/macro_misc.rs::macro_info_ws` | `economic/macro_info_ws.py:38` | DONE |  |
+| `macro_japan_bank_rate` | `economic/macro_intl.rs::macro_japan_bank_rate` | `economic/macro_japan.py:70` | DONE |  |
+| `macro_japan_core` | `economic/wv_macro_core.rs::macro_japan_core` | `economic/macro_japan.py:13` | DONE |  |
+| `macro_japan_core_cpi_yearly` | `economic/macro_intl.rs::macro_japan_core_cpi_yearly` | `economic/macro_japan.py:94` | DONE |  |
+| `macro_japan_cpi_yearly` | `economic/macro_intl.rs::macro_japan_cpi_yearly` | `economic/macro_japan.py:82` | DONE |  |
+| `macro_japan_head_indicator` | `economic/macro_intl.rs::macro_japan_head_indicator` | `economic/macro_japan.py:118` | DONE |  |
+| `macro_japan_unemployment_rate` | `economic/macro_intl.rs::macro_japan_unemployment_rate` | `economic/macro_japan.py:106` | DONE |  |
+| `macro_rmb_deposit` | — | `economic/macro_finance_ths.py:82` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `macro_rmb_loan` | — | `economic/macro_finance_ths.py:50` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `macro_shipping_bci` | `economic/macro_econ.rs::macro_shipping_bci` | `economic/macro_china.py:2098` | DONE |  |
+| `macro_shipping_bcti` | `economic/macro_econ.rs::macro_shipping_bcti` | `economic/macro_china.py:2131` | DONE |  |
+| `macro_shipping_bdi` | `economic/macro_econ.rs::macro_shipping_bdi` | `economic/macro_china.py:2109` | DONE |  |
+| `macro_shipping_bpi` | `economic/macro_econ.rs::macro_shipping_bpi` | `economic/macro_china.py:2120` | DONE |  |
+| `macro_stock_finance` | — | `economic/macro_finance_ths.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `macro_swiss_core` | `economic/wv_macro_core.rs::macro_swiss_core` | `economic/macro_swiss.py:13` | DONE |  |
+| `macro_swiss_cpi_yearly` | `economic/macro_intl.rs::macro_swiss_cpi_yearly` | `economic/macro_swiss.py:94` | DONE |  |
+| `macro_swiss_gbd_bank_rate` | `economic/macro_intl.rs::macro_swiss_gbd_bank_rate` | `economic/macro_swiss.py:130` | DONE |  |
+| `macro_swiss_gbd_yearly` | `economic/macro_intl.rs::macro_swiss_gbd_yearly` | `economic/macro_swiss.py:118` | DONE |  |
+| `macro_swiss_gdp_quarterly` | `economic/macro_intl.rs::macro_swiss_gdp_quarterly` | `economic/macro_swiss.py:106` | DONE |  |
+| `macro_swiss_svme` | `economic/macro_intl.rs::macro_swiss_svme` | `economic/macro_swiss.py:70` | DONE |  |
+| `macro_swiss_trade` | `economic/macro_intl.rs::macro_swiss_trade` | `economic/macro_swiss.py:82` | DONE |  |
+| `macro_uk_bank_rate` | `economic/macro_intl.rs::macro_uk_bank_rate` | `economic/macro_uk.py:106` | DONE |  |
+| `macro_uk_core` | `economic/wv_macro_core.rs::macro_uk_core` | `economic/macro_uk.py:13` | DONE |  |
+| `macro_uk_core_cpi_monthly` | `economic/macro_intl.rs::macro_uk_core_cpi_monthly` | `economic/macro_uk.py:130` | DONE |  |
+| `macro_uk_core_cpi_yearly` | `economic/macro_intl.rs::macro_uk_core_cpi_yearly` | `economic/macro_uk.py:118` | DONE |  |
+| `macro_uk_cpi_monthly` | `economic/macro_intl.rs::macro_uk_cpi_monthly` | `economic/macro_uk.py:154` | DONE |  |
+| `macro_uk_cpi_yearly` | `economic/macro_intl.rs::macro_uk_cpi_yearly` | `economic/macro_uk.py:142` | DONE |  |
+| `macro_uk_gdp_quarterly` | `economic/macro_intl.rs::macro_uk_gdp_quarterly` | `economic/macro_uk.py:214` | DONE |  |
+| `macro_uk_gdp_yearly` | `economic/macro_intl.rs::macro_uk_gdp_yearly` | `economic/macro_uk.py:226` | DONE |  |
+| `macro_uk_halifax_monthly` | `economic/macro_intl.rs::macro_uk_halifax_monthly` | `economic/macro_uk.py:70` | DONE |  |
+| `macro_uk_halifax_yearly` | `economic/macro_intl.rs::macro_uk_halifax_yearly` | `economic/macro_uk.py:82` | DONE |  |
+| `macro_uk_retail_monthly` | `economic/macro_intl.rs::macro_uk_retail_monthly` | `economic/macro_uk.py:166` | DONE |  |
+| `macro_uk_retail_yearly` | `economic/macro_intl.rs::macro_uk_retail_yearly` | `economic/macro_uk.py:178` | DONE |  |
+| `macro_uk_rightmove_monthly` | `economic/macro_intl.rs::macro_uk_rightmove_monthly` | `economic/macro_uk.py:202` | DONE |  |
+| `macro_uk_rightmove_yearly` | `economic/macro_intl.rs::macro_uk_rightmove_yearly` | `economic/macro_uk.py:190` | DONE |  |
+| `macro_uk_trade` | `economic/macro_intl.rs::macro_uk_trade` | `economic/macro_uk.py:94` | DONE |  |
+| `macro_uk_unemployment_rate` | `economic/macro_intl.rs::macro_uk_unemployment_rate` | `economic/macro_uk.py:238` | DONE |  |
+| `macro_usa_adp_employment` | `economic/macro_usa.rs::macro_usa_adp_employment` | | `economic/macro_usa.py:374` | DONE | |
+| `macro_usa_api_crude_stock` | `economic/macro_usa.rs::macro_usa_api_crude_stock` | | `economic/macro_usa.py:534` | DONE | |
+| `macro_usa_building_permits` | `economic/macro_usa.rs::macro_usa_building_permits` | | `economic/macro_usa.py:763` | DONE | |
+| `macro_usa_business_inventories` | `economic/macro_usa.rs::macro_usa_business_inventories` | | `economic/macro_usa.py:668` | DONE | |
+| `macro_usa_cb_consumer_confidence` | `economic/macro_usa.rs::macro_usa_cb_consumer_confidence` | | `economic/macro_usa.py:862` | DONE | |
+| `macro_usa_cftc_c_holding` | `economic/macro_usa.rs::macro_usa_cftc_c_holding` | `economic/macro_usa.py:1026` | DONE |  |
+| `macro_usa_cftc_merchant_currency_holding` | `economic/macro_usa.rs::macro_usa_cftc_merchant_currency_holding` | `economic/macro_usa.py:1055` | DONE |  |
+| `macro_usa_cftc_merchant_goods_holding` | `economic/macro_usa.rs::macro_usa_cftc_merchant_goods_holding` | `economic/macro_usa.py:1084` | DONE |  |
+| `macro_usa_cftc_nc_holding` | `economic/macro_usa.rs::macro_usa_cftc_nc_holding` | `economic/macro_usa.py:997` | DONE |  |
+| `macro_usa_cme_merchant_goods_holding` | `economic/macro_usa.rs::macro_usa_cme_merchant_goods_holding` | `economic/macro_usa.py:1113` | DONE |  |
+| `macro_usa_core_cpi_monthly` | `economic/macro_usa.rs::macro_usa_core_cpi_monthly` | | `economic/macro_usa.py:205` | DONE | |
+| `macro_usa_core_pce_price` | `economic/macro_usa.rs::macro_usa_core_pce_price` | | `economic/macro_usa.py:392` | DONE | |
+| `macro_usa_core_ppi` | `economic/macro_usa.rs::macro_usa_core_ppi` | | `economic/macro_usa.py:515` | DONE | |
+| `macro_usa_cpi_monthly` | `economic/macro_usa.rs::macro_usa_cpi_monthly` | | `economic/macro_usa.py:186` | DONE | |
+| `macro_usa_cpi_yoy` | `economic/macro2.rs::macro_usa_cpi_yoy` | `economic/macro_usa.py:129` | DONE |  |
+| `macro_usa_crude_inner` | `economic/macro_usa.rs::macro_usa_crude_inner` | `economic/macro_usa.py:961` | DONE |  |
+| `macro_usa_current_account` | `economic/macro_usa.rs::macro_usa_current_account` | | `economic/macro_usa.py:448` | DONE | |
+| `macro_usa_durable_goods_orders` | `economic/macro_usa.rs::macro_usa_durable_goods_orders` | | `economic/macro_usa.py:611` | DONE | |
+| `macro_usa_eia_crude_rate` | `economic/macro_usa.rs::macro_usa_eia_crude_rate` | | `economic/macro_usa.py:923` | DONE | |
+| `macro_usa_exist_home_sales` | `economic/macro_usa.rs::macro_usa_exist_home_sales` | | `economic/macro_usa.py:782` | DONE | |
+| `macro_usa_export_price` | `economic/macro_usa.rs::macro_usa_export_price` | | `economic/macro_usa.py:281` | DONE | |
+| `macro_usa_factory_orders` | `economic/macro_usa.rs::macro_usa_factory_orders` | | `economic/macro_usa.py:630` | DONE | |
+| `macro_usa_gdp_monthly` | `economic/macro_usa.rs::macro_usa_gdp_monthly` | | `economic/macro_usa.py:167` | DONE | |
+| `macro_usa_house_price_index` | `economic/macro_usa.rs::macro_usa_house_price_index` | | `economic/macro_usa.py:801` | DONE | |
+| `macro_usa_house_starts` | `economic/macro_usa.rs::macro_usa_house_starts` | | `economic/macro_usa.py:725` | DONE | |
+| `macro_usa_import_price` | `economic/macro_usa.rs::macro_usa_import_price` | | `economic/macro_usa.py:262` | DONE | |
+| `macro_usa_industrial_production` | `economic/macro_usa.rs::macro_usa_industrial_production` | | `economic/macro_usa.py:592` | DONE | |
+| `macro_usa_initial_jobless` | `economic/macro_usa.rs::macro_usa_initial_jobless` | | `economic/macro_usa.py:942` | DONE | |
+| `macro_usa_ism_non_pmi` | `economic/macro_usa.rs::macro_usa_ism_non_pmi` | | `economic/macro_usa.py:687` | DONE | |
+| `macro_usa_ism_pmi` | `economic/macro_usa.rs::macro_usa_ism_pmi` | | `economic/macro_usa.py:573` | DONE | |
+| `macro_usa_job_cuts` | `economic/macro_usa.rs::macro_usa_job_cuts` | | `economic/macro_usa.py:338` | DONE | |
+| `macro_usa_lmci` | `economic/macro_usa.rs::macro_usa_lmci` | | `economic/macro_usa.py:301` | DONE | |
+| `macro_usa_michigan_consumer_sentiment` | `economic/macro_usa.rs::macro_usa_michigan_consumer_sentiment` | | `economic/macro_usa.py:902` | DONE | |
+| `macro_usa_nahb_house_market_index` | `economic/macro_usa.rs::macro_usa_nahb_house_market_index` | | `economic/macro_usa.py:706` | DONE | |
+| `macro_usa_new_home_sales` | `economic/macro_usa.rs::macro_usa_new_home_sales` | | `economic/macro_usa.py:744` | DONE | |
+| `macro_usa_nfib_small_business` | `economic/macro_usa.rs::macro_usa_nfib_small_business` | | `economic/macro_usa.py:881` | DONE | |
+| `macro_usa_non_farm` | `economic/macro_usa.rs::macro_usa_non_farm` | | `economic/macro_usa.py:356` | DONE | |
+| `macro_usa_pending_home_sales` | `economic/macro_usa.rs::macro_usa_pending_home_sales` | | `economic/macro_usa.py:841` | DONE | |
+| `macro_usa_personal_spending` | `economic/macro_usa.rs::macro_usa_personal_spending` | | `economic/macro_usa.py:224` | DONE | |
+| `macro_usa_phs` | `economic/macro2.rs::macro_usa_phs` | `economic/macro_usa.py:79` | DONE |  |
+| `macro_usa_pmi` | `economic/macro_usa.rs::macro_usa_pmi` | | `economic/macro_usa.py:554` | DONE | |
+| `macro_usa_ppi` | `economic/macro_usa.rs::macro_usa_ppi` | | `economic/macro_usa.py:496` | DONE | |
+| `macro_usa_real_consumer_spending` | `economic/macro_usa.rs::macro_usa_real_consumer_spending` | | `economic/macro_usa.py:410` | DONE | |
+| `macro_usa_retail_sales` | `economic/macro_usa.rs::macro_usa_retail_sales` | | `economic/macro_usa.py:243` | DONE | |
+| `macro_usa_rig_count` | `economic/macro_usa.rs::macro_usa_rig_count` | `economic/macro_usa.py:466` | DONE |  |
+| `macro_usa_services_pmi` | `economic/macro_usa.rs::macro_usa_services_pmi` | | `economic/macro_usa.py:649` | DONE | |
+| `macro_usa_spcs20` | `economic/macro_usa.rs::macro_usa_spcs20` | | `economic/macro_usa.py:820` | DONE | |
+| `macro_usa_trade_balance` | `economic/macro_usa.rs::macro_usa_trade_balance` | | `economic/macro_usa.py:430` | DONE | |
+| `macro_usa_unemployment_rate` | `economic/macro_usa.rs::macro_usa_unemployment_rate` | | `economic/macro_usa.py:320` | DONE | |
+
+## energy
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `energy_carbon_bj` | — | `energy/energy_carbon.py:76` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `energy_carbon_domestic` | — | `energy/energy_carbon.py:33` | DEFERRED | token/JS/HTML-gated |
+| `energy_carbon_eu` | — | `energy/energy_carbon.py:166` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `energy_carbon_gz` | — | `energy/energy_carbon.py:242` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `energy_carbon_hb` | — | `energy/energy_carbon.py:198` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `energy_carbon_sz` | — | `energy/energy_carbon.py:134` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `energy_oil_detail` | `alt/energy.rs::energy_oil_detail` | `energy/energy_oil_em.py:48` | DONE |  |
+| `energy_oil_hist` | `alt/energy.rs::energy_oil_hist` | `energy/energy_oil_em.py:13` | DONE |  |
+
+## event
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `migration_area_baidu` | — | | `event/migration.py:16` | DEFERRED | token/JS/HTML-gated (baidu migration) |
+| `migration_scale_baidu` | — | | `event/migration.py:56` | DEFERRED | token/JS/HTML-gated (baidu migration) |
+
+## forex
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `forex_hist_em` | `src (present)` | `forex/forex_em.py:77` | DONE |  |
+| `forex_spot_em` | `src (present)` | `forex/forex_em.py:16` | DONE |  |
+
+## fortune
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `forbes_rank` | — | `fortune/fortune_forbes_500.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fortune_rank` | — | `fortune/fortune_500.py:40` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `hurun_rank` | — | `fortune/fortune_hurun.py:16` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `index_bloomberg_billionaires` | — | `fortune/fortune_bloomberg.py:65` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `index_bloomberg_billionaires_hist` | — | `fortune/fortune_bloomberg.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `xincaifu_rank` | `fortune/xincaifu.rs::xincaifu_rank` | `fortune/fortune_xincaifu_500.py:15` | DONE |  |
+
+## fund
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `amac_aoin_info` | `fund/amac.rs::amac_aoin_info` | `fund/fund_amac.py:530` | DONE |  |
+| `amac_fund_abs` | `fund/wv_fund_misc.rs::amac_fund_abs` | `fund/fund_amac.py:678` | DONE |  |
+| `amac_fund_account_info` | `fund/amac.rs::amac_fund_account_info` | `fund/fund_amac.py:629` | DONE |  |
+| `amac_fund_info` | `fund/amac.rs::amac_fund_info` | `fund/fund_amac.py:415` | DONE |  |
+| `amac_fund_sub_info` | `fund/amac.rs::amac_fund_sub_info` | `fund/fund_amac.py:577` | DONE |  |
+| `amac_futures_info` | `fund/amac.rs::amac_futures_info` | `fund/fund_amac.py:737` | DONE |  |
+| `amac_manager_cancelled_info` | `fund/amac.rs::amac_manager_cancelled_info` | `fund/fund_amac.py:792` | DONE |  |
+| `amac_manager_classify_info` | `fund/amac.rs::amac_manager_classify_info` | `fund/fund_amac.py:294` | DONE |  |
+| `amac_manager_info` | `fund/amac.rs::amac_manager_info` | `fund/fund_amac.py:240` | DONE |  |
+| `amac_member_info` | `fund/amac.rs::amac_member_info` | `fund/fund_amac.py:44` | DONE |  |
+| `amac_member_sub_info` | `fund/amac.rs::amac_member_sub_info` | `fund/fund_amac.py:365` | DONE |  |
+| `amac_person_bond_org_list` | `fund/wv_fund_misc.rs::amac_person_bond_org_list` | `fund/fund_amac.py:198` | DONE |  |
+| `amac_person_fund_org_list` | `fund/amac.rs::amac_person_fund_org_list` | `fund/fund_amac.py:96` | DONE |  |
+| `amac_securities_info` | `fund/amac.rs::amac_securities_info` | `fund/fund_amac.py:476` | DONE |  |
+| `fund_announcement_dividend_em` | `fund/more2.rs::fund_announcement_dividend_em` | `fund/fund_announcement_em.py:15` | DONE |  |
+| `fund_announcement_personnel_em` | `fund/more2.rs::fund_announcement_personnel_em` | `fund/fund_announcement_em.py:97` | DONE |  |
+| `fund_announcement_report_em` | `fund/more2.rs::fund_announcement_report_em` | `fund/fund_announcement_em.py:56` | DONE |  |
+| `fund_aum_em` | — | `fund/fund_aum_em.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_aum_hist_em` | — | `fund/fund_aum_em.py:64` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_aum_trend_em` | `fund/more.rs::fund_aum_trend_em` | `fund/fund_aum_em.py:45` | DONE |  |
+| `fund_balance_position_lg` | — | `fund/fund_position_lg.py:51` | DEFERRED | token/JS/HTML-gated |
+| `fund_cf_em` | `fund/more2.rs::fund_cf_em` | `fund/fund_fhsp_em.py:104` | DONE |  |
+| `fund_etf_category_sina` | `fund/extra.rs::fund_etf_category_sina` | `fund/fund_etf_sina.py:17` | DONE |  |
+| `fund_etf_category_ths` | `fund/more2.rs::fund_etf_category_ths` | `fund/fund_etf_ths.py:15` | DONE |  |
+| `fund_etf_dividend_sina` | — | | `fund/fund_etf_sina.py:152` | DEFERRED | sina dividend calendar (leave for follow-up wave) |
+| `fund_etf_fund_daily_em` | — | `fund/fund_em.py:1064` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_etf_fund_info_em` | `fund/em.rs::fund_etf_fund_info_em` | `fund/fund_em.py:1097` | DONE |  |
+| `fund_etf_hist_em` | `fund/etf.rs::fund_etf_hist_em` | `fund/fund_etf_em.py:237` | DONE |  |
+| `fund_etf_hist_min_em` | `fund/more2.rs::fund_etf_hist_min_em` | `fund/fund_etf_em.py:320` | DONE |  |
+| `fund_etf_hist_sina` | — | `fund/fund_etf_sina.py:116` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `fund_etf_scale_sse` | `fund/more2.rs::fund_etf_scale_sse` | `fund/fund_etf_sse.py:13` | DONE |  |
+| `fund_etf_scale_szse` | `src/fund/excel_gaps.rs::fund_etf_scale_szse` | `fund/fund_etf_szse.py:15` | DONE |  |
+| `fund_etf_spot_em` | `fund/etf.rs::fund_etf_spot_em` | `fund/fund_etf_em.py:44` | DONE |  |
+| `fund_etf_spot_ths` | `fund/more2.rs::fund_etf_spot_ths` | `fund/fund_etf_ths.py:110` | DONE |  |
+| `fund_exchange_rank_em` | `fund/wv_fund_misc.rs::fund_exchange_rank_em` | `fund/fund_rank_em.py:151` | DONE |  |
+| `fund_fee_em` | — | `fund/fund_fee_em.py:17` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_fh_em` | `fund/more.rs::fund_fh_em` | `fund/fund_fhsp_em.py:15` | DONE |  |
+| `fund_fh_rank_em` | `fund/more2.rs::fund_fh_rank_em` | `fund/fund_fhsp_em.py:191` | DONE |  |
+| `fund_financial_fund_daily_em` | `fund/em.rs::fund_financial_fund_daily_em` | `fund/fund_em.py:800` | DONE |  |
+| `fund_financial_fund_info_em` | `fund/em.rs::fund_financial_fund_info_em` | `fund/fund_em.py:873` | DONE |  |
+| `fund_graded_fund_daily_em` | `fund/em.rs::fund_graded_fund_daily_em` | `fund/fund_em.py:938` | DONE |  |
+| `fund_graded_fund_info_em` | `fund/em.rs::fund_graded_fund_info_em` | `fund/fund_em.py:1008` | DONE |  |
+| `fund_hk_fund_hist_em` | `fund/em.rs::fund_hk_fund_hist_em` | `fund/fund_em.py:1260` | DONE |  |
+| `fund_hk_rank_em` | `fund/wv_fund_misc.rs::fund_hk_rank_em` | `fund/fund_rank_em.py:427` | DONE |  |
+| `fund_hold_structure_em` | `fund/more.rs::fund_hold_structure_em` | `fund/fund_scale_em.py:71` | DONE |  |
+| `fund_individual_achievement_xq` | — | | `fund/fund_xq.py:78` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_analysis_xq` | — | | `fund/fund_xq.py:132` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_basic_info_xq` | — | | `fund/fund_xq.py:13` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_detail_hold_xq` | — | | `fund/fund_xq.py:270` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_detail_info_xq` | — | | `fund/fund_xq.py:224` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_profit_probability_xq` | — | | `fund/fund_xq.py:185` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_info_index_em` | `fund/em.rs::fund_info_index_em` | `fund/fund_em.py:234` | DONE |  |
+| `fund_info_ths` | — | `fund/fund_info_ths.py:16` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_lcx_rank_em` | `fund/more2.rs::fund_lcx_rank_em` | `fund/fund_rank_em.py:346` | DONE |  |
+| `fund_linghuo_position_lg` | — | `fund/fund_position_lg.py:89` | DEFERRED | token/JS/HTML-gated |
+| `fund_lof_hist_em` | `fund/wv_fund_misc.rs::fund_lof_hist_em` | `fund/fund_lof_em.py:120` | DONE |  |
+| `fund_lof_hist_min_em` | `fund/more2.rs::fund_lof_hist_min_em` | `fund/fund_lof_em.py:190` | DONE |  |
+| `fund_lof_spot_em` | `fund/lof.rs::fund_lof_spot_em` | `fund/fund_lof_em.py:45` | DONE |  |
+| `fund_manager_em` | `fund/more.rs::fund_manager_em` | `fund/fund_manager.py:16` | DONE |  |
+| `fund_money_fund_daily_em` | — | `fund/fund_em.py:707` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_money_fund_info_em` | `fund/em.rs::fund_money_fund_info_em` | `fund/fund_em.py:741` | DONE |  |
+| `fund_money_rank_em` | `fund/more2.rs::fund_money_rank_em` | `fund/fund_rank_em.py:246` | DONE |  |
+| `fund_name_em` | `fund/more.rs::fund_name_em` | `fund/fund_em.py:218` | DONE |  |
+| `fund_new_found_em` | `fund/more2.rs::fund_new_found_em` | `fund/fund_init_em.py:15` | DONE |  |
+| `fund_new_found_ths` | `fund/wv_fund_misc.rs::fund_new_found_ths` | `fund/fund_init_ths.py:15` | DONE |  |
+| `fund_open_fund_daily_em` | `fund/em.rs::fund_open_fund_daily_em` | `fund/fund_em.py:386` | DONE |  |
+| `fund_open_fund_info_em` | — | `fund/fund_em.py:452` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `fund_open_fund_rank_em` | `fund/wv_fund_misc.rs::fund_open_fund_rank_em` | `fund/fund_rank_em.py:33` | DONE |  |
+| `fund_overview_em` | — | `fund/fund_overview_em.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_portfolio_bond_hold_em` | — | `fund/fund_portfolio_em.py:166` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_portfolio_change_em` | — | `fund/fund_portfolio_em.py:290` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_portfolio_hold_em` | — | `fund/fund_portfolio_em.py:84` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_portfolio_industry_allocation_em` | — | `fund/fund_portfolio_em.py:217` | DEFERRED | token/JS/HTML-gated |
+| `fund_purchase_em` | `fund/em.rs::fund_purchase_em` | `fund/fund_em.py:151` | DONE |  |
+| `fund_rating_all` | — | `fund/fund_rating.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_rating_ja` | — | `fund/fund_rating.py:276` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_rating_sh` | — | `fund/fund_rating.py:91` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_rating_zs` | — | `fund/fund_rating.py:189` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fund_report_asset_allocation_cninfo` | — | `fund/fund_report_cninfo.py:161` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `fund_report_industry_allocation_cninfo` | — | `fund/fund_report_cninfo.py:97` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `fund_report_stock_cninfo` | — | `fund/fund_report_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `fund_scale_change_em` | `fund/more.rs::fund_scale_change_em` | `fund/fund_scale_em.py:15` | DONE |  |
+| `fund_scale_close_sina` | `fund/more2.rs::fund_scale_close_sina` | `fund/fund_scale_sina.py:95` | DONE |  |
+| `fund_scale_daily_szse` | `src/fund/excel_gaps.rs::fund_scale_daily_szse` | `fund/fund_scale_szse.py:27` | DONE |  |
+| `fund_scale_open_sina` | `fund/more2.rs::fund_scale_open_sina` | `fund/fund_scale_sina.py:15` | DONE |  |
+| `fund_scale_structured_sina` | `fund/more2.rs::fund_scale_structured_sina` | `fund/fund_scale_sina.py:166` | DONE |  |
+| `fund_stock_position_lg` | — | `fund/fund_position_lg.py:15` | DEFERRED | token/JS/HTML-gated |
+| `fund_value_estimation_em` | `fund/em.rs::fund_value_estimation_em` | `fund/fund_em.py:1161` | DONE |  |
+| `get_data` | — | `fund/fund_amac.py:32` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_market_id` | — | `fund/fund_etf_em.py:220` | INTERNAL | akshare internal helper, not a data endpoint |
+
+## futures
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `chinese_to_english` | — | `futures/symbol_var.py:48` | INTERNAL | akshare internal helper, not a data endpoint |
+| `convert_date` | — | | `futures/cons.py:522` | INTERNAL | akshare internal helper (utils/func.py), not a data endpoint |
+| `find_chinese` | — | `futures/symbol_var.py:37` | INTERNAL | akshare internal helper, not a data endpoint |
+| `futures_comex_inventory` | `futures/extra.rs::futures_comex_inventory` | `futures/futures_comex_em.py:15` | DONE |  |
+| `futures_comm_info` | `src (present)` | `futures/futures_comm_qihuo.py:172` | DONE |  |
+| `futures_comm_js` | `src (present)` | `futures/futures_comm_js.py:15` | DONE |  |
+| `futures_contract_detail` | `src (present)` | `futures/futures_contract_detail.py:16` | DONE |  |
+| `futures_contract_detail_em` | `src (present)` | `futures/futures_contract_detail.py:41` | DONE |  |
+| `futures_dce_position_rank` | — | `futures/cot.py:818` | DEFERRED | endpoint returns a zip of TSV files; parsing needs a zip/deflate crate absent from Cargo.toml |
+| `futures_dce_position_rank_other` | — | `futures/cot.py:1052` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `futures_delivery_czce` | `src (present)` | `futures/futures_to_spot.py:244` | DONE |  |
+| `futures_delivery_dce` | `src (present)` | `futures/futures_to_spot.py:57` | DONE |  |
+| `futures_delivery_match_czce` | `src (present)` | `futures/futures_to_spot.py:198` | DONE |  |
+| `futures_delivery_match_dce` | `src (present)` | `futures/futures_to_spot.py:128` | DONE |  |
+| `futures_delivery_shfe` | `futures/exchange_shfe.rs::futures_delivery_shfe` | `futures/futures_to_spot.py:269` | DONE |  |
+| `futures_fees_info` | `src (present)` | `futures/futures_comm_ctp.py:17` | DONE |  |
+| `futures_foreign_commodity_realtime` | `futures/sina_hq.rs::futures_foreign_commodity_realtime` | `futures/futures_hq_sina.py:103` | DONE |  |
+| `futures_foreign_commodity_subscribe_exchange_symbol` | `src (present)` | `futures/futures_hq_sina.py:38` | DONE |  |
+| `futures_foreign_detail` | `src (present)` | `futures/futures_foreign.py:45` | DONE |  |
+| `futures_foreign_hist` | `src/futures/wv_futures_more.rs::futures_foreign_hist` | `futures/futures_foreign.py:20` | DONE |  |
+| `futures_gfex_position_rank` | `futures/cot.rs::futures_gfex_position_rank` | `futures/cot.py:1292` | DONE |  |
+| `futures_gfex_warehouse_receipt` | `futures/exchange_gfex.rs::futures_gfex_warehouse_receipt` | `futures/futures_warehouse_receipt.py:159` | DONE |  |
+| `futures_global_hist_em` | `futures/global_em_hist.rs::futures_global_hist_em` | `futures/futures_hf_em.py:171` | DONE |  |
+| `futures_global_spot_em` | `futures/global_spot_em.rs::futures_global_spot_em` | `futures/futures_hf_em.py:87` | DONE |  |
+| `futures_hist_daily_cffex` | `futures/wv_futures_cffex.rs::futures_hist_daily_cffex` | `futures/futures_daily_bar.py:697` | DONE |  |
+| `futures_hist_em` | `src/futures/wv_futures_more.rs::futures_hist_em` | `futures/futures_hist_em.py:91` | DONE |  |
+| `futures_hist_table_em` | `futures/global_em_hist.rs::futures_hist_table_em` | `futures/futures_hist_em.py:77` | DONE |  |
+| `futures_hq_subscribe_exchange_symbol` | `futures/sina_hq.rs::futures_hq_subscribe_exchange_symbol` | `futures/futures_hq_sina.py:58` | DONE |  |
+| `futures_index_ccidx` | `futures/wv_futures_index.rs::futures_index_ccidx` | `futures/futures_index_ccidx.py:13` | DONE |  |
+| `futures_inventory_99` | `src/futures/fut_gaps.rs::futures_inventory_99` | `futures/futures_inventory_99.py:47` | DONE |  |
+| `futures_inventory_em` | `futures/extra.rs::futures_inventory_em` | `futures/futures_inventory_em.py:14` | DONE |  |
+| `futures_news_shmet` | `futures/wv_futures_news.rs::futures_news_shmet` | `futures/futures_news_shmet.py:13` | DONE |  |
+| `futures_rule` | `src (present)` | `futures/futures_rule.py:15` | DONE |  |
+| `futures_rule_em` | `src/futures/wv_futures_more.rs::futures_rule_em` | `futures/futures_rule_em.py:14` | DONE |  |
+| `futures_settle` | `futures/wv_futures_settle.rs::futures_settle` | `futures/futures_settle.py:481` | DONE |  |
+| `futures_settle_cffex` | `futures/wv_futures_settle.rs::futures_settle_cffex` | `futures/futures_settle.py:175` | DONE |  |
+| `futures_settle_czce` | `futures/wv_futures_settle.rs::futures_settle_czce` | `futures/futures_settle.py:227` | DONE |  |
+| `futures_settle_gfex` | `futures/wv_futures_settle.rs::futures_settle_gfex` | `futures/futures_settle.py:288` | DONE |  |
+| `futures_settle_ine` | `futures/wv_futures_settle.rs::futures_settle_ine` | `futures/futures_settle.py:420` | DONE |  |
+| `futures_settle_shfe` | `futures/wv_futures_settle.rs::futures_settle_shfe` | `futures/futures_settle.py:359` | DONE |  |
+| `futures_settlement_price_sgx` | `src (present)` | `futures/futures_settlement_price_sgx.py:63` | DONE |  |
+| `futures_shfe_warehouse_receipt` | `futures/warehouse_receipt_shfe.rs::futures_shfe_warehouse_receipt` | `futures/futures_warehouse_receipt.py:104` | DONE |  |
+| `futures_spot_price` | `src (present)` | `futures/futures_basis.py:79` | DONE |  |
+| `futures_spot_price_daily` | `src (present)` | `futures/futures_basis.py:31` | DONE |  |
+| `futures_spot_price_previous` | `src (present)` | `futures/futures_basis.py:300` | DONE |  |
+| `futures_spot_stock` | `src (present)` | `futures/futures_spot_stock_em.py:15` | DONE |  |
+| `futures_stock_shfe_js` | `src (present)` | `futures/futures_stock_js.py:14` | DONE |  |
+| `futures_symbol_mark` | `src (present)` | `futures/futures_zh_sina.py:28` | DONE |  |
+| `futures_to_spot_czce` | `src (present)` | `futures/futures_to_spot.py:155` | DONE |  |
+| `futures_to_spot_dce` | `src (present)` | `futures/futures_to_spot.py:97` | DONE |  |
+| `futures_to_spot_shfe` | `futures/exchange_shfe.rs::futures_to_spot_shfe` | `futures/futures_to_spot.py:14` | DONE |  |
+| `futures_trading_hours_em` | `futures/wv_futures_rule.rs::futures_trading_hours_em` | `futures/futures_rule_em.py:28` | DONE |  |
+| `futures_warehouse_receipt_czce` | `src (present)` | `futures/futures_warehouse_receipt.py:23` | DONE |  |
+| `futures_warehouse_receipt_dce` | `futures/exchange_dce.rs::futures_warehouse_receipt_dce` | `futures/futures_warehouse_receipt.py:61` | DONE |  |
+| `futures_zh_daily_sina` | `futures/extra.rs::futures_zh_daily_sina` | `futures/futures_zh_sina.py:651` | DONE |  |
+| `futures_zh_minute_sina` | `futures/sina.rs::futures_zh_minute_sina` | `futures/futures_zh_sina.py:615` | DONE |  |
+| `futures_zh_realtime` | `src (present)` | `futures/futures_zh_sina.py:91` | DONE |  |
+| `futures_zh_spot` | `futures/spot.rs::futures_zh_spot` | `futures/futures_zh_sina.py:205` | DONE |  |
+| `get_calendar` | — | `futures/cons.py:577` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_cffex_daily` | `src (present)` | `futures/futures_daily_bar.py:108` | DONE |  |
+| `get_cffex_rank_table` | — | `futures/cot.py:716` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_czce_daily` | `futures/exchange_czce.rs::get_czce_daily` | `futures/futures_daily_bar.py:341` | DONE |  |
+| `get_czce_receipt_1` | — | `futures/receipt.py:269` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_czce_receipt_2` | — | `futures/receipt.py:328` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_czce_receipt_3` | — | `futures/receipt.py:386` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_dce_daily` | `futures/exchange_dce.rs::get_dce_daily` | `futures/futures_daily_bar.py:527` | DONE |  |
+| `get_dce_rank_table` | — | `futures/cot.py:566` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_dce_receipt` | — | `futures/receipt.py:37` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_futures_daily` | `src (present)` | `futures/futures_daily_bar.py:637` | DONE |  |
+| `get_gfex_daily` | `futures/exchange_gfex.rs::get_gfex_daily` | `futures/futures_daily_bar.py:199` | DONE |  |
+| `get_gfex_receipt` | — | `futures/receipt.py:502` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_ine_daily` | `futures/exchange_ine.rs::get_ine_daily` | `futures/futures_daily_bar.py:275` | DONE |  |
+| `get_json_path` | — | `futures/cons.py:543` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_latest_data_date` | — | `futures/cons.py:617` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_pk_data` | — | `futures/cons.py:567` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_pk_path` | — | `futures/cons.py:555` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_rank_sum` | — | `futures/cot.py:110` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_rank_sum_daily` | — | `futures/cot.py:56` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_rank_table_czce` | — | `futures/cot.py:408` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_receipt` | `src (present)` | `futures/receipt.py:571` | DONE |  |
+| `get_roll_yield` | `src (present)` | `futures/futures_roll_yield.py:23` | DONE |  |
+| `get_roll_yield_bar` | `src (present)` | `futures/futures_roll_yield.py:74` | DONE |  |
+| `get_shfe_daily` | `futures/exchange_shfe.rs::get_shfe_daily` | `futures/futures_daily_bar.py:453` | DONE |  |
+| `get_shfe_rank_table` | `futures/cot.rs::get_shfe_rank_table` | `futures/cot.py:275` | DONE |  |
+| `get_shfe_receipt_1` | — | `futures/receipt.py:82` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_shfe_receipt_2` | — | `futures/receipt.py:156` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_shfe_receipt_3` | — | `futures/receipt.py:218` | INTERNAL | akshare internal helper, not a data endpoint |
+| `last_trading_day` | — | `futures/cons.py:590` | INTERNAL | akshare internal helper, not a data endpoint |
+| `match_main_contract` | `src (present)` | `futures/futures_zh_sina.py:171` | DONE |  |
+| `pandas_read_html_link` | — | `futures/requests_fun.py:53` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `requests_link` | — | `futures/requests_fun.py:16` | INTERNAL | akshare internal helper, not a data endpoint |
+| `symbol_market` | `src (present)` | `futures/symbol_var.py:25` | DONE |  |
+| `symbol_varieties` | — | `futures/symbol_var.py:13` | INTERNAL | akshare internal helper, not a data endpoint |
+| `zh_subscribe_exchange_symbol` | — | `futures/futures_zh_sina.py:139` | DEFERRED | token/JS/HTML-gated |
+
+## futures_derivative
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `futures_contract_info_cffex` | — | `futures_derivative/futures_contract_info_cffex.py:15` | DEFERRED | token/JS/HTML-gated |
+| `futures_contract_info_czce` | — | `futures_derivative/futures_contract_info_czce.py:15` | DEFERRED | token/JS/HTML-gated |
+| `futures_contract_info_dce` | `futures_derivative/contract_info.rs::futures_contract_info_dce` | `futures_derivative/futures_contract_info_dce.py:13` | DONE |  |
+| `futures_contract_info_gfex` | `futures_derivative/contract_info.rs::futures_contract_info_gfex` | `futures_derivative/futures_contract_info_gfex.py:13` | DONE |  |
+| `futures_contract_info_ine` | `futures_derivative/contract_info.rs::futures_contract_info_ine` | `futures_derivative/futures_contract_info_ine.py:13` | DONE |  |
+| `futures_contract_info_shfe` | `futures_derivative/contract_info.rs::futures_contract_info_shfe` | `futures_derivative/futures_contract_info_shfe.py:13` | DONE |  |
+| `futures_display_main_sina` | `src/futures/fut_gaps.rs::futures_display_main_sina` | `futures_derivative/futures_index_sina.py:89` | DONE |  |
+| `futures_hog_core` | `futures_derivative/hog.rs::futures_hog_core` | `futures_derivative/futures_hog.py:13` | DONE |  |
+| `futures_hog_cost` | `futures_derivative/hog.rs::futures_hog_cost` | `futures_derivative/futures_hog.py:57` | DONE |  |
+| `futures_hog_supply` | `futures_derivative/hog.rs::futures_hog_supply` | `futures_derivative/futures_hog.py:116` | DONE |  |
+| `futures_hold_pos_sina` | — | `futures_derivative/futures_cot_sina.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `futures_main_sina` | `futures_derivative/sina.rs::futures_main_sina` | `futures_derivative/futures_index_sina.py:103` | DONE |  |
+| `futures_spot_sys` | — | `futures_derivative/futures_spot_sys.py:36` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+
+## fx
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `currency_pair_map` | — | `fx/currency_investing.py:16` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `fx_c_swap_cm` | `currency/api.rs::fx_c_swap_cm` | `fx/fx_c_swap_cm.py:25` | DONE |  |
+| `fx_pair_quote` | `alt/fx.rs::fx_pair_quote` | `fx/fx_quote.py:81` | DONE |  |
+| `fx_quote_baidu` | `src/alt/wv_fx_more.rs::fx_quote_baidu` | `fx/fx_quote_baidu.py:13` | DONE |  |
+| `fx_spot_quote` | `alt/fx.rs::fx_spot_quote` | `fx/fx_quote.py:24` | DONE |  |
+| `fx_swap_quote` | `forex/extra.rs::fx_swap_quote` | `fx/fx_quote.py:48` | DONE |  |
+
+## hf
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `hf_sp_500` | `hf/sp500.rs::hf_sp_500` | `hf/hf_sp500.py:14` | DONE |  |
+
+## index
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `drewry_wci_index` | — | `index/index_drewry.py:17` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `get_hk_index_page_count` | — | `index/index_stock_hk.py:37` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_tx_start_year` | — | `index/index_stock_zh.py:319` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_zh_index_page_count` | — | `index/index_stock_zh.py:43` | INTERNAL | akshare internal helper, not a data endpoint |
+| `index_ai_cx` | `index/cx.rs::index_ai_cx` | `index/index_cx.py:469` | DONE |  |
+| `index_all_cni` | `index/cons.rs::index_all_cni` | `index/index_cni.py:16` | DONE |  |
+| `index_analysis_daily_sw` | `index/research_sw.rs::index_analysis_daily_sw` | `index/index_research_sw.py:319` | DONE |  |
+| `index_analysis_monthly_sw` | `index/research_sw.rs::index_analysis_monthly_sw` | `index/index_research_sw.py:498` | DONE |  |
+| `index_analysis_week_month_sw` | `index/research_sw.rs::index_analysis_week_month_sw` | `index/index_research_sw.py:397` | DONE |  |
+| `index_analysis_weekly_sw` | `index/research_sw.rs::index_analysis_weekly_sw` | `index/index_research_sw.py:423` | DONE |  |
+| `index_awpr_cx` | `index/cx.rs::index_awpr_cx` | `index/index_cx.py:377` | DONE |  |
+| `index_bei_cx` | `index/cx.rs::index_bei_cx` | `index/index_cx.py:501` | DONE |  |
+| `index_bi_cx` | `index/cx.rs::index_bi_cx` | `index/index_cx.py:209` | DONE |  |
+| `index_cci_cx` | `index/cx.rs::index_cci_cx` | `index/index_cx.py:405` | DONE |  |
+| `index_ci_cx` | `index/cx.rs::index_ci_cx` | `index/index_cx.py:293` | DONE |  |
+| `index_code_id_map_em` | `src (present)` | `index/index_zh_em.py:17` | DONE |  |
+| `index_component_sw` | `index/research_sw.rs::index_component_sw` | `index/index_research_sw.py:139` | DONE |  |
+| `index_csindex_all` | `src/index/excel_gaps.rs::index_csindex_all` | `index/index_csindex.py:16` | DONE |  |
+| `index_dei_cx` | `index/cx.rs::index_dei_cx` | `index/index_cx.py:97` | DONE |  |
+| `index_detail_cni` | `src/index/excel_gaps.rs::index_detail_cni` | `index/index_cni.py:134` | DONE |  |
+| `index_detail_hist_adjust_cni` | — | `index/index_cni.py:191` | DEFERRED | Excel parsing (pd.read_excel) |
+| `index_detail_hist_cni` | `src/index/excel_gaps.rs::index_detail_hist_cni` | `index/index_cni.py:164` | DONE |  |
+| `index_eri` | `index/extra.rs::index_eri` | `index/index_eri.py:13` | DONE |  |
+| `index_fi_cx` | `index/cx.rs::index_fi_cx` | `index/index_cx.py:181` | DONE |  |
+| `index_global_hist_em` | `index/index_more.rs::index_global_hist_em` | `index/index_global_em.py:95` | DONE |  |
+| `index_global_hist_sina` | `index/extra.rs::index_global_hist_sina` | `index/index_global_sina.py:30` | DONE |  |
+| `index_global_name_table` | `index/extra.rs::index_global_name_table` | `index/index_global_sina.py:15` | DONE |  |
+| `index_global_spot_em` | `index/index_more.rs::index_global_spot_em` | `index/index_global_em.py:15` | DONE |  |
+| `index_hist_cni` | `index/cons.rs::index_hist_cni` | `index/index_cni.py:67` | DONE |  |
+| `index_hist_fund_sw` | `index/wv_index_fund_sw.rs::index_hist_fund_sw` | `index/index_research_fund_sw.py:61` | DONE |  |
+| `index_hist_sw` | `index/research_sw.rs::index_hist_sw` | `index/index_research_sw.py:29` | DONE |  |
+| `index_hog_spot_price` | `index/wv_index_misc.rs::index_hog_spot_price` | `index/index_hog.py:13` | DONE |  |
+| `index_ii_cx` | `index/cx.rs::index_ii_cx` | `index/index_cx.py:125` | DONE |  |
+| `index_inner_quote_sugar_msweet` | `index/extra.rs::index_inner_quote_sugar_msweet` | `index/index_sugar.py:39` | DONE |  |
+| `index_kq_fashion` | `index/extra.rs::index_kq_fashion` | `index/index_kq_ss.py:13` | DONE |  |
+| `index_kq_fz` | `index/extra.rs::index_kq_fz` | `index/index_kq_fz.py:14` | DONE |  |
+| `index_li_cx` | `index/cx.rs::index_li_cx` | `index/index_cx.py:265` | DONE |  |
+| `index_min_sw` | `index/research_sw.rs::index_min_sw` | `index/index_research_sw.py:93` | DONE |  |
+| `index_neaw_cx` | `index/cx.rs::index_neaw_cx` | `index/index_cx.py:349` | DONE |  |
+| `index_neei_cx` | `index/cx.rs::index_neei_cx` | `index/index_cx.py:533` | DONE |  |
+| `index_nei_cx` | `index/cx.rs::index_nei_cx` | `index/index_cx.py:237` | DONE |  |
+| `index_news_sentiment_scope` | `index/wv_index_misc.rs::index_news_sentiment_scope` | `index/index_zh_a_scope.py:13` | DONE |  |
+| `index_option_1000index_min_qvix` | `src (present)` | `index/index_option_qvix.py:331` | DONE |  |
+| `index_option_1000index_qvix` | `src (present)` | `index/index_option_qvix.py:308` | DONE |  |
+| `index_option_100etf_min_qvix` | `src (present)` | `index/index_option_qvix.py:251` | DONE |  |
+| `index_option_100etf_qvix` | `src (present)` | `index/index_option_qvix.py:228` | DONE |  |
+| `index_option_300etf_min_qvix` | `src (present)` | `index/index_option_qvix.py:91` | DONE |  |
+| `index_option_300etf_qvix` | `src (present)` | `index/index_option_qvix.py:68` | DONE |  |
+| `index_option_300index_min_qvix` | `src (present)` | `index/index_option_qvix.py:291` | DONE |  |
+| `index_option_300index_qvix` | `src (present)` | `index/index_option_qvix.py:268` | DONE |  |
+| `index_option_500etf_min_qvix` | `src (present)` | `index/index_option_qvix.py:131` | DONE |  |
+| `index_option_500etf_qvix` | `src (present)` | `index/index_option_qvix.py:108` | DONE |  |
+| `index_option_50etf_min_qvix` | `src (present)` | `index/index_option_qvix.py:51` | DONE |  |
+| `index_option_50etf_qvix` | `src (present)` | `index/index_option_qvix.py:28` | DONE |  |
+| `index_option_50index_min_qvix` | `src (present)` | `index/index_option_qvix.py:371` | DONE |  |
+| `index_option_50index_qvix` | `src (present)` | `index/index_option_qvix.py:348` | DONE |  |
+| `index_option_cyb_min_qvix` | `src (present)` | `index/index_option_qvix.py:171` | DONE |  |
+| `index_option_cyb_qvix` | `src (present)` | `index/index_option_qvix.py:148` | DONE |  |
+| `index_option_kcb_min_qvix` | `src (present)` | `index/index_option_qvix.py:211` | DONE |  |
+| `index_option_kcb_qvix` | `src (present)` | `index/index_option_qvix.py:188` | DONE |  |
+| `index_outer_quote_sugar_msweet` | `index/extra.rs::index_outer_quote_sugar_msweet` | `index/index_sugar.py:84` | DONE |  |
+| `index_pmi_com_cx` | `index/cx_pmi.rs::index_pmi_com_cx` | `index/index_cx.py:13` | DONE |  |
+| `index_pmi_man_cx` | `index/cx_pmi.rs::index_pmi_man_cx` | `index/index_cx.py:41` | DONE |  |
+| `index_pmi_ser_cx` | `index/cx_pmi.rs::index_pmi_ser_cx` | `index/index_cx.py:69` | DONE |  |
+| `index_price_cflp` | `index/extra.rs::index_price_cflp` | `index/index_cflp.py:13` | DONE |  |
+| `index_qli_cx` | `index/cx.rs::index_qli_cx` | `index/index_cx.py:437` | DONE |  |
+| `index_realtime_fund_sw` | `index/wv_index_fund_sw.rs::index_realtime_fund_sw` | `index/index_research_fund_sw.py:15` | DONE |  |
+| `index_realtime_sw` | `index/research_sw.rs::index_realtime_sw` | `index/index_research_sw.py:241` | DONE |  |
+| `index_si_cx` | `index/cx.rs::index_si_cx` | `index/index_cx.py:153` | DONE |  |
+| `index_stock_cons` | `stock/index/extra.rs::index_stock_cons` | `index/index_cons.py:87` | DONE |  |
+| `index_stock_cons_csindex` | `src/index/excel_gaps.rs::index_stock_cons_csindex` | `index/index_cons.py:126` | DONE |  |
+| `index_stock_cons_sina` | `index/cons.rs::index_stock_cons_sina` | `index/index_cons.py:20` | DONE |  |
+| `index_stock_cons_weight_csindex` | `src/index/excel_gaps.rs::index_stock_cons_weight_csindex` | `index/index_cons.py:160` | DONE |  |
+| `index_stock_info` | — | `index/index_cons.py:70` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `index_sugar_msweet` | `index/extra.rs::index_sugar_msweet` | `index/index_sugar.py:13` | DONE |  |
+| `index_ti_cx` | `index/cx.rs::index_ti_cx` | `index/index_cx.py:321` | DONE |  |
+| `index_us_stock_sina` | — | `index/index_stock_us_sina.py:18` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `index_volume_cflp` | `index/extra.rs::index_volume_cflp` | `index/index_cflp.py:63` | DONE |  |
+| `index_yw` | `index/extra.rs::index_yw` | `index/index_yw.py:18` | DONE |  |
+| `index_zh_a_hist` | `index/index_more.rs::index_zh_a_hist` | `index/index_zh_em.py:42` | DONE |  |
+| `index_zh_a_hist_min_em` | `index/index_more.rs::index_zh_a_hist_min_em` | `index/index_zh_em.py:178` | DONE |  |
+| `spot_goods` | `index/wv_index_misc.rs::spot_goods` | `index/index_spot.py:13` | DONE |  |
+| `stock_a_code_to_symbol` | `index/cons.rs::stock_a_code_to_symbol` | `index/index_cons.py:196` | DONE |  |
+| `stock_hk_index_daily_em` | `index/stock_hk_us_zh.rs::stock_hk_index_daily_em` | `index/index_stock_hk.py:235` | DONE |  |
+| `stock_hk_index_daily_sina` | — | `index/index_stock_hk.py:121` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_hk_index_spot_em` | `index/stock_hk_us_zh.rs::stock_hk_index_spot_em` | `index/index_stock_hk.py:148` | DONE |  |
+| `stock_hk_index_spot_sina` | `index/stock_hk_us_zh.rs::stock_hk_index_spot_sina` | `index/index_stock_hk.py:54` | DONE |  |
+| `stock_zh_index_daily` | `stock/index/extra.rs::stock_zh_index_daily` | `index/index_stock_zh.py:293` | DONE |  |
+| `stock_zh_index_daily_em` | `index/stock_hk_us_zh.rs::stock_zh_index_daily_em` | `index/index_stock_zh.py:428` | DONE |  |
+| `stock_zh_index_daily_tx` | `index/stock_hk_us_zh.rs::stock_zh_index_daily_tx` | `index/index_stock_zh.py:354` | DONE |  |
+| `stock_zh_index_hist_csindex` | `stock/index/more.rs::stock_zh_index_hist_csindex` | `index/index_stock_zh_csindex.py:13` | DONE |  |
+| `stock_zh_index_spot_em` | `src (present)` | `index/index_stock_zh.py:208` | DONE |  |
+| `stock_zh_index_spot_sina` | `src (present)` | `index/index_stock_zh.py:58` | DONE |  |
+| `stock_zh_index_value_csindex` | `src/index/excel_gaps.rs::stock_zh_index_value_csindex` | `index/index_stock_zh_csindex.py:72` | DONE |  |
+| `sw_index_first_info` | — | `index/index_sw.py:38` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `sw_index_second_info` | — | `index/index_sw.py:96` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `sw_index_third_cons` | — | `index/index_sw.py:220` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `sw_index_third_info` | — | `index/index_sw.py:158` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+
+## interest_rate
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `rate_interbank` | `rate/eastmoney.rs::rate_interbank` | `interest_rate/interbank_rate_em.py:14` | DONE |  |
+
+## movie
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `business_value_artist` | — | `movie/artist_yien.py:65` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
+| `decrypt` | — | `movie/artist_yien.py:50` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `get_current_week` | `alt/movie_yien.rs::get_current_week` | `movie/movie_yien.py:50` | DONE |  |
+| `movie_boxoffice_cinema_daily` | `alt/movie_yien.rs::movie_boxoffice_cinema_daily` | `movie/movie_yien.py:581` | DONE |  |
+| `movie_boxoffice_cinema_weekly` | — | `movie/movie_yien.py:642` | DEFERRED | akshare raises week-permission error (endpoint gated) |
+| `movie_boxoffice_daily` | `alt/movie.rs::movie_boxoffice_daily` | `movie/movie_yien.py:263` | DONE |  |
+| `movie_boxoffice_monthly` | `alt/movie.rs::movie_boxoffice_monthly` | `movie/movie_yien.py:353` | DONE |  |
+| `movie_boxoffice_realtime` | `alt/movie.rs::movie_boxoffice_realtime` | `movie/movie_yien.py:207` | DONE |  |
+| `movie_boxoffice_weekly` | — | `movie/movie_yien.py:340` | DEFERRED | akshare raises week-permission error (endpoint gated) |
+| `movie_boxoffice_yearly` | `alt/movie.rs::movie_boxoffice_yearly` | `movie/movie_yien.py:437` | DONE |  |
+| `movie_boxoffice_yearly_first_week` | `alt/movie_yien.rs::movie_boxoffice_yearly_first_week` | `movie/movie_yien.py:502` | DONE |  |
+| `online_value_artist` | — | `movie/artist_yien.py:103` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
+| `video_tv` | — | `movie/video_yien.py:65` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
+| `video_variety_show` | — | `movie/video_yien.py:96` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
+
+## news
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `news_cctv` | — | `news/news_cctv.py:17` | DEFERRED | token/JS/HTML-gated |
+| `news_economic_baidu` | `news/baidu_calendar.rs::news_economic_baidu` | `news/news_baidu.py:265` | DONE |  |
+| `news_report_time_baidu` | `news/baidu_calendar.rs::news_report_time_baidu` | `news/news_baidu.py:434` | DONE |  |
+| `news_trade_notify_dividend_baidu` | `news/baidu_calendar.rs::news_trade_notify_dividend_baidu` | `news/news_baidu.py:355` | DONE |  |
+| `news_trade_notify_suspend_baidu` | `news/baidu_calendar.rs::news_trade_notify_suspend_baidu` | `news/news_baidu.py:281` | DONE |  |
+| `stock_news_em` | `news/stock_news.rs::stock_news_em` | `news/news_stock.py:15` | DONE |  |
+
+## nlp
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `nlp_answer` | `news/nlp_ownthink.rs::nlp_answer` | `nlp/nlp_interface.py:43` | DONE |  |
+| `nlp_ownthink` | `news/nlp_ownthink.rs::nlp_ownthink` | `nlp/nlp_interface.py:14` | DONE |  |
+
+## option
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `option_cffex_hs300_daily_sina` | `src/option/wv_option_more.rs::option_cffex_hs300_daily_sina` | `option/option_finance_sina.py:337` | DONE |  |
+| `option_cffex_hs300_list_sina` | — | `option/option_finance_sina.py:45` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_cffex_hs300_spot_sina` | `src/option/wv_option_more.rs::option_cffex_hs300_spot_sina` | `option/option_finance_sina.py:150` | DONE |  |
+| `option_cffex_sz50_daily_sina` | `src/option/wv_option_more.rs::option_cffex_sz50_daily_sina` | `option/option_finance_sina.py:296` | DONE |  |
+| `option_cffex_sz50_list_sina` | — | `option/option_finance_sina.py:28` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_cffex_sz50_spot_sina` | `src/option/wv_option_more.rs::option_cffex_sz50_spot_sina` | `option/option_finance_sina.py:77` | DONE |  |
+| `option_cffex_zz1000_daily_sina` | `src/option/wv_option_more.rs::option_cffex_zz1000_daily_sina` | `option/option_finance_sina.py:378` | DONE |  |
+| `option_cffex_zz1000_list_sina` | — | `option/option_finance_sina.py:61` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_cffex_zz1000_spot_sina` | `src/option/wv_option_more.rs::option_cffex_zz1000_spot_sina` | `option/option_finance_sina.py:223` | DONE |  |
+| `option_comm_info` | — | `option/option_comm_qihuo.py:38` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_comm_symbol` | — | `option/option_comm_qihuo.py:18` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_commodity_contract_sina` | — | `option/option_commodity_sina.py:16` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_commodity_contract_table_sina` | — | `option/option_commodity_sina.py:55` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_commodity_hist_sina` | — | `option/option_commodity_sina.py:139` | DEFERRED | token/JS/HTML-gated |
+| `option_contract_info_ctp` | `option/wv_option_misc.rs::option_contract_info_ctp` | `option/option_contract_info_ctp.py:13` | DONE |  |
+| `option_current_cffex_em` | `option/extra.rs::option_current_cffex_em` | `option/option_em.py:112` | DONE |  |
+| `option_current_day_sse` | `option/extra.rs::option_current_day_sse` | `option/option_current_sse.py:13` | DONE |  |
+| `option_current_day_szse` | `src/option/excel_gaps.rs::option_current_day_szse` | `option/option_current_szse.py:14` | DONE |  |
+| `option_current_em` | `option/extra.rs::option_current_em` | `option/option_em.py:14` | DONE |  |
+| `option_daily_stats_sse` | `option/extra.rs::option_daily_stats_sse` | `option/option_daily_stats_sse_szse.py:15` | DONE |  |
+| `option_daily_stats_szse` | `option/wv_option_misc.rs::option_daily_stats_szse` | `option/option_daily_stats_sse_szse.py:85` | DONE |  |
+| `option_finance_board` | `option/wv_option_misc.rs::option_finance_board` | `option/option_finance.py:72` | DONE |  |
+| `option_finance_minute_sina` | `option/sse.rs::option_finance_minute_sina` | `option/option_finance_sina.py:816` | DONE |  |
+| `option_finance_sse_underlying` | `option/exchange.rs::option_finance_sse_underlying` | `option/option_finance.py:34` | DONE |  |
+| `option_hist_czce` | `option/wv_option_misc.rs::option_hist_czce` | `option/option_commodity.py:187` | DONE |  |
+| `option_hist_dce` | `option/commodity.rs::option_hist_dce` | `option/option_commodity.py:32` | DONE |  |
+| `option_hist_gfex` | `option/commodity.rs::option_hist_gfex` | `option/option_commodity.py:504` | DONE |  |
+| `option_hist_shfe` | `option/commodity.rs::option_hist_shfe` | `option/option_commodity.py:365` | DONE |  |
+| `option_hist_yearly_czce` | `option/exchange.rs::option_hist_yearly_czce` | `option/option_czce.py:37` | DONE |  |
+| `option_lhb_em` | `option/wv_option_misc.rs::option_lhb_em` | `option/option_lhb_em.py:13` | DONE |  |
+| `option_margin` | — | `option/option_margin.py:38` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_margin_symbol` | — | `option/option_margin.py:18` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `option_minute_em` | `option/sse.rs::option_minute_em` | `option/option_finance_sina.py:865` | DONE |  |
+| `option_premium_analysis_em` | `option/wv_option_misc.rs::option_premium_analysis_em` | `option/option_premium_analysis_em.py:14` | DONE |  |
+| `option_risk_analysis_em` | `option/wv_option_misc.rs::option_risk_analysis_em` | `option/option_risk_analysis_em.py:14` | DONE |  |
+| `option_risk_indicator_sse` | `option/extra.rs::option_risk_indicator_sse` | `option/option_risk_indicator_sse.py:12` | DONE |  |
+| `option_sse_codes_sina` | `option/sse.rs::option_sse_codes_sina` | `option/option_finance_sina.py:477` | DONE |  |
+| `option_sse_daily_sina` | `option/sse.rs::option_sse_daily_sina` | `option/option_finance_sina.py:776` | DONE |  |
+| `option_sse_expire_day_sina` | `option/sse.rs::option_sse_expire_day_sina` | `option/option_finance_sina.py:441` | DONE |  |
+| `option_sse_greeks_sina` | `option/sse.rs::option_sse_greeks_sina` | `option/option_finance_sina.py:686` | DONE |  |
+| `option_sse_list_sina` | `option/sse.rs::option_sse_list_sina` | `option/option_finance_sina.py:422` | DONE |  |
+| `option_sse_minute_sina` | `option/sse.rs::option_sse_minute_sina` | `option/option_finance_sina.py:732` | DONE |  |
+| `option_sse_spot_price_sina` | `option/sse.rs::option_sse_spot_price_sina` | `option/option_finance_sina.py:542` | DONE |  |
+| `option_sse_underlying_spot_price_sina` | `option/sse.rs::option_sse_underlying_spot_price_sina` | `option/option_finance_sina.py:621` | DONE |  |
+| `option_value_analysis_em` | `option/wv_option_misc.rs::option_value_analysis_em` | `option/option_value_analysis_em.py:14` | DONE |  |
+| `option_vol_gfex` | `option/commodity.rs::option_vol_gfex` | `option/option_commodity.py:593` | DONE |  |
+| `option_vol_shfe` | `option/commodity.rs::option_vol_shfe` | `option/option_commodity.py:445` | DONE |  |
+
+## other
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `car_market_cate_cpca` | `other/car_cpca.rs::car_market_cate_cpca` | `other/other_car_cpca.py:646` | DONE |  |
+| `car_market_country_cpca` | `other/car_cpca.rs::car_market_country_cpca` | `other/other_car_cpca.py:665` | DONE |  |
+| `car_market_fuel_cpca` | `other/car_cpca.rs::car_market_fuel_cpca` | `other/other_car_cpca.py:722` | DONE |  |
+| `car_market_man_rank_cpca` | `other/car_cpca.rs::car_market_man_rank_cpca` | `other/other_car_cpca.py:391` | DONE |  |
+| `car_market_segment_cpca` | `other/car_cpca.rs::car_market_segment_cpca` | `other/other_car_cpca.py:685` | DONE |  |
+| `car_market_total_cpca` | `other/car_cpca.rs::car_market_total_cpca` | `other/other_car_cpca.py:13` | DONE |  |
+| `car_sale_rank_gasgoo` | `other/wv_other_misc.rs::car_sale_rank_gasgoo` | `other/other_car_gasgoo.py:15` | DONE |  |
+| `game_hot_rank_taptap` | `other/wv_other_misc.rs::game_hot_rank_taptap` | `other/other_taptap.py:72` | DONE |  |
+
+## pro
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `pro_api` | — | `pro/data_pro.py:12` | DEFERRED | session/token gated (xq_a_token/hexin-v) |
+
+## qdii
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `qdii_a_index_jsl` | `qdii/jsl.rs::qdii_a_index_jsl` | `qdii/qdii_jsl.py:160` | DONE |  |
+| `qdii_e_comm_jsl` | `qdii/e_comm_jsl.rs::qdii_e_comm_jsl` | `qdii/qdii_jsl.py:88` | DONE |  |
+| `qdii_e_index_jsl` | `qdii/jsl.rs::qdii_e_index_jsl` | `qdii/qdii_jsl.py:14` | DONE |  |
+
+## qhkc_web
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `get_qhkc_fund_bs` | — | `qhkc_web/qhkc_fund.py:23` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_qhkc_fund_money_change` | — | `qhkc_web/qhkc_fund.py:319` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_qhkc_fund_position` | — | `qhkc_web/qhkc_fund.py:121` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_qhkc_fund_position_change` | — | `qhkc_web/qhkc_fund.py:220` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_qhkc_index` | — | `qhkc_web/qhkc_index.py:21` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_qhkc_index_profit_loss` | — | `qhkc_web/qhkc_index.py:149` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_qhkc_index_trend` | — | `qhkc_web/qhkc_index.py:77` | INTERNAL | akshare internal helper, not a data endpoint |
+| `qhkc_tool_foreign` | — | `qhkc_web/qhkc_tool.py:17` | DEFERRED | endpoint https://qhkch.com/ajax/toolbox_foreign.php returns 404; public JSON auth withdrawn (probed 2026-08-15) |
+| `qhkc_tool_gdp` | — | `qhkc_web/qhkc_tool.py:111` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `qhkc_tool_nebula` | — | `qhkc_web/qhkc_tool.py:65` | DEFERRED | endpoint returns 404; public JSON auth withdrawn (probed 2026-08-15) |
+
+## rate
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `repo_rate_hist` | `rate/chinamoney.rs::repo_rate_hist` | `rate/repo_rate.py:45` | DONE |  |
+| `repo_rate_query` | `rate/chinamoney.rs::repo_rate_query` | `rate/repo_rate.py:12` | DONE |  |
+
+## registry.py
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `interface_info` | — | | `registry.py:215` | INTERNAL | akshare registry introspection, not a market-data endpoint |
+| `list_categories` | — | | `registry.py:232` | INTERNAL | akshare registry introspection, not a market-data endpoint |
+| `search` | `src (present)` | `registry.py:175` | DONE |  |
+
+## reits
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `reits_hist_em` | `reits/em.rs::reits_hist_em` | `reits/reits_basic.py:116` | DONE |  |
+| `reits_hist_min_em` | `reits/wv_reits_misc.rs::reits_hist_min_em` | `reits/reits_basic.py:173` | DONE |  |
+| `reits_realtime_em` | `reits/em.rs::reits_realtime_em` | `reits/reits_basic.py:45` | DONE |  |
+
+## request.py
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `make_request_with_retry_json` | — | `request.py:10` | INTERNAL | akshare internal helper, not a data endpoint |
+| `make_request_with_retry_text` | — | `request.py:65` | INTERNAL | akshare internal helper, not a data endpoint |
+
+## spot
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `spot_corn_price_soozhu` | — | `spot/spot_hog_soozhu.py:137` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_golden_benchmark_sge` | `spot/sge.rs::spot_golden_benchmark_sge` | `spot/spot_sge.py:163` | DONE |  |
+| `spot_hist_sge` | `spot/sge.rs::spot_hist_sge` | `spot/spot_sge.py:109` | DONE |  |
+| `spot_hog_crossbred_soozhu` | — | `spot/spot_hog_soozhu.py:113` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_hog_lean_price_soozhu` | — | `spot/spot_hog_soozhu.py:65` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_hog_soozhu` | — | `spot/spot_hog_soozhu.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_hog_three_way_soozhu` | — | `spot/spot_hog_soozhu.py:89` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_hog_year_trend_soozhu` | — | `spot/spot_hog_soozhu.py:41` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_mixed_feed_soozhu` | — | `spot/spot_hog_soozhu.py:185` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_price_qh` | `src/spot/spot_gaps.rs::spot_price_qh` | `spot/spot_price_qh.py:79` | DONE |  |
+| `spot_price_table_qh` | `spot/price_qh.rs::spot_price_table_qh` | `spot/spot_price_qh.py:55` | DONE |  |
+| `spot_quotations_sge` | `spot/sge.rs::spot_quotations_sge` | `spot/spot_sge.py:50` | DONE |  |
+| `spot_silver_benchmark_sge` | `spot/sge.rs::spot_silver_benchmark_sge` | `spot/spot_sge.py:194` | DONE |  |
+| `spot_soybean_price_soozhu` | — | `spot/spot_hog_soozhu.py:161` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_symbol_table_sge` | `spot/sge.rs::spot_symbol_table_sge` | `spot/spot_sge.py:17` | DONE |  |
+
+## stock
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `get_us_stock_name` | — | `stock/stock_us_sina.py:55` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_zh_kcb_page_count` | — | `stock/stock_zh_kcb_sina.py:27` | INTERNAL | akshare internal helper, not a data endpoint |
+| `stock_allotment_cninfo` | — | `stock/stock_allotment_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_bid_ask_em` | `stock/bid_ask_em.rs::stock_bid_ask_em` | `stock/stock_ask_bid_em.py:13` | DONE |  |
+| `stock_board_concept_cons_em` | `board/concept.rs::stock_board_concept_cons_em` | `stock/stock_board_concept_em.py:382` | DONE |  |
+| `stock_board_concept_hist_em` | `stock/board.rs::stock_board_concept_hist_em` | `stock/stock_board_concept_em.py:181` | DONE |  |
+| `stock_board_concept_hist_min_em` | `stock/board.rs::stock_board_concept_hist_min_em` | `stock/stock_board_concept_em.py:273` | DONE |  |
+| `stock_board_concept_name_em` | `board/concept.rs::stock_board_concept_name_em` | `stock/stock_board_concept_em.py:121` | DONE |  |
+| `stock_board_concept_spot_em` | `stock/board.rs::stock_board_concept_spot_em` | `stock/stock_board_concept_em.py:131` | DONE |  |
+| `stock_board_industry_cons_em` | `board/industry.rs::stock_board_industry_cons_em` | `stock/stock_board_industry_em.py:461` | DONE |  |
+| `stock_board_industry_hist_em` | `stock/board.rs::stock_board_industry_hist_em` | `stock/stock_board_industry_em.py:261` | DONE |  |
+| `stock_board_industry_hist_min_em` | `stock/board.rs::stock_board_industry_hist_min_em` | `stock/stock_board_industry_em.py:351` | DONE |  |
+| `stock_board_industry_name_em` | `board/industry.rs::stock_board_industry_name_em` | `stock/stock_board_industry_em.py:115` | DONE |  |
+| `stock_board_industry_spot_em` | `stock/board.rs::stock_board_industry_spot_em` | `stock/stock_board_industry_em.py:211` | DONE |  |
+| `stock_cg_equity_mortgage_cninfo` | — | `stock/stock_cg_equity_mortgage.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_cg_guarantee_cninfo` | — | `stock/stock_cg_guarantee.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_cg_lawsuit_cninfo` | — | `stock/stock_cg_lawsuit.py:31` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_concept_fund_flow_hist` | `stock/fund_flow.rs::stock_concept_fund_flow_hist` | `stock/stock_fund_em.py:1136` | DONE |  |
+| `stock_dividend_cninfo` | — | `stock/stock_dividend_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_dzjy_hygtj` | `stock/dzjy.rs::stock_dzjy_hygtj` | `stock/stock_dzjy_em.py:295` | DONE |  |
+| `stock_dzjy_hyyybtj` | `stock/dzjy.rs::stock_dzjy_hyyybtj` | `stock/stock_dzjy_em.py:402` | DONE |  |
+| `stock_dzjy_mrmx` | `stock/dzjy.rs::stock_dzjy_mrmx` | `stock/stock_dzjy_em.py:72` | DONE |  |
+| `stock_dzjy_mrtj` | `stock/dzjy.rs::stock_dzjy_mrtj` | `stock/stock_dzjy_em.py:213` | DONE |  |
+| `stock_dzjy_sctj` | `stock/dzjy.rs::stock_dzjy_sctj` | `stock/stock_dzjy_em.py:13` | DONE |  |
+| `stock_dzjy_yybph` | `stock/dzjy.rs::stock_dzjy_yybph` | `stock/stock_dzjy_em.py:484` | DONE |  |
+| `stock_gsrl_gsdt_em` | `stock/more2.rs::stock_gsrl_gsdt_em` | `stock/stock_gsrl_em.py:13` | DONE |  |
+| `stock_hk_company_profile_em` | `stock/hk_profile_em.rs::stock_hk_company_profile_em` | `stock/stock_profile_em.py:79` | DONE |  |
+| `stock_hk_daily` | — | `stock/stock_hk_sina.py:109` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_hk_dividend_payout_em` | `stock/hk_profile_em.rs::stock_hk_dividend_payout_em` | `stock/stock_profile_em.py:237` | DONE |  |
+| `stock_hk_famous_spot_em` | `src (present)` | `stock/stock_hk_famous.py:13` | DONE |  |
+| `stock_hk_fhpx_detail_ths` | — | `stock/stock_hk_fhpx_ths.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_hk_financial_indicator_em` | `stock/hk_profile_em.rs::stock_hk_financial_indicator_em` | `stock/stock_profile_em.py:153` | DONE |  |
+| `stock_hk_growth_comparison_em` | `stock/hk_comparison_em.rs::stock_hk_growth_comparison_em` | `stock/stock_hk_comparison_em.py:13` | DONE |  |
+| `stock_hk_hot_rank_detail_em` | `stock/hot_rank.rs::stock_hk_hot_rank_detail_em` | `stock/stock_hk_hot_rank_em.py:60` | DONE |  |
+| `stock_hk_hot_rank_detail_realtime_em` | `stock/hot_rank.rs::stock_hk_hot_rank_detail_realtime_em` | `stock/stock_hk_hot_rank_em.py:85` | DONE |  |
+| `stock_hk_hot_rank_em` | `stock/hot_rank.rs::stock_hk_hot_rank_em` | `stock/stock_hk_hot_rank_em.py:13` | DONE |  |
+| `stock_hk_hot_rank_latest_em` | `stock/hot_rank.rs::stock_hk_hot_rank_latest_em` | `stock/stock_hk_hot_rank_em.py:108` | DONE |  |
+| `stock_hk_scale_comparison_em` | `stock/hk_comparison_em.rs::stock_hk_scale_comparison_em` | `stock/stock_hk_comparison_em.py:118` | DONE |  |
+| `stock_hk_security_profile_em` | `src (present)` | `stock/stock_profile_em.py:13` | DONE |  |
+| `stock_hk_spot` | `src (present)` | `stock/stock_hk_sina.py:22` | DONE |  |
+| `stock_hk_valuation_comparison_em` | `stock/hk_comparison_em.rs::stock_hk_valuation_comparison_em` | `stock/stock_hk_comparison_em.py:61` | DONE |  |
+| `stock_hold_change_cninfo` | — | `stock/stock_hold_control_cninfo.py:198` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_hold_control_cninfo` | — | `stock/stock_hold_control_cninfo.py:35` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_hold_management_detail_cninfo` | — | `stock/stock_hold_control_cninfo.py:106` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_hold_management_detail_em` | `stock/more2.rs::stock_hold_management_detail_em` | `stock/stock_hold_control_em.py:14` | DONE |  |
+| `stock_hold_management_person_em` | `stock/hold_management_em.rs::stock_hold_management_person_em` | `stock/stock_hold_control_em.py:111` | DONE |  |
+| `stock_hold_num_cninfo` | — | `stock/stock_hold_num_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_hot_keyword_em` | `stock/hot_rank.rs::stock_hot_keyword_em` | `stock/stock_hot_rank_em.py:127` | DONE |  |
+| `stock_hot_rank_detail_em` | `stock/hot_rank.rs::stock_hot_rank_detail_em` | `stock/stock_hot_rank_em.py:67` | DONE |  |
+| `stock_hot_rank_detail_realtime_em` | `stock/hot_rank.rs::stock_hot_rank_detail_realtime_em` | `stock/stock_hot_rank_em.py:104` | DONE |  |
+| `stock_hot_rank_em` | `stock/hot_rank.rs::stock_hot_rank_em` | `stock/stock_hot_rank_em.py:13` | DONE |  |
+| `stock_hot_rank_latest_em` | `stock/hot_rank.rs::stock_hot_rank_latest_em` | `stock/stock_hot_rank_em.py:150` | DONE |  |
+| `stock_hot_rank_relate_em` | `stock/hot_rank.rs::stock_hot_rank_relate_em` | `stock/stock_hot_rank_em.py:174` | DONE |  |
+| `stock_hot_search_baidu` | `stock/wv_stock_misc1.rs::stock_hot_search_baidu` | `stock/stock_hot_search_baidu.py:15` | DONE |  |
+| `stock_hot_up_em` | `stock/hot_rank.rs::stock_hot_up_em` | `stock/stock_hot_up_em.py:13` | DONE |  |
+| `stock_hsgt_sh_hk_spot_em` | `stock/more2.rs::stock_hsgt_sh_hk_spot_em` | `stock/stock_hsgt_em.py:76` | DONE |  |
+| `stock_individual_fund_flow` | `stock/fund_flow.rs::stock_individual_fund_flow` | `stock/stock_fund_em.py:20` | DONE |  |
+| `stock_individual_fund_flow_rank` | `stock/fund_flow.rs::stock_individual_fund_flow_rank` | `stock/stock_fund_em.py:122` | DONE |  |
+| `stock_individual_info_em` | `stock/holder.rs::stock_individual_info_em` | `stock/stock_info_em.py:13` | DONE |  |
+| `stock_individual_spot_xq` | — | `stock/stock_xq.py:81` | DEFERRED | session/token gated (xq_a_token/hexin-v) |
+| `stock_industry_category_cninfo` | — | `stock/stock_industry_cninfo.py:32` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_industry_change_cninfo` | — | `stock/stock_industry_cninfo.py:105` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_industry_clf_hist_sw` | `src/stock/excel_gaps.rs::stock_industry_clf_hist_sw` | `stock/stock_industry_sw.py:17` | DONE |  |
+| `stock_industry_pe_ratio_cninfo` | — | `stock/stock_industry_pe_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_info_a_code_name` | `stock/info.rs::stock_info_a_code_name` | `stock/stock_info.py:440` | DONE |  |
+| `stock_info_bj_name_code` | `stock/info.rs::stock_info_bj_name_code` | `stock/stock_info.py:185` | DONE |  |
+| `stock_info_change_name` | — | `stock/stock_info.py:411` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_info_sh_delist` | `stock/info.rs::stock_info_sh_delist` | `stock/stock_info.py:286` | DONE |  |
+| `stock_info_sh_name_code` | `stock/info.rs::stock_info_sh_name_code` | `stock/stock_info.py:122` | DONE |  |
+| `stock_info_sz_change_name` | `src/stock/excel_gaps.rs::stock_info_sz_change_name` | `stock/stock_info.py:384` | DONE |  |
+| `stock_info_sz_delist` | `stock/info.rs::stock_info_sz_delist` | `stock/stock_info.py:355` | DONE |  |
+| `stock_info_sz_name_code` | `stock/info.rs::stock_info_sz_name_code` | `stock/stock_info.py:20` | DONE |  |
+| `stock_intraday_em` | `src (present)` | `stock/stock_intraday_em.py:29` | DONE |  |
+| `stock_intraday_sina` | `src (present)` | `stock/stock_intraday_sina.py:17` | DONE |  |
+| `stock_ipo_summary_cninfo` | — | `stock/stock_ipo_summary_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_js_weibo_nlp_time` | — | | `stock/stock_weibo_nlp.py:20` | DEFERRED | needs JS execution |
+| `stock_js_weibo_report` | — | | `stock/stock_weibo_nlp.py:49` | DEFERRED | needs JS execution |
+| `stock_main_fund_flow` | `stock/fund_flow.rs::stock_main_fund_flow` | `stock/stock_fund_em.py:1223` | DONE |  |
+| `stock_market_fund_flow` | `stock/fund_flow.rs::stock_market_fund_flow` | `stock/stock_fund_em.py:347` | DONE |  |
+| `stock_new_gh_cninfo` | — | `stock/stock_new_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_new_ipo_cninfo` | — | `stock/stock_new_cninfo.py:76` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_news_main_cx` | `stock/news_cx.rs::stock_news_main_cx` | `stock/stock_news_cx.py:13` | DONE |  |
+| `stock_price_js` | `stock/wv_stock_misc1.rs::stock_price_js` | `stock/stock_us_js.py:13` | DONE |  |
+| `stock_profile_cninfo` | — | `stock/stock_profile_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_forecast_cninfo` | — | `stock/stock_rank_forecast.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_report_fund_hold` | `stock/fundamental/more.rs::stock_report_fund_hold` | `stock/stock_fund_hold.py:13` | DONE |  |
+| `stock_report_fund_hold_detail` | `stock/fundamental/more.rs::stock_report_fund_hold_detail` | `stock/stock_fund_hold.py:110` | DONE |  |
+| `stock_repurchase_em` | `stock/more2.rs::stock_repurchase_em` | `stock/stock_repurchase_em.py:14` | DONE |  |
+| `stock_sector_detail` | `stock/fund_flow.rs::stock_sector_detail` | `stock/stock_industry.py:77` | DONE |  |
+| `stock_sector_fund_flow_hist` | `stock/fund_flow.rs::stock_sector_fund_flow_hist` | `stock/stock_fund_em.py:1024` | DONE |  |
+| `stock_sector_fund_flow_rank` | `stock/fund_flow.rs::stock_sector_fund_flow_rank` | `stock/stock_fund_em.py:447` | DONE |  |
+| `stock_sector_fund_flow_summary` | `stock/fund_flow.rs::stock_sector_fund_flow_summary` | `stock/stock_fund_em.py:738` | DONE |  |
+| `stock_sector_spot` | `stock/holder.rs::stock_sector_spot` | `stock/stock_industry.py:19` | DONE |  |
+| `stock_share_change_cninfo` | — | `stock/stock_share_changes_cninfo.py:31` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_share_hold_change_bse` | `stock/share_hold_exchange.rs::stock_share_hold_change_bse` | `stock/stock_share_hold.py:196` | DONE |  |
+| `stock_share_hold_change_sse` | `stock/share_hold_exchange.rs::stock_share_hold_change_sse` | `stock/stock_share_hold.py:21` | DONE |  |
+| `stock_share_hold_change_szse` | `stock/share_hold_exchange.rs::stock_share_hold_change_szse` | `stock/stock_share_hold.py:118` | DONE |  |
+| `stock_sse_deal_daily` | `stock/sse_summary.rs::stock_sse_deal_daily` | `stock/stock_summary.py:251` | DONE |  |
+| `stock_sse_summary` | `stock/sse_summary.rs::stock_sse_summary` | `stock/stock_summary.py:207` | DONE |  |
+| `stock_staq_net_stop` | `stock/staq_net_stop.rs::stock_staq_net_stop` | `stock/stock_stop.py:13` | DONE |  |
+| `stock_szse_area_summary` | `src/stock/excel_gaps.rs::stock_szse_area_summary` | `stock/stock_summary.py:53` | DONE |  |
+| `stock_szse_sector_summary` | — | `stock/stock_summary.py:110` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_szse_summary` | `src/stock/excel_gaps.rs::stock_szse_summary` | `stock/stock_summary.py:22` | DONE |  |
+| `stock_us_daily` | — | `stock/stock_us_sina.py:117` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_us_famous_spot_em` | `stock/us.rs::stock_us_famous_spot_em` | `stock/stock_us_famous.py:13` | DONE |  |
+| `stock_us_pink_spot_em` | `stock/us.rs::stock_us_pink_spot_em` | `stock/stock_us_pink.py:15` | DONE |  |
+| `stock_us_spot` | `src (present)` | `stock/stock_us_sina.py:86` | DONE |  |
+| `stock_zh_a_cdr_daily` | — | `stock/stock_zh_a_sina.py:307` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_zh_a_daily` | `stock/daily_sina.rs::stock_zh_a_daily` | `stock/stock_zh_a_sina.py:127` | DONE |  |
+| `stock_zh_a_minute` | `stock/misc.rs::stock_zh_a_minute` | `stock/stock_zh_a_sina.py:344` | DONE |  |
+| `stock_zh_a_new` | `stock/misc.rs::stock_zh_a_new` | `stock/stock_zh_a_special.py:290` | DONE |  |
+| `stock_zh_a_new_em` | `stock/more2.rs::stock_zh_a_new_em` | `stock/stock_zh_a_special.py:110` | DONE |  |
+| `stock_zh_a_spot` | `src (present)` | `stock/stock_zh_a_sina.py:45` | DONE |  |
+| `stock_zh_a_spot_tx` | `src (present)` | `stock/stock_zh_a_tx.py:17` | DONE |  |
+| `stock_zh_a_st_em` | `stock/more.rs::stock_zh_a_st_em` | `stock/stock_zh_a_special.py:20` | DONE |  |
+| `stock_zh_a_stop_em` | `stock/zh_a_stop_em.rs::stock_zh_a_stop_em` | `stock/stock_zh_a_special.py:200` | DONE |  |
+| `stock_zh_a_tick_tx_js` | `stock/wv_stock_misc1.rs::stock_zh_a_tick_tx_js` | `stock/stock_zh_a_tick_tx.py:16` | DONE |  |
+| `stock_zh_ah_daily` | `stock/wv_stock_misc1.rs::stock_zh_ah_daily` | `stock/stock_zh_ah_tx.py:157` | DONE |  |
+| `stock_zh_ah_name` | `stock/wv_stock_misc1.rs::stock_zh_ah_name` | `stock/stock_zh_ah_tx.py:110` | DONE |  |
+| `stock_zh_ah_spot` | `stock/wv_stock_misc1.rs::stock_zh_ah_spot` | `stock/stock_zh_ah_tx.py:40` | DONE |  |
+| `stock_zh_ah_spot_em` | `stock/more2.rs::stock_zh_ah_spot_em` | `stock/stock_hsgt_em.py:14` | DONE |  |
+| `stock_zh_b_daily` | — | `stock/stock_zh_b_sina.py:124` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_zh_b_minute` | `stock/zh_b_minute.rs::stock_zh_b_minute` | `stock/stock_zh_b_sina.py:281` | DONE |  |
+| `stock_zh_b_spot` | `src (present)` | `stock/stock_zh_b_sina.py:48` | DONE |  |
+| `stock_zh_dupont_comparison_em` | `stock/zh_comparison_em.rs::stock_zh_dupont_comparison_em` | `stock/stock_zh_comparison_em.py:162` | DONE |  |
+| `stock_zh_growth_comparison_em` | `stock/zh_comparison_em.rs::stock_zh_growth_comparison_em` | `stock/stock_zh_comparison_em.py:13` | DONE |  |
+| `stock_zh_kcb_daily` | `stock/wv_stock_misc2.rs::stock_zh_kcb_daily` | `stock/stock_zh_kcb_sina.py:123` | DONE |  |
+| `stock_zh_kcb_report_em` | `stock/more2.rs::stock_zh_kcb_report_em` | `stock/stock_zh_kcb_report.py:39` | DONE |  |
+| `stock_zh_kcb_spot` | `stock/wv_stock_misc2.rs::stock_zh_kcb_spot` | `stock/stock_zh_kcb_sina.py:42` | DONE |  |
+| `stock_zh_scale_comparison_em` | `stock/more2.rs::stock_zh_scale_comparison_em` | `stock/stock_zh_comparison_em.py:219` | DONE |  |
+| `stock_zh_valuation_comparison_em` | `stock/indicator.rs::stock_zh_valuation_comparison_em` | `stock/stock_zh_comparison_em.py:72` | DONE |  |
+
+## stock_feature
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `get_cookie_csrf` | — | `stock_feature/stock_a_indicator.py:20` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_token_lg` | — | `stock_feature/stock_a_indicator.py:40` | INTERNAL | akshare internal helper, not a data endpoint |
+| `stock_a_all_pb` | — | `stock_feature/stock_all_pb.py:15` | DEFERRED | token/JS/HTML-gated |
+| `stock_a_below_net_asset_statistics` | `stock/more.rs::stock_a_below_net_asset_statistics` | `stock_feature/stock_a_below_net_asset_statistics.py:15` | DONE |  |
+| `stock_a_congestion_lg` | — | `stock_feature/stock_congestion_lg.py:15` | DEFERRED | token/JS/HTML-gated |
+| `stock_a_gxl_lg` | — | `stock_feature/stock_gxl_lg.py:15` | DEFERRED | token/JS/HTML-gated |
+| `stock_a_high_low_statistics` | `stock/more.rs::stock_a_high_low_statistics` | `stock_feature/stock_a_high_low.py:15` | DONE |  |
+| `stock_a_ttm_lyr` | — | `stock_feature/stock_ttm_lyr.py:15` | DEFERRED | token/JS/HTML-gated |
+| `stock_account_statistics_em` | `stock/more.rs::stock_account_statistics_em` | `stock_feature/stock_account_em.py:14` | DONE |  |
+| `stock_analyst_detail_em` | `stock_feature/indicators_a.rs::stock_analyst_detail_em` | `stock_feature/stock_analyst_em.py:105` | DONE |  |
+| `stock_analyst_rank_em` | `stock_feature/indicators_a.rs::stock_analyst_rank_em` | `stock_feature/stock_analyst_em.py:15` | DONE |  |
+| `stock_balance_sheet_by_report_delisted_em` | `stock/financial_three.rs::stock_balance_sheet_by_report_delisted_em` | `stock_feature/stock_three_report_em.py:474` | DONE |  |
+| `stock_balance_sheet_by_report_em` | `stock/fundamental/eastmoney.rs::stock_balance_sheet_by_report_em` | `stock_feature/stock_three_report_em.py:35` | DONE |  |
+| `stock_balance_sheet_by_yearly_em` | `stock/financial_three.rs::stock_balance_sheet_by_yearly_em` | `stock_feature/stock_three_report_em.py:84` | DONE |  |
+| `stock_bj_a_spot_em` | `stock/stock_hist_em.rs::stock_bj_a_spot_em` | `stock_feature/stock_hist_em.py:340` | DONE |  |
+| `stock_board_change_em` | `stock_feature/indicators_a.rs::stock_board_change_em` | `stock_feature/stock_pankou_em.py:83` | DONE |  |
+| `stock_board_concept_index_ths` | — | `stock_feature/stock_board_concept_ths.py:124` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_board_concept_info_ths` | — | `stock_feature/stock_board_concept_ths.py:91` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_board_concept_name_ths` | `src/stock_feature/sf_gaps.rs::stock_board_concept_name_ths` | `stock_feature/stock_board_concept_ths.py:71` | DONE |  |
+| `stock_board_concept_summary_ths` | — | `stock_feature/stock_board_concept_ths.py:273` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_board_industry_index_ths` | — | `stock_feature/stock_board_industry_ths.py:121` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_board_industry_info_ths` | — | `stock_feature/stock_board_industry_ths.py:88` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_board_industry_name_ths` | `src/stock_feature/sf_gaps.rs::stock_board_industry_name_ths` | `stock_feature/stock_board_industry_ths.py:68` | DONE |  |
+| `stock_board_industry_summary_ths` | — | `stock_feature/stock_board_industry_ths.py:331` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_buffett_index_lg` | — | `stock_feature/stock_buffett_index_lg.py:15` | DEFERRED | token/JS/HTML-gated |
+| `stock_cash_flow_sheet_by_quarterly_em` | `stock/financial_three.rs::stock_cash_flow_sheet_by_quarterly_em` | `stock_feature/stock_three_report_em.py:393` | DONE |  |
+| `stock_cash_flow_sheet_by_report_delisted_em` | `stock/financial_three.rs::stock_cash_flow_sheet_by_report_delisted_em` | `stock_feature/stock_three_report_em.py:540` | DONE |  |
+| `stock_cash_flow_sheet_by_report_em` | `stock/fundamental/eastmoney.rs::stock_cash_flow_sheet_by_report_em` | `stock_feature/stock_three_report_em.py:291` | DONE |  |
+| `stock_cash_flow_sheet_by_yearly_em` | `stock/financial_three.rs::stock_cash_flow_sheet_by_yearly_em` | `stock_feature/stock_three_report_em.py:342` | DONE |  |
+| `stock_changes_em` | `stock_feature/indicators_a.rs::stock_changes_em` | `stock_feature/stock_pankou_em.py:13` | DONE |  |
+| `stock_classify_board` | — | `stock_feature/stock_classify_sina.py:17` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_classify_sina` | `src/stock_feature/sf_gaps.rs::stock_classify_sina` | `stock_feature/stock_classify_sina.py:48` | DONE |  |
+| `stock_comment_detail_scrd_desire_em` | `stock/esg_comment_hot.rs::stock_comment_detail_scrd_desire_em` | `stock_feature/stock_comment_em.py:226` | DONE |  |
+| `stock_comment_detail_scrd_focus_em` | `stock/esg_comment_hot.rs::stock_comment_detail_scrd_focus_em` | `stock_feature/stock_comment_em.py:188` | DONE |  |
+| `stock_comment_detail_zhpj_lspf_em` | `stock/esg_comment_hot.rs::stock_comment_detail_zhpj_lspf_em` | `stock_feature/stock_comment_em.py:151` | DONE |  |
+| `stock_comment_detail_zlkp_jgcyd_em` | `stock_feature/indicators_a.rs::stock_comment_detail_zlkp_jgcyd_em` | `stock_feature/stock_comment_em.py:120` | DONE |  |
+| `stock_comment_em` | `stock/esg_comment_hot.rs::stock_comment_em` | `stock_feature/stock_comment_em.py:19` | DONE |  |
+| `stock_concept_cons_futu` | `stock_feature/indicators_a.rs::stock_concept_cons_futu` | `stock_feature/stock_concept_futu.py:103` | DONE |  |
+| `stock_cy_a_spot_em` | `stock/stock_hist_em.rs::stock_cy_a_spot_em` | `stock_feature/stock_hist_em.py:561` | DONE |  |
+| `stock_cyq_em` | — | | `stock_feature/stock_cyq_em.py:16` | DEFERRED | Eastmoney signed param (hexin-v) |
+| `stock_dxsyl_em` | `stock_feature/indicators_a.rs::stock_dxsyl_em` | `stock_feature/stock_dxsyl_em.py:18` | DONE |  |
+| `stock_ebs_lg` | — | `stock_feature/stock_ebs_lg.py:15` | DEFERRED | token/JS/HTML-gated |
+| `stock_esg_hz_sina` | `stock/esg_comment_hot.rs::stock_esg_hz_sina` | `stock_feature/stock_esg_sina.py:267` | DONE |  |
+| `stock_esg_msci_sina` | `stock/esg_comment_hot.rs::stock_esg_msci_sina` | `stock_feature/stock_esg_sina.py:16` | DONE |  |
+| `stock_esg_rate_sina` | `stock/esg_comment_hot.rs::stock_esg_rate_sina` | `stock_feature/stock_esg_sina.py:167` | DONE |  |
+| `stock_esg_rft_sina` | `stock/esg_comment_hot.rs::stock_esg_rft_sina` | `stock_feature/stock_esg_sina.py:103` | DONE |  |
+| `stock_esg_zd_sina` | `stock/esg_comment_hot.rs::stock_esg_zd_sina` | `stock_feature/stock_esg_sina.py:221` | DONE |  |
+| `stock_fhps_detail_em` | `stock_feature/wv_sf_misc1.rs::stock_fhps_detail_em` | `stock_feature/stock_fhps_em.py:141` | DONE |  |
+| `stock_fhps_detail_ths` | — | `stock_feature/stock_fhps_ths.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_fhps_em` | `stock_feature/indicators_a.rs::stock_fhps_em` | `stock_feature/stock_fhps_em.py:15` | DONE |  |
+| `stock_fund_flow_big_deal` | — | `stock_feature/stock_fund_flow.py:349` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_fund_flow_concept` | — | `stock_feature/stock_fund_flow.py:137` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_fund_flow_individual` | — | `stock_feature/stock_fund_flow.py:41` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_fund_flow_industry` | — | `stock_feature/stock_fund_flow.py:243` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_gddh_em` | `stock/more2.rs::stock_gddh_em` | `stock_feature/stock_gddh_em.py:14` | DONE |  |
+| `stock_gdfx_free_holding_analyse_em` | `stock/gdfx.rs::stock_gdfx_free_holding_analyse_em` | `stock_feature/stock_gdfx_em.py:691` | DONE |  |
+| `stock_gdfx_free_holding_change_em` | `stock/gdfx.rs::stock_gdfx_free_holding_change_em` | `stock_feature/stock_gdfx_em.py:222` | DONE |  |
+| `stock_gdfx_free_holding_detail_em` | `stock/gdfx.rs::stock_gdfx_free_holding_detail_em` | `stock_feature/stock_gdfx_em.py:505` | DONE |  |
+| `stock_gdfx_free_holding_statistics_em` | `stock/gdfx.rs::stock_gdfx_free_holding_statistics_em` | `stock_feature/stock_gdfx_em.py:15` | DONE |  |
+| `stock_gdfx_free_holding_teamwork_em` | `stock/gdfx.rs::stock_gdfx_free_holding_teamwork_em` | `stock_feature/stock_gdfx_em.py:892` | DONE |  |
+| `stock_gdfx_free_top_10_em` | `stock/gdfx.rs::stock_gdfx_free_top_10_em` | `stock_feature/stock_gdfx_em.py:393` | DONE |  |
+| `stock_gdfx_holding_analyse_em` | `stock/gdfx.rs::stock_gdfx_holding_analyse_em` | `stock_feature/stock_gdfx_em.py:789` | DONE |  |
+| `stock_gdfx_holding_change_em` | `stock/gdfx.rs::stock_gdfx_holding_change_em` | `stock_feature/stock_gdfx_em.py:313` | DONE |  |
+| `stock_gdfx_holding_detail_em` | `stock/gdfx.rs::stock_gdfx_holding_detail_em` | `stock_feature/stock_gdfx_em.py:595` | DONE |  |
+| `stock_gdfx_holding_statistics_em` | `stock/gdfx.rs::stock_gdfx_holding_statistics_em` | `stock_feature/stock_gdfx_em.py:119` | DONE |  |
+| `stock_gdfx_holding_teamwork_em` | `stock/gdfx.rs::stock_gdfx_holding_teamwork_em` | `stock_feature/stock_gdfx_em.py:955` | DONE |  |
+| `stock_gdfx_top_10_em` | `stock/gdfx.rs::stock_gdfx_top_10_em` | `stock_feature/stock_gdfx_em.py:452` | DONE |  |
+| `stock_ggcg_em` | `stock_feature/wv_sf_misc3.rs::stock_ggcg_em` | `stock_feature/stock_gdzjc_em.py:15` | DONE |  |
+| `stock_gpzy_distribute_statistics_bank_em` | `stock/gpzy.rs::stock_gpzy_distribute_statistics_bank_em` | `stock_feature/stock_gpzy_em.py:381` | DONE |  |
+| `stock_gpzy_distribute_statistics_company_em` | `stock/gpzy.rs::stock_gpzy_distribute_statistics_company_em` | `stock_feature/stock_gpzy_em.py:312` | DONE |  |
+| `stock_gpzy_individual_pledge_ratio_detail_em` | `stock/gpzy.rs::stock_gpzy_individual_pledge_ratio_detail_em` | `stock_feature/stock_gpzy_em.py:308` | DONE |  |
+| `stock_gpzy_industry_data_em` | `stock/gpzy.rs::stock_gpzy_industry_data_em` | `stock_feature/stock_gpzy_em.py:450` | DONE |  |
+| `stock_gpzy_pledge_ratio_detail_em` | `stock/gpzy.rs::stock_gpzy_pledge_ratio_detail_em` | `stock_feature/stock_gpzy_em.py:304` | DONE |  |
+| `stock_gpzy_pledge_ratio_em` | `stock/gpzy.rs::stock_gpzy_pledge_ratio_em` | `stock_feature/stock_gpzy_em.py:88` | DONE |  |
+| `stock_gpzy_profile_em` | `stock/gpzy.rs::stock_gpzy_profile_em` | `stock_feature/stock_gpzy_em.py:21` | DONE |  |
+| `stock_hk_ggt_components_em` | `src (present)` | `stock_feature/stock_hsgt_em.py:94` | DONE |  |
+| `stock_hk_gxl_lg` | — | `stock_feature/stock_gxl_lg.py:54` | DEFERRED | token/JS/HTML-gated |
+| `stock_hk_hist` | `stock/cross/hk.rs::stock_hk_hist` | `stock_feature/stock_hist_em.py:1395` | DONE |  |
+| `stock_hk_hist_min_em` | `stock/stock_hist_em.rs::stock_hk_hist_min_em` | `stock_feature/stock_hist_em.py:1467` | DONE |  |
+| `stock_hk_indicator_eniu` | `src/stock_feature/sf_gaps.rs::stock_hk_indicator_eniu` | `stock_feature/stock_a_indicator.py:54` | DONE |  |
+| `stock_hk_main_board_spot_em` | `stock/stock_hist_em.rs::stock_hk_main_board_spot_em` | `stock_feature/stock_hist_em.py:1310` | DONE |  |
+| `stock_hk_spot_em` | `stock/cross/hk.rs::stock_hk_spot_em` | `stock_feature/stock_hist_em.py:1225` | DONE |  |
+| `stock_hk_valuation_baidu` | `stock_feature/wv_sf_misc2.rs::stock_hk_valuation_baidu` | `stock_feature/stock_hk_valuation_baidu.py:14` | DONE |  |
+| `stock_hot_deal_xq` | — | | `stock_feature/stock_hot_xq.py:207` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_hot_follow_xq` | — | | `stock_feature/stock_hot_xq.py:81` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_hot_tweet_xq` | — | | `stock_feature/stock_hot_xq.py:144` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_hsgt_board_rank_em` | `stock/hsgt.rs::stock_hsgt_board_rank_em` | `stock_feature/stock_hsgt_em.py:1190` | DONE |  |
+| `stock_hsgt_fund_flow_summary_em` | `stock/hsgt.rs::stock_hsgt_fund_flow_summary_em` | `stock_feature/stock_hsgt_em.py:18` | DONE |  |
+| `stock_hsgt_fund_min_em` | `stock/hsgt.rs::stock_hsgt_fund_min_em` | `stock_feature/stock_hsgt_min_em.py:13` | DONE |  |
+| `stock_hsgt_hist_em` | `stock/hsgt.rs::stock_hsgt_hist_em` | `stock_feature/stock_hsgt_em.py:1070` | DONE |  |
+| `stock_hsgt_hold_stock_em` | `stock/hsgt.rs::stock_hsgt_hold_stock_em` | `stock_feature/stock_hsgt_em.py:171` | DONE |  |
+| `stock_hsgt_individual_detail_em` | `stock/hsgt.rs::stock_hsgt_individual_detail_em` | `stock_feature/stock_hsgt_em.py:1527` | DONE |  |
+| `stock_hsgt_individual_em` | `stock/hsgt.rs::stock_hsgt_individual_em` | `stock_feature/stock_hsgt_em.py:1512` | DONE |  |
+| `stock_hsgt_institution_statistics_em` | `stock/hsgt.rs::stock_hsgt_institution_statistics_em` | `stock_feature/stock_hsgt_em.py:778` | DONE |  |
+| `stock_hsgt_stock_statistics_em` | `stock/hsgt.rs::stock_hsgt_stock_statistics_em` | `stock_feature/stock_hsgt_em.py:336` | DONE |  |
+| `stock_index_pb_lg` | — | `stock_feature/stock_a_pe_and_pb.py:507` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_index_pe_lg` | — | `stock_feature/stock_a_pe_and_pb.py:398` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_info_cjzc_em` | `stock_feature/wv_sf_misc3.rs::stock_info_cjzc_em` | `stock_feature/stock_info.py:21` | DONE |  |
+| `stock_info_global_cls` | — | `stock_feature/stock_info.py:195` | DEFERRED | token/JS/HTML-gated |
+| `stock_info_global_em` | `stock_feature/wv_sf_misc3.rs::stock_info_global_em` | `stock_feature/stock_info.py:61` | DONE |  |
+| `stock_info_global_futu` | `stock_feature/wv_sf_misc3.rs::stock_info_global_futu` | `stock_feature/stock_info.py:127` | DONE |  |
+| `stock_info_global_sina` | `stock_feature/wv_sf_misc3.rs::stock_info_global_sina` | `stock_feature/stock_info.py:96` | DONE |  |
+| `stock_info_global_ths` | `stock_feature/wv_sf_misc3.rs::stock_info_global_ths` | `stock_feature/stock_info.py:162` | DONE |  |
+| `stock_inner_trade_xq` | — | | `stock_feature/stock_inner_trade_xq.py:72` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_ipo_benefit_ths` | — | `stock_feature/stock_board_industry_ths.py:274` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_irm_ans_cninfo` | `stock_feature/wv_sf_misc1.rs::stock_irm_ans_cninfo` | `stock_feature/stock_irm_cninfo.py:140` | DONE |  |
+| `stock_irm_cninfo` | `stock_feature/wv_sf_misc1.rs::stock_irm_cninfo` | `stock_feature/stock_irm_cninfo.py:31` | DONE |  |
+| `stock_jgdy_detail_em` | `stock/more2.rs::stock_jgdy_detail_em` | `stock_feature/stock_jgdy_em.py:108` | DONE |  |
+| `stock_jgdy_tj_em` | `stock_feature/wv_sf_misc1.rs::stock_jgdy_tj_em` | `stock_feature/stock_jgdy_em.py:16` | DONE |  |
+| `stock_kc_a_spot_em` | `stock/stock_hist_em.rs::stock_kc_a_spot_em` | `stock_feature/stock_hist_em.py:670` | DONE |  |
+| `stock_lh_yyb_capital` | — | `stock_feature/stock_lh_yybpm.py:42` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lh_yyb_control` | — | `stock_feature/stock_lh_yybpm.py:65` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lh_yyb_most` | — | `stock_feature/stock_lh_yybpm.py:19` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lhb_detail_daily_sina` | — | `stock_feature/stock_lhb_sina.py:18` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lhb_detail_em` | `stock/lhb.rs::stock_lhb_detail_em` | `stock_feature/stock_lhb_em.py:14` | DONE |  |
+| `stock_lhb_ggtj_sina` | — | `stock_feature/stock_lhb_sina.py:91` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lhb_hyyyb_em` | `stock/lhb.rs::stock_lhb_hyyyb_em` | `stock_feature/stock_lhb_em.py:433` | DONE |  |
+| `stock_lhb_jgmmtj_em` | `stock/lhb.rs::stock_lhb_jgmmtj_em` | `stock_feature/stock_lhb_em.py:226` | DONE |  |
+| `stock_lhb_jgmx_sina` | — | `stock_feature/stock_lhb_sina.py:208` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lhb_jgstatistic_em` | `stock/lhb.rs::stock_lhb_jgstatistic_em` | `stock_feature/stock_lhb_em.py:335` | DONE |  |
+| `stock_lhb_jgzz_sina` | — | `stock_feature/stock_lhb_sina.py:166` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lhb_stock_detail_date_em` | `stock/lhb.rs::stock_lhb_stock_detail_date_em` | `stock_feature/stock_lhb_em.py:723` | DONE |  |
+| `stock_lhb_stock_detail_em` | `stock/lhb.rs::stock_lhb_stock_detail_em` | `stock_feature/stock_lhb_em.py:766` | DONE |  |
+| `stock_lhb_stock_statistic_em` | `stock/lhb.rs::stock_lhb_stock_statistic_em` | `stock_feature/stock_lhb_em.py:137` | DONE |  |
+| `stock_lhb_traderstatistic_em` | `stock/lhb.rs::stock_lhb_traderstatistic_em` | `stock_feature/stock_lhb_em.py:648` | DONE |  |
+| `stock_lhb_yyb_detail_em` | `stock/lhb.rs::stock_lhb_yyb_detail_em` | `stock_feature/stock_lhb_em.py:904` | DONE |  |
+| `stock_lhb_yybph_em` | `stock/lhb.rs::stock_lhb_yybph_em` | `stock_feature/stock_lhb_em.py:512` | DONE |  |
+| `stock_lhb_yytj_sina` | — | `stock_feature/stock_lhb_sina.py:128` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_lrb_em` | `stock/financial.rs::stock_lrb_em` | `stock_feature/stock_report_em.py:302` | DONE |  |
+| `stock_margin_account_info` | `stock_feature/margin_research.rs::stock_margin_account_info` | `stock_feature/stock_margin_em.py:15` | DONE |  |
+| `stock_margin_bse` | `stock_feature/wv_sf_misc1.rs::stock_margin_bse` | `stock_feature/stock_margin_bse.py:71` | DONE |  |
+| `stock_margin_detail_bse` | `stock_feature/wv_sf_misc1.rs::stock_margin_detail_bse` | `stock_feature/stock_margin_bse.py:129` | DONE |  |
+| `stock_margin_detail_sse` | `stock_feature/wv_sf_misc3.rs::stock_margin_detail_sse` | `stock_feature/stock_margin_sse.py:137` | DONE |  |
+| `stock_margin_detail_szse` | `src/stock_feature/excel_gaps.rs::stock_margin_detail_szse` | `stock_feature/stock_margin_szse.py:95` | DONE |  |
+| `stock_margin_ratio_pa` | `stock_feature/wv_sf_misc3.rs::stock_margin_ratio_pa` | `stock_feature/stock_margin_sse.py:13` | DONE |  |
+| `stock_margin_sse` | `src/stock_feature/wv_sf_more.rs::stock_margin_sse` | `stock_feature/stock_margin_sse.py:68` | DONE |  |
+| `stock_margin_szse` | `src/stock_feature/wv_sf_more.rs::stock_margin_szse` | `stock_feature/stock_margin_szse.py:47` | DONE |  |
+| `stock_margin_underlying_info_bse` | `stock_feature/wv_sf_misc1.rs::stock_margin_underlying_info_bse` | `stock_feature/stock_margin_bse.py:190` | DONE |  |
+| `stock_margin_underlying_info_szse` | `src/stock_feature/excel_gaps.rs::stock_margin_underlying_info_szse` | `stock_feature/stock_margin_szse.py:15` | DONE |  |
+| `stock_market_activity_legu` | — | `stock_feature/stock_market_legu.py:18` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_market_pb_lg` | — | `stock_feature/stock_a_pe_and_pb.py:461` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_market_pe_lg` | — | `stock_feature/stock_a_pe_and_pb.py:322` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_new_a_spot_em` | `stock/stock_hist_em.rs::stock_new_a_spot_em` | `stock_feature/stock_hist_em.py:448` | DONE |  |
+| `stock_pg_em` | `stock_feature/wv_sf_misc1.rs::stock_pg_em` | `stock_feature/stock_zf_pg.py:99` | DONE |  |
+| `stock_profit_sheet_by_quarterly_em` | `stock/financial_three.rs::stock_profit_sheet_by_quarterly_em` | `stock_feature/stock_three_report_em.py:240` | DONE |  |
+| `stock_profit_sheet_by_report_delisted_em` | `stock/financial_three.rs::stock_profit_sheet_by_report_delisted_em` | `stock_feature/stock_three_report_em.py:507` | DONE |  |
+| `stock_profit_sheet_by_report_em` | `stock/fundamental/eastmoney.rs::stock_profit_sheet_by_report_em` | `stock_feature/stock_three_report_em.py:142` | DONE |  |
+| `stock_profit_sheet_by_yearly_em` | `stock/financial_three.rs::stock_profit_sheet_by_yearly_em` | `stock_feature/stock_three_report_em.py:191` | DONE |  |
+| `stock_qbzf_em` | `stock/more2.rs::stock_qbzf_em` | `stock_feature/stock_zf_pg.py:18` | DONE |  |
+| `stock_qsjy_em` | `stock/more2.rs::stock_qsjy_em` | `stock_feature/stock_qsjy_em.py:13` | DONE |  |
+| `stock_rank_cxd_ths` | — | `stock_feature/stock_technology_ths.py:111` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_cxfl_ths` | — | `stock_feature/stock_technology_ths.py:309` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_cxg_ths` | — | `stock_feature/stock_technology_ths.py:35` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_cxsl_ths` | — | `stock_feature/stock_technology_ths.py:401` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_ljqd_ths` | — | `stock_feature/stock_technology_ths.py:782` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_ljqs_ths` | — | `stock_feature/stock_technology_ths.py:694` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_lxsz_ths` | — | `stock_feature/stock_technology_ths.py:187` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_lxxd_ths` | — | `stock_feature/stock_technology_ths.py:248` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_xstp_ths` | — | `stock_feature/stock_technology_ths.py:493` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_xxtp_ths` | — | `stock_feature/stock_technology_ths.py:594` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_rank_xzjp_ths` | — | `stock_feature/stock_technology_ths.py:870` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_report_disclosure` | `stock_feature/wv_sf_misc2.rs::stock_report_disclosure` | `stock_feature/stock_yjyg_cninfo.py:13` | DONE |  |
+| `stock_research_report_em` | `stock_feature/wv_sf_misc2.rs::stock_research_report_em` | `stock_feature/stock_research_report_em.py:16` | DONE |  |
+| `stock_sgt_reference_exchange_rate_sse` | `stock_feature/wv_sf_sgt.rs::stock_sgt_reference_exchange_rate_sse` | `stock_feature/stock_hsgt_exchange_rate.py:76` | DONE |  |
+| `stock_sgt_reference_exchange_rate_szse` | `src/stock_feature/excel_gaps.rs::stock_sgt_reference_exchange_rate_szse` | `stock_feature/stock_hsgt_exchange_rate.py:47` | DONE |  |
+| `stock_sgt_settlement_exchange_rate_sse` | `stock_feature/wv_sf_sgt.rs::stock_sgt_settlement_exchange_rate_sse` | `stock_feature/stock_hsgt_exchange_rate.py:134` | DONE |  |
+| `stock_sgt_settlement_exchange_rate_szse` | `src/stock_feature/excel_gaps.rs::stock_sgt_settlement_exchange_rate_szse` | `stock_feature/stock_hsgt_exchange_rate.py:18` | DONE |  |
+| `stock_sh_a_spot_em` | `stock/stock_hist_em.rs::stock_sh_a_spot_em` | `stock_feature/stock_hist_em.py:124` | DONE |  |
+| `stock_sns_sseinfo` | — | `stock_feature/stock_sns_sseinfo.py:56` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_sy_em` | `stock/sy.rs::stock_sy_em` | `stock_feature/stock_sy_em.py:294` | DONE |  |
+| `stock_sy_hy_em` | `stock/sy.rs::stock_sy_hy_em` | `stock_feature/stock_sy_em.py:386` | DONE |  |
+| `stock_sy_jz_em` | `stock/sy.rs::stock_sy_jz_em` | `stock_feature/stock_sy_em.py:193` | DONE |  |
+| `stock_sy_profile_em` | `stock/sy.rs::stock_sy_profile_em` | `stock_feature/stock_sy_em.py:19` | DONE |  |
+| `stock_sy_yq_em` | `stock/sy.rs::stock_sy_yq_em` | `stock_feature/stock_sy_em.py:84` | DONE |  |
+| `stock_sz_a_spot_em` | `stock/stock_hist_em.rs::stock_sz_a_spot_em` | `stock_feature/stock_hist_em.py:232` | DONE |  |
+| `stock_tfp_em` | `stock_feature/wv_sf_misc2.rs::stock_tfp_em` | `stock_feature/stock_tfp_em.py:13` | DONE |  |
+| `stock_us_hist` | `stock/cross/us.rs::stock_us_hist` | `stock_feature/stock_hist_em.py:1688` | DONE |  |
+| `stock_us_hist_min_em` | `stock/stock_hist_em.rs::stock_us_hist_min_em` | `stock_feature/stock_hist_em.py:1758` | DONE |  |
+| `stock_us_spot_em` | `stock/cross/us.rs::stock_us_spot_em` | `stock_feature/stock_hist_em.py:1593` | DONE |  |
+| `stock_us_valuation_baidu` | `stock_feature/wv_sf_misc1.rs::stock_us_valuation_baidu` | `stock_feature/stock_us_valuation_baidu.py:16` | DONE |  |
+| `stock_value_em` | `stock/indicator.rs::stock_value_em` | `stock_feature/stock_value_em.py:14` | DONE |  |
+| `stock_xgsglb_em` | `stock_feature/wv_sf_misc3.rs::stock_xgsglb_em` | `stock_feature/stock_dxsyl_em.py:128` | DONE |  |
+| `stock_xgsr_ths` | — | `stock_feature/stock_board_industry_ths.py:222` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+| `stock_xjll_em` | `stock/financial.rs::stock_xjll_em` | `stock_feature/stock_report_em.py:438` | DONE |  |
+| `stock_yjbb_em` | `stock/margin.rs::stock_yjbb_em` | `stock_feature/stock_yjbb_em.py:16` | DONE |  |
+| `stock_yjkb_em` | `stock_feature/wv_sf_misc1.rs::stock_yjkb_em` | `stock_feature/stock_yjyg_em.py:17` | DONE |  |
+| `stock_yjyg_em` | `stock_feature/wv_sf_misc1.rs::stock_yjyg_em` | `stock_feature/stock_yjyg_em.py:135` | DONE |  |
+| `stock_yysj_em` | `stock/more2.rs::stock_yysj_em` | `stock_feature/stock_yjyg_em.py:223` | DONE |  |
+| `stock_yzxdr_em` | `stock_feature/wv_sf_misc2.rs::stock_yzxdr_em` | `stock_feature/stock_yzxdr_em.py:16` | DONE |  |
+| `stock_zcfz_bj_em` | `stock/financial.rs::stock_zcfz_bj_em` | `stock_feature/stock_report_em.py:161` | DONE |  |
+| `stock_zcfz_em` | `stock/financial.rs::stock_zcfz_em` | `stock_feature/stock_report_em.py:20` | DONE |  |
+| `stock_zdhtmx_em` | `stock/more2.rs::stock_zdhtmx_em` | `stock_feature/stock_zdhtmx_em.py:14` | DONE |  |
+| `stock_zh_a_disclosure_relation_cninfo` | `stock_feature/wv_sf_misc1.rs::stock_zh_a_disclosure_relation_cninfo` | `stock_feature/stock_disclosure_cninfo.py:205` | DONE |  |
+| `stock_zh_a_disclosure_report_cninfo` | `stock_feature/wv_sf_misc1.rs::stock_zh_a_disclosure_report_cninfo` | `stock_feature/stock_disclosure_cninfo.py:129` | DONE |  |
+| `stock_zh_a_gdhs` | `stock/extra.rs::stock_zh_a_gdhs` | `stock_feature/stock_gdhs.py:15` | DONE |  |
+| `stock_zh_a_gdhs_detail_em` | `stock/more2.rs::stock_zh_a_gdhs_detail_em` | `stock_feature/stock_gdhs.py:130` | DONE |  |
+| `stock_zh_a_hist` | `src (present)` | `stock_feature/stock_hist_em.py:952` | DONE |  |
+| `stock_zh_a_hist_min_em` | `stock/misc.rs::stock_zh_a_hist_min_em` | `stock_feature/stock_hist_em.py:1042` | DONE |  |
+| `stock_zh_a_hist_pre_min_em` | `stock/stock_hist_em.rs::stock_zh_a_hist_pre_min_em` | `stock_feature/stock_hist_em.py:1170` | DONE |  |
+| `stock_zh_a_hist_tx` | `src (present)` | `stock_feature/stock_hist_tx.py:40` | DONE |  |
+| `stock_zh_a_spot_em` | `stock/stock_hist_em.rs::stock_zh_a_spot_em` | `stock_feature/stock_hist_em.py:15` | DONE |  |
+| `stock_zh_ab_comparison_em` | `stock/stock_hist_em.rs::stock_zh_ab_comparison_em` | `stock_feature/stock_hist_em.py:779` | DONE |  |
+| `stock_zh_b_spot_em` | `stock/stock_hist_em.rs::stock_zh_b_spot_em` | `stock_feature/stock_hist_em.py:844` | DONE |  |
+| `stock_zh_valuation_baidu` | `stock/indicator.rs::stock_zh_valuation_baidu` | `stock_feature/stock_zh_valuation_baidu.py:13` | DONE |  |
+| `stock_zh_vote_baidu` | `stock_feature/wv_sf_misc2.rs::stock_zh_vote_baidu` | `stock_feature/stock_zh_vote_baidu.py:13` | DONE |  |
+| `stock_zt_pool_dtgc_em` | `stock_feature/board_zt.rs::stock_zt_pool_dtgc_em` | `stock_feature/stock_ztb_em.py:439` | DONE |  |
+| `stock_zt_pool_em` | `stock/more.rs::stock_zt_pool_em` | `stock_feature/stock_ztb_em.py:24` | DONE |  |
+| `stock_zt_pool_previous_em` | `stock_feature/board_zt.rs::stock_zt_pool_previous_em` | `stock_feature/stock_ztb_em.py:110` | DONE |  |
+| `stock_zt_pool_strong_em` | `stock_feature/board_zt.rs::stock_zt_pool_strong_em` | `stock_feature/stock_ztb_em.py:187` | DONE |  |
+| `stock_zt_pool_sub_new_em` | `stock_feature/board_zt.rs::stock_zt_pool_sub_new_em` | `stock_feature/stock_ztb_em.py:276` | DONE |  |
+| `stock_zt_pool_zbgc_em` | `stock_feature/board_zt.rs::stock_zt_pool_zbgc_em` | `stock_feature/stock_ztb_em.py:357` | DONE |  |
+
+## stock_fundamental
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `stock_add_stock` | — | `stock_fundamental/stock_finance_sina.py:499` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_circulate_stock_holder` | — | `stock_fundamental/stock_finance_sina.py:563` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_financial_abstract` | `stock/fundamental/more.rs::stock_financial_abstract` | `stock_fundamental/stock_finance_sina.py:94` | DONE |  |
+| `stock_financial_abstract_new_ths` | `stock/fundamental/finance_more.rs::stock_financial_abstract_new_ths` | `stock_fundamental/stock_finance_ths.py:194` | DONE |  |
+| `stock_financial_abstract_ths` | — | `stock_fundamental/stock_finance_ths.py:18` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_financial_analysis_indicator` | `src (present)` | `stock_fundamental/stock_finance_sina.py:228` | DONE |  |
+| `stock_financial_analysis_indicator_em` | `stock/fundamental/eastmoney.rs::stock_financial_analysis_indicator_em` | `stock_fundamental/stock_finance_sina.py:181` | DONE |  |
+| `stock_financial_benefit_new_ths` | `stock/fundamental/finance_more.rs::stock_financial_benefit_new_ths` | `stock_fundamental/stock_finance_ths.py:380` | DONE |  |
+| `stock_financial_benefit_ths` | `stock/fundamental/finance_more.rs::stock_financial_benefit_ths` | `stock_fundamental/stock_finance_ths.py:92` | DONE |  |
+| `stock_financial_cash_new_ths` | `stock/fundamental/finance_more.rs::stock_financial_cash_new_ths` | `stock_fundamental/stock_finance_ths.py:477` | DONE |  |
+| `stock_financial_cash_ths` | `stock/fundamental/finance_more.rs::stock_financial_cash_ths` | `stock_fundamental/stock_finance_ths.py:130` | DONE |  |
+| `stock_financial_debt_new_ths` | `stock/fundamental/finance_more.rs::stock_financial_debt_new_ths` | `stock_fundamental/stock_finance_ths.py:291` | DONE |  |
+| `stock_financial_debt_ths` | `stock/fundamental/finance_more.rs::stock_financial_debt_ths` | `stock_fundamental/stock_finance_ths.py:58` | DONE |  |
+| `stock_financial_hk_analysis_indicator_em` | `stock/fundamental/finance_more.rs::stock_financial_hk_analysis_indicator_em` | `stock_fundamental/stock_finance_hk_em.py:108` | DONE |  |
+| `stock_financial_hk_report_em` | `stock/fundamental/finance_more.rs::stock_financial_hk_report_em` | `stock_fundamental/stock_finance_hk_em.py:13` | DONE |  |
+| `stock_financial_report_sina` | `stock/fundamental/more.rs::stock_financial_report_sina` | `stock_fundamental/stock_finance_sina.py:24` | DONE |  |
+| `stock_financial_us_analysis_indicator_em` | `stock/fundamental/finance_more.rs::stock_financial_us_analysis_indicator_em` | `stock_fundamental/stock_finance_us_em.py:158` | DONE |  |
+| `stock_financial_us_report_em` | `stock/fundamental/finance_more.rs::stock_financial_us_report_em` | `stock_fundamental/stock_finance_us_em.py:110` | DONE |  |
+| `stock_fund_stock_holder` | — | `stock_fundamental/stock_finance_sina.py:638` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_history_dividend` | — | `stock_fundamental/stock_finance_sina.py:327` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_history_dividend_detail` | — | `stock_fundamental/stock_finance_sina.py:360` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_hk_profit_forecast_et` | — | `stock_fundamental/stock_profit_forecast_hk_etnet.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_individual_basic_info_hk_xq` | — | `stock_fundamental/stock_basic_info_xq.py:129` | DEFERRED | session/token gated (xq_a_token/hexin-v) |
+| `stock_individual_basic_info_us_xq` | — | `stock_fundamental/stock_basic_info_xq.py:106` | DEFERRED | session/token gated (xq_a_token/hexin-v) |
+| `stock_individual_basic_info_xq` | — | `stock_fundamental/stock_basic_info_xq.py:83` | DEFERRED | session/token gated (xq_a_token/hexin-v) |
+| `stock_individual_notice_report` | `stock/fundamental/wv_fund_misc.rs::stock_individual_notice_report` | `stock_fundamental/stock_notice.py:151` | DONE |  |
+| `stock_institute_hold` | — | `stock_fundamental/stock_hold.py:17` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_institute_hold_detail` | — | `stock_fundamental/stock_hold.py:58` | DEFERRED | token/JS/HTML-gated |
+| `stock_institute_recommend` | — | `stock_fundamental/stock_recommend.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_institute_recommend_detail` | — | `stock_fundamental/stock_recommend.py:76` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_ipo_declare_em` | `stock/fundamental/registration.rs::stock_ipo_declare_em` | `stock_fundamental/stock_ipo_declare.py:16` | DONE |  |
+| `stock_ipo_hk_ths` | — | `stock_fundamental/stock_ipo_ths.py:81` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_ipo_info` | — | `stock_fundamental/stock_finance_sina.py:483` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_ipo_review_em` | `stock/fundamental/registration.rs::stock_ipo_review_em` | `stock_fundamental/stock_ipo_review.py:18` | DONE |  |
+| `stock_ipo_ths` | — | `stock_fundamental/stock_ipo_ths.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_ipo_tutor_em` | `stock/fundamental/registration.rs::stock_ipo_tutor_em` | `stock_fundamental/stock_ipo_tutor.py:18` | DONE |  |
+| `stock_kcb_detail_renewal` | `stock/fundamental/wv_fund_misc.rs::stock_kcb_detail_renewal` | `stock_fundamental/stock_kcb_detail_sse.py:14` | DONE |  |
+| `stock_kcb_renewal` | `stock/fundamental/wv_fund_misc.rs::stock_kcb_renewal` | `stock_fundamental/stock_kcb_sse.py:14` | DONE |  |
+| `stock_main_stock_holder` | — | `stock_fundamental/stock_finance_sina.py:696` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_management_change_ths` | — | `stock_fundamental/stock_finance_ths.py:574` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_notice_report` | `stock/fundamental/wv_fund_misc.rs::stock_notice_report` | `stock_fundamental/stock_notice.py:133` | DONE |  |
+| `stock_profit_forecast_em` | `stock/fundamental/registration.rs::stock_profit_forecast_em` | `stock_fundamental/stock_profit_forecast_em.py:15` | DONE |  |
+| `stock_profit_forecast_ths` | — | `stock_fundamental/stock_profit_forecast_ths.py:17` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_register_all_em` | `stock/fundamental/registration.rs::stock_register_all_em` | `stock_fundamental/stock_register_em.py:16` | DONE |  |
+| `stock_register_bj` | `src (present)` | `stock_fundamental/stock_register_em.py:237` | DONE |  |
+| `stock_register_cyb` | `src (present)` | `stock_fundamental/stock_register_em.py:163` | DONE |  |
+| `stock_register_db` | `src (present)` | `stock_fundamental/stock_register_em.py:459` | DONE |  |
+| `stock_register_kcb` | `src (present)` | `stock_fundamental/stock_register_em.py:89` | DONE |  |
+| `stock_register_sh` | `src (present)` | `stock_fundamental/stock_register_em.py:311` | DONE |  |
+| `stock_register_sz` | `src (present)` | `stock_fundamental/stock_register_em.py:385` | DONE |  |
+| `stock_restricted_release_detail_em` | `stock/restricted.rs::stock_restricted_release_detail_em` | `stock_fundamental/stock_restricted_em.py:106` | DONE |  |
+| `stock_restricted_release_queue_em` | `stock/restricted.rs::stock_restricted_release_queue_em` | `stock_fundamental/stock_restricted_em.py:209` | DONE |  |
+| `stock_restricted_release_queue_sina` | — | `stock_fundamental/stock_finance_sina.py:531` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_restricted_release_stockholder_em` | `stock/restricted.rs::stock_restricted_release_stockholder_em` | `stock_fundamental/stock_restricted_em.py:301` | DONE |  |
+| `stock_restricted_release_summary_em` | `stock/restricted.rs::stock_restricted_release_summary_em` | `stock_fundamental/stock_restricted_em.py:14` | DONE |  |
+| `stock_shareholder_change_ths` | — | `stock_fundamental/stock_finance_ths.py:622` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `stock_zh_a_gbjg_em` | `stock/fundamental/more.rs::stock_zh_a_gbjg_em` | `stock_fundamental/stock_gbjg_em.py:62` | DONE |  |
+| `stock_zygc_em` | `stock/holder.rs::stock_zygc_em` | `stock_fundamental/stock_zygc.py:13` | DONE |  |
+| `stock_zyjs_ths` | — | `stock_fundamental/stock_zyjs_ths.py:14` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+
+## tool
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `tool_trade_date_hist_sina` | — | `tool/trade_date_hist.py:19` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
+
+## utils
+
+| akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
+|---|---|---|---|---|
+| `decode` | `src (present)` | `utils/demjson.py:6182` | DONE |  |
+| `decode_file` | — | `utils/demjson.py:6387` | INTERNAL | akshare internal helper, not a data endpoint |
+| `determine_float_limits` | — | `utils/demjson.py:79` | INTERNAL | akshare internal helper, not a data endpoint |
+| `determine_float_precision` | — | `utils/demjson.py:231` | INTERNAL | akshare internal helper, not a data endpoint |
+| `encode` | `src (present)` | `utils/demjson.py:6109` | DONE |  |
+| `encode_to_file` | — | `utils/demjson.py:6349` | INTERNAL | akshare internal helper, not a data endpoint |
+| `execute_js_in_executor` | — | `utils/multi_decrypt.py:32` | INTERNAL | akshare internal helper, not a data endpoint |
+| `extend_and_flatten_list_with_sep` | — | `utils/demjson.py:777` | INTERNAL | akshare internal helper, not a data endpoint |
+| `extend_list_with_sep` | — | `utils/demjson.py:767` | INTERNAL | akshare internal helper, not a data endpoint |
+| `fetch_paginated_data` | — | | `utils/func.py:18` | INTERNAL | akshare internal helper (utils/func.py), not a data endpoint |
+| `get_proxies` | — | `utils/context.py:27` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_token` | — | `utils/token_process.py:22` | INTERNAL | akshare internal helper, not a data endpoint |
+| `get_tqdm` | — | `utils/tqdm.py:1` | INTERNAL | akshare internal helper, not a data endpoint |
+| `js_executor_function` | — | `utils/multi_decrypt.py:15` | INTERNAL | akshare internal helper, not a data endpoint |
+| `request_with_retry` | — | `utils/request.py:15` | INTERNAL | akshare internal helper, not a data endpoint |
+| `set_df_columns` | — | `utils/func.py:63` | INTERNAL | akshare internal helper, not a data endpoint |
+| `set_proxies` | — | `utils/context.py:23` | INTERNAL | akshare internal helper, not a data endpoint |
+| `set_token` | — | `utils/token_process.py:15` | INTERNAL | akshare internal helper, not a data endpoint |
+| `skipstringsafe` | — | `utils/demjson.py:742` | INTERNAL | akshare internal helper, not a data endpoint |
+| `skipstringsafe_slow` | — | `utils/demjson.py:755` | INTERNAL | akshare internal helper, not a data endpoint |
+| `smart_sort_transform` | — | | `utils/demjson.py:3068` | INTERNAL | akshare internal helper (utils/demjson.py), not a data endpoint |
+
+---
+
+**汇总**: DONE=775 · DEFERRED=233 · INTERNAL=63 · UNKNOWN=101 (共 1172)

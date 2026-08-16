@@ -27,7 +27,9 @@
 //!   (`risk_rv.py:78`), `article_rlab_rv` (`risk_rv.py:117`) — data embedded in
 //!   HTML/JS, scraped with BeautifulSoup. See `risk_rv.rs`.
 
+pub mod article_gaps;
 pub mod epu;
 pub mod ff;
 pub mod fred;
 pub mod risk_rv;
+pub mod excel_gaps;

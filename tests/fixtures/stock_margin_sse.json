@@ -1,0 +1,7 @@
+{
+  "_note": "SYNTHETIC fixture for stock_margin_sse (SSE queryMargin.do). Not from a live response. result is a positional list-of-lists; indices mirror akshare's column rename: [_, date(1), _, securities_sell(3), securities_balance(4), securities_balance_amount(5), _, _, financing_buy(8), margin_total_balance(9), financing_balance(10), _, _].",
+  "result": [
+    ["X", "2023-09-22", "X", 88.5, 200.3, 300.7, "X", "X", 400.2, 5000.8, 4500.6, "X", "X"],
+    ["X", "2023-09-21", "X", 90.0, 210.0, 310.0, "X", "X", 410.0, 5100.0, 4600.0, "X", "X"]
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "data": {
+    "dataList": [
+      { "id": "1", "title": "快讯", "content": "铜价上涨", "publishTime": 1700000000000, "source": "SHMET" },
+      { "id": "2", "title": "快讯", "content": "铝库存下降", "publishTime": 1700001000000, "source": "SHMET" }
+    ]
+  }
+}

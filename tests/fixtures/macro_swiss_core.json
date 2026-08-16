@@ -1,0 +1,28 @@
+{
+  "result": {
+    "data": [
+      {
+        "COUNTRY": "瑞士",
+        "INDICATOR_ID": "EMG00341602",
+        "INDICATOR_NAME": "瑞士SVME采购经理人指数",
+        "REPORT_DATE_CH": "2024-03",
+        "REPORT_DATE": "2024-03-01T00:00:00",
+        "PUBLISH_DATE": "2024-04-01T00:00:00",
+        "VALUE": 48.5,
+        "PRE_VALUE": 49.0,
+        "INDICATOR_IDOLD": ""
+      },
+      {
+        "COUNTRY": "瑞士",
+        "INDICATOR_ID": "EMG00341602",
+        "INDICATOR_NAME": "瑞士SVME采购经理人指数",
+        "REPORT_DATE_CH": "2024-02",
+        "REPORT_DATE": "2024-02-01T00:00:00",
+        "PUBLISH_DATE": "2024-03-01T00:00:00",
+        "VALUE": 49.0,
+        "PRE_VALUE": 49.2,
+        "INDICATOR_IDOLD": ""
+      }
+    ]
+  }
+}

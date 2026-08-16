@@ -1,0 +1,5 @@
+{
+  "data": [
+    {"ExchangeID":"CFFEX","InstrumentID":"IO2306-C-4000","InstrumentName":"沪深300股指期权","ProductClass":"1","ProductID":"IO","VolumeMultiple":100,"PriceTick":0.1,"LongMarginRatioByMoney":0.12,"ShortMarginRatioByMoney":0.12,"LongMarginRatioByVolume":0,"ShortMarginRatioByVolume":0,"OpenRatioByMoney":0,"OpenRatioByVolume":0,"CloseRatioByMoney":0,"CloseRatioByVolume":0,"CloseTodayRatioByMoney":0,"CloseTodayRatioByVolume":0,"DeliveryYear":"2023","DeliveryMonth":"6","OpenDate":"20230101","ExpireDate":"20230616","DeliveryDate":"20230616","UnderlyingInstrID":"IF2306","UnderlyingMultiple":100,"OptionsType":"C","StrikePrice":4000,"InstLifePhase":"1"}
+  ]
+}

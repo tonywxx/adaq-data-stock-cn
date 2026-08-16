@@ -406,3 +406,416 @@ mod tests {
         assert_eq!(rows[1].cinema_name, "影院乙");
     }
 }
+
+// ===========================================================================
+// 艺恩 GetData.ashx — 艺人 / 视频 (jm.js 加密) 缺口函数
+// (`akshare/movie/artist_yien.py`, `akshare/movie/video_yien.py`)
+// ===========================================================================
+//
+// 这些端点 POST 到 `https://www.endata.com.cn/API/GetData.ashx`，返回用打包的
+// `jm.js` (`webInstace.shell`) 加密的密文。解密需要执行 JavaScript（akshare 用
+// `py_mini_racer`），Rust 端没有等价实现，且 client 也没有「POST 返回文本」的方法。
+// 因此运行期 fetch 暂未实现（见各 async fn 说明）；解析函数 `parse_*` 已完整实现，
+// 并针对「预先解密」的 fixture（`tests/fixtures/<name>.json`）做了测试。
+//
+// | Rust fn | akshare line | status |
+// | --- | --- | --- |
+// | `business_value_artist` | artist_yien.py:65 | parser 实现 / 运行期 deferred |
+// | `online_value_artist` | artist_yien.py:103 | parser 实现 / 运行期 deferred |
+// | `video_tv` | video_yien.py:65 | parser 实现 / 运行期 deferred |
+// | `video_variety_show` | video_yien.py:96 | parser 实现 / 运行期 deferred |
+// | `movie_boxoffice_weekly` | movie_yien.py:340 | deferred（上游需权限）|
+// | `movie_boxoffice_cinema_weekly` | movie_yien.py:642 | deferred（上游需权限）|
+
+const SOURCE_YIEN: &str = "yien";
+#[allow(dead_code)]
+const YIEN_GETDATA: &str = "https://www.endata.com.cn/API/GetData.ashx";
+
+/// 从 JSON 标量解析 f64（容忍字符串数字）。
+fn yien_as_f64(v: &Value) -> Option<f64> {
+    match v {
+        Value::Number(n) => n.as_f64(),
+        Value::String(s) => s.trim().parse::<f64>().ok(),
+        _ => None,
+    }
+}
+
+/// 取对象按 JSON 顺序的值列表（与 akshare 按位置取列一致）。
+fn yien_row_values(item: &Value) -> Vec<&Value> {
+    item.as_object().map(|m| m.values().collect()).unwrap_or_default()
+}
+
+/// 按位置取字符串（缺失返回 None）。
+fn yien_val_str(vals: &[&Value], idx: usize) -> Option<String> {
+    vals.get(idx).and_then(|v| v.as_str()).map(|s| s.to_string())
+}
+
+/// 按位置取 f64（缺失返回 None）。
+fn yien_val_f64(vals: &[&Value], idx: usize) -> Option<f64> {
+    vals.get(idx).and_then(|v| yien_as_f64(v))
+}
+
+/// 取 `Data.Table` 数组；缺失即上游结构变化。
+fn yien_table(resp: &Value) -> Result<&Vec<Value>> {
+    resp.get("Data")
+        .and_then(|d| d.get("Table"))
+        .and_then(|t| t.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_YIEN,
+            message: "missing Data.Table".into(),
+        })
+}
+
+// ---------------------------------------------------------------------------
+// business_value_artist — 艺人商业价值
+// ---------------------------------------------------------------------------
+
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct BusinessValueArtist {
+    /// 排名（akshare `排名`）。
+    pub rank: Option<f64>,
+    /// 艺人名（akshare `艺人`）。
+    pub artist: String,
+    /// 商业价值（akshare `商业价值`）。
+    pub business_value: Option<f64>,
+    /// 专业热度（akshare `专业热度`）。
+    pub major_heat: Option<f64>,
+    /// 关注热度（akshare `关注热度`）。
+    pub attention_heat: Option<f64>,
+    /// 预测热度（akshare `预测热度`）。
+    pub forecast_heat: Option<f64>,
+    /// 美誉度（akshare `美誉度`）。
+    pub reputation: Option<f64>,
+}
+
+/// 艺人商业价值（`business_value_artist`, 艺恩 `GetData.ashx`
+/// `Data_GetList_Star` / `BusinessValueIndex_L1`, akshare `artist_yien.py:65`).
+///
+/// 运行期 deferred：上游响应经 `jm.js` 加密，需 JS 解密，Rust 端未实现。
+/// 解析函数 `parse_business_value_artist` 已完整实现。
+pub async fn business_value_artist(client: &Client) -> Result<Vec<BusinessValueArtist>> {
+    let _ = client;
+    Err(Error::UpstreamChanged {
+        origin: SOURCE_YIEN,
+        message: "艺恩 GetData.ashx 响应需 jm.js JS 解密，Rust 端未实现".into(),
+    })
+}
+
+pub fn parse_business_value_artist(resp: &Value) -> Result<Vec<BusinessValueArtist>> {
+    let table = yien_table(resp)?;
+    let mut out = Vec::with_capacity(table.len());
+    for row in table {
+        let vals = yien_row_values(row);
+        let Some(artist) = yien_val_str(&vals, 2) else {
+            continue;
+        };
+        out.push(BusinessValueArtist {
+            rank: yien_val_f64(&vals, 0),
+            artist,
+            business_value: yien_val_f64(&vals, 3),
+            major_heat: yien_val_f64(&vals, 5),
+            attention_heat: yien_val_f64(&vals, 6),
+            forecast_heat: yien_val_f64(&vals, 7),
+            reputation: yien_val_f64(&vals, 8),
+        });
+    }
+    Ok(out)
+}
+
+// ---------------------------------------------------------------------------
+// online_value_artist — 艺人流量价值
+// ---------------------------------------------------------------------------
+
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct OnlineValueArtist {
+    /// 排名（akshare `排名`）。
+    pub rank: Option<f64>,
+    /// 艺人名（akshare `艺人`）。
+    pub artist: String,
+    /// 流量价值（akshare `流量价值`）。
+    pub flow_value: Option<f64>,
+    /// 专业热度（akshare `专业热度`）。
+    pub major_heat: Option<f64>,
+    /// 关注热度（akshare `关注热度`）。
+    pub attention_heat: Option<f64>,
+    /// 预测热度（akshare `预测热度`）。
+    pub forecast_heat: Option<f64>,
+    /// 带货力（akshare `带货力`）。
+    pub carrying_power: Option<f64>,
+}
+
+/// 艺人流量价值（`online_value_artist`, 艺恩 `GetData.ashx`
+/// `Data_GetList_Star` / `FlowValueIndex_L1`, akshare `artist_yien.py:103`）。
+///
+/// 运行期 deferred（同 `business_value_artist`）。解析函数已实现。
+pub async fn online_value_artist(client: &Client) -> Result<Vec<OnlineValueArtist>> {
+    let _ = client;
+    Err(Error::UpstreamChanged {
+        origin: SOURCE_YIEN,
+        message: "艺恩 GetData.ashx 响应需 jm.js JS 解密，Rust 端未实现".into(),
+    })
+}
+
+pub fn parse_online_value_artist(resp: &Value) -> Result<Vec<OnlineValueArtist>> {
+    let table = yien_table(resp)?;
+    let mut out = Vec::with_capacity(table.len());
+    for row in table {
+        let vals = yien_row_values(row);
+        let Some(artist) = yien_val_str(&vals, 2) else {
+            continue;
+        };
+        out.push(OnlineValueArtist {
+            rank: yien_val_f64(&vals, 0),
+            artist,
+            flow_value: yien_val_f64(&vals, 4),
+            major_heat: yien_val_f64(&vals, 5),
+            attention_heat: yien_val_f64(&vals, 6),
+            forecast_heat: yien_val_f64(&vals, 7),
+            carrying_power: yien_val_f64(&vals, 9),
+        });
+    }
+    Ok(out)
+}
+
+// ---------------------------------------------------------------------------
+// video_tv / video_variety_show — 电视剧集 / 综艺节目 播映指数
+// ---------------------------------------------------------------------------
+
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct VideoRankRow {
+    /// 排序（akshare `排序`）。
+    pub rank: Option<f64>,
+    /// 名称（akshare `名称`）。
+    pub name: String,
+    /// 类型（akshare `类型`）。
+    pub genre: Option<String>,
+    /// 播映指数（akshare `播映指数`）。
+    pub broadcast_index: Option<f64>,
+    /// 用户热度（akshare `用户热度`）。
+    pub user_heat: Option<f64>,
+    /// 媒体热度（akshare `媒体热度`）。
+    pub media_heat: Option<f64>,
+    /// 观看度（akshare `观看度`）。
+    pub view_count: Option<f64>,
+    /// 好评度（akshare `好评度`）。
+    pub reputation: Option<f64>,
+    /// 统计日期（akshare `统计日期` = `Data.Table1[0].MaxDate`）。
+    pub stat_date: Option<String>,
+}
+
+/// 共享解析：`video_tv` 与 `video_variety_show` 的 `Data.Table` 结构相同，仅
+/// `tvType` 不同（2=电视剧集, 8=综艺节目）。
+fn parse_video_rank(resp: &Value) -> Result<Vec<VideoRankRow>> {
+    let table = yien_table(resp)?;
+    let stat_date = resp
+        .get("Data")
+        .and_then(|d| d.get("Table1"))
+        .and_then(|t| t.as_array())
+        .and_then(|a| a.first())
+        .and_then(|o| o.get("MaxDate"))
+        .and_then(|v| v.as_str())
+        .map(|s| s.to_string());
+    let mut out = Vec::with_capacity(table.len());
+    for row in table {
+        let vals = yien_row_values(row);
+        let Some(name) = yien_val_str(&vals, 1) else {
+            continue;
+        };
+        out.push(VideoRankRow {
+            rank: yien_val_f64(&vals, 0),
+            name,
+            genre: yien_val_str(&vals, 2),
+            broadcast_index: yien_val_f64(&vals, 3),
+            user_heat: yien_val_f64(&vals, 4),
+            media_heat: yien_val_f64(&vals, 5),
+            view_count: yien_val_f64(&vals, 6),
+            reputation: yien_val_f64(&vals, 7),
+            stat_date: stat_date.clone(),
+        });
+    }
+    Ok(out)
+}
+
+/// 电视剧集播映指数（`video_tv`, 艺恩 `GetData.ashx`
+/// `BoxOffice_GetTvData_PlayIndexRank` / `tvType=2`, akshare `video_yien.py:65`）。
+///
+/// 运行期 deferred（同 `business_value_artist`）。解析函数已实现。
+pub async fn video_tv(client: &Client) -> Result<Vec<VideoRankRow>> {
+    let _ = client;
+    Err(Error::UpstreamChanged {
+        origin: SOURCE_YIEN,
+        message: "艺恩 GetData.ashx 响应需 jm.js JS 解密，Rust 端未实现".into(),
+    })
+}
+
+pub fn parse_video_tv(resp: &Value) -> Result<Vec<VideoRankRow>> {
+    parse_video_rank(resp)
+}
+
+/// 综艺节目播映指数（`video_variety_show`, 艺恩 `GetData.ashx`
+/// `BoxOffice_GetTvData_PlayIndexRank` / `tvType=8`, akshare `video_yien.py:96`）。
+///
+/// 运行期 deferred（同 `business_value_artist`）。解析函数已实现。
+pub async fn video_variety_show(client: &Client) -> Result<Vec<VideoRankRow>> {
+    let _ = client;
+    Err(Error::UpstreamChanged {
+        origin: SOURCE_YIEN,
+        message: "艺恩 GetData.ashx 响应需 jm.js JS 解密，Rust 端未实现".into(),
+    })
+}
+
+pub fn parse_video_variety_show(resp: &Value) -> Result<Vec<VideoRankRow>> {
+    parse_video_rank(resp)
+}
+
+// ---------------------------------------------------------------------------
+// movie_boxoffice_weekly / movie_boxoffice_cinema_weekly — 周榜（上游需权限）
+// ---------------------------------------------------------------------------
+
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct MovieBoxofficeWeeklyRow {
+    /// 排序。
+    pub rank: Option<i64>,
+    /// 影片名称。
+    pub movie_name: String,
+    /// 单周票房。
+    pub box_office: Option<f64>,
+    /// 票房占比。
+    pub box_office_percent: Option<f64>,
+    /// 上映天数。
+    pub release_day: Option<i64>,
+    /// 累计票房。
+    pub total_box_office: Option<f64>,
+    pub source: &'static str,
+}
+
+/// 单周票房（`movie_boxoffice_weekly`, akshare `movie_yien.py:340`）。
+///
+/// DEFERRED：上游艺恩公开周榜接口当前需权限，akshare 自身对该函数直接 raise
+/// `APIError`（`_raise_week_permission_error`），无法匿名获取确定性数据。
+pub async fn movie_boxoffice_weekly(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<MovieBoxofficeWeeklyRow>> {
+    let _ = (client, date);
+    Err(Error::UpstreamChanged {
+        origin: SOURCE_ENDATA,
+        message: "艺恩周票房公开接口需权限，akshare 亦返回权限错误".into(),
+    })
+}
+
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct MovieBoxofficeCinemaWeeklyRow {
+    /// 排序。
+    pub rank: Option<i64>,
+    /// 影院名称。
+    pub cinema_name: String,
+    /// 单周票房。
+    pub box_office: Option<f64>,
+    /// 单周场次。
+    pub show_count: Option<i64>,
+    /// 场均票价。
+    pub avg_box_office: Option<f64>,
+    /// 上座率。
+    pub attendance: Option<f64>,
+    pub source: &'static str,
+}
+
+/// 影院周票房（`movie_boxoffice_cinema_weekly`, akshare `movie_yien.py:642`）。
+///
+/// DEFERRED：同 `movie_boxoffice_weekly`，上游需权限，akshare 亦 raise。
+pub async fn movie_boxoffice_cinema_weekly(
+    client: &Client,
+    date: &str,
+) -> Result<Vec<MovieBoxofficeCinemaWeeklyRow>> {
+    let _ = (client, date);
+    Err(Error::UpstreamChanged {
+        origin: SOURCE_ENDATA,
+        message: "艺恩影院周票房公开接口需权限，akshare 亦返回权限错误".into(),
+    })
+}
+
+#[cfg(test)]
+mod yien_gaps_tests {
+    use super::*;
+    use std::path::PathBuf;
+
+    fn fixture(name: &str) -> Value {
+        let p = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures")
+            .join(name);
+        let txt = std::fs::read_to_string(p).unwrap();
+        serde_json::from_str(&txt).unwrap()
+    }
+
+    #[test]
+    fn parses_business_value_artist() {
+        let rows = parse_business_value_artist(&fixture("business_value_artist.json")).unwrap();
+        assert_eq!(rows.len(), 3);
+        assert_eq!(rows[0].artist, "艺人甲");
+        assert_eq!(rows[0].rank, Some(1.0));
+        assert_eq!(rows[0].business_value, Some(95.6));
+        assert_eq!(rows[0].major_heat, Some(88.1));
+        assert_eq!(rows[0].attention_heat, Some(90.2));
+        assert_eq!(rows[0].forecast_heat, Some(87.5));
+        assert_eq!(rows[0].reputation, Some(92.3));
+        assert_eq!(rows[2].artist, "艺人丙");
+    }
+
+    #[test]
+    fn parses_online_value_artist() {
+        let rows = parse_online_value_artist(&fixture("online_value_artist.json")).unwrap();
+        assert_eq!(rows.len(), 3);
+        assert_eq!(rows[0].artist, "艺人甲");
+        assert_eq!(rows[0].flow_value, Some(93.1));
+        assert_eq!(rows[0].carrying_power, Some(79.3));
+        assert_eq!(rows[0].major_heat, Some(87.0));
+        assert_eq!(rows[0].attention_heat, Some(91.2));
+        assert_eq!(rows[0].forecast_heat, Some(85.6));
+    }
+
+    #[test]
+    fn parses_video_tv() {
+        let rows = parse_video_tv(&fixture("video_tv.json")).unwrap();
+        assert_eq!(rows.len(), 3);
+        assert_eq!(rows[0].name, "剧集甲");
+        assert_eq!(rows[0].rank, Some(1.0));
+        assert_eq!(rows[0].broadcast_index, Some(85.2));
+        assert_eq!(rows[0].user_heat, Some(80.1));
+        assert_eq!(rows[0].media_heat, Some(78.3));
+        assert_eq!(rows[0].view_count, Some(76.5));
+        assert_eq!(rows[0].reputation, Some(88.9));
+        assert_eq!(rows[0].stat_date, Some("2024-01-15".to_string()));
+    }
+
+    #[test]
+    fn parses_video_variety_show() {
+        let rows = parse_video_variety_show(&fixture("video_variety_show.json")).unwrap();
+        assert_eq!(rows.len(), 3);
+        assert_eq!(rows[0].name, "综艺甲");
+        assert_eq!(rows[0].genre, Some("真人秀".to_string()));
+        assert_eq!(rows[0].broadcast_index, Some(88.5));
+        assert_eq!(rows[0].view_count, Some(79.4));
+        assert_eq!(rows[0].stat_date, Some("2024-01-15".to_string()));
+    }
+
+    #[test]
+    fn yien_async_endpoints_deferred_or_error() {
+        // 艺恩 GetData.ashx 需 jm.js JS 解密（Rust 未实现），周榜上游需权限：
+        // 运行期均返回 Err。
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .build()
+            .unwrap();
+        rt.block_on(async {
+            let client = crate::core::client::Client::new();
+            assert!(business_value_artist(&client).await.is_err());
+            assert!(online_value_artist(&client).await.is_err());
+            assert!(video_tv(&client).await.is_err());
+            assert!(video_variety_show(&client).await.is_err());
+            assert!(movie_boxoffice_weekly(&client, "20240218").await.is_err());
+            assert!(movie_boxoffice_cinema_weekly(&client, "20240219")
+                .await
+                .is_err());
+        });
+    }
+}

@@ -1,0 +1,19 @@
+{
+  "data": {
+    "bondBaseInfo": {
+      "bondName": "19渝机电CP002",
+      "bondCode": "041900001",
+      "issueStartDate": "2019-02-21",
+      "creditRateEntyList": [
+        {
+          "x": 1
+        }
+      ],
+      "exerciseInfoList": [
+        {
+          "y": 2
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "data": {
+    "list": [
+      {
+        "swIndexCode": "807100",
+        "swIndexName": "申万指数",
+        "lastCloseIndex": 3456.78,
+        "lastMarkup": -0.0123,
+        "yearMarkup": 0.0456
+      },
+      {
+        "swIndexCode": "807200",
+        "swIndexName": "申万基金指数",
+        "lastCloseIndex": 1234.56,
+        "lastMarkup": 0.0078,
+        "yearMarkup": -0.0234
+      }
+    ]
+  }
+}

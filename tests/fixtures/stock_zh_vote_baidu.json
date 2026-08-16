@@ -1,0 +1,12 @@
+{
+  "Result": {
+    "voteRecords": {
+      "voteRes": [
+        {"type":"day","name":"日","up":120.0,"down":80.0,"upRatio":60.0,"downRatio":40.0},
+        {"type":"week","name":"周","up":540.0,"down":460.0,"upRatio":54.0,"downRatio":46.0},
+        {"type":"month","name":"月","up":2300.0,"down":1700.0,"upRatio":57.5,"downRatio":42.5},
+        {"type":"year","name":"年","up":26000.0,"down":300.0,"upRatio":98.8,"downRatio":1.2}
+      ]
+    }
+  }
+}

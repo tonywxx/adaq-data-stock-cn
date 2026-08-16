@@ -1,0 +1,22 @@
+{
+  "data": {
+    "dateLineJson": [
+      {
+        "tradeDate": "2024-01-02",
+        "indexId": "100001.CCI",
+        "closingPrice": 1000.5,
+        "settlePrice": 999.8,
+        "dailyIncreaseAndDecrease": 2.3,
+        "dailyIncreaseAndDecreasePercentage": 0.23
+      },
+      {
+        "tradeDate": "2024-01-03",
+        "indexId": "100001.CCI",
+        "closingPrice": 1005.1,
+        "settlePrice": 1004.0,
+        "dailyIncreaseAndDecrease": 4.6,
+        "dailyIncreaseAndDecreasePercentage": 0.46
+      }
+    ]
+  }
+}

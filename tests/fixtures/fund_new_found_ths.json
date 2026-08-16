@@ -1,0 +1,4 @@
+{
+  "k1": {"code": "123456", "name": "新发基金A", "type": "股票型", "jjlx": "LOF", "tzfg": "稳健", "start": "2024-01-01", "end": "2024-02-01", "orgname": "管理公司A", "manager": "基金经理A", "zgrgfl": "1.5", "zdrg": "1000", "zdje": "5000", "zzfx": 1, "buy": "1"},
+  "k2": {"code": "654321", "name": "新发基金B", "type": "债券型", "jjlx": "ETF", "tzfg": "激进", "start": "2024-03-01", "end": "2024-04-01", "orgname": "管理公司B", "manager": "基金经理B", "zgrgfl": "0.5", "zdrg": "100", "zdje": "500", "zzfx": 0, "buy": "0"}
+}

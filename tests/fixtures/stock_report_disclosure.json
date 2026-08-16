@@ -1,0 +1,6 @@
+{
+  "prbookinfos": [
+    {"stockCode":"000001","stockName":"平安银行","firstDate":"2024-03-01","firstChange":"","secondChange":"","thirdChange":"","actualDate":"2024-03-15","reportPeriod":"2023-12-31","orgCode":"1001"},
+    {"stockCode":"600000","stockName":"浦发银行","firstDate":"2024-03-05","firstChange":"2024-03-10","secondChange":"","thirdChange":"","actualDate":"2024-03-20","reportPeriod":"2023-12-31","orgCode":"1002"}
+  ]
+}

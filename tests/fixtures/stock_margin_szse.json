@@ -1,0 +1,11 @@
+{
+  "_note": "SYNTHETIC fixture for stock_margin_szse (SZSE ShowReport/data). Not from a live response. Upstream wraps the row list as [{ \"data\": [ ... ] }]; each row is an object with Chinese-named keys and comma-grouped numeric strings (mirrors akshare's str.replace(',','') + to_numeric).",
+  "packet": [
+    {
+      "data": [
+        {"融资买入额": "1,234.56", "融资余额": "2,345.67", "融券卖出量": "12.3", "融券余量": "23.4", "融券余额": "34.5", "融资融券余额": "5,678.90"},
+        {"融资买入额": "1,000.00", "融资余额": "2,000.00", "融券卖出量": "10.0", "融券余量": "20.0", "融券余额": "30.0", "融资融券余额": "5,000.00"}
+      ]
+    }
+  ]
+}

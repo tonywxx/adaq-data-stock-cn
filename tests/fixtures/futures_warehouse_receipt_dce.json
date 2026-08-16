@@ -1,0 +1,8 @@
+{
+  "data": {
+    "entityList": [
+      {"varietyOrder": "a", "variety": "大豆", "whAbbr": "仓库A", "deliveryAbbr": "提货点A", "lastWbillQty": "1000", "wbillQty": "1200", "diff": "200"},
+      {"varietyOrder": "m", "variety": "豆粕", "whAbbr": "仓库B", "deliveryAbbr": "提货点B", "lastWbillQty": "3000", "wbillQty": "3100", "diff": "100"}
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "data": {
+    "total_hits": 42,
+    "list": [
+      {
+        "art_code": "ARTICLE_ID_300237",
+        "codes": [
+          {
+            "ann_type": "A,SZA",
+            "inner_code": "28794850949999",
+            "market_code": "2",
+            "short_name": "美晨科技",
+            "stock_code": "300237"
+          }
+        ],
+        "columns": [
+          { "column_code": "001002007003009002", "column_name": "财务报告" }
+        ],
+        "display_time": "2025-04-22 19:30:00",
+        "eiTime": "2025-04-22 19:30:00",
+        "language": "cn",
+        "listing_state": "1",
+        "notice_date": "2025-04-22",
+        "product_code": "300237",
+        "sort_date": "20250422",
+        "source_type": "1",
+        "title": "2024年年度报告",
+        "title_ch": "2024年年度报告",
+        "title_en": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "data": [
+    {"variety": "大豆", "contractId": "a2511", "open": "3900", "high": "3950", "low": "3850", "close": "3920", "lastClear": "3910", "clearPrice": "3920", "diff": "10", "diff1": "5", "volumn": "50000", "openInterest": "100000", "diffI": "200", "turnover": "1.95e9"},
+    {"variety": "豆粕", "contractId": "m2511", "open": "3000", "high": "3050", "low": "2950", "close": "3020", "lastClear": "3010", "clearPrice": "3020", "diff": "10", "diff1": "5", "volumn": "40000", "openInterest": "90000", "diffI": "150", "turnover": "1.2e8"},
+    {"variety": "小计", "contractId": "x", "open": "1", "high": "1", "low": "1", "close": "1", "lastClear": "1", "clearPrice": "1", "diff": "1", "diff1": "1", "volumn": "1", "openInterest": "1", "diffI": "1", "turnover": "1"},
+    {"variety": "总计", "contractId": "y", "open": "1", "high": "1", "low": "1", "close": "1", "lastClear": "1", "clearPrice": "1", "diff": "1", "diff1": "1", "volumn": "1", "openInterest": "1", "diffI": "1", "turnover": "1"}
+  ]
+}

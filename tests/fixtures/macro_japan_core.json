@@ -1,0 +1,28 @@
+{
+  "result": {
+    "data": [
+      {
+        "COUNTRY": "日本",
+        "INDICATOR_ID": "EMG00341602",
+        "INDICATOR_NAME": "日本核心CPI年率",
+        "REPORT_DATE_CH": "2024-03",
+        "REPORT_DATE": "2024-03-01T00:00:00",
+        "PUBLISH_DATE": "2024-04-19T00:00:00",
+        "VALUE": 2.7,
+        "PRE_VALUE": 2.8,
+        "INDICATOR_IDOLD": ""
+      },
+      {
+        "COUNTRY": "日本",
+        "INDICATOR_ID": "EMG00341602",
+        "INDICATOR_NAME": "日本核心CPI年率",
+        "REPORT_DATE_CH": "2024-02",
+        "REPORT_DATE": "2024-02-01T00:00:00",
+        "PUBLISH_DATE": "2024-03-22T00:00:00",
+        "VALUE": 2.8,
+        "PRE_VALUE": 2.9,
+        "INDICATOR_IDOLD": ""
+      }
+    ]
+  }
+}

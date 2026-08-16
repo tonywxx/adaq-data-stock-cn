@@ -1,0 +1,33 @@
+[
+  {
+    "result": {
+      "totalPages": 1,
+      "content": [
+        {
+          "stockCode": "430489",
+          "stockName": "佳先股份",
+          "djgName": "王五",
+          "duty": "董事",
+          "changeDate": "2023-02-08",
+          "changeAmount": 2000,
+          "preAmount": 6000,
+          "newAmount": 8000,
+          "price": 6.4,
+          "reason": "个人资金需求"
+        },
+        {
+          "stockCode": "830799",
+          "stockName": "北交所股",
+          "djgName": "赵六",
+          "duty": "高管",
+          "changeDate": "2023-03-22",
+          "changeAmount": 500,
+          "preAmount": 3000,
+          "newAmount": 3500,
+          "price": 9.1,
+          "reason": "其他"
+        }
+      ]
+    }
+  }
+]

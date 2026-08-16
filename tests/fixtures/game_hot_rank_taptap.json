@@ -1,0 +1,67 @@
+{
+  "success": true,
+  "data": {
+    "total": 2,
+    "list": [
+      {
+        "app": {
+          "id": "1390",
+          "title": "原神",
+          "icon": {
+            "url": "https://i.taptap.cn/icon/1.png"
+          },
+          "stat": {
+            "rating": {
+              "score": 8.5
+            },
+            "hits_total": 500000,
+            "play_total": 300000,
+            "review_count": 10000,
+            "fans_count": 20000
+          },
+          "rec_text": "推荐",
+          "released_time": 1500000000,
+          "tags": [
+            {
+              "value": "开放世界"
+            },
+            {
+              "value": "二次元"
+            }
+          ],
+          "description": {
+            "text": "开放世界游戏"
+          }
+        }
+      },
+      {
+        "app": {
+          "id": "1234",
+          "title": "王者荣耀",
+          "icon": {
+            "url": "https://i.taptap.cn/icon/2.png"
+          },
+          "stat": {
+            "rating": {
+              "score": 9.0
+            },
+            "hits_total": 1000000,
+            "play_total": 800000,
+            "review_count": 50000,
+            "fans_count": 90000
+          },
+          "rec_text": "热门",
+          "released_time": 1400000000,
+          "tags": [
+            {
+              "value": "MOBA"
+            }
+          ],
+          "description": {
+            "text": "5v5"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "totalAnnouncement": 1,
+  "announcements": [
+    {
+      "secCode": "000001",
+      "secName": "平安银行",
+      "announcementTitle": "关于召开业绩说明会的公告",
+      "announcementTime": 1690100000000,
+      "announcementId": "2",
+      "orgId": "g0001"
+    }
+  ]
+}

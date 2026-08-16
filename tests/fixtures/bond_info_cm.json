@@ -1,0 +1,25 @@
+{
+  "data": {
+    "pageTotal": 1,
+    "resultList": [
+      {
+        "bondName": "19渝机电CP002",
+        "bondCode": "041900001",
+        "entyFullName": "重庆机电控股",
+        "bondType": "短期融资券",
+        "issueStartDate": "2019-02-21",
+        "debtRtng": "AA+",
+        "bondDefinedCode": "egfjh08154"
+      },
+      {
+        "bondName": "20某债",
+        "bondCode": "012000001",
+        "entyFullName": "某集团",
+        "bondType": "短期融资券",
+        "issueStartDate": "2020-01-15",
+        "debtRtng": "AAA",
+        "bondDefinedCode": "egfjh08155"
+      }
+    ]
+  }
+}

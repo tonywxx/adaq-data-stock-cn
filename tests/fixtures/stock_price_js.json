@@ -1,0 +1,22 @@
+{
+  "data": {
+    "list": [
+      {
+        "date": "2023-05-01",
+        "stock_name": "Apple",
+        "rating": "买入",
+        "prev_target_price": 180,
+        "latest_target_price": 200,
+        "institution": "大摩"
+      },
+      {
+        "date": "2023-05-02",
+        "stock_name": "Tencent",
+        "rating": "增持",
+        "prev_target_price": 350,
+        "latest_target_price": 380,
+        "institution": "小摩"
+      }
+    ]
+  }
+}

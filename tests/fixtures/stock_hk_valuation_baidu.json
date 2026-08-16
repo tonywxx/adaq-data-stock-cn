@@ -1,0 +1,22 @@
+{
+  "Result": [
+    {
+      "DisplayData": {
+        "resultData": {
+          "tplData": {
+            "result": {
+              "chartInfo": [
+                {
+                  "body": [
+                    {"date":"2023-01-01","value":1000.5},
+                    {"date":"2023-01-02","value":1200.0}
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

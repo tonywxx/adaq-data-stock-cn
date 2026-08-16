@@ -1,0 +1,22 @@
+{
+  "result": {
+    "data": [
+      {
+        "CORRE_SECURITY_CODE": "000895.SZ",
+        "CORRE_SECURITY_NAME": "双汇发展",
+        "MGSY_3Y": 8.5, "MGSYTB": 7.2, "MGSYTTM": 7.8, "MGSY_1E": 8.0, "MGSY_2E": 8.2, "MGSY_3E": 8.4,
+        "YYSR_3Y": 6.1, "YYSRTB": 5.5, "YYSRTTM": 6.0, "YYSR_1E": 6.3, "YYSR_2E": 6.5, "YYSR_3E": 6.7,
+        "JLR_3Y": 7.0, "JLRTB": 6.4, "JLRTTM": 7.7, "JLR_1E": 7.2, "JLR_2E": 7.4, "JLR_3E": 7.6,
+        "PAIMING": 3
+      },
+      {
+        "CORRE_SECURITY_CODE": "600887.SH",
+        "CORRE_SECURITY_NAME": "伊利股份",
+        "MGSY_3Y": 9.1, "MGSYTB": 8.0, "MGSYTTM": 8.5, "MGSY_1E": 8.8, "MGSY_2E": 9.0, "MGSY_3E": 9.2,
+        "YYSR_3Y": 7.2, "YYSRTB": 6.8, "YYSRTTM": 7.0, "YYSR_1E": 7.1, "YYSR_2E": 7.3, "YYSR_3E": 7.5,
+        "JLR_3Y": 8.0, "JLRTB": 7.5, "JLRTTM": 7.7, "JLR_1E": 7.9, "JLR_2E": 8.1, "JLR_3E": 8.3,
+        "PAIMING": 2
+      }
+    ]
+  }
+}

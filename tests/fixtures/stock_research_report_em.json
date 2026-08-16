@@ -1,0 +1,7 @@
+{
+  "TotalPage": 1,
+  "data": [
+    {"stockCode":"000001","stockName":"平安银行","title":"公司深度报告","emRatingName":"买入","orgSName":"中信证券","count":12.0,"predictThisYearEps":2.3,"predictThisYearPe":5.1,"predictNextYearEps":2.6,"predictNextYearPe":4.5,"predictNextTwoYearEps":2.9,"predictNextTwoYearPe":4.0,"indvInduName":"银行","publishDate":"2024-03-15","infoCode":"AP20240101"},
+    {"stockCode":"600000","stockName":"浦发银行","title":"季报点评","emRatingName":"增持","orgSName":"国泰君安","count":8.0,"predictThisYearEps":1.5,"predictThisYearPe":4.2,"predictNextYearEps":1.7,"predictNextYearPe":3.8,"predictNextTwoYearEps":1.9,"predictNextTwoYearPe":3.5,"indvInduName":"银行","publishDate":"2024-03-20","infoCode":"AP20240202"}
+  ]
+}

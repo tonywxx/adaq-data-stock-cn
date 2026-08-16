@@ -1,0 +1,24 @@
+{
+  "result": {
+    "data": [
+      {
+        "CORRE_SECURITY_CODE": "000895.SZ",
+        "CORRE_SECURITY_NAME": "双汇发展",
+        "ROE_AVG": 26.5, "ROEPJ_L3": 25.0, "ROEPJ_L2": 26.0, "ROEPJ_L1": 27.0,
+        "XSJLL_AVG": 9.5, "XSJLL_L3": 9.2, "XSJLL_L2": 9.6, "XSJLL_L1": 9.8,
+        "TOAZZL_AVG": 1.8, "TOAZZL_L3": 1.7, "TOAZZL_L2": 1.9, "TOAZZL_L1": 1.85,
+        "QYCS_AVG": 1.6, "QYCS_L3": 1.55, "QYCS_L2": 1.62, "QYCS_L1": 1.58,
+        "PAIMING": 3
+      },
+      {
+        "CORRE_SECURITY_CODE": "600887.SH",
+        "CORRE_SECURITY_NAME": "伊利股份",
+        "ROE_AVG": 22.0, "ROEPJ_L3": 21.0, "ROEPJ_L2": 22.0, "ROEPJ_L1": 23.0,
+        "XSJLL_AVG": 8.0, "XSJLL_L3": 7.8, "XSJLL_L2": 8.1, "XSJLL_L1": 8.2,
+        "TOAZZL_AVG": 1.5, "TOAZZL_L3": 1.45, "TOAZZL_L2": 1.55, "TOAZZL_L1": 1.52,
+        "QYCS_AVG": 1.8, "QYCS_L3": 1.75, "QYCS_L2": 1.82, "QYCS_L1": 1.85,
+        "PAIMING": 4
+      }
+    ]
+  }
+}

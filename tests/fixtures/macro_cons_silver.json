@@ -1,0 +1,8 @@
+{
+  "_note": "synthetic fixture for offline parse test",
+  "data": {
+    "values": [
+      ["2024-01-02", "13500.0", "150.0", "305000.0"]
+    ]
+  }
+}

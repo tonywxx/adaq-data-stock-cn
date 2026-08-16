@@ -1,0 +1,18 @@
+{
+  "data": {
+    "list": [
+      {
+        "secuCode": "600000",
+        "secuName": "浦发银行",
+        "fiMarginRatio": 100.0,
+        "slMarginRatio": 50.0
+      },
+      {
+        "secuCode": "000001",
+        "secuName": "平安银行",
+        "fiMarginRatio": 100.0,
+        "slMarginRatio": 50.0
+      }
+    ]
+  }
+}

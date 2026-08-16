@@ -1,0 +1,55 @@
+{
+  "actionErrors": [],
+  "actionMessages": [],
+  "fieldErrors": {},
+  "isPagination": "true",
+  "jsonCallBack": null,
+  "locale": "en",
+  "result": [
+    {
+      "updateDate": "20260813220624",
+      "planIssueCapital": 5.2496,
+      "suspendStatus": "",
+      "wenHao": "",
+      "stockAuditName": "傲拓科技股份有限公司",
+      "projectType": 0,
+      "currStatus": 2,
+      "stockAuditNum": "2062",
+      "registeResult": "",
+      "collectType": 1,
+      "stockIssuer": [],
+      "createTime": "20250310143034",
+      "auditApplyDate": "20250311190134",
+      "issueAmount": "",
+      "uniformCode": "91320000681133588P",
+      "commitiResult": "",
+      "issueMarketType": 1,
+      "OPERATION_SEQ": "9aa190648729bcc7004744b876b0ebcb"
+    }
+  ],
+  "pageHelp": {
+    "beginPage": 1,
+    "data": [
+      {
+        "updateDate": "20260813220624",
+        "planIssueCapital": 5.2496,
+        "suspendStatus": "",
+        "wenHao": "",
+        "stockAuditName": "傲拓科技股份有限公司",
+        "projectType": 0,
+        "currStatus": 2,
+        "stockAuditNum": "2062",
+        "registeResult": "",
+        "collectType": 1,
+        "stockIssuer": [],
+        "createTime": "20250310143034",
+        "auditApplyDate": "20250311190134",
+        "issueAmount": "",
+        "uniformCode": "91320000681133588P",
+        "commitiResult": "",
+        "issueMarketType": 1,
+        "OPERATION_SEQ": "9aa190648729bcc7004744b876b0ebcb"
+      }
+    ]
+  }
+}

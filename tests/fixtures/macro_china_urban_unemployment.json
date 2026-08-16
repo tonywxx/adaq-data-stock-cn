@@ -1,0 +1,25 @@
+{
+  "_note": "synthetic fixture for offline parse test",
+  "success": true,
+  "data": [
+    {
+      "name": "2024年01月",
+      "values": [
+        { "_name": "城镇调查失业率", "value": 5.2, "i_showname": "全国 (%)" },
+        { "_name": "其他指标", "value": 99.0, "i_showname": "其他 (%)" }
+      ]
+    },
+    {
+      "name": "2024年02月",
+      "values": [
+        { "_name": "城镇调查失业率", "value": 5.3, "i_showname": "全国 (%)" }
+      ]
+    },
+    {
+      "name": "2024年03月",
+      "values": [
+        { "_name": "城镇调查失业率", "value": null, "i_showname": "全国 (%)" }
+      ]
+    }
+  ]
+}

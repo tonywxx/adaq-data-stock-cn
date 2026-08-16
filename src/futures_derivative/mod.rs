@@ -21,3 +21,6 @@
 pub mod contract_info;
 pub mod hog;
 pub mod sina;
+
+// --- second-wave futures-derivative ports (this agent) ---
+pub mod wv_more;

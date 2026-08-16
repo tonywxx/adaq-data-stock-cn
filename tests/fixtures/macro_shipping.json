@@ -1,0 +1,32 @@
+[
+  {
+    "REPORT_DATE": "2024-01-02",
+    "INDICATOR_VALUE": 2345.0,
+    "CHANGE_RATE": 2.1,
+    "CHANGERATE_3M": 3.4,
+    "CHANGERATE_6M": 5.5,
+    "CHANGERATE_1Y": 8.8,
+    "CHANGERATE_2Y": 10.1,
+    "CHANGERATE_3Y": 12.3
+  },
+  {
+    "REPORT_DATE": "2024-01-03",
+    "INDICATOR_VALUE": 1980.5,
+    "CHANGE_RATE": -1.5,
+    "CHANGERATE_3M": -1.2,
+    "CHANGERATE_6M": 4.4,
+    "CHANGERATE_1Y": 7.7,
+    "CHANGERATE_2Y": 9.0,
+    "CHANGERATE_3Y": 11.2
+  },
+  {
+    "REPORT_DATE": "2024-01-04",
+    "INDICATOR_VALUE": 2100.0,
+    "CHANGE_RATE": 6.0,
+    "CHANGERATE_3M": 2.2,
+    "CHANGERATE_6M": 3.3,
+    "CHANGERATE_1Y": -4.5,
+    "CHANGERATE_2Y": 3.3,
+    "CHANGERATE_3Y": 9.9
+  }
+]

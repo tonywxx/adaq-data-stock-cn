@@ -1,0 +1,12 @@
+{
+  "data": {
+    "fastNewsList": [
+      {
+        "title": "全球快讯标题",
+        "summary": "全球快讯摘要",
+        "showTime": "2026-01-13 09:00:00",
+        "code": "abc123"
+      }
+    ]
+  }
+}

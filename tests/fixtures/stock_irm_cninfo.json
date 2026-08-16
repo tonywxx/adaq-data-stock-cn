@@ -1,0 +1,21 @@
+{
+  "totalPage": 1,
+  "rows": [
+    {
+      "stockCode": "002594",
+      "companyShortName": "比亚迪",
+      "trade": ["汽车"],
+      "boardType": ["制造业"],
+      "mainContent": "请问贵司海外产能规划？",
+      "authorName": "投资者A",
+      "pubClient": "4",
+      "pubDate": 1691140000000,
+      "updateDate": 1691141000000,
+      "author": "u1001",
+      "indexId": "q2001",
+      "attachedId": "a2001",
+      "attachedContent": "感谢关注，详见公告。",
+      "attachedAuthor": "董秘"
+    }
+  ]
+}

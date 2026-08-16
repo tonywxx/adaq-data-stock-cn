@@ -1,0 +1,86 @@
+{
+  "page": 1,
+  "rows": [
+    {
+      "id": "518800",
+      "cell": {
+        "fund_id": "518800",
+        "fund_nm": "黄金ETF",
+        "qtype": "E",
+        "issuer_nm": "国泰基金",
+        "price": "3.600",
+        "pre_close": "3.5820",
+        "increase_rt": "0.50%",
+        "volume": "12345.67",
+        "amount": 50000,
+        "amount_incr": "100",
+        "fund_nav": "3.580",
+        "nav_dt": "2026-08-13",
+        "estimate_value": "3.610",
+        "last_est_dt": "2026-08-14",
+        "discount_rt": "0.28%",
+        "index_nm": "黄金现货",
+        "ref_increase_rt": "0.45%",
+        "apply_fee": "0.50%",
+        "redeem_fee": "0.50%",
+        "mt_fee": "0.50",
+        "apply_status": "开放申购",
+        "redeem_status": "开放赎回"
+      }
+    },
+    {
+      "id": "513500",
+      "cell": {
+        "fund_id": "513500",
+        "fund_nm": "标普500ETF",
+        "qtype": "E",
+        "issuer_nm": "博时基金",
+        "price": "1.850",
+        "pre_close": "1.8400",
+        "increase_rt": "0.54%",
+        "volume": "8821.20",
+        "amount": 64000,
+        "amount_incr": "0",
+        "fund_nav": "1.842",
+        "nav_dt": "2026-08-13",
+        "estimate_value": "1.855",
+        "last_est_dt": "2026-08-14",
+        "discount_rt": "0.16%",
+        "index_nm": "标普500",
+        "ref_increase_rt": "0.30%",
+        "apply_fee": "0.00%",
+        "redeem_fee": "0.00%",
+        "mt_fee": "0.60",
+        "apply_status": "限大额申购",
+        "redeem_status": "开放赎回"
+      }
+    },
+    {
+      "id": "513100",
+      "cell": {
+        "fund_id": "513100",
+        "fund_nm": "纳指ETF",
+        "qtype": "E",
+        "issuer_nm": "国泰基金",
+        "price": "1.420",
+        "pre_close": "1.4180",
+        "increase_rt": "0.14%",
+        "volume": "5530.11",
+        "amount": 33000,
+        "amount_incr": "-",
+        "fund_nav": "1.418",
+        "nav_dt": "2026-08-13",
+        "estimate_value": "-",
+        "last_est_dt": "2026-08-14",
+        "discount_rt": "-",
+        "index_nm": "纳斯达克100",
+        "ref_increase_rt": "0.12%",
+        "apply_fee": "-",
+        "redeem_fee": "-",
+        "mt_fee": "0.50",
+        "apply_status": "暂停申购",
+        "redeem_status": "开放赎回"
+      }
+    }
+  ]
+}

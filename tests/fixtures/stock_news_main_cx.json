@@ -1,0 +1,8 @@
+{
+  "data": {
+    "data": [
+      { "tag": "宏观", "summary": "财新PMI超预期", "url": "https://cxdata.caixin.com/1" },
+      { "tag": "公司", "summary": "某上市公司发布年报", "url": "https://cxdata.caixin.com/2" }
+    ]
+  }
+}

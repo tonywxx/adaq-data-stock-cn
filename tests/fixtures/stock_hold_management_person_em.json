@@ -1,0 +1,42 @@
+{
+  "result": {
+    "data": [
+      {
+        "SECURITY_CODE": "001308",
+        "SECURITY_NAME": "康冠科技",
+        "CHANGE_DATE": "2023-05-12",
+        "PERSON_NAME": "吴远",
+        "CHANGE_SHARES": 10000,
+        "AVERAGE_PRICE": 15.2,
+        "CHANGE_AMOUNT": 152000,
+        "CHANGE_REASON": "个人资金需求",
+        "CHANGE_RATIO": 0.0135,
+        "CHANGE_AFTER_HOLDNUM": 1200000,
+        "HOLD_TYPE": "A股",
+        "DSE_PERSON_NAME": "吴远",
+        "POSITION_NAME": "董事",
+        "PERSON_DSE_RELATION": "本人",
+        "BEGIN_HOLD_NUM": 1190000,
+        "END_HOLD_NUM": 1200000
+      },
+      {
+        "SECURITY_CODE": "600519",
+        "SECURITY_NAME": "某某股份",
+        "CHANGE_DATE": "2023-06-01",
+        "PERSON_NAME": "李四",
+        "CHANGE_SHARES": 500,
+        "AVERAGE_PRICE": 1685.0,
+        "CHANGE_AMOUNT": 842500,
+        "CHANGE_REASON": "股权激励",
+        "CHANGE_RATIO": 0.0002,
+        "CHANGE_AFTER_HOLDNUM": 5000,
+        "HOLD_TYPE": "A股",
+        "DSE_PERSON_NAME": "李四",
+        "POSITION_NAME": "高管",
+        "PERSON_DSE_RELATION": "本人",
+        "BEGIN_HOLD_NUM": 4500,
+        "END_HOLD_NUM": 5000
+      }
+    ]
+  }
+}

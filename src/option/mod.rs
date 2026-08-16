@@ -19,3 +19,5 @@ pub use sse::{
 };
 
 pub mod wv_option_misc;
+pub mod wv_option_more;
+pub mod excel_gaps;

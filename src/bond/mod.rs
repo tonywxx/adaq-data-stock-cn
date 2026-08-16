@@ -17,3 +17,4 @@ pub use chinamoney::*;
 pub use eastmoney::*;
 
 pub mod wv_bond_misc;
+pub mod excel_gaps;

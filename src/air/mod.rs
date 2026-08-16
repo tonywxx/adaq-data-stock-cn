@@ -32,5 +32,6 @@
 //! Revisit when an XML/HTML parser and/or a JS-signing helper (port of the
 //! akshare `crypto.js`/`outcrypto.js` logic to Rust) is added.
 
+pub mod air_gaps;
 pub mod hebei;
 pub mod zhenqi;

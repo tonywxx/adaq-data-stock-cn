@@ -1,0 +1,43 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "600000",
+        "SECURITY_NAME_ABBR": "浦发银行",
+        "NEWEST_PRICE": 10.5,
+        "CHANGE_RATE_QUOTES": 1.23,
+        "HOLDER_NAME": "某某投资",
+        "DIRECTION": "增持",
+        "CHANGE_NUM": 1200000.0,
+        "RATIO_TOTAL_SHARE": 0.04,
+        "RATIO_FLOAT_SHARE": 0.05,
+        "HOLD_TOTAL": 5000000.0,
+        "HOLD_RATIO_TOTAL": 0.17,
+        "HOLD_FLOAT": 4000000.0,
+        "HOLD_RATIO_FLOAT": 0.21,
+        "START_DATE": "2026-01-01",
+        "END_DATE": "2026-01-15",
+        "NOTICE_DATE": "2026-01-20"
+      },
+      {
+        "SECURITY_CODE": "000001",
+        "SECURITY_NAME_ABBR": "平安银行",
+        "NEWEST_PRICE": 11.2,
+        "CHANGE_RATE_QUOTES": -0.5,
+        "HOLDER_NAME": "另一股东",
+        "DIRECTION": "减持",
+        "CHANGE_NUM": 800000.0,
+        "RATIO_TOTAL_SHARE": 0.03,
+        "RATIO_FLOAT_SHARE": 0.04,
+        "HOLD_TOTAL": 3000000.0,
+        "HOLD_RATIO_TOTAL": 0.10,
+        "HOLD_FLOAT": 2000000.0,
+        "HOLD_RATIO_FLOAT": 0.12,
+        "START_DATE": "2026-02-01",
+        "END_DATE": "2026-02-10",
+        "NOTICE_DATE": "2026-02-15"
+      }
+    ]
+  }
+}

@@ -42,3 +42,9 @@ pub mod deferred_more;
 
 pub use global_spot_em::{GlobalSpotEmRow, futures_global_spot_em};
 pub use warehouse_receipt_shfe::{ShfeWarehouseReceiptRow, futures_shfe_warehouse_receipt};
+
+// --- second-wave futures ports (this agent) ---
+pub mod wv_futures_more;
+
+// --- futures "gaps" ports: sina main-continuous listing + 99qh inventory ---
+pub mod fut_gaps;

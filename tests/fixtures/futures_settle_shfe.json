@@ -1,0 +1,15 @@
+{
+  "o_cursor": [
+    {
+      "PRODUCTID": "cu",
+      "SETTLEMENTPRICE": "69000",
+      "SPECLONGMARGINRATIO": "5",
+      "SPECSHORTMARGINRATIO": "5",
+      "HEDGLONGMARGINRATIO": "5",
+      "HEDGSHORTMARGINRATIO": "5",
+      "TRADEFEERATIO": "0.0001",
+      "TTRADEFEERATIO": "0",
+      "ISCLOSETODAY": "0"
+    }
+  ]
+}

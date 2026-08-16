@@ -1,0 +1,24 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "300073",
+        "SECURITY_NAME_ABBR": "当升科技",
+        "BASIC_EPS": 1.5,
+        "OPERATE_INCOME": 8300000000.0,
+        "OPERATE_INCOME_PREV": 7000000000.0,
+        "OPERATE_INCOME_YOY": 18.57,
+        "OPERATE_INCOME_QOQ": 2.1,
+        "NET_PROFIT": 900000000.0,
+        "NET_PROFIT_PREV": 750000000.0,
+        "NET_PROFIT_YOY": 20.0,
+        "NET_PROFIT_QOQ": 3.2,
+        "NAPS": 8.2,
+        "ROE": 12.5,
+        "INDUSTRY": "电池",
+        "UPDATE_DATE": "2022-01-15 00:00:00"
+      }
+    ]
+  }
+}

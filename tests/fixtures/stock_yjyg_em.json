@@ -1,0 +1,19 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "300073",
+        "SECURITY_NAME_ABBR": "当升科技",
+        "PREDICT_INDEX": "净利润",
+        "PERFORMANCE_CHANGE": "大幅增长",
+        "PREDICT_VALUE": 1200000000.0,
+        "PERFORMANCE_CHANGE_RANGE": "50%~70%",
+        "PERFORMANCE_CHANGE_REASON": "下游需求旺盛",
+        "PREDICT_TYPE": "预增",
+        "PREV_YEAR_VALUE": 750000000.0,
+        "NOTICE_DATE": "2020-12-20 00:00:00"
+      }
+    ]
+  }
+}

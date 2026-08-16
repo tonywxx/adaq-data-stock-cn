@@ -1,0 +1,19 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "300073",
+        "SECURITY_NAME_ABBR": "当升科技",
+        "CLOSE_PRICE": 45.6,
+        "CHANGE_RATE": -1.23,
+        "RESERVE_ORG_NUM": 35,
+        "RECEIVE_WAY": "现场参观",
+        "RECEPTIONIST": "董秘",
+        "RECEIVE_PLACE": "公司会议室",
+        "RECEIVE_START_DATE": "2022-01-05 00:00:00",
+        "NOTICE_DATE": "2022-01-06 00:00:00"
+      }
+    ]
+  }
+}

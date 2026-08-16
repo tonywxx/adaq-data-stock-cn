@@ -1,0 +1,12 @@
+[
+  {
+    "tradeDate": "2024-01-02",
+    "maIndex1": 0.6234,
+    "marketClose": 3456.78
+  },
+  {
+    "tradeDate": "2024-01-03",
+    "maIndex1": 0.6012,
+    "marketClose": 3421.5
+  }
+]

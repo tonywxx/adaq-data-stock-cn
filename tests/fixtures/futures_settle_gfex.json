@@ -1,0 +1,26 @@
+{
+  "code": "0",
+  "data": [
+    {
+      "contractId": "lc2505",
+      "specBuyRate": "5",
+      "specBuy": "",
+      "hedgeBuyRate": "5",
+      "hedgeBuy": "",
+      "riseLimitRate": "4",
+      "riseLimit": "",
+      "fallLimit": "",
+      "agentTotBuyPosiQuota": "",
+      "selfTotBuyPosiQuota": "",
+      "clientBuyPosiQuota": "10000",
+      "tradeType": "0"
+    },
+    {
+      "contractId": "lc2505-C-60000",
+      "specBuyRate": "5",
+      "hedgeBuyRate": "5",
+      "riseLimitRate": "4",
+      "clientBuyPosiQuota": "0"
+    }
+  ]
+}

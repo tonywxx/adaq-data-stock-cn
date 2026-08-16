@@ -1,0 +1,6 @@
+{
+  "data": [
+    {"varietyOrder": "si", "variety": "工业硅", "whAbbr": "仓库A", "lastWbillQty": "5000", "wbillQty": "5200", "regWbillQty": "200"},
+    {"varietyOrder": "lc", "variety": "碳酸锂", "whAbbr": "仓库B", "lastWbillQty": "3000", "wbillQty": "3100", "regWbillQty": "100"}
+  ]
+}

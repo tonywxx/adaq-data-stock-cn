@@ -1,0 +1,28 @@
+{
+  "result": {
+    "data": [
+      {
+        "COUNTRY": "英国",
+        "INDICATOR_ID": "EMG00010348",
+        "INDICATOR_NAME": "英国失业率",
+        "REPORT_DATE_CH": "2024-03",
+        "REPORT_DATE": "2024-03-01T00:00:00",
+        "PUBLISH_DATE": "2024-04-16T00:00:00",
+        "VALUE": 4.2,
+        "PRE_VALUE": 4.3,
+        "INDICATOR_IDOLD": ""
+      },
+      {
+        "COUNTRY": "英国",
+        "INDICATOR_ID": "EMG00010348",
+        "INDICATOR_NAME": "英国失业率",
+        "REPORT_DATE_CH": "2024-02",
+        "REPORT_DATE": "2024-02-01T00:00:00",
+        "PUBLISH_DATE": "2024-03-12T00:00:00",
+        "VALUE": 4.3,
+        "PRE_VALUE": 4.4,
+        "INDICATOR_IDOLD": ""
+      }
+    ]
+  }
+}

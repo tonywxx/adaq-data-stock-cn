@@ -1,0 +1,35 @@
+{
+  "pageHelp": { "pageCount": 1 },
+  "result": [
+    {
+      "COMPANY_CODE": "600000",
+      "COMPANY_ABBR": "浦发银行",
+      "NAME": "张三",
+      "DUTY": "董事",
+      "STOCK_TYPE": "A股",
+      "CURRENCY_TYPE": "CNY",
+      "CURRENT_NUM": 20000,
+      "CHANGE_NUM": 5000,
+      "CURRENT_AVG_PRICE": 8.5,
+      "HOLDSTOCK_NUM": 25000,
+      "CHANGE_REASON": "个人资金安排",
+      "CHANGE_DATE": "2023-03-15",
+      "FORM_DATE": "2023-03-16"
+    },
+    {
+      "COMPANY_CODE": "601398",
+      "COMPANY_ABBR": "示例公司",
+      "NAME": "王二",
+      "DUTY": "监事",
+      "STOCK_TYPE": "A股",
+      "CURRENCY_TYPE": "CNY",
+      "CURRENT_NUM": 10000,
+      "CHANGE_NUM": 2000,
+      "CURRENT_AVG_PRICE": 5.1,
+      "HOLDSTOCK_NUM": 12000,
+      "CHANGE_REASON": "其他",
+      "CHANGE_DATE": "2023-04-20",
+      "FORM_DATE": "2023-04-21"
+    }
+  ]
+}

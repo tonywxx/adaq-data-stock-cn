@@ -1,0 +1,3544 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+ -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>杭州PM2.5空气质量查询|杭州PM2.5历史数据|杭州PM2.5统计分析|杭州空气质量雾霾地图|全国城市空气质量排名|真气网</title>
+<meta name="keywords" content="杭州PM2.5查询,杭州PM2.5历史数据,杭州PM2.5统计分析,杭州空气质量地图分布,空气质量雾霾地图,城市比较,空气质量地图,空气质量排名,真气网环境大数据">
+<meta name="description" content="真气网是杭州真气环保科技有限公司倾力研发的环境大数据平台，提供实时PM2.5查询，PM2.5地图，空气质量雾霾地图，雾霾PM2.5预报，未来五日空气质量预报(PM2.5预报)，PM2.5历史数据分析, 全国城市空气质量排名等功能，真正解决公众微环境空气质量水平，打造健康生活。">
+<meta http-equiv="refresh" content="3000">
+<link rel="shortcut icon" href="resource/icons/logo.png">
+<link rel="stylesheet" type="text/css" href="resource/bootstrap-3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="resource/css/style.css?v=1.29" type="text/css"><link rel="stylesheet" href="resource/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="//api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" type="text/css">
+</head>
+<body>
+
+<style>
+    /* @media screen and (max-width: 1366px) {
+      .navbar{
+        width: 960px !important;
+      }
+      .nav li{
+        width: 80px !important;
+      }
+      .nav li a{
+        width: 80px !important;
+        font-size: 14px!important;
+
+      }
+    } */
+	.searchbuttion{
+    border:0px;
+    width: 60px;
+    height: 37px;
+    line-height: 37px;
+    background: #80c12d;
+    color: #fff;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #8ec948 !important;
+    border-left: none !important;
+    position: relative;
+    top: 1px;
+  }
+	.dropdown{
+		position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 120px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    width: 100px;
+	}
+	.dropdown_a{
+		font-size: 14px!important;
+		color: #777!important;
+		text-decoration: none!important;
+	}
+	.dropdown_li{
+		    font-size: 14px!important;
+		    cursor: pointer;
+		    width: 118px!important;
+		    height: 45px!important;
+		    line-height: 45px!important;
+		    border-bottom: 1px solid gainsboro;
+	}
+	.close{position: relative; right: -60px;}
+  .layer-4{display: none !important;}
+  @-webkit-keyframes showbutton{
+			25%{box-shadow: 0 0 15px gray;}
+			50%{box-shadow: 0 0 80px gray;}
+			100%{box-shadow: 0 0 15px gray;}
+	}
+  .winter{-webkit-animation: showbutton 2s infinite linear;position: fixed;text-align: center; top: 250px;right: 10px;width: 90px;height: 126px;z-index: 9999;font-size: 20px;background-color: #f0f0f0;border-radius: 8px;box-shadow: 0 0 15px gray;cursor: pointer}
+  .winter span{margin-top:2px;color: black;text-shadow: 0 0 10px gray}
+
+  .windmap{-webkit-animation: showbutton 2s infinite linear;position: fixed;text-align: center; top: 410px;right: 10px;width: 90px;height: 126px;z-index: 10001;font-size: 20px;background-color: #f0f0f0;border-radius: 8px;box-shadow: 0 0 15px gray;cursor: pointer;padding-top: 3px;}
+  .windmap span{margin-top:5px;color: black;text-shadow: 0 0 10px gray;display: block;}
+  .menulogo{position: absolute;width: 220px;height: 67px;top: 30px;left:9px}
+  body{
+    background: '';
+    background-size: 100% auto;
+    margin-top:0px;
+  }
+    .omap{-webkit-animation: showbutton 2s infinite linear;position: fixed;text-align: center; top: 570px;right: 10px;width: 90px;height: 130px;z-index: 10001;font-size: 22px;background-color: #f0f0f0;border-radius: 8px;box-shadow: 0 0 15px gray;cursor: pointer;padding-top: 3px;}
+  .omap span{margin-top:5px;color: black;text-shadow: 0 0 10px gray;display: block;}
+</style>
+<!-- Fixed navbar -->
+<a target="_blank" href="https://m.zq12369.com/winter_defense_pc.php">
+  <div class='winter' onclick="">
+    <img width="90px" src="resource/img/winter.png" alt="真气网冬防考核" style="float:left" />
+    <span>冬防考核</span>
+  </div>
+</a>
+
+<a target="_blank" href="https://map.zq12369.com">
+  <div class='windmap' onclick="">
+    <img  width="86px" src="resource/img/windmap.png" alt="真气网加强风场地图" />
+    <span>加强地图</span>
+  </div>
+</a>
+
+<a id="showolympic" target="_blank" href="iframe.php">
+  <div class='omap' onclick="">
+    <img style="width: 90px;" src="resource/img/winterolympic.jpg" alt="真气网加强风场地图" />
+    <span>冬奥保障</span>
+  </div>
+</a>
+
+
+<div class="huodongtitle" style=" width: 1200px;margin:14px auto 20px auto;display:none">
+  <img src="resource/img/ny/title.png" style="margin-left: 20px" alt="">
+</div>
+<div class="navbar navbar-default " role="navigation" style="background:#fff;background: white; margin:auto;width:1170px;">
+  <div class="container" style="padding:3px 0px 3px 15px;position:relative;">
+    <div style="width: 300px;height:25px;position:absolute;top:8px;left:calc(50% - 150px);text-align:center;font-size: 13px;z-index:999;color:gray">数据未经总站审核，仅供实时动态参考 <span onclick="javascript:$(this).parent().remove()" style="font-size:12px;color: red;padding-left:15px;cursor:pointer">点击关闭</span></div>
+    <div class="topbanner">
+       <div class="rightpart" style="margin-right: 15px" >
+         <a href="https://map.zq12369.com/">污染地图>></a><img src="resource/img/new.gif" height="18px">
+         <!-- <a href="/cms">注册</a>
+         <a href="/cms">登录</a> -->
+       </div>
+       <div class="leftpart" style="margin-left: 167px" >
+         <a href="https://weibo.com/u/5561841322" target="_blank" rel="nofollow" class="weiboicon" style='margin-top:5px;' title="点击访问微博"></a>
+         <a href="#" class="weixinicon" style='margin-top:5px;' data-toggle="modal" data-target="#myModal" title="点击关注微信公众号"></a>
+         <span class="tel">400-995-1580</span>
+       </div>
+    </div>
+  </div>
+
+  <div class="container" style="height:60px;line-height:60px;padding-right:0px;">
+    <div class="navbar-header" style="margin-top:0px">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" style="padding:0px"><img class="menulogo" style="" src="resource/img/logo_large.png" height="45px" alt="真气网logo" /></a>
+    </div>
+    <div class="require_top">
+    <div class="navbar-collapse collapse navbar-left" style="margin-left:210px;">
+      <ul class="nav navbar-nav">
+        <li class=""><a class="display_none" href="index.php" style="padding:0px;">首页</a></li>
+
+        <li class="" id="dropdown_environment"><a href="environment.php" class="air" style="padding:0px;">大气环境</a>  <!--environment.php -->
+        	  <ul class="dropdown" style="z-index: 9999">
+
+        	  	<li class="dropdown_li" catid="6">国内城市排名</li>
+               <li class="dropdown_li" catid="0">立体监测分布图</li>
+               <li class="dropdown_li" catid="1">空气质量曲线图</li>
+               <li class="dropdown_li" catid="2">月度统计分析</li>
+                <li class="dropdown_li" catid="3">当年累计变化</li>
+               <li class="dropdown_li" catid="4">历史排名曲线</li>
+               <li class="dropdown_li" catid="5" >监测点空气质量</li>
+               <li class="dropdown_li" catid="7">城市空气质量比较</li>
+               <li class="dropdown_li" catid="8">累计指数比较</li>
+              <li class="dropdown_li" catid="9">全国实时空气</li>
+               <li class="dropdown_li" catid="10" style="border-bottom: 1px solid white;">全国趋势预报</li>
+
+            </ul>
+        </li>
+
+        <li class="" ><a class="display_none" href="microenv.php" style="padding:0px;" >城市微环境</a></li>
+        <li class=""><a href="health.php" style="padding:0px;" >环境健康</a></li>
+        <li class=""><a href="about.php"  style="padding:0px;">关于我们</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+    </div>
+    <div class="navbar-collapse collapse navbar-right" style="padding:0px;margin-right: 15px">
+      <input id="searchinput" type="text" placeholder="输入关键词进行搜索" class="searchinput" />
+      <button id="searchbtn" type="button" value="搜索" class="searchbuttion" >
+        搜索
+        <!-- <img style="width: 60%" src="resource/img/ss.png" alt="" /> -->
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel" style="text-align:center">微信扫一扫 关注公众号</h4>
+      </div>
+      <div class="modal-body">
+        <div class="media">
+          <div class="media-left">
+            <a href="#">
+              <img class="media-object" src="resource/img/health/weixin/zhenqiweixin.jpg" alt="" width="150px">
+            </a>
+          </div>
+          <div class="media-body" style="padding-top:15px;text-align:left">
+            <h4 class="media-heading">真气环保</h4>
+            真气网是PM2.5特别防治小组倾力研发的全国首个公众呼吸健康防治互联网平台，真实反应公众生活微环境的空气污染水平，真实评估空气污染的健康威胁与影响，真正解决公众微环境空气质量水平，重污染天气保护特定敏感人群，持续长久的服务公众体内真气提升，打造健康生活。
+          </div>
+       </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div id="sidebar" style="right: 5px;position: fixed;top: 76%;z-index: 10000">
+      <div class="customService">
+        <span class="text">在线客服</span>
+        <div class="code">
+          <img src='resource/img/customService.png' alt=""/>
+        </div>
+      </div>
+      <div class="phone">
+        <span class="text">联系电话</span>
+        <div class="code">
+          <img src='resource/img/phone.png' alt=""/>
+        </div>
+
+      </div>
+      <div class="topImg">
+        <div class="code">
+          <img src='resource/img/toTop.png' alt=""/>
+        </div>
+      </div>
+    </div>
+<!-- <div class="topImg"><img src="resource/img/top.png"/></div> -->
+
+<script type="text/javascript" src="resource/js/jquery.min.js?v=0.1"></script>
+<script type="text/javascript" src="resource/js/crypto.js"></script>
+<script src="./js/menu.php.js">
+
+</script>
+<!-- <script>
+   var d=new Date();
+    var mth = d.getMonth() + 1;
+    var day = d.getDate();
+    if((mth == 2 && day<16)) {
+      $('body').css('background', "url('resource/img/ny/bg.png') no-repeat")
+      $('.menulogo').attr('src', 'resource/img/ny/logo.png');
+      $('.menulogo').css('width', '134px');
+      $('.menulogo').css('height', '42px');
+      $('.menulogo').css('top', '42px');
+      $('.menulogo').css('left', '50px');
+
+      $('.active>a').css('background', "#dba368")
+      $('.searchinput').css('border', "1px solid #dba368")
+      $('.huodongtitle').show();
+    } else {}
+</script> -->
+<!-- <script src="https://qiyukf.com/script/09dbc8d1532b29ab8abca71eea649ef3.js" defer async></script> -->
+<div class="environmentbg">
+	<div class="container">
+		<div class="bgimg">
+			<div class="ranktitle">168城市AQI排行榜</div>
+			<!--<div class="worstrank selected">最差</div>
+			<div class="line">|</div>
+			<div class="bestrank unselected">最优</div>-->
+			<div class="rank">
+			<table class="mytables">
+
+		    </table>
+			</div>
+			<div class="historyrank"><a href="?order=DESC&tab=rank&type=MONTH">历史排名>></a></div>
+			<div class="morerank"><a href="?order=DESC&tab=rank">更多排名>></a></div>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+<div id="envtab" class="environmenttab">
+	<div class="container">
+		<div class="bgimg">
+			<a href="?tab=city&city=杭州&order=DESC#envtab"><div class="city cityicon"></div></a>
+			<a href="?tab=region&city=杭州&order=DESC#envtab"><div class="region regionicon"></div></a>
+			<a href="?tab=china&city=杭州&order=DESC#envtab"><div class="china chinaiconselect"></div></a>
+		</div>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<script>
+	var akb33 = "32223";
+	var akb34 = "N4EDAQpO2ejqgCoX";
+	var akb35 = "=qoKNLgdAjJbU8zx";
+	var akb36 = "mAkJqt8coXQ96zML";
+	var akb48 = "t4ABRmeN"
+</script>
+
+
+
+<div id="rank" class="container" style="margin-top:57px;">
+	<div class="dtip"></div>
+	<div class="subtitle">国内城市排序<small>(限环保部发布的168个城市)</small></div>
+	<div class="clear"></div>
+	<ul class="nav nav-tabs" id="myTab" style="margin-top:20px;">
+      <li class=""><a href="#rank1">实时排行</a></li>
+      <li class=""><a href="#rank2">日排行</a></li>
+      <li class=""><a href="#rank3">月排行</a></li>
+      <li class=""><a href="#rank4">年排行</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="rank1">
+      	<div class="rankform" >
+      		发布时间：2026-08-17 03:00:00	  	</div>
+      	<table class="table table-hover table-striped" style="margin-top:10px;">
+      		<tr class="ranktableth" style="background:#82b661;height:38px;">
+		        <th style="text-align:center" >降序</th>
+		        <th style="text-align:center" >省份</th>
+		        <th style="text-align:center" >城市</th>
+		        <th style="text-align:center" >AQI</th>
+		        <th style="text-align:center" >空气质量</th>
+		        <th style="text-align:center" >PM2.5浓度</th>
+		        <th style="text-align:center" >首要污染物</th>
+	        </tr>
+      		<tr>
+					      <tr>
+		      	<td align="center">1</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=广安#cityranktab">广安</a></td>
+		      	<td align="center">106</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">66 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">2</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=泸州#cityranktab">泸州</a></td>
+		      	<td align="center">86</td>
+		      	<td align="center">良</td>
+		      	<td align="center">53 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">3</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淮北#cityranktab">淮北</a></td>
+		      	<td align="center">86</td>
+		      	<td align="center">良</td>
+		      	<td align="center">53 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">4</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=咸阳#cityranktab">咸阳</a></td>
+		      	<td align="center">76</td>
+		      	<td align="center">良</td>
+		      	<td align="center">48 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">5</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=徐州#cityranktab">徐州</a></td>
+		      	<td align="center">76</td>
+		      	<td align="center">良</td>
+		      	<td align="center">48 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">6</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=达州#cityranktab">达州</a></td>
+		      	<td align="center">74</td>
+		      	<td align="center">良</td>
+		      	<td align="center">47 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">7</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=常德#cityranktab">常德</a></td>
+		      	<td align="center">64</td>
+		      	<td align="center">良</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">8</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=聊城#cityranktab">聊城</a></td>
+		      	<td align="center">64</td>
+		      	<td align="center">良</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">9</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=西安#cityranktab">西安</a></td>
+		      	<td align="center">64</td>
+		      	<td align="center">良</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">10</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宿迁#cityranktab">宿迁</a></td>
+		      	<td align="center">62</td>
+		      	<td align="center">良</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">11</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=菏泽#cityranktab">菏泽</a></td>
+		      	<td align="center">62</td>
+		      	<td align="center">良</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">12</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=青岛#cityranktab">青岛</a></td>
+		      	<td align="center">62</td>
+		      	<td align="center">良</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">13</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=济南#cityranktab">济南</a></td>
+		      	<td align="center">60</td>
+		      	<td align="center">良</td>
+		      	<td align="center">40 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">14</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=益阳#cityranktab">益阳</a></td>
+		      	<td align="center">60</td>
+		      	<td align="center">良</td>
+		      	<td align="center">40 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">15</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=潍坊#cityranktab">潍坊</a></td>
+		      	<td align="center">58</td>
+		      	<td align="center">良</td>
+		      	<td align="center">39 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">16</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=连云港#cityranktab">连云港</a></td>
+		      	<td align="center">58</td>
+		      	<td align="center">良</td>
+		      	<td align="center">39 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">17</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=商丘#cityranktab">商丘</a></td>
+		      	<td align="center">57</td>
+		      	<td align="center">良</td>
+		      	<td align="center">27 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">18</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=亳州#cityranktab">亳州</a></td>
+		      	<td align="center">56</td>
+		      	<td align="center">良</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">19</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宿州#cityranktab">宿州</a></td>
+		      	<td align="center">56</td>
+		      	<td align="center">良</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">20</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南充#cityranktab">南充</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">21</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=平顶山#cityranktab">平顶山</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">22</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=枣庄#cityranktab">枣庄</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">23</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=济宁#cityranktab">济宁</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">24</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=三门峡#cityranktab">三门峡</a></td>
+		      	<td align="center">53</td>
+		      	<td align="center">良</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">25</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=黄石#cityranktab">黄石</a></td>
+		      	<td align="center">53</td>
+		      	<td align="center">良</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">26</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=渭南#cityranktab">渭南</a></td>
+		      	<td align="center">52</td>
+		      	<td align="center">良</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">27</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=临沂#cityranktab">临沂</a></td>
+		      	<td align="center">50</td>
+		      	<td align="center">优</td>
+		      	<td align="center">35 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">28</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=朔州#cityranktab">朔州</a></td>
+		      	<td align="center">50</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">29</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淄博#cityranktab">淄博</a></td>
+		      	<td align="center">50</td>
+		      	<td align="center">优</td>
+		      	<td align="center">35 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">30</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=株洲#cityranktab">株洲</a></td>
+		      	<td align="center">49</td>
+		      	<td align="center">优</td>
+		      	<td align="center">34 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">31</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=湘潭#cityranktab">湘潭</a></td>
+		      	<td align="center">49</td>
+		      	<td align="center">优</td>
+		      	<td align="center">34 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">32</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=濮阳#cityranktab">濮阳</a></td>
+		      	<td align="center">49</td>
+		      	<td align="center">优</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">33</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=襄阳#cityranktab">襄阳</a></td>
+		      	<td align="center">48</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">34</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=铜川#cityranktab">铜川</a></td>
+		      	<td align="center">48</td>
+		      	<td align="center">优</td>
+		      	<td align="center">33 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">35</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=铜陵#cityranktab">铜陵</a></td>
+		      	<td align="center">48</td>
+		      	<td align="center">优</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">36</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=洛阳#cityranktab">洛阳</a></td>
+		      	<td align="center">46</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">37</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淮安#cityranktab">淮安</a></td>
+		      	<td align="center">46</td>
+		      	<td align="center">优</td>
+		      	<td align="center">32 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">38</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=荆门#cityranktab">荆门</a></td>
+		      	<td align="center">46</td>
+		      	<td align="center">优</td>
+		      	<td align="center">28 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">39</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=邢台#cityranktab">邢台</a></td>
+		      	<td align="center">46</td>
+		      	<td align="center">优</td>
+		      	<td align="center">15 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">40</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=阜阳#cityranktab">阜阳</a></td>
+		      	<td align="center">46</td>
+		      	<td align="center">优</td>
+		      	<td align="center">32 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">41</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=临汾#cityranktab">临汾</a></td>
+		      	<td align="center">45</td>
+		      	<td align="center">优</td>
+		      	<td align="center">15 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">42</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=晋城#cityranktab">晋城</a></td>
+		      	<td align="center">45</td>
+		      	<td align="center">优</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">43</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=蚌埠#cityranktab">蚌埠</a></td>
+		      	<td align="center">45</td>
+		      	<td align="center">优</td>
+		      	<td align="center">31 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">44</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=阳泉#cityranktab">阳泉</a></td>
+		      	<td align="center">45</td>
+		      	<td align="center">优</td>
+		      	<td align="center">19 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">45</td>
+		      	<td align="center">天津</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=天津#cityranktab">天津</a></td>
+		      	<td align="center">44</td>
+		      	<td align="center">优</td>
+		      	<td align="center">25 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">46</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=武汉#cityranktab">武汉</a></td>
+		      	<td align="center">44</td>
+		      	<td align="center">优</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">47</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=内江#cityranktab">内江</a></td>
+		      	<td align="center">43</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">48</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=开封#cityranktab">开封</a></td>
+		      	<td align="center">43</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">49</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=泰安#cityranktab">泰安</a></td>
+		      	<td align="center">43</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">50</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=自贡#cityranktab">自贡</a></td>
+		      	<td align="center">43</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">51</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=资阳#cityranktab">资阳</a></td>
+		      	<td align="center">43</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">52</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=郑州#cityranktab">郑州</a></td>
+		      	<td align="center">43</td>
+		      	<td align="center">优</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">53</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=吕梁#cityranktab">吕梁</a></td>
+		      	<td align="center">42</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">54</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宝鸡#cityranktab">宝鸡</a></td>
+		      	<td align="center">42</td>
+		      	<td align="center">优</td>
+		      	<td align="center">29 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">55</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淮南#cityranktab">淮南</a></td>
+		      	<td align="center">41</td>
+		      	<td align="center">优</td>
+		      	<td align="center">28 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">56</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=焦作#cityranktab">焦作</a></td>
+		      	<td align="center">41</td>
+		      	<td align="center">优</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">57</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=衡水#cityranktab">衡水</a></td>
+		      	<td align="center">41</td>
+		      	<td align="center">优</td>
+		      	<td align="center">22 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">58</td>
+		      	<td align="center">新疆</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=乌鲁木齐#cityranktab">乌鲁木齐</a></td>
+		      	<td align="center">40</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">59</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=周口#cityranktab">周口</a></td>
+		      	<td align="center">40</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">60</td>
+		      	<td align="center">黑龙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=哈尔滨#cityranktab">哈尔滨</a></td>
+		      	<td align="center">40</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">61</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=常州#cityranktab">常州</a></td>
+		      	<td align="center">40</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">62</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=运城#cityranktab">运城</a></td>
+		      	<td align="center">40</td>
+		      	<td align="center">优</td>
+		      	<td align="center">28 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">63</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=湖州#cityranktab">湖州</a></td>
+		      	<td align="center">38</td>
+		      	<td align="center">优</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">64</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=漯河#cityranktab">漯河</a></td>
+		      	<td align="center">38</td>
+		      	<td align="center">优</td>
+		      	<td align="center">22 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">65</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=许昌#cityranktab">许昌</a></td>
+		      	<td align="center">38</td>
+		      	<td align="center">优</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">66</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=鄂州#cityranktab">鄂州</a></td>
+		      	<td align="center">38</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">67</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=长沙#cityranktab">长沙</a></td>
+		      	<td align="center">38</td>
+		      	<td align="center">优</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">68</td>
+		      	<td align="center">宁夏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=银川#cityranktab">银川</a></td>
+		      	<td align="center">37</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">69</td>
+		      	<td align="center">甘肃</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=兰州#cityranktab">兰州</a></td>
+		      	<td align="center">36</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">70</td>
+		      	<td align="center">广西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南宁#cityranktab">南宁</a></td>
+		      	<td align="center">36</td>
+		      	<td align="center">优</td>
+		      	<td align="center">25 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">71</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南阳#cityranktab">南阳</a></td>
+		      	<td align="center">36</td>
+		      	<td align="center">优</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">72</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=芜湖#cityranktab">芜湖</a></td>
+		      	<td align="center">36</td>
+		      	<td align="center">优</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">73</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=遂宁#cityranktab">遂宁</a></td>
+		      	<td align="center">36</td>
+		      	<td align="center">优</td>
+		      	<td align="center">25 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">74</td>
+		      	<td align="center">重庆</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=重庆#cityranktab">重庆</a></td>
+		      	<td align="center">36</td>
+		      	<td align="center">优</td>
+		      	<td align="center">23 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">75</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=马鞍山#cityranktab">马鞍山</a></td>
+		      	<td align="center">36</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">76</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宜宾#cityranktab">宜宾</a></td>
+		      	<td align="center">35</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">77</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=惠州#cityranktab">惠州</a></td>
+		      	<td align="center">35</td>
+		      	<td align="center">优</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">78</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=新乡#cityranktab">新乡</a></td>
+		      	<td align="center">35</td>
+		      	<td align="center">优</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">79</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=池州#cityranktab">池州</a></td>
+		      	<td align="center">35</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">80</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=岳阳#cityranktab">岳阳</a></td>
+		      	<td align="center">34</td>
+		      	<td align="center">优</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">81</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=新余#cityranktab">新余</a></td>
+		      	<td align="center">34</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">82</td>
+		      	<td align="center">贵州</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=贵阳#cityranktab">贵阳</a></td>
+		      	<td align="center">34</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">83</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=乐山#cityranktab">乐山</a></td>
+		      	<td align="center">33</td>
+		      	<td align="center">优</td>
+		      	<td align="center">5 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">84</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=成都#cityranktab">成都</a></td>
+		      	<td align="center">33</td>
+		      	<td align="center">优</td>
+		      	<td align="center">23 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">85</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=镇江#cityranktab">镇江</a></td>
+		      	<td align="center">33</td>
+		      	<td align="center">优</td>
+		      	<td align="center">19 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">86</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=鹤壁#cityranktab">鹤壁</a></td>
+		      	<td align="center">33</td>
+		      	<td align="center">优</td>
+		      	<td align="center">23 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">87</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=保定#cityranktab">保定</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">88</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=大同#cityranktab">大同</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">8 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">89</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=德州#cityranktab">德州</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">22 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">90</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=扬州#cityranktab">扬州</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">19 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">91</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=日照#cityranktab">日照</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">22 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">92</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=眉山#cityranktab">眉山</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">5 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">93</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=萍乡#cityranktab">萍乡</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">94</td>
+		      	<td align="center">吉林</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=长春#cityranktab">长春</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">22 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">95</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=长治#cityranktab">长治</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">22 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">96</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宜昌#cityranktab">宜昌</a></td>
+		      	<td align="center">31</td>
+		      	<td align="center">优</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">97</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宣城#cityranktab">宣城</a></td>
+		      	<td align="center">31</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">98</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=邯郸#cityranktab">邯郸</a></td>
+		      	<td align="center">31</td>
+		      	<td align="center">优</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">99</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=锦州#cityranktab">锦州</a></td>
+		      	<td align="center">31</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">100</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=信阳#cityranktab">信阳</a></td>
+		      	<td align="center">30</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">101</td>
+		      	<td align="center">内蒙古</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=包头#cityranktab">包头</a></td>
+		      	<td align="center">30</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">102</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=咸宁#cityranktab">咸宁</a></td>
+		      	<td align="center">30</td>
+		      	<td align="center">优</td>
+		      	<td align="center">15 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">103</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=大连#cityranktab">大连</a></td>
+		      	<td align="center">30</td>
+		      	<td align="center">优</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">104</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=肇庆#cityranktab">肇庆</a></td>
+		      	<td align="center">30</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">105</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=葫芦岛#cityranktab">葫芦岛</a></td>
+		      	<td align="center">30</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">106</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=金华#cityranktab">金华</a></td>
+		      	<td align="center">30</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">107</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=东莞#cityranktab">东莞</a></td>
+		      	<td align="center">29</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">108</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=东营#cityranktab">东营</a></td>
+		      	<td align="center">29</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">109</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=九江#cityranktab">九江</a></td>
+		      	<td align="center">29</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">110</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南昌#cityranktab">南昌</a></td>
+		      	<td align="center">29</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">111</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=德阳#cityranktab">德阳</a></td>
+		      	<td align="center">29</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">112</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=佛山#cityranktab">佛山</a></td>
+		      	<td align="center">28</td>
+		      	<td align="center">优</td>
+		      	<td align="center">19 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">113</td>
+		      	<td align="center">福建</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=厦门#cityranktab">厦门</a></td>
+		      	<td align="center">28</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">114</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=太原#cityranktab">太原</a></td>
+		      	<td align="center">28</td>
+		      	<td align="center">优</td>
+		      	<td align="center">19 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">115</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=沧州#cityranktab">沧州</a></td>
+		      	<td align="center">28</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">116</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=绵阳#cityranktab">绵阳</a></td>
+		      	<td align="center">28</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">117</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=苏州#cityranktab">苏州</a></td>
+		      	<td align="center">28</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">118</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=安阳#cityranktab">安阳</a></td>
+		      	<td align="center">27</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">119</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=无锡#cityranktab">无锡</a></td>
+		      	<td align="center">27</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">120</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=石家庄#cityranktab">石家庄</a></td>
+		      	<td align="center">27</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">121</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=台州#cityranktab">台州</a></td>
+		      	<td align="center">26</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">122</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宜春#cityranktab">宜春</a></td>
+		      	<td align="center">26</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">123</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=驻马店#cityranktab">驻马店</a></td>
+		      	<td align="center">26</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">124</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=唐山#cityranktab">唐山</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">125</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=孝感#cityranktab">孝感</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">126</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=安庆#cityranktab">安庆</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">127</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=忻州#cityranktab">忻州</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">128</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=晋中#cityranktab">晋中</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">129</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=杭州#cityranktab">杭州</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">130</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=滨州#cityranktab">滨州</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">131</td>
+		      	<td align="center">青海</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=西宁#cityranktab">西宁</a></td>
+		      	<td align="center">25</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">132</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=六安#cityranktab">六安</a></td>
+		      	<td align="center">24</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">133</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=广州#cityranktab">广州</a></td>
+		      	<td align="center">24</td>
+		      	<td align="center">优</td>
+		      	<td align="center">15 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">134</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=秦皇岛#cityranktab">秦皇岛</a></td>
+		      	<td align="center">24</td>
+		      	<td align="center">优</td>
+		      	<td align="center">10 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">135</td>
+		      	<td align="center">上海</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=上海#cityranktab">上海</a></td>
+		      	<td align="center">23</td>
+		      	<td align="center">优</td>
+		      	<td align="center">15 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">136</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=嘉兴#cityranktab">嘉兴</a></td>
+		      	<td align="center">23</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">137</td>
+		      	<td align="center">西藏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=拉萨#cityranktab">拉萨</a></td>
+		      	<td align="center">23</td>
+		      	<td align="center">优</td>
+		      	<td align="center">5 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">138</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=温州#cityranktab">温州</a></td>
+		      	<td align="center">23</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">139</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=滁州#cityranktab">滁州</a></td>
+		      	<td align="center">23</td>
+		      	<td align="center">优</td>
+		      	<td align="center">16 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">140</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南京#cityranktab">南京</a></td>
+		      	<td align="center">22</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">141</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=深圳#cityranktab">深圳</a></td>
+		      	<td align="center">22</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">142</td>
+		      	<td align="center">福建</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=福州#cityranktab">福州</a></td>
+		      	<td align="center">22</td>
+		      	<td align="center">优</td>
+		      	<td align="center">13 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">143</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=合肥#cityranktab">合肥</a></td>
+		      	<td align="center">21</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">144</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=江门#cityranktab">江门</a></td>
+		      	<td align="center">21</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">145</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=雅安#cityranktab">雅安</a></td>
+		      	<td align="center">21</td>
+		      	<td align="center">优</td>
+		      	<td align="center">4 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">146</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=中山#cityranktab">中山</a></td>
+		      	<td align="center">20</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">147</td>
+		      	<td align="center">海南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=海口#cityranktab">海口</a></td>
+		      	<td align="center">20</td>
+		      	<td align="center">优</td>
+		      	<td align="center">10 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">148</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=丽水#cityranktab">丽水</a></td>
+		      	<td align="center">19</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">149</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=朝阳#cityranktab">朝阳</a></td>
+		      	<td align="center">19</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">150</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=泰州#cityranktab">泰州</a></td>
+		      	<td align="center">19</td>
+		      	<td align="center">优</td>
+		      	<td align="center">13 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">151</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=绍兴#cityranktab">绍兴</a></td>
+		      	<td align="center">19</td>
+		      	<td align="center">优</td>
+		      	<td align="center">8 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">152</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=承德#cityranktab">承德</a></td>
+		      	<td align="center">18</td>
+		      	<td align="center">优</td>
+		      	<td align="center">6 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">153</td>
+		      	<td align="center">云南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=昆明#cityranktab">昆明</a></td>
+		      	<td align="center">18</td>
+		      	<td align="center">优</td>
+		      	<td align="center">10 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">154</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=珠海#cityranktab">珠海</a></td>
+		      	<td align="center">18</td>
+		      	<td align="center">优</td>
+		      	<td align="center">10 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">155</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=黄冈#cityranktab">黄冈</a></td>
+		      	<td align="center">18</td>
+		      	<td align="center">优</td>
+		      	<td align="center">12 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">156</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宁波#cityranktab">宁波</a></td>
+		      	<td align="center">17</td>
+		      	<td align="center">优</td>
+		      	<td align="center">6 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">157</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=廊坊#cityranktab">廊坊</a></td>
+		      	<td align="center">17</td>
+		      	<td align="center">优</td>
+		      	<td align="center">7 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">158</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=随州#cityranktab">随州</a></td>
+		      	<td align="center">17</td>
+		      	<td align="center">优</td>
+		      	<td align="center">8 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">159</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=张家口#cityranktab">张家口</a></td>
+		      	<td align="center">16</td>
+		      	<td align="center">优</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">160</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=沈阳#cityranktab">沈阳</a></td>
+		      	<td align="center">16</td>
+		      	<td align="center">优</td>
+		      	<td align="center">7 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">161</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=黄山#cityranktab">黄山</a></td>
+		      	<td align="center">16</td>
+		      	<td align="center">优</td>
+		      	<td align="center">7 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">162</td>
+		      	<td align="center">北京</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=北京#cityranktab">北京</a></td>
+		      	<td align="center">15</td>
+		      	<td align="center">优</td>
+		      	<td align="center">8 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">163</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=衢州#cityranktab">衢州</a></td>
+		      	<td align="center">15</td>
+		      	<td align="center">优</td>
+		      	<td align="center">6 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">164</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南通#cityranktab">南通</a></td>
+		      	<td align="center">13</td>
+		      	<td align="center">优</td>
+		      	<td align="center">9 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">165</td>
+		      	<td align="center">内蒙古</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=呼和浩特#cityranktab">呼和浩特</a></td>
+		      	<td align="center">13</td>
+		      	<td align="center">优</td>
+		      	<td align="center">8 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">166</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=舟山#cityranktab">舟山</a></td>
+		      	<td align="center">13</td>
+		      	<td align="center">优</td>
+		      	<td align="center">3 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">167</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=盐城#cityranktab">盐城</a></td>
+		      	<td align="center">12</td>
+		      	<td align="center">优</td>
+		      	<td align="center">8 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">168</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=荆州#cityranktab">荆州</a></td>
+		      	<td align="center">0</td>
+		      	<td align="center"></td>
+		      	<td align="center">33 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		 </table>
+      </div>
+      <div class="tab-pane" id="rank2">
+      	<form action="#rank" method="get" class="rankform">
+      		日期选择：
+		    <input type="date" name="date" class="dateinput" value="2020-05-01" />
+		    <input type="hidden" name="tab" value="rank" />
+		    <input type="hidden" name="order" value="DESC" />
+		    <input type="hidden" name="type" value="DAY" />
+		    <input type="submit" class="btn btn-success" value="提交" />
+
+	  	</form>
+      	<table class="table table-hover table-striped" style="margin-top:10px;">
+      		<tr class="ranktableth" style="background:#82b661;height:38px;">
+		        <th style="text-align:center" >降序</th>
+		        <th style="text-align:center" >省份</th>
+		        <th style="text-align:center"  >城市</th>
+		        <th style="text-align:center"  >AQI</th>
+		        <th style="text-align:center"  >空气质量</th>
+		        <th style="text-align:center"  >PM2.5浓度</th>
+		        <th style="text-align:center"  >首要污染物</th>
+	        </tr>
+      		<tr>
+					      <tr>
+		      	<td align="center">1</td>
+		      	<td align="center">北京</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=北京#cityranktab">北京</a></td>
+		      	<td align="center">204</td>
+		      	<td align="center">重度污染</td>
+		      	<td align="center">108 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">2</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=廊坊#cityranktab">廊坊</a></td>
+		      	<td align="center">199</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">54 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">3</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=承德#cityranktab">承德</a></td>
+		      	<td align="center">198</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">59 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">4</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=唐山#cityranktab">唐山</a></td>
+		      	<td align="center">176</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">74 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">5</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=晋城#cityranktab">晋城</a></td>
+		      	<td align="center">164</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">51 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">6</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=保定#cityranktab">保定</a></td>
+		      	<td align="center">162</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">56 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">7</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=德阳#cityranktab">德阳</a></td>
+		      	<td align="center">161</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">62 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">8</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=秦皇岛#cityranktab">秦皇岛</a></td>
+		      	<td align="center">153</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">70 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">9</td>
+		      	<td align="center">天津</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=天津#cityranktab">天津</a></td>
+		      	<td align="center">152</td>
+		      	<td align="center">中度污染</td>
+		      	<td align="center">60 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">10</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=朝阳#cityranktab">朝阳</a></td>
+		      	<td align="center">146</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">75 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">11</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=临汾#cityranktab">临汾</a></td>
+		      	<td align="center">146</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">12</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=运城#cityranktab">运城</a></td>
+		      	<td align="center">145</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">52 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">13</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=焦作#cityranktab">焦作</a></td>
+		      	<td align="center">143</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">14</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=成都#cityranktab">成都</a></td>
+		      	<td align="center">143</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">62 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">15</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=锦州#cityranktab">锦州</a></td>
+		      	<td align="center">141</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">72 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">16</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=长治#cityranktab">长治</a></td>
+		      	<td align="center">141</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">17</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=绵阳#cityranktab">绵阳</a></td>
+		      	<td align="center">139</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">63 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">18</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=资阳#cityranktab">资阳</a></td>
+		      	<td align="center">137</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">19</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=葫芦岛#cityranktab">葫芦岛</a></td>
+		      	<td align="center">137</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">62 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">20</td>
+		      	<td align="center">吉林</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=长春#cityranktab">长春</a></td>
+		      	<td align="center">136</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">54 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">21</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=广安#cityranktab">广安</a></td>
+		      	<td align="center">136</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">66 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">22</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=石家庄#cityranktab">石家庄</a></td>
+		      	<td align="center">134</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">64 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">23</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=三门峡#cityranktab">三门峡</a></td>
+		      	<td align="center">133</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">33 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">24</td>
+		      	<td align="center">甘肃</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=兰州#cityranktab">兰州</a></td>
+		      	<td align="center">130</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">25</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=沧州#cityranktab">沧州</a></td>
+		      	<td align="center">127</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">26</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=沈阳#cityranktab">沈阳</a></td>
+		      	<td align="center">125</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">27</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=衡水#cityranktab">衡水</a></td>
+		      	<td align="center">124</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">47 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">28</td>
+		      	<td align="center">黑龙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=哈尔滨#cityranktab">哈尔滨</a></td>
+		      	<td align="center">124</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">29</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=洛阳#cityranktab">洛阳</a></td>
+		      	<td align="center">123</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">27 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">30</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=滨州#cityranktab">滨州</a></td>
+		      	<td align="center">123</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">54 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">31</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=眉山#cityranktab">眉山</a></td>
+		      	<td align="center">122</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">43 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">32</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=阳泉#cityranktab">阳泉</a></td>
+		      	<td align="center">120</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">33</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=东营#cityranktab">东营</a></td>
+		      	<td align="center">120</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">46 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">34</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=内江#cityranktab">内江</a></td>
+		      	<td align="center">117</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">54 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">35</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=铜川#cityranktab">铜川</a></td>
+		      	<td align="center">117</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">29 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">36</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宜宾#cityranktab">宜宾</a></td>
+		      	<td align="center">113</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">47 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">37</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=晋中#cityranktab">晋中</a></td>
+		      	<td align="center">113</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">27 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">38</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淄博#cityranktab">淄博</a></td>
+		      	<td align="center">113</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">39</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=邢台#cityranktab">邢台</a></td>
+		      	<td align="center">113</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">49 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">40</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=自贡#cityranktab">自贡</a></td>
+		      	<td align="center">112</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">53 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">41</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=安阳#cityranktab">安阳</a></td>
+		      	<td align="center">111</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">42</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南充#cityranktab">南充</a></td>
+		      	<td align="center">111</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">77 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">43</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=邯郸#cityranktab">邯郸</a></td>
+		      	<td align="center">111</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">44</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=潍坊#cityranktab">潍坊</a></td>
+		      	<td align="center">111</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">49 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">45</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=新乡#cityranktab">新乡</a></td>
+		      	<td align="center">111</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">46</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=忻州#cityranktab">忻州</a></td>
+		      	<td align="center">110</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">32 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">47</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=临沂#cityranktab">临沂</a></td>
+		      	<td align="center">109</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">44 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">48</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=太原#cityranktab">太原</a></td>
+		      	<td align="center">109</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">60 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">49</td>
+		      	<td align="center">重庆</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=重庆#cityranktab">重庆</a></td>
+		      	<td align="center">108</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">46 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">50</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=乐山#cityranktab">乐山</a></td>
+		      	<td align="center">107</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">51 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">51</td>
+		      	<td align="center">河北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=张家口#cityranktab">张家口</a></td>
+		      	<td align="center">105</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">27 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">52</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=德州#cityranktab">德州</a></td>
+		      	<td align="center">104</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">53</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=济南#cityranktab">济南</a></td>
+		      	<td align="center">104</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">35 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">54</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=鹤壁#cityranktab">鹤壁</a></td>
+		      	<td align="center">102</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">55</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=聊城#cityranktab">聊城</a></td>
+		      	<td align="center">102</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">56</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=青岛#cityranktab">青岛</a></td>
+		      	<td align="center">101</td>
+		      	<td align="center">轻度污染</td>
+		      	<td align="center">43 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">57</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=枣庄#cityranktab">枣庄</a></td>
+		      	<td align="center">100</td>
+		      	<td align="center">良</td>
+		      	<td align="center">45 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">58</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=亳州#cityranktab">亳州</a></td>
+		      	<td align="center">100</td>
+		      	<td align="center">良</td>
+		      	<td align="center">40 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">59</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=日照#cityranktab">日照</a></td>
+		      	<td align="center">100</td>
+		      	<td align="center">良</td>
+		      	<td align="center">60 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">60</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=西安#cityranktab">西安</a></td>
+		      	<td align="center">99</td>
+		      	<td align="center">良</td>
+		      	<td align="center">34 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">61</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=咸阳#cityranktab">咸阳</a></td>
+		      	<td align="center">99</td>
+		      	<td align="center">良</td>
+		      	<td align="center">34 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">62</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宿州#cityranktab">宿州</a></td>
+		      	<td align="center">97</td>
+		      	<td align="center">良</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">63</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宝鸡#cityranktab">宝鸡</a></td>
+		      	<td align="center">97</td>
+		      	<td align="center">良</td>
+		      	<td align="center">29 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">64</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=商丘#cityranktab">商丘</a></td>
+		      	<td align="center">96</td>
+		      	<td align="center">良</td>
+		      	<td align="center">45 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">65</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=达州#cityranktab">达州</a></td>
+		      	<td align="center">96</td>
+		      	<td align="center">良</td>
+		      	<td align="center">70 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">66</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=泰安#cityranktab">泰安</a></td>
+		      	<td align="center">96</td>
+		      	<td align="center">良</td>
+		      	<td align="center">45 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">67</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=郑州#cityranktab">郑州</a></td>
+		      	<td align="center">95</td>
+		      	<td align="center">良</td>
+		      	<td align="center">34 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">68</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=济宁#cityranktab">济宁</a></td>
+		      	<td align="center">95</td>
+		      	<td align="center">良</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">69</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=连云港#cityranktab">连云港</a></td>
+		      	<td align="center">95</td>
+		      	<td align="center">良</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">70</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南阳#cityranktab">南阳</a></td>
+		      	<td align="center">95</td>
+		      	<td align="center">良</td>
+		      	<td align="center">40 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">71</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=雅安#cityranktab">雅安</a></td>
+		      	<td align="center">95</td>
+		      	<td align="center">良</td>
+		      	<td align="center">23 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">72</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=吕梁#cityranktab">吕梁</a></td>
+		      	<td align="center">95</td>
+		      	<td align="center">良</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">73</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=阜阳#cityranktab">阜阳</a></td>
+		      	<td align="center">92</td>
+		      	<td align="center">良</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">74</td>
+		      	<td align="center">陕西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=渭南#cityranktab">渭南</a></td>
+		      	<td align="center">92</td>
+		      	<td align="center">良</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">NO2</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">75</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南昌#cityranktab">南昌</a></td>
+		      	<td align="center">92</td>
+		      	<td align="center">良</td>
+		      	<td align="center">46 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">76</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=周口#cityranktab">周口</a></td>
+		      	<td align="center">91</td>
+		      	<td align="center">良</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">77</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宿迁#cityranktab">宿迁</a></td>
+		      	<td align="center">90</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">78</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=许昌#cityranktab">许昌</a></td>
+		      	<td align="center">90</td>
+		      	<td align="center">良</td>
+		      	<td align="center">44 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">79</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=徐州#cityranktab">徐州</a></td>
+		      	<td align="center">89</td>
+		      	<td align="center">良</td>
+		      	<td align="center">40 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">80</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=驻马店#cityranktab">驻马店</a></td>
+		      	<td align="center">89</td>
+		      	<td align="center">良</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">81</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=武汉#cityranktab">武汉</a></td>
+		      	<td align="center">89</td>
+		      	<td align="center">良</td>
+		      	<td align="center">51 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">82</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=开封#cityranktab">开封</a></td>
+		      	<td align="center">89</td>
+		      	<td align="center">良</td>
+		      	<td align="center">32 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">83</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=泸州#cityranktab">泸州</a></td>
+		      	<td align="center">89</td>
+		      	<td align="center">良</td>
+		      	<td align="center">40 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">84</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=平顶山#cityranktab">平顶山</a></td>
+		      	<td align="center">89</td>
+		      	<td align="center">良</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">85</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=信阳#cityranktab">信阳</a></td>
+		      	<td align="center">88</td>
+		      	<td align="center">良</td>
+		      	<td align="center">40 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">86</td>
+		      	<td align="center">山东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=菏泽#cityranktab">菏泽</a></td>
+		      	<td align="center">86</td>
+		      	<td align="center">良</td>
+		      	<td align="center">39 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">87</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淮南#cityranktab">淮南</a></td>
+		      	<td align="center">86</td>
+		      	<td align="center">良</td>
+		      	<td align="center">32 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">88</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=孝感#cityranktab">孝感</a></td>
+		      	<td align="center">85</td>
+		      	<td align="center">良</td>
+		      	<td align="center">46 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">89</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=漯河#cityranktab">漯河</a></td>
+		      	<td align="center">85</td>
+		      	<td align="center">良</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">90</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=朔州#cityranktab">朔州</a></td>
+		      	<td align="center">85</td>
+		      	<td align="center">良</td>
+		      	<td align="center">31 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">91</td>
+		      	<td align="center">河南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=濮阳#cityranktab">濮阳</a></td>
+		      	<td align="center">83</td>
+		      	<td align="center">良</td>
+		      	<td align="center">32 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">92</td>
+		      	<td align="center">内蒙古</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=呼和浩特#cityranktab">呼和浩特</a></td>
+		      	<td align="center">82</td>
+		      	<td align="center">良</td>
+		      	<td align="center">33 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">93</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=杭州#cityranktab">杭州</a></td>
+		      	<td align="center">82</td>
+		      	<td align="center">良</td>
+		      	<td align="center">51 ug/m<sup>3</sup></td>
+		      	<td align="center">NO2</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">94</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=襄阳#cityranktab">襄阳</a></td>
+		      	<td align="center">80</td>
+		      	<td align="center">良</td>
+		      	<td align="center">59 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">95</td>
+		      	<td align="center">宁夏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=银川#cityranktab">银川</a></td>
+		      	<td align="center">80</td>
+		      	<td align="center">良</td>
+		      	<td align="center">28 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">96</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=湖州#cityranktab">湖州</a></td>
+		      	<td align="center">80</td>
+		      	<td align="center">良</td>
+		      	<td align="center">43 ug/m<sup>3</sup></td>
+		      	<td align="center">NO2</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">97</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=随州#cityranktab">随州</a></td>
+		      	<td align="center">80</td>
+		      	<td align="center">良</td>
+		      	<td align="center">43 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">98</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淮安#cityranktab">淮安</a></td>
+		      	<td align="center">80</td>
+		      	<td align="center">良</td>
+		      	<td align="center">45 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">99</td>
+		      	<td align="center">四川</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=遂宁#cityranktab">遂宁</a></td>
+		      	<td align="center">80</td>
+		      	<td align="center">良</td>
+		      	<td align="center">56 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">100</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宜昌#cityranktab">宜昌</a></td>
+		      	<td align="center">79</td>
+		      	<td align="center">良</td>
+		      	<td align="center">29 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">101</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=淮北#cityranktab">淮北</a></td>
+		      	<td align="center">78</td>
+		      	<td align="center">良</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">102</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=常州#cityranktab">常州</a></td>
+		      	<td align="center">78</td>
+		      	<td align="center">良</td>
+		      	<td align="center">57 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">103</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=益阳#cityranktab">益阳</a></td>
+		      	<td align="center">78</td>
+		      	<td align="center">良</td>
+		      	<td align="center">57 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">104</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=泰州#cityranktab">泰州</a></td>
+		      	<td align="center">77</td>
+		      	<td align="center">良</td>
+		      	<td align="center">56 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">105</td>
+		      	<td align="center">西藏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=拉萨#cityranktab">拉萨</a></td>
+		      	<td align="center">77</td>
+		      	<td align="center">良</td>
+		      	<td align="center">11 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">106</td>
+		      	<td align="center">内蒙古</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=包头#cityranktab">包头</a></td>
+		      	<td align="center">76</td>
+		      	<td align="center">良</td>
+		      	<td align="center">39 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">107</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=盐城#cityranktab">盐城</a></td>
+		      	<td align="center">75</td>
+		      	<td align="center">良</td>
+		      	<td align="center">52 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">108</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=六安#cityranktab">六安</a></td>
+		      	<td align="center">75</td>
+		      	<td align="center">良</td>
+		      	<td align="center">24 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">109</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=蚌埠#cityranktab">蚌埠</a></td>
+		      	<td align="center">75</td>
+		      	<td align="center">良</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">110</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=岳阳#cityranktab">岳阳</a></td>
+		      	<td align="center">75</td>
+		      	<td align="center">良</td>
+		      	<td align="center">55 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">111</td>
+		      	<td align="center">青海</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=西宁#cityranktab">西宁</a></td>
+		      	<td align="center">75</td>
+		      	<td align="center">良</td>
+		      	<td align="center">27 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">112</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=九江#cityranktab">九江</a></td>
+		      	<td align="center">74</td>
+		      	<td align="center">良</td>
+		      	<td align="center">54 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">113</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=镇江#cityranktab">镇江</a></td>
+		      	<td align="center">73</td>
+		      	<td align="center">良</td>
+		      	<td align="center">53 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">114</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=苏州#cityranktab">苏州</a></td>
+		      	<td align="center">72</td>
+		      	<td align="center">良</td>
+		      	<td align="center">52 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">115</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=广州#cityranktab">广州</a></td>
+		      	<td align="center">71</td>
+		      	<td align="center">良</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">116</td>
+		      	<td align="center">新疆</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=乌鲁木齐#cityranktab">乌鲁木齐</a></td>
+		      	<td align="center">71</td>
+		      	<td align="center">良</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">117</td>
+		      	<td align="center">贵州</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=贵阳#cityranktab">贵阳</a></td>
+		      	<td align="center">71</td>
+		      	<td align="center">良</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">118</td>
+		      	<td align="center">山西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=大同#cityranktab">大同</a></td>
+		      	<td align="center">71</td>
+		      	<td align="center">良</td>
+		      	<td align="center">27 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">119</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=铜陵#cityranktab">铜陵</a></td>
+		      	<td align="center">70</td>
+		      	<td align="center">良</td>
+		      	<td align="center">33 ug/m<sup>3</sup></td>
+		      	<td align="center">NO2</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">120</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=新余#cityranktab">新余</a></td>
+		      	<td align="center">70</td>
+		      	<td align="center">良</td>
+		      	<td align="center">42 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">121</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=荆门#cityranktab">荆门</a></td>
+		      	<td align="center">70</td>
+		      	<td align="center">良</td>
+		      	<td align="center">34 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">122</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=鄂州#cityranktab">鄂州</a></td>
+		      	<td align="center">69</td>
+		      	<td align="center">良</td>
+		      	<td align="center">45 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">123</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=扬州#cityranktab">扬州</a></td>
+		      	<td align="center">69</td>
+		      	<td align="center">良</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">124</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南通#cityranktab">南通</a></td>
+		      	<td align="center">68</td>
+		      	<td align="center">良</td>
+		      	<td align="center">44 ug/m<sup>3</sup></td>
+		      	<td align="center">NO2</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">125</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=常德#cityranktab">常德</a></td>
+		      	<td align="center">68</td>
+		      	<td align="center">良</td>
+		      	<td align="center">49 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">126</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=无锡#cityranktab">无锡</a></td>
+		      	<td align="center">68</td>
+		      	<td align="center">良</td>
+		      	<td align="center">49 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">127</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=荆州#cityranktab">荆州</a></td>
+		      	<td align="center">68</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">128</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=咸宁#cityranktab">咸宁</a></td>
+		      	<td align="center">67</td>
+		      	<td align="center">良</td>
+		      	<td align="center">41 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">129</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=长沙#cityranktab">长沙</a></td>
+		      	<td align="center">67</td>
+		      	<td align="center">良</td>
+		      	<td align="center">48 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">130</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=衢州#cityranktab">衢州</a></td>
+		      	<td align="center">65</td>
+		      	<td align="center">良</td>
+		      	<td align="center">47 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">131</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=嘉兴#cityranktab">嘉兴</a></td>
+		      	<td align="center">65</td>
+		      	<td align="center">良</td>
+		      	<td align="center">43 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">132</td>
+		      	<td align="center">辽宁</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=大连#cityranktab">大连</a></td>
+		      	<td align="center">64</td>
+		      	<td align="center">良</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">133</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=黄冈#cityranktab">黄冈</a></td>
+		      	<td align="center">64</td>
+		      	<td align="center">良</td>
+		      	<td align="center">46 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">134</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=温州#cityranktab">温州</a></td>
+		      	<td align="center">63</td>
+		      	<td align="center">良</td>
+		      	<td align="center">29 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">135</td>
+		      	<td align="center">湖北</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=黄石#cityranktab">黄石</a></td>
+		      	<td align="center">62</td>
+		      	<td align="center">良</td>
+		      	<td align="center">44 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">136</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=绍兴#cityranktab">绍兴</a></td>
+		      	<td align="center">62</td>
+		      	<td align="center">良</td>
+		      	<td align="center">44 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">137</td>
+		      	<td align="center">福建</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=厦门#cityranktab">厦门</a></td>
+		      	<td align="center">62</td>
+		      	<td align="center">良</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">138</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宜春#cityranktab">宜春</a></td>
+		      	<td align="center">60</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">139</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=合肥#cityranktab">合肥</a></td>
+		      	<td align="center">60</td>
+		      	<td align="center">良</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">140</td>
+		      	<td align="center">上海</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=上海#cityranktab">上海</a></td>
+		      	<td align="center">59</td>
+		      	<td align="center">良</td>
+		      	<td align="center">39 ug/m<sup>3</sup></td>
+		      	<td align="center">NO2</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">141</td>
+		      	<td align="center">云南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=昆明#cityranktab">昆明</a></td>
+		      	<td align="center">59</td>
+		      	<td align="center">良</td>
+		      	<td align="center">19 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">142</td>
+		      	<td align="center">福建</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=福州#cityranktab">福州</a></td>
+		      	<td align="center">58</td>
+		      	<td align="center">良</td>
+		      	<td align="center">30 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">143</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=株洲#cityranktab">株洲</a></td>
+		      	<td align="center">58</td>
+		      	<td align="center">良</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">144</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=金华#cityranktab">金华</a></td>
+		      	<td align="center">57</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">145</td>
+		      	<td align="center">江苏</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南京#cityranktab">南京</a></td>
+		      	<td align="center">56</td>
+		      	<td align="center">良</td>
+		      	<td align="center">37 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">146</td>
+		      	<td align="center">湖南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=湘潭#cityranktab">湘潭</a></td>
+		      	<td align="center">56</td>
+		      	<td align="center">良</td>
+		      	<td align="center">39 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">147</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=马鞍山#cityranktab">马鞍山</a></td>
+		      	<td align="center">55</td>
+		      	<td align="center">良</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">148</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=丽水#cityranktab">丽水</a></td>
+		      	<td align="center">55</td>
+		      	<td align="center">良</td>
+		      	<td align="center">29 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">149</td>
+		      	<td align="center">江西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=萍乡#cityranktab">萍乡</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">27 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">150</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宣城#cityranktab">宣城</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">33 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">151</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=芜湖#cityranktab">芜湖</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">38 ug/m<sup>3</sup></td>
+		      	<td align="center">PM2.5</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">152</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=滁州#cityranktab">滁州</a></td>
+		      	<td align="center">54</td>
+		      	<td align="center">良</td>
+		      	<td align="center">32 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">153</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=池州#cityranktab">池州</a></td>
+		      	<td align="center">53</td>
+		      	<td align="center">良</td>
+		      	<td align="center">36 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">154</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=安庆#cityranktab">安庆</a></td>
+		      	<td align="center">53</td>
+		      	<td align="center">良</td>
+		      	<td align="center">35 ug/m<sup>3</sup></td>
+		      	<td align="center">NO2</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">155</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=佛山#cityranktab">佛山</a></td>
+		      	<td align="center">52</td>
+		      	<td align="center">良</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center">O3</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">156</td>
+		      	<td align="center">安徽</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=黄山#cityranktab">黄山</a></td>
+		      	<td align="center">51</td>
+		      	<td align="center">良</td>
+		      	<td align="center">33 ug/m<sup>3</sup></td>
+		      	<td align="center">PM10</td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">157</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=江门#cityranktab">江门</a></td>
+		      	<td align="center">50</td>
+		      	<td align="center">优</td>
+		      	<td align="center">18 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">158</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=台州#cityranktab">台州</a></td>
+		      	<td align="center">49</td>
+		      	<td align="center">优</td>
+		      	<td align="center">25 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">159</td>
+		      	<td align="center">广西</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=南宁#cityranktab">南宁</a></td>
+		      	<td align="center">49</td>
+		      	<td align="center">优</td>
+		      	<td align="center">28 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">160</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=惠州#cityranktab">惠州</a></td>
+		      	<td align="center">48</td>
+		      	<td align="center">优</td>
+		      	<td align="center">23 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">161</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=宁波#cityranktab">宁波</a></td>
+		      	<td align="center">44</td>
+		      	<td align="center">优</td>
+		      	<td align="center">26 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">162</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=肇庆#cityranktab">肇庆</a></td>
+		      	<td align="center">43</td>
+		      	<td align="center">优</td>
+		      	<td align="center">23 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">163</td>
+		      	<td align="center">浙江</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=舟山#cityranktab">舟山</a></td>
+		      	<td align="center">41</td>
+		      	<td align="center">优</td>
+		      	<td align="center">23 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">164</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=中山#cityranktab">中山</a></td>
+		      	<td align="center">40</td>
+		      	<td align="center">优</td>
+		      	<td align="center">19 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">165</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=东莞#cityranktab">东莞</a></td>
+		      	<td align="center">39</td>
+		      	<td align="center">优</td>
+		      	<td align="center">20 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">166</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=深圳#cityranktab">深圳</a></td>
+		      	<td align="center">38</td>
+		      	<td align="center">优</td>
+		      	<td align="center">21 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">167</td>
+		      	<td align="center">广东</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=珠海#cityranktab">珠海</a></td>
+		      	<td align="center">34</td>
+		      	<td align="center">优</td>
+		      	<td align="center">17 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		      <tr>
+		      	<td align="center">168</td>
+		      	<td align="center">海南</td>
+		      	<td align="center"><a href="environment.php?tab=city&city=海口#cityranktab">海口</a></td>
+		      	<td align="center">32</td>
+		      	<td align="center">优</td>
+		      	<td align="center">14 ug/m<sup>3</sup></td>
+		      	<td align="center"></td>
+		      </tr>
+		    		 </table>
+      </div>
+      <div class="tab-pane" id="rank3">
+      	<form action="#rank" method="get" class="rankform">
+      		月份选择：
+		    <input type="text" name="month" class="dateinput" value="2026-08" />
+		    <input type="hidden" name="tab" value="rank" />
+		    <input type="hidden" name="order" value="DESC" />
+		    <input type="hidden" name="type" value="MONTH" />
+		    <input type="submit" class="btn btn-success" value="提交" />
+		    <div class="forecasttip" style="" >预测排序</div>
+	  	</form>
+	  	<div style="margin-top:5px;background:#eee;padding:5px;">
+			 <!-- <b>备注：</b>
+			 综合指数为专家团队从网上直接抓取监测结果的计算值，未经校核，因而与生态环境部公布的值有差别，但是为了随时掌握动态，只能采用未校核数据进行比较。 -->
+		</div>
+      	<table class="table table-hover table-striped" style="margin-top:10px;">
+      		<tr class="ranktableth" style="background:#82b661;height:38px;">
+		        <th style="text-align:center">降序</th>
+		        <th style="text-align:center">省份</th>
+		        <th style="text-align:center">城市</th>
+		        <th style="text-align:center">综合指数</th>
+		        <th style="text-align:center">最大指数</th>
+		        <th style="text-align:center">首要污染物</th>
+	        </tr>
+      		<tr>
+					 </table>
+      </div>
+      <div class="tab-pane" id="rank4">
+      	<form action="#rank" method="get" class="rankform">
+      		年份选择：
+		    <input type="text" name="year" class="dateinput" value="2026" />
+		    <input type="hidden" name="tab" value="rank" />
+		    <input type="hidden" name="order" value="DESC" />
+		    <input id="nowType" name="nowtype" type="hidden" value="complexindex" />
+		    <input type="hidden" name="type" value="YEAR" />
+		    <input type="submit" class="btn btn-success" value="提交" />
+		    <a href='forecastrank.php' target="_blank" style="color:red;margin-left:30px">点击预测2026年全年综合指数排序<img src='http://m.zq12369.com/resource/img/new.gif' height="18px" /></a>
+		    <div class="forecasttip" style="" >预测排序</div>
+				<button type="button" class="btn btn-default btndategroup1" value="pm2_5">PM2.5</button>
+				<button type="button" class="btn btn-default btndategroup1" value="complexindex">综合指数</button>
+				
+	  	</form>
+	  	<div style="margin-top:5px;background:#eee;padding:5px;">
+			 <!-- <b>备注：</b>
+			 综合指数为专家团队从网上直接抓取监测结果的计算值，未经校核，因而与生态环境部公布的值有差别，但是为了随时掌握动态，只能采用未校核数据进行比较。 -->
+		</div>
+      	<table id="complexTable" class="table table-hover table-striped" style="margin-top:10px;">
+      		<tr class="ranktableth" style="background:#82b661;height:38px;">
+		        <th style="text-align:center">降序</th>
+		        <th style="text-align:center">省份</th>
+		        <th style="text-align:center">城市</th>
+		        <th style="text-align:center">综合指数</th>
+		        <th style="text-align:center">最大指数</th>
+		        <th style="text-align:center">首要污染物</th>
+	        </tr>
+      		<tr>
+					 </table>
+		 <table id="pm25Table" class="table table-hover table-striped" style="margin-top:10px;display:none">
+      		<tr class="ranktableth" style="background:#82b661;height:38px;">
+		        <th style="text-align:center">降序</th>
+		        <th style="text-align:center">省份</th>
+		        <th style="text-align:center">城市</th>
+		        <th style="text-align:center">PM2.5</th>
+		        <th style="text-align:center">最大指数</th>
+		        <th style="text-align:center">首要污染物</th>
+	        </tr>
+      		<tr>
+					 </table>
+      </div>
+    </div>
+
+</div>
+<script>
+	var akb33 = "32223";
+	var akb34 = "N4EDAQpO2ejqgCoX";
+	var akb35 = "=qoKNLgdAjJbU8zx";
+	var akb36 = "mAkJqt8coXQ96zML";
+	var akb48 = "t4ABRmeN"
+</script>
+<script type="text/javascript" src="resource/js/jquery.min.js?v=0.1"></script>
+<script type="text/javascript" src="resource/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="resource/js/respond.js"></script>
+<script>
+  var typedata = "DAY";
+	var nowTypedata = "complexindex"
+</script>
+<script src="./js/envrank.php.js"></script>
+<br/>
+
+<br/>
+<div class="footertop"></div>
+<div class="footer">
+    <div class="container" style="background: transparent" >
+    	<div class="block">
+    		<div class="title">友情链接</div>
+    		<ul>
+                <li><a href='http://www.zhb.gov.cn/' target="_blank" rel="nofollow">中国环保部</a></li>
+    			<li><a href='http://www.cnemc.cn/' target="_blank" rel="nofollow">环境监测总站</a></li>
+    			<li><a href='http://www.aqistudy.cn' target="_blank">空气质量分析平台</a></li>
+    			<li><a href='http://www.weather.com.cn/' target="_blank" rel="nofollow">中国天气网</a></li>
+                <li><a href='http://www.camscma.cn/' target="_blank" rel="nofollow">中国气科院</a></li>
+                <li><a href='http://www.nankai.edu.cn/' target="_blank" rel="nofollow">南开大学</a></li>
+                <li><a href='http://www.pku.edu.cn/' target="_blank" rel="nofollow">北京大学</a></li>
+               
+                <li><a href='https://map.zq12369.com' target="_blank">风场地图</a></li>
+    		</ul>
+
+            <ul style="margin-top:0px;display: none">
+                <li><a href='https://www.zq12369.com'>首页</a></li>
+                <li>|</li>
+                <li><a href='https://www.zq12369.com/navigation/'>真气导航</a></li>
+                <li>|</li>
+                <li><a href='health.php?tab=knowledge'>环境健康</a></li>
+                <li>|</li>
+                <li><a href='about.php'>关于我们</a></li>
+                <li>|</li>
+                <li><a href='expert.php'>专家资源</a></li>
+                <li>|</li>
+                <li><a href='partner.php'>合作伙伴</a></li>
+                <li>|</li>
+                <li><a href='contact.php'>联系我们</a></li>
+            </ul>
+    	</div>
+
+    	<div class="line"></div>
+    	<div class="rightpart">
+    		<div class="logo"><a href="https://www.zq12369.com"><img style="width: 170px;height: 50px;" src='resource/img/logo_large.png' alt="真气网logo"></a></div>
+    		<div class="copyright" style="margin-top: 0px;" >
+    			Copyright @ 2015 - <span id="endtimes"></span><br/> zq12369.com All Rights Reserved! <br/>
+    			<a target="_blank" href="https://beian.miit.gov.cn"><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙ICP备 15007754号-1</p></a>
+    			<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254317176'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1254317176%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+                <div style="width:300px;margin:0 auto;">
+                    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011802001982" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="resource/img/public_icon.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33011802001982号</p ></a>
+                </div>
+            </div>
+    	</div>
+	</div>
+</div>
+<div class="footerbottom"></div>
+
+<script src="./js/footer.php.js">
+</script>
+<script>
+    // document.body.style.display = 'none'
+    // $.ajax({
+    //   type:"get",
+    //   url:"https://apis.map.qq.com/ws/location/v1/ip?key=C4ABZ-ULAWI-YIRG3-UQ3KZ-3AU2Z-RPFXG",
+    //   data:{
+    //     output: 'jsonp'
+    //   },
+    //   dataType: 'jsonp',
+    //   success:function(data){
+    //   console.log(data.result)
+    //   if (data.result.ad_info.city != '嘉兴市') {
+    //     document.body.style.display = ''
+    //   }
+       
+    //   }
+	  
+    // });
+</script>
+<!--下拉菜单栏点击定位-->
+<script src="./js/environment.php.js"></script>
+</body>

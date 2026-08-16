@@ -32,6 +32,7 @@ pub mod energy;
 pub mod fx;
 pub mod movie;
 pub mod movie_yien;
+pub mod wv_fx_more;
 
 pub use energy::*;
 pub use fx::*;

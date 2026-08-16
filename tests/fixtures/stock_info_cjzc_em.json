@@ -1,0 +1,17 @@
+{
+  "data": {
+    "list": [
+      {
+        "code": "c123",
+        "showTime": "2026-01-13 08:00:00",
+        "title": "财经早餐标题",
+        "mediaName": "东方财富",
+        "summary": "财经早餐摘要",
+        "image": "",
+        "url": "https://example.com/a",
+        "uniqueUrl": "https://example.com/uniqueUrl",
+        "Np_dst": 0
+      }
+    ]
+  }
+}

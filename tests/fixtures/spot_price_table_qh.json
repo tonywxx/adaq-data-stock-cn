@@ -1,0 +1,24 @@
+{
+  "props": {
+    "pageProps": {
+      "data": {
+        "varietyListData": [
+          {
+            "qhExchangeName": "上海期货交易所",
+            "productList": [
+              { "qhExchangeName": "上海期货交易所", "name": "螺纹钢", "productId": "rb" },
+              { "qhExchangeName": "上海期货交易所", "name": "铜", "productId": "cu" }
+            ]
+          },
+          {
+            "qhExchangeName": "大连商品交易所",
+            "productList": [
+              { "qhExchangeName": "大连商品交易所", "name": "豆粕", "productId": "m" },
+              { "qhExchangeName": "大连商品交易所", "name": "玉米", "productId": "c" }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

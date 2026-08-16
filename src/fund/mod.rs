@@ -50,6 +50,7 @@ pub(crate) fn parse_f64(s: &str) -> Option<f64> {
 }
 
 pub mod wv_fund_misc;
+pub mod wv_fund_more;
 
 // ## DEFERRED (assigned in this batch but not ported — exact reasons)
 //
@@ -64,3 +65,5 @@ pub mod wv_fund_misc;
 // Note: the other assigned functions (`amac_fund_abs`, `amac_person_bond_org_list`,
 // `fund_hk_rank_em`, `fund_lof_hist_em`, `fund_new_found_ths`) were already ported
 // in `wv_fund_misc.rs` by a prior pass, so this batch adds no new leaf module.
+
+pub mod excel_gaps;

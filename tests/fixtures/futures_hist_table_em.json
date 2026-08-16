@@ -1,0 +1,5 @@
+[
+  {"mktid": "1", "mktname": "上海期货交易所", "name": "cu", "code": "cu0000", "vcode": "CU", "vname": "铜"},
+  {"mktid": "1", "mktname": "上海期货交易所", "name": "al", "code": "al0000", "vcode": "AL", "vname": "铝"},
+  {"mktid": "2", "mktname": "大连商品交易所", "name": "a", "code": "a0000", "vcode": "A", "vname": "豆一"}
+]

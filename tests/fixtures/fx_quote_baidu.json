@@ -1,0 +1,35 @@
+{
+  "_note": "synthetic fixture — live Baidu 'getforeignrank' endpoint returns HTTP 403 from this environment without a valid browser 'acs-token' (anti-bot). Structure inferred from akshare/fx/fx_quote_baidu.py pandas reshape of each Result element's 'list' of {name,value} dicts.",
+  "QueryID": "0",
+  "ResultCode": "0",
+  "Result": [
+    {
+      "code": "USD",
+      "name": "美元",
+      "market": "外汇",
+      "status": "1",
+      "icon1": "",
+      "icon2": "",
+      "financeType": "0",
+      "list": [
+        { "name": "最新价", "value": "7.2310" },
+        { "name": "涨跌额", "value": "0.0123" },
+        { "name": "涨跌幅", "value": "0.17%" }
+      ]
+    },
+    {
+      "code": "HKD",
+      "name": "港币",
+      "market": "外汇",
+      "status": "1",
+      "icon1": "",
+      "icon2": "",
+      "financeType": "0",
+      "list": [
+        { "name": "最新价", "value": "0.9245" },
+        { "name": "涨跌额", "value": "-0.0010" },
+        { "name": "涨跌幅", "value": "-0.11%" }
+      ]
+    }
+  ]
+}

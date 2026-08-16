@@ -1,0 +1,38 @@
+{
+  "list": [
+    {
+      "bond_code": "113065",
+      "bond_name": "齐鲁转债",
+      "sub_date": "2022-11-29",
+      "sub_code": "783665",
+      "share_code": "764665",
+      "code": "600918",
+      "name": "齐鲁银行",
+      "sign_date": "2022-12-01",
+      "plan_total": 80.0,
+      "issue_total": 80.0,
+      "success_rate": 0.05,
+      "listing_date": "2022-12-19",
+      "expire_date": "2028-11-29",
+      "price": 100.0,
+      "quota": 0.5
+    },
+    {
+      "bond_code": "113042",
+      "bond_name": "上银转债",
+      "sub_date": "2021-01-25",
+      "sub_code": "751229",
+      "share_code": "761229",
+      "code": "601229",
+      "name": "上海银行",
+      "sign_date": "2021-01-27",
+      "plan_total": 200.0,
+      "issue_total": 200.0,
+      "success_rate": 0.03,
+      "listing_date": "2021-02-10",
+      "expire_date": "2027-01-25",
+      "price": 100.0,
+      "quota": 1.2
+    }
+  ]
+}

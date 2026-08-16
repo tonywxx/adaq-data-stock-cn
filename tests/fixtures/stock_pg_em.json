@@ -1,0 +1,22 @@
+{
+  "result": {
+    "pages": 1,
+    "data": [
+      {
+        "SECURITY_CODE": "600000",
+        "SECURITY_NAME_ABBR": "浦发银行",
+        "ALLOT_CODE": "700000",
+        "ALLOT_NUM": 1000000000.0,
+        "ALLOT_RATIO": 0.3,
+        "ALLOT_PRICE": 8.5,
+        "NEW_PRICE": 8.8,
+        "TOTAL_SHARE_BEFORE": 29300000000.0,
+        "TOTAL_SHARE_AFTER": 30300000000.0,
+        "RECORD_DATE": "2023-05-10 00:00:00",
+        "PAY_START_DATE": "2023-05-11 00:00:00",
+        "PAY_END_DATE": "2023-05-17 00:00:00",
+        "LISTING_DATE": "2023-06-01 00:00:00"
+      }
+    ]
+  }
+}

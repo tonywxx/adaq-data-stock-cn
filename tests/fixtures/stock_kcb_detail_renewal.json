@@ -1,0 +1,34 @@
+{
+  "actionErrors": [],
+  "actionMessages": [],
+  "fieldErrors": {},
+  "isPagination": "true",
+  "jsonCallBack": null,
+  "locale": "en",
+  "pageHelp": {
+    "beginPage": 1,
+    "cacheSize": 1,
+    "data": [
+      {
+        "updateDate": "20220630150515",
+        "planIssueCapital": 4,
+        "suspendStatus": "",
+        "wenHao": "",
+        "stockAuditName": "北京浩瀚深度信息技术股份有限公司",
+        "projectType": 0,
+        "currStatus": 5,
+        "stockAuditNum": "926",
+        "registeResult": 1,
+        "collectType": 1,
+        "stockIssuer": [],
+        "createTime": "20210607184555",
+        "auditApplyDate": "20210621133712",
+        "issueAmount": "",
+        "uniformCode": "91110108102094378J",
+        "commitiResult": "",
+        "issueMarketType": 1,
+        "OPERATION_SEQ": "7f8c29b0e092f02764f7910a1995039f"
+      }
+    ]
+  }
+}

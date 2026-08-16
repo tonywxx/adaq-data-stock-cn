@@ -1,0 +1,10 @@
+{
+  "Result": {
+    "list": {
+      "body": [
+        { "name": "贵州茅台", "pxChangeRate": 1.23, "heat": 98765 },
+        { "name": "宁德时代", "pxChangeRate": -0.56, "heat": 87654 }
+      ]
+    }
+  }
+}

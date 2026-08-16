@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "bargaindate": "2024-01-02",
+      "swIndexName": "申万基金指数",
+      "swindexcode": "807200",
+      "closeindex": 3456.78,
+      "maxindex": 3470.12,
+      "minindex": 3430.5,
+      "openindex": 3440.0,
+      "markup": 0.0049
+    },
+    {
+      "bargaindate": "2024-01-03",
+      "swIndexName": "申万基金指数",
+      "swindexcode": "807200",
+      "closeindex": 3460.0,
+      "maxindex": 3475.0,
+      "minindex": 3445.3,
+      "openindex": 3458.2,
+      "markup": 0.0009
+    }
+  ]
+}
