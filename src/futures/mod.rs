@@ -5,6 +5,7 @@ pub mod daily;
 pub mod extra;
 pub mod inventory;
 pub mod main;
+pub mod sina;
 pub mod spot;
 
 pub use daily::{FuturesDailyRow, futures_zh_daily};

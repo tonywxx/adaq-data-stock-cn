@@ -10,7 +10,7 @@
 //! |---|---|---|
 //! | `volatility_yz_rv` | `cal/rv.py:92` | DONE (pure) |
 //! | `rv_from_stock_zh_a_hist_min_em` | `cal/rv.py:13` | DONE (wraps `stock::misc::stock_zh_a_hist_min_em`) |
-//! | `rv_from_futures_zh_minute_sina` | `cal/rv.py:61` | DEFERRED — depends on `futures_zh_minute_sina`, which is not yet ported in this crate |
+//! | `rv_from_futures_zh_minute_sina` | `cal/rv.py:61` | DONE (wraps `futures::sina::futures_zh_minute_sina`) |
 //!
 //! ## Yang-Zhang formula (as implemented by akshare)
 //!
@@ -26,6 +26,7 @@
 //! dropped (matching akshare's `.dropna()`).
 
 use crate::core::error::Result;
+use crate::futures::sina::futures_zh_minute_sina;
 use crate::stock::misc::stock_zh_a_hist_min_em;
 
 /// One OHLC bar, the minimal input to [`volatility_yz_rv`].
@@ -166,6 +167,31 @@ pub async fn rv_from_stock_zh_a_hist_min_em(
         .filter(|r| r.open.unwrap_or(0.0) != 0.0)
         .map(|r| OhlcRow {
             date: r.time,
+            open: r.open.unwrap_or(0.0),
+            high: r.high.unwrap_or(0.0),
+            low: r.low.unwrap_or(0.0),
+            close: r.close.unwrap_or(0.0),
+        })
+        .collect();
+    Ok(volatility_yz_rv(&ohlc))
+}
+
+/// 新浪期货-分钟行情 → Yang-Zhang 已实现波动率.
+///
+/// Fetches Sina minute K-lines via [`futures_zh_minute_sina`] (period
+/// `1`/`5`/`15`/`30`/`60`), drops zero-open bars, and runs
+/// [`volatility_yz_rv`].
+pub async fn rv_from_futures_zh_minute_sina(
+    client: &crate::core::client::Client,
+    symbol: &str,
+    period: &str,
+) -> Result<Vec<YangZhangRvRow>> {
+    let mins = futures_zh_minute_sina(client, symbol, period).await?;
+    let ohlc: Vec<OhlcRow> = mins
+        .into_iter()
+        .filter(|r| r.open.unwrap_or(0.0) != 0.0)
+        .map(|r| OhlcRow {
+            date: r.datetime,
             open: r.open.unwrap_or(0.0),
             high: r.high.unwrap_or(0.0),
             low: r.low.unwrap_or(0.0),

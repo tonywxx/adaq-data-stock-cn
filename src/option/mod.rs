@@ -7,6 +7,7 @@ pub mod commodity;
 pub mod eastmoney;
 pub mod extra;
 pub mod sina;
+pub mod exchange;
 pub mod sse;
 
 pub use eastmoney::{option_daily, option_minute};

@@ -6,3 +6,4 @@ pub mod extra;
 pub mod qvix;
 pub mod research_sw;
 pub mod stock_hk_us_zh;
+pub mod index_more;

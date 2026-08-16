@@ -1117,3 +1117,54 @@
 | akshare 函数 | 本库路径 | 源 | 状态 |
 | --- | --- | --- | --- |
 | `pro_api` | `src/pro/mod.rs` | `pro/__init__.py` | DEFERRED(第三方 Tushare token/session 封装,需用户令牌,Schema 无界) |
+
+## 新浪期货 `futures::sina`(Wave 4)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `futures_zh_spot_sina` | `src/futures/sina.rs` | `futures_zh_sina.py` | DONE(`hq.sinajs.cn` `var hq_str_*` 行解析) |
+| `futures_zh_minute_sina` | `src/futures/sina.rs` | `futures_zh_sina.py` | DONE(纯文本 CSV 行解析,`cal` 依赖此函数) |
+| `futures_main_sina` | _(已移植)_ | `futures_zh_sina.py` | 跳过(已在 `futures_derivative::sina` 移植,避免重复) |
+| `futures_zh_daily_sina` | _(已移植)_ | `futures_zh_sina.py` | 跳过(已在 `futures::extra` 移植,避免重复) |
+| `futures_display_main_sina` | `src/futures/sina.rs` | `futures_zh_sina.py` | DEFERRED(`demjson` JS 包裹对象解析) |
+
+## 交易所期权 `option::exchange`(Wave 4)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `option_hist_yearly_czce` | `src/option/exchange.rs` | `option_czce.py` | DONE(CZCE `|` 分隔文本,跳过 小计/合计、去千分位) |
+| `option_finance_sse_underlying` | `src/option/exchange.rs` | `option_finance.py` | DONE(SSE 标的 ETF 现货,位置 JSON) |
+| `option_finance_board_sse` | `src/option/exchange.rs` | `option_finance.py` | DONE(SSE ETF 期权板,位置 JSON) |
+| `option_current_cffex_em` | _(已移植)_ | `option_em.py` | 跳过(已在 `option::extra` 移植,避免重复) |
+| `option_hist_dce` / `option_hist_czce` / `option_current_em` / `option_finance_board`(SZSE/CFFEX 分支) | `src/option/exchange.rs` | `option_*.py` | DEFERRED(JSON-body POST / 多页爬取 / Excel / 未文档化 CSV) |
+
+## 中国债券 `bond::zh`(Wave 4)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `bond_gb_zh_sina` / `bond_gb_us_sina` | `src/bond/zh.rs` | `bond_gb_sina.py` | DONE(新浪国债收益率,`result.data`) |
+| `bond_debt_nafmii` | `src/bond/zh.rs` | `bond_nafmii.py` | DONE(NAFMII 注册信息,`rows`) |
+| `bond_zh_us_rate` / `bond_spot_quote` / `bond_spot_deal` / `bond_zh_hs_cov_*` | _(已移植)_ | `bond_*.py` | 跳过(已在 `bond::eastmoney`/`chinamoney`/`cov` 移植) |
+| `bond_china_yield` / `bond_cash_summary_sse` / `bond_deal_summary_sse` / `bond_cb_profile_sina` / `bond_cb_summary_sina` | `src/bond/zh.rs` | `bond_*.py` | DEFERRED(HTML/`pd.read_html`/Excel) |
+| `bond_china_close_return` / `macro_china_swap_rate` | `src/bond/zh.rs` | `bond_*.py` | DEFERRED(ChinaMoney token/cookie 引导) |
+| `bond_zh_hs_spot` | `src/bond/zh.rs` | `bond_*.py` | DEFERRED(`demjson` 非严格 JSON,与 `bond_zh_hs_cov_spot` 重叠) |
+
+## 金十 CDN 宏观 `economic::macro_china3`(Wave 4)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `macro_china_gdp_yearly` / `macro_china_cpi_yearly` / `macro_china_cpi_monthly` / `macro_china_ppi_yearly` / `macro_china_exports_yoy` / `macro_china_imports_yoy` / `macro_china_trade_balance` / `macro_china_industrial_production_yoy` / `macro_china_pmi_yearly` / `macro_china_cx_pmi_yearly` / `macro_china_cx_services_pmi_yearly` / `macro_china_non_man_pmi` / `macro_china_fx_reserves_yearly` / `macro_china_m2_yearly` | `src/economic/macro_china3.rs` | `economic/cons.py`(`cdn.jin10.com` 免 token CDN) | DONE(JS 包裹数组解析,共享 `Jin10JsIndicatorRow`) |
+| `society_electricity` / `society_traffic_volume` / `postal_telecommunicational` / `international_tourism_fx` / `passenger_load_factor` / `freight_index` / `central_bank_balance` / `insurance` / `supply_of_money` / `foreign_exchange_gold` / `retail_price_index` | `src/economic/macro_china3.rs` | `macro_china.py` | DEFERRED(Sina `MacPage` JSONP token) |
+| `macro_china_shrzgm` / `macro_china_urban_unemployment` / `macro_china_daily_energy` | `src/economic/macro_china3.rs` | `macro_china.py` | DEFERRED(Mofcom/stat.gov POST / Sina JS 文本切片) |
+| `macro_china.py` 内其余东财 `RPT_*` / `data_center/reports` 端点 | _(已移植)_ | `macro_china.py` | 跳过(已在 `economic::china`/`macro2`/`macro_china2`/`macro_china_more` 移植) |
+
+## 指数历史/实时/全球 `index::index_more`(Wave 4)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `index_zh_a_hist` / `index_zh_a_daily` | `src/index/index_more.rs` | `index_zh_em.py` | DONE(东财 push2his kline) |
+| `index_zh_a_hist_min_em` | `src/index/index_more.rs` | `index_zh_em.py` | DONE(东财 push2his trends2 + kline) |
+| `index_zh_a_spot` | `src/index/index_more.rs` | `index_stock_zh.py` | DONE(东财 push2 实时,`fltt` 实值) |
+| `index_global_spot_em` / `index_global_hist_em` | `src/index/index_more.rs` | `index_global_em.py` | DONE(东财 push2 / push2his,全球指数 ÷100) |
+| `index_value_name` / `index_vix` / `index_institute_*` | _(不存在)_ | `index_*.py` | 本 checkout 无此文件(包已重组),无需移植 |
+| `index_sw` / `index_drewry` / `index_stock_zh_csindex` / `index_stock_us_sina` / `stock_hk_index_daily_sina` / `index_research_fund_sw` | `src/index/index_more.rs` | `index_*.py` | DEFERRED(HTML/Excel/JS 签名) |

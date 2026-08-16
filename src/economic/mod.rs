@@ -8,6 +8,7 @@ pub mod macro_china2;
 pub mod macro_intl;
 pub mod macro_nbs_euro;
 pub mod macro_usa;
+pub mod macro_china3;
 
 pub use china::{
     ChinaCpi, ChinaGdp, ChinaMoneySupply, ChinaPpi, macro_china_cpi, macro_china_gdp,
