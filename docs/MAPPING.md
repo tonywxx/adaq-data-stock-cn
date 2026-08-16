@@ -1238,3 +1238,11 @@
 | `stock_hk_hot_rank_detail_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_detail_em` | `stock/stock_hk_hot_rank_em.py:53` | DONE(emappdata `getHisHkUsList`) |
 | `stock_hk_hot_rank_detail_realtime_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_detail_realtime_em` | `stock/stock_hk_hot_rank_em.py:90` | DONE(emappdata `getCurrentHkUsList`) |
 | `stock_hk_hot_rank_latest_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_latest_em` | `stock/stock_hk_hot_rank_em.py:124` | DONE(emappdata `getCurrentHkUsLatest`,`data` 字典→`(item,value)`) |
+
+## 雪球 `stock_xq`(DEFERRED)
+
+| akshare 函数 | 本库路径 | 源 | 状态 |
+| --- | --- | --- | --- |
+| `stock_individual_spot_xq` | _(未移植)_ | `stock/stock_xq.py:81` | DEFERRED(需 `xq_a_token` 登录态 cookie,第三方会话令牌) |
+
+> 其余 `stock_*_xq`(雪球)族同理需 `xq_a_token`,整族 DEFERRED。

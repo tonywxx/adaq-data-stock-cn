@@ -174,8 +174,15 @@
 ### 已推迟(DEFERRED)
 - 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点(已在 `docs/MAPPING.md` 对应条目下标注跳过原因),如 `air`(JS 签名)、`epidemic`、`food`、`weather`、`fortune` 等纯页面抓取类。
 - `stock_dividend`(cninfo,需 `Accept-Enckey` JS 鉴权)与 `stock_rank_em`(JSON-POST)已实现联网路径但未纳入离线 fixtures 比对,待补 fixtures。
+- `stock_individual_spot_xq` 及雪球(`stock_*_xq`)族:需 `xq_a_token` 登录态 cookie(第三方会话令牌),按令牌 DEFERRED 政策跳过。
+- `stock_hk_hot_rank_*` 的港币/其他源与 `stock_hk_daily`/`stock_us_daily`/`stock_us_spot`/`stock_hk_index_daily_sina`:新浪源需 `py_mini_racer` 执行 JS 解密(`hk_js_decode`/`zh_js_decode`),DEFERRED。
+- `stock_a_*_lg` / `stock_index_*_lg` / `stock_market_*_lg` / `stock_hk_gxl_lg` / `stock_hk_indicator_eniu` 等:`lg`(乐股)/`eniu` 第三方令牌源,DEFERRED。
+- `stock_board_concept_*_ths` / `stock_board_industry_*_ths` / `stock_hk_fhpx_detail_ths` / `stock_*_ths`(同花顺):需 `hexin-v` JS 签名(`ths.js`),DEFERRED。
+- `stock_fund_flow_big_deal` / `stock_fund_flow_concept` / `stock_fund_flow_individual` / `stock_fund_flow_industry`(同花顺):需 `hexin-v` JS 签名,DEFERRED。
+- `stock_hk_daily` / `stock_us_daily` / `stock_us_spot`(新浪):`py_mini_racer` JS 解密,DEFERRED。
 
 ### 下一步候选
+- 沪深港通 `stock_hsgt_*`(akshare `stock_feature/stock_hsgt_em.py` + `stock_hsgt_min_em.py):`stock_hsgt_fund_flow_summary_em` 与 `stock_hsgt_hist_em` 已在 `stock::flow` 落地(非前缀命名);剩余 7 个中 `stock_hsgt_hold_stock_em`(RPT_MUTUAL_STOCK_NORTHSTA)与 `stock_hsgt_board_rank_em`(RPT_*)需从 HTML 抓 `TRADE_DATE`/`current_date`,改为显式 `trade_date` 入参即可纯 datacenter JSON 落地;`stock_hsgt_stock_statistics_em`/`stock_hsgt_institution_statistics_em`/`stock_hsgt_individual_em`/`stock_hsgt_individual_detail_em`/`stock_hsgt_fund_min_em` 为纯 datacenter/push2,可直接落地(字段键需联网校准,fixtures 按 akshare 列义构造)。
 - 继续补齐长尾包:`news` / `nlp` / `event` / `lpr` / `stock_fundamental`(财务)等。
 - 为 `rate_interbank` 等增加多源 fallback(目前为单源)。
 - 实现 `scripts/sync-akshare`(ADR-0012 的对标更新机制)。
