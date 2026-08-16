@@ -1234,3 +1234,7 @@
 | `stock_hot_keyword_em` | `src/stock/hot_rank.rs::stock_hot_keyword_em` | `stock/stock_hot_rank_em.py:124` | DONE(emappdata `getHotStockRankList`) |
 | `stock_hot_rank_latest_em` | `src/stock/hot_rank.rs::stock_hot_rank_latest_em` | `stock/stock_hot_rank_em.py:158` | DONE(emappdata `getCurrentLatest`,`data` 字典→`(item,value)`) |
 | `stock_hot_rank_relate_em` | `src/stock/hot_rank.rs::stock_hot_rank_relate_em` | `stock/stock_hot_rank_em.py:191` | DONE(emappdata `getFollowStockRankList`) |
+| `stock_hk_hot_rank_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_em` | `stock/stock_hk_hot_rank_em.py:16` | DONE(emappdata `getAllCurrHkUsList` + push2 `116.` 实时价,`marketType=000003`) |
+| `stock_hk_hot_rank_detail_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_detail_em` | `stock/stock_hk_hot_rank_em.py:53` | DONE(emappdata `getHisHkUsList`) |
+| `stock_hk_hot_rank_detail_realtime_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_detail_realtime_em` | `stock/stock_hk_hot_rank_em.py:90` | DONE(emappdata `getCurrentHkUsList`) |
+| `stock_hk_hot_rank_latest_em` | `src/stock/hot_rank.rs::stock_hk_hot_rank_latest_em` | `stock/stock_hk_hot_rank_em.py:124` | DONE(emappdata `getCurrentHkUsLatest`,`data` 字典→`(item,value)`) |

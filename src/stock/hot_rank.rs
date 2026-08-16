@@ -14,6 +14,10 @@
 //! | `stock_hot_keyword_em` | `stock_hot_keyword_em` | eastmoney | `akshare/stock/stock_hot_rank_em.py:124` |
 //! | `stock_hot_rank_latest_em` | `stock_hot_rank_latest_em` | eastmoney | `akshare/stock/stock_hot_rank_em.py:158` |
 //! | `stock_hot_rank_relate_em` | `stock_hot_rank_relate_em` | eastmoney | `akshare/stock/stock_hot_rank_em.py:191` |
+//! | `stock_hk_hot_rank_em` | `stock_hk_hot_rank_em` | eastmoney | `akshare/stock/stock_hk_hot_rank_em.py:16` |
+//! | `stock_hk_hot_rank_detail_em` | `stock_hk_hot_rank_detail_em` | eastmoney | `akshare/stock/stock_hk_hot_rank_em.py:53` |
+//! | `stock_hk_hot_rank_detail_realtime_em` | `stock_hk_hot_rank_detail_realtime_em` | eastmoney | `akshare/stock/stock_hk_hot_rank_em.py:90` |
+//! | `stock_hk_hot_rank_latest_em` | `stock_hk_hot_rank_latest_em` | eastmoney | `akshare/stock/stock_hk_hot_rank_em.py:124` |
 //!
 //! All endpoints share a fixed `appId` / `globalId` (same as akshare). Raw
 //! upstream values are stored as-is; `涨跌额` is derived as `最新价 * 涨跌幅 / 100`
@@ -505,6 +509,259 @@ pub async fn stock_hot_rank_relate_em(client: &Client, symbol: &str) -> Result<V
         .collect())
 }
 
+// ---------------------------------------------------------------------------
+// 港股个股人气榜 (HK market — emappdata POST with `marketType=000003`)
+// ---------------------------------------------------------------------------
+
+/// One row of the Eastmoney HK stock-popularity ranking.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct HkHotRankRow {
+    /// 当前排名 (`rk`).
+    pub rank: Option<f64>,
+    /// 代码 (`sc` with `HK|` stripped, e.g. `00700`).
+    pub code: String,
+    /// 股票名称 (`f14`, from the push2 realtime price GET).
+    pub name: Option<String>,
+    /// 最新价 (`f2`, from the push2 realtime price GET).
+    pub price: Option<f64>,
+    /// 涨跌幅 (`f3`, from the push2 realtime price GET).
+    pub pct: Option<f64>,
+}
+
+/// Convert an emappdata HK security code (`HK|00700`) to a push2 `secid`
+/// (`116.00700`) — HK uses the `116.` prefix (vs `0.`/`1.` for A-shares).
+fn hk_to_secid(sc: &str) -> Option<String> {
+    let rest = sc.strip_prefix("HK|")?;
+    Some(format!("116.{rest}"))
+}
+
+/// Fetch realtime prices for the ranked HK codes via a second `push2` GET
+/// (`secid` prefix `116.`, fields `f14,f3,f12,f2`).
+async fn fetch_hk_rank_prices(client: &Client, rank_arr: &[Value]) -> Result<Vec<Value>> {
+    let mut secids = Vec::new();
+    for item in rank_arr {
+        if let Some(secid) = hk_to_secid(&fstr(item.get("sc"))) {
+            secids.push(secid);
+        }
+    }
+    if secids.is_empty() {
+        return Ok(Vec::new());
+    }
+    let secids_joined = secids.join(",");
+    let params = [
+        ("ut", "f057cbcbce2a86e2866ab8877db1d059"),
+        ("fltt", "2"),
+        ("invt", "2"),
+        ("fields", "f14,f3,f12,f2"),
+        ("secids", secids_joined.as_str()),
+    ];
+    let v = client
+        .get_json(
+            SOURCE_EASTMONEY,
+            "stock_hk_hot_rank_em_prices",
+            PUSH2,
+            &params,
+        )
+        .await?;
+    Ok(v.get("data")
+        .and_then(|d| d.get("diff"))
+        .and_then(|d| d.as_array())
+        .cloned()
+        .unwrap_or_default())
+}
+
+/// Parse the HK popularity ranking, merged with the push2 price rows.
+pub(crate) fn parse_hk_hot_rank(rank_arr: &[Value], diff: &[Value]) -> Vec<HkHotRankRow> {
+    let mut prices: HashMap<String, PriceInfo> = HashMap::new();
+    for d in diff {
+        let code = fstr(d.get("f12"));
+        prices.insert(
+            code,
+            PriceInfo {
+                name: str_of(d.get("f14")),
+                price: num_of(d.get("f2")),
+                pct: num_of(d.get("f3")),
+            },
+        );
+    }
+    let mut out = Vec::with_capacity(rank_arr.len());
+    for item in rank_arr {
+        let sc = fstr(item.get("sc"));
+        let code = sc.split('|').nth(1).unwrap_or(&sc).to_string();
+        let p = prices.get(&code);
+        let (name, price, pct) = p
+            .map(|x| (x.name.clone(), x.price, x.pct))
+            .unwrap_or((None, None, None));
+        out.push(HkHotRankRow {
+            rank: num_of(item.get("rk")),
+            code,
+            name,
+            price,
+            pct,
+        });
+    }
+    out
+}
+
+/// Port of `stock_hk_hot_rank_em()` — Eastmoney 港股个股人气榜.
+pub async fn stock_hk_hot_rank_em(client: &Client) -> Result<Vec<HkHotRankRow>> {
+    let mut body = base_payload();
+    body["marketType"] = serde_json::json!("000003");
+    body["pageNo"] = serde_json::json!(1);
+    body["pageSize"] = serde_json::json!(100);
+    let v = client
+        .post_json(
+            SOURCE_EASTMONEY,
+            "stock_hk_hot_rank_em",
+            &format!("{EM_APPDATA}/getAllCurrHkUsList"),
+            &body,
+            None,
+        )
+        .await?;
+    let rank_arr = v
+        .get("data")
+        .and_then(|d| d.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_EASTMONEY,
+            message: "missing data at stock_hk_hot_rank_em".into(),
+        })?;
+    let diff = fetch_hk_rank_prices(client, rank_arr).await?;
+    Ok(parse_hk_hot_rank(rank_arr, &diff))
+}
+
+/// One row of the HK historical rank trend for a stock.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct HkHotDetailRow {
+    /// 时间 (`date`/`time`).
+    pub time: String,
+    /// 排名 (`rk`).
+    pub rank: Option<f64>,
+    /// 证券代码 (the requested `symbol`).
+    pub code: String,
+}
+
+/// Port of `stock_hk_hot_rank_detail_em(symbol)` — Eastmoney 港股历史趋势.
+pub async fn stock_hk_hot_rank_detail_em(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<HkHotDetailRow>> {
+    let mut body = base_payload();
+    body["marketType"] = serde_json::json!("000003");
+    body["srcSecurityCode"] = serde_json::json!(format!("HK|{symbol}"));
+    let v = client
+        .post_json(
+            SOURCE_EASTMONEY,
+            "stock_hk_hot_rank_detail_em",
+            &format!("{EM_APPDATA}/getHisHkUsList"),
+            &body,
+            None,
+        )
+        .await?;
+    let arr = v
+        .get("data")
+        .and_then(|d| d.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_EASTMONEY,
+            message: "missing data at stock_hk_hot_rank_detail_em".into(),
+        })?;
+    Ok(arr
+        .iter()
+        .map(|item| HkHotDetailRow {
+            time: str_of(item.get("date"))
+                .or_else(|| str_of(item.get("time")))
+                .unwrap_or_default(),
+            rank: num_of(item.get("rk")),
+            code: symbol.to_string(),
+        })
+        .collect())
+}
+
+/// One row of the HK realtime rank movement for a stock.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct HkHotRealtimeRow {
+    /// 时间 (`date`/`time`).
+    pub time: String,
+    /// 排名 (`rk`).
+    pub rank: Option<f64>,
+}
+
+/// Port of `stock_hk_hot_rank_detail_realtime_em(symbol)` — Eastmoney 港股实时变动.
+pub async fn stock_hk_hot_rank_detail_realtime_em(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<HkHotRealtimeRow>> {
+    let mut body = base_payload();
+    body["marketType"] = serde_json::json!("000003");
+    body["srcSecurityCode"] = serde_json::json!(format!("HK|{symbol}"));
+    let v = client
+        .post_json(
+            SOURCE_EASTMONEY,
+            "stock_hk_hot_rank_detail_realtime_em",
+            &format!("{EM_APPDATA}/getCurrentHkUsList"),
+            &body,
+            None,
+        )
+        .await?;
+    let arr = v
+        .get("data")
+        .and_then(|d| d.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_EASTMONEY,
+            message: "missing data at stock_hk_hot_rank_detail_realtime_em".into(),
+        })?;
+    Ok(arr
+        .iter()
+        .map(|item| HkHotRealtimeRow {
+            time: str_of(item.get("date"))
+                .or_else(|| str_of(item.get("time")))
+                .unwrap_or_default(),
+            rank: num_of(item.get("rk")),
+        })
+        .collect())
+}
+
+/// One row of the HK latest rank snapshot for a stock.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct HkHotLatestRow {
+    /// 指标名 (dict key).
+    pub item: String,
+    /// 指标值 (raw).
+    pub value: Option<String>,
+}
+
+/// Port of `stock_hk_hot_rank_latest_em(symbol)` — Eastmoney 港股最新排名.
+pub async fn stock_hk_hot_rank_latest_em(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<HkHotLatestRow>> {
+    let mut body = base_payload();
+    body["marketType"] = serde_json::json!("000003");
+    body["srcSecurityCode"] = serde_json::json!(format!("HK|{symbol}"));
+    let v = client
+        .post_json(
+            SOURCE_EASTMONEY,
+            "stock_hk_hot_rank_latest_em",
+            &format!("{EM_APPDATA}/getCurrentHkUsLatest"),
+            &body,
+            None,
+        )
+        .await?;
+    let obj = v
+        .get("data")
+        .and_then(|d| d.as_object())
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_EASTMONEY,
+            message: "missing data at stock_hk_hot_rank_latest_em".into(),
+        })?;
+    Ok(obj
+        .iter()
+        .map(|(k, val)| HkHotLatestRow {
+            item: k.clone(),
+            value: str_of(Some(val)),
+        })
+        .collect())
+}
+
 // ===========================================================================
 // Tests
 // ===========================================================================
@@ -694,5 +951,104 @@ mod tests {
         assert_eq!(rows[0].code, "000665");
         assert_eq!(rows[0].related_code, "000001");
         assert!(approx(rows[0].pct, 0.0123));
+    }
+
+    // ---- HK 个股人气榜 (emappdata POST, marketType=000003) ----
+
+    #[test]
+    fn parses_hk_hot_rank_em() {
+        let rank = fixture("stock_hk_hot_rank_em.json")
+            .get("data")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .clone();
+        let diff = fixture("stock_hk_hot_rank_em_diff.json")
+            .get("data")
+            .unwrap()
+            .get("diff")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .clone();
+        let rows = parse_hk_hot_rank(&rank, &diff);
+        assert_eq!(rows.len(), 2);
+        assert!(approx(rows[0].rank, 1.0));
+        assert_eq!(rows[0].code, "00700");
+        assert_eq!(rows[0].name.as_deref(), Some("腾讯控股"));
+        assert!(approx(rows[0].price, 380.0));
+        assert!(approx(rows[0].pct, 1.25));
+        assert_eq!(rows[1].code, "09988");
+        assert_eq!(rows[1].name.as_deref(), Some("阿里巴巴-SW"));
+    }
+
+    #[test]
+    fn parses_hk_hot_rank_detail() {
+        let arr = fixture("stock_hk_hot_rank_detail_em.json")
+            .get("data")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .clone();
+        let rows: Vec<HkHotDetailRow> = arr
+            .iter()
+            .map(|item| HkHotDetailRow {
+                time: str_of(item.get("date"))
+                    .or_else(|| str_of(item.get("time")))
+                    .unwrap_or_default(),
+                rank: num_of(item.get("rk")),
+                code: "00700".to_string(),
+            })
+            .collect();
+        assert_eq!(rows.len(), 2);
+        assert_eq!(rows[0].code, "00700");
+        assert_eq!(rows[0].time, "2024-01-01");
+        assert!(approx(rows[0].rank, 10.0));
+        assert!(approx(rows[1].rank, 8.0));
+    }
+
+    #[test]
+    fn parses_hk_hot_rank_detail_realtime() {
+        let arr = fixture("stock_hk_hot_rank_detail_realtime_em.json")
+            .get("data")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .clone();
+        let rows: Vec<HkHotRealtimeRow> = arr
+            .iter()
+            .map(|item| HkHotRealtimeRow {
+                time: str_of(item.get("date"))
+                    .or_else(|| str_of(item.get("time")))
+                    .unwrap_or_default(),
+                rank: num_of(item.get("rk")),
+            })
+            .collect();
+        assert_eq!(rows.len(), 2);
+        assert_eq!(rows[0].time, "2024-01-01 09:30");
+        assert!(approx(rows[0].rank, 10.0));
+        assert!(approx(rows[1].rank, 9.0));
+    }
+
+    #[test]
+    fn parses_hk_hot_rank_latest() {
+        let obj = fixture("stock_hk_hot_rank_latest_em.json")
+            .get("data")
+            .unwrap()
+            .as_object()
+            .unwrap()
+            .clone();
+        let rows: Vec<HkHotLatestRow> = obj
+            .iter()
+            .map(|(k, val)| HkHotLatestRow {
+                item: k.clone(),
+                value: str_of(Some(val)),
+            })
+            .collect();
+        assert_eq!(rows.len(), 3);
+        let rank_row = rows.iter().find(|r| r.item == "排名").unwrap();
+        assert_eq!(rank_row.value.as_deref(), Some("5"));
+        let time_row = rows.iter().find(|r| r.item == "时间").unwrap();
+        assert_eq!(time_row.value.as_deref(), Some("2024-01-01 09:30"));
     }
 }
