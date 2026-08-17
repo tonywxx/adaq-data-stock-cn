@@ -27,27 +27,9 @@ fn as_opt_f64(s: &str) -> Option<f64> {
 }
 
 /// Return every `<table>` on the page as `table -> row -> cell` strings (header
-/// row included, cells trimmed and inner whitespace collapsed).
-fn extract_tables(html: &str) -> Vec<Vec<Vec<String>>> {
-    let doc = Html::parse_document(html);
-    let table_sel = Selector::parse("table").unwrap();
-    let tr_sel = Selector::parse("tr").unwrap();
-    let cell_sel = Selector::parse("td,th").unwrap();
-    let mut tables = Vec::new();
-    for table in doc.select(&table_sel) {
-        let mut rows = Vec::new();
-        for tr in table.select(&tr_sel) {
-            let cells: Vec<String> = tr
-                .select(&cell_sel)
-                .map(|c| c.text().collect::<Vec<_>>().join(" ").split_whitespace().collect::<Vec<_>>().join(" "))
-                .collect();
-            rows.push(cells);
-        }
-        if !rows.is_empty() {
-            tables.push(rows);
-        }
-    }
-    tables
+/// row included, cells trimmed). Delegates to the shared walker in `core::html`.
+fn extract_tables(html: &str, endpoint: &'static str) -> Result<Vec<Vec<Vec<String>>>> {
+    crate::core::html::tables(html, endpoint)
 }
 
 // ===========================================================================
@@ -78,7 +60,7 @@ pub(crate) fn parse_futures_hold_pos(
     metric: &str,
     endpoint: &'static str,
 ) -> Result<Vec<FuturesHoldPosRow>> {
-    let tables = extract_tables(html);
+    let tables = extract_tables(html, endpoint)?;
     let chosen = tables
         .iter()
         .find(|rows| {
@@ -198,7 +180,7 @@ pub(crate) fn parse_futures_spot_sys(
     table_index: usize,
     endpoint: &'static str,
 ) -> Result<Vec<FuturesSpotSysRow>> {
-    let tables = extract_tables(html);
+    let tables = extract_tables(html, endpoint)?;
     let rows = tables.get(table_index).ok_or_else(|| Error::UpstreamChanged {
         origin: endpoint,
         message: format!("table index {table_index} not found"),

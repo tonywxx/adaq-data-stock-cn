@@ -43,3 +43,48 @@ pub async fn spot(client: &Client) -> Result<Vec<ForexSpotQuote>> {
 pub async fn hist(client: &Client, symbol: &str) -> Result<Vec<ForexHistRow>> {
     eastmoney::hist(client, symbol).await
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::core::convert;
+
+    #[test]
+    fn forex_spot_quote_serializes() {
+        let quotes = vec![ForexSpotQuote {
+            code: "USD".into(),
+            name: "美元".into(),
+            price: Some(7.1),
+            change: Some(0.01),
+            pct_change: Some(0.14),
+            open: Some(7.09),
+            high: Some(7.11),
+            low: Some(7.08),
+            pre_close: Some(7.09),
+            source: "eastmoney",
+        }];
+        let json = convert::to_json(&quotes).unwrap();
+        assert!(json.contains("\"code\":\"USD\""));
+        assert!(json.contains("\"price\":7.1"));
+        let csv = convert::to_csv(&quotes).unwrap();
+        assert!(csv.starts_with("code,name,price"));
+    }
+
+    #[test]
+    fn forex_hist_row_serializes() {
+        let rows = vec![ForexHistRow {
+            symbol: "USD".into(),
+            date: "2024-01-01".into(),
+            open: Some(7.0),
+            close: Some(7.1),
+            high: Some(7.2),
+            low: Some(6.9),
+            amplitude: Some(0.5),
+            source: "eastmoney",
+        }];
+        let json = convert::to_json(&rows).unwrap();
+        assert!(json.contains("\"date\":\"2024-01-01\""));
+        let csv = convert::to_csv(&rows).unwrap();
+        assert!(csv.starts_with("symbol,date"));
+    }
+}

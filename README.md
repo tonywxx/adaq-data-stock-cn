@@ -19,12 +19,12 @@ functions total):
 | Status | Count | Notes |
 |---|---:|---|
 | `DONE` | 944 | fully ported to Rust endpoints |
-| `DEFERRED` | 156 | blocked by signing / tokens / JS engine / HTML / Excel; deferred by design per ADR-0005/0008 |
+| `DEFERRED` | 156 | blocked by signing / tokens / JS execution (reverse to pure Rust per ADR-0005) / HTML / Excel; deferred by design per ADR-0005/0008 |
 | `INTERNAL` | 72 | akshare internal helpers, not public data endpoints, excluded from coverage |
 | `UNKNOWN` | 0 | fully cleared (see `git log` "clear all UNKNOWN") |
 
 > Public data-endpoint coverage = 944 / (1172 − 72) ≈ **85.8%**. The remaining 14.2% is a
-> by-design deferral (needs the JS engine [`rquickjs`] or token reverse-engineering), excluding
+> by-design deferral (needs signing/token reverse-engineering or pure-Rust reversal of JS-execution endpoints — no JS engine is embedded, per ADR-0005), excluding
 > the 72 internal helpers.
 > Note: 3 akshare internal modules (`utils/demjson`, `futures/symbol_var`) were previously
 > mislabeled `DONE` and corrected to `INTERNAL` in this pass.
@@ -153,7 +153,7 @@ let html = client
   not need impersonation; and `push2his.eastmoney.com` rejects the Chrome h2 fingerprint, so it
   continues to be served by the default `Client`.
 - The deferred set is **not** unlocked by this: existing `DEFERRED` endpoints are mainly gated
-  by JS engine / tokens / HTML / Excel (see
+  by JS-execution endpoints (reversed to pure Rust per ADR-0005) / tokens / HTML / Excel (see
   [`docs/IMPERSONATE_RETRIAGE.md`](docs/IMPERSONATE_RETRIAGE.md)), not by TLS fingerprint.
 
 ## Documentation

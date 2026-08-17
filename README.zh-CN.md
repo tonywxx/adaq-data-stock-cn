@@ -13,11 +13,11 @@ akshare 的 Rust 重写,作为量化平台 **AdaQ** 的 A 股市场数据层。
 | 状态 | 数量 | 说明 |
 |---|---:|---|
 | `DONE` | 944 | 已完整移植为 Rust 端点 |
-| `DEFERRED` | 156 | 受签名 / 令牌 / JS 引擎 / HTML / Excel 限制,按 ADR-0005/0008 设计内推迟 |
+| `DEFERRED` | 156 | 受签名 / 令牌 / JS 执行(按 ADR-0005 逆为纯 Rust) / HTML / Excel 限制,按 ADR-0005/0008 设计内推迟 |
 | `INTERNAL` | 72 | akshare 内部辅助函数,非对外数据端点,不计入覆盖口径 |
 | `UNKNOWN` | 0 | 已全部清零(见 `git log` "clear all UNKNOWN") |
 
-> 公开数据端点覆盖率 = 944 / (1172 − 72) ≈ **85.8%**。剩余 14.2% 为设计内推迟(需 JS 引擎 [`rquickjs`] 或令牌逆向),不含 72 个内部辅助函数。
+> 公开数据端点覆盖率 = 944 / (1172 − 72) ≈ **85.8%**。剩余 14.2% 为设计内推迟(需签名/令牌逆向,或把 JS 执行端点按 ADR-0005 逆为纯 Rust——不内嵌 JS 引擎),不含 72 个内部辅助函数。
 > 注:3 个 akshare 内部模块(`utils/demjson`、`futures/symbol_var`)此前被误标为 `DONE`,已在本轮修正为 `INTERNAL`。
 
 ## 安装
@@ -126,7 +126,7 @@ let html = client
 - 适用场景:被 TLS 指纹拦截的反爬源(Cloudflare/Akamai 类)。**注意**:本环境可达的源(新浪/百度/
   腾讯/东方财富/雪球)用默认 `reqwest` + 正确 `Referer` 头即可访问,不依赖模拟;
   且 `push2his.eastmoney.com` 会拒绝 Chrome h2 指纹,仍由默认 `Client` 服务。
-- 推迟集不因此解锁:现有 `DEFERRED` 接口主要受 JS 引擎 / 令牌 / HTML/Excel 限制(见
+- 推迟集不因此解锁:现有 `DEFERRED` 接口主要受 JS 执行(按 ADR-0005 逆为纯 Rust)/ 令牌 / HTML/Excel 限制(见
   [`docs/IMPERSONATE_RETRIAGE.md`](docs/IMPERSONATE_RETRIAGE.md)),而非 TLS 指纹。
 
 ## 文档

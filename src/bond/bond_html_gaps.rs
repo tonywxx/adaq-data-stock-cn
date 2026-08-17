@@ -10,8 +10,6 @@
 //!
 //! Sina pages are `gbk`-encoded; the [`load_html`] test helper decodes them.
 
-use scraper::{Html, Selector};
-
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
@@ -26,31 +24,7 @@ fn as_f64(s: &str) -> Option<f64> {
 /// list of cell strings (text content of every `<td>`/`<th>`). Mirrors
 /// `pd.read_html`, which returns one frame per `<table>`.
 fn extract_tables(html: &str, endpoint: &'static str) -> Result<Vec<Vec<Vec<String>>>> {
-    let doc = Html::parse_document(html);
-    let table_sel = Selector::parse("table")
-        .map_err(|e| Error::Parse { endpoint, message: format!("table selector: {e}") })?;
-    let tr_sel = Selector::parse("tr").unwrap();
-    let cell_sel = Selector::parse("td,th").unwrap();
-    let mut tables = Vec::new();
-    for table in doc.select(&table_sel) {
-        let mut rows = Vec::new();
-        for tr in table.select(&tr_sel) {
-            let cells: Vec<String> = tr
-                .select(&cell_sel)
-                .map(|c| c.text().collect::<Vec<_>>().join(" ").trim().to_string())
-                .collect();
-            if !cells.is_empty() {
-                rows.push(cells);
-            }
-        }
-        if !rows.is_empty() {
-            tables.push(rows);
-        }
-    }
-    if tables.is_empty() {
-        return Err(Error::UpstreamChanged { origin: endpoint, message: "no <table> found".into() });
-    }
-    Ok(tables)
+    crate::core::html::tables(html, endpoint)
 }
 
 // ---------------------------------------------------------------------------

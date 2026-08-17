@@ -9,7 +9,7 @@
 - 原生库 `native/libcurl-impersonate/` 已内置,`build.rs` 烤入 `LC_RPATH`,无需 sudo / 环境变量。
 - 实测可访问新浪(GBK 解码)/ 百度 / 腾讯 gtimg;`push2his.eastmoney.com` 拒绝 Chrome h2 指纹,
   仍由默认 `reqwest` `Client` 服务。
-- **不解锁现有 `DEFERRED`**:推迟接口主要受 JS 引擎 / 令牌 / HTML/Excel 限制,非 TLS 指纹。
+- **不解锁现有 `DEFERRED`**:推迟接口主要受 JS 执行 / 令牌 / HTML/Excel 限制,非 TLS 指纹。
   详见 [`docs/IMPERSONATE_RETRIAGE.md`](docs/IMPERSONATE_RETRIAGE.md)。
 
 ## 第一阶段(Milestone 1):东方财富 / 新浪 / 腾讯 A股行情 + 指数
@@ -32,7 +32,7 @@
 | 指数历史 | `index_zh_a_hist` | 东财 | 日线 |
 
 ### 推迟
-- `stock_zh_a_daily`(新浪日线):需 MiniRacer 跑 JS 签名,留到 ADR-0005 签名逆向阶段,或接受内嵌 JS 引擎(`rquickjs`)时再做。
+- `stock_zh_a_daily`(新浪日线):需 MiniRacer 跑 JS 签名,留到 ADR-0005 签名逆向阶段,按纯 Rust 逆向解锁(不内嵌 JS 引擎)。
 
 ### 里程碑"完成"定义
 - 10 个端点均返回类型化结构体,经转换层可落 JSON / Parquet / CSV。
@@ -152,7 +152,7 @@
 | 97 | 港股个股人气榜 `stock::hot_rank` 补齐 4 个函数(东财 emappdata JSON-body POST,`marketType=000003`):`stock_hk_hot_rank_em`(POST `getAllCurrHkUsList` + push2 `116.` 前缀实时价)、`stock_hk_hot_rank_detail_em`/`stock_hk_hot_rank_detail_realtime_em`/`stock_hk_hot_rank_latest_em`(POST `getHisHkUsList`/`getCurrentHkUsList`/`getCurrentHkUsLatest`) | ✅ DONE | 4 | 4 ✅ |
 | 98 | 涨停板池 siblings + 两融账户 `stock_feature::board_zt` + `stock_feature::margin_research`(东财 push2ex 5 个涨停/跌停股池 + datacenter `RPTA_WEB_MARGIN_DAILYTRADE` 两融账户统计;补齐 wave-92 预置的空叶子模块) | ✅ DONE | 6 | 6 ✅ |
 
-**累计(2026-08-16 复核 + html_gaps 核对)**:1102 个 akshare 对外公开 API 中,**797 个已实现** Rust `pub fn`(其中 791 个为功能性 DONE、6 个为返回 `Err` 的 JS 解密桩函数,归入 DEFERRED);**289 个 DEFERRED/PARTIAL**;**16 个 INTERNAL**(akshare 内部辅助,非对外数据端点);**6 个未跟踪**(异常类 `APIError`/`AkshareException` 等,对应本库 `core::error::Error`,无需移植)。`cargo build` / `cargo test`(1002 passed, 19 ignored) / `cargo clippy` 全绿。
+**累计(2026-08-17 复核 + html_gaps 核对)**:1102 个 akshare 对外公开 API 中,**797 个已实现** Rust `pub fn`(其中 791 个为功能性 DONE、6 个为返回 `Err` 的 JS 解密桩函数,归入 DEFERRED);**289 个 DEFERRED/PARTIAL**;**16 个 INTERNAL**(akshare 内部辅助,非对外数据端点);**6 个未跟踪**(异常类 `APIError`/`AkshareException` 等,对应本库 `core::error::Error`,无需移植)。`cargo build` / `cargo test`(1002 passed, 19 ignored) / `cargo clippy` 全绿。
 
 > **MAPPING 对齐复核(2026-08-16,本轮)**:以 `docs/MAPPING.md` 全表(1172 个对外函数口径)逐行对账 `src/` 真实 `pub fn`,并修正 `deferred_more.rs` 等注释/清单误标。结果:**947 DONE** / **156 DEFERRED** / **69 INTERNAL**(合计 1172,0 虚标、0 格式损坏)。本轮新增落地 `bond_china_close_return`(Chinamoney `ClsYldCurvHis` 收盘收益率曲线);其余原 169 个 `NOT IMPLEMENTED` 虚标行经核对均有真实实现(多数为宏生成或 `*_em` 重命名),已统一更正为 DONE 并回填正确 `src/path::fn`;28 个期货端点(`futures_*` / `get_*` / `match_main_contract`)因 HTML 抓取 / Excel-ZIP / JS(`demjson`) / 聚合器耦合,保持 DEFERRED(ADR-0008)。`cargo build` / `cargo test`(1003 passed, 19 ignored) / `cargo clippy` 全绿。
 
@@ -184,12 +184,12 @@
 > 第 53-57 行新增 72 个函数 / 56 个离线解析测试(续 research agent-11 的 3 批计划):`economic::macro_china2` 取 `macro_china.py` 中 25 个东财 datacenter `RPT_*` 函数(Jin10 `reportType` 令牌门控与 Sina `MacPage` 共 ~25 个 DEFERRED);`index::qvix` 取 optbbs.com 纯 CSV 的 18 个 ETF/指数波动率(日/分钟);`option::sse` 取新浪 JSONP 的 10 个上交所期权函数(CFFEX 列表 HTML 抓取与已统一的 spot/daily 跳过);`stock::financial_three` 取 `stock_three_report_em.py` 的 8 个年/季/退市报表(emweb HTML helper DEFERRED);`stock::fundamental::finance_more` 取 10jqka `stock_finance_ths` 7 个 + 港股/美股东财 datacenter 各 2 个(共 11,THS 三个 HTML `.phtml` 抓取 DEFERRED)。`qvix` 仅 2 个测试(日/分钟共用解析器),其余按函数数一一对应。
 
 ### 已推迟 / 部分(DEFERRED / PARTIAL)
-- 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点:`stock_dividend`(cninfo `Accept-Enckey`)、`air`/`weather`/`epidemic`/`food`/`fortune`(纯页面抓取)、`futures_spot`(JS 签名)、`index_stock_info`(HTML 抓取)等,已在 `docs/MAPPING.md` 对应条目下标注跳过原因。
+- 各领域中需 HTML 表解析 / JS 执行 / 第三方鉴权的长尾端点:`stock_dividend`(cninfo `Accept-Enckey`)、`air`/`weather`/`epidemic`/`food`/`fortune`(纯页面抓取)、`futures_spot`(JS 签名)、`index_stock_info`(HTML 抓取)等,已在 `docs/MAPPING.md` 对应条目下标注跳过原因。
 - `stock_dividend` 与 `stock_rank_em` 已实现联网路径但未纳入离线 fixtures 比对,待补 fixtures。
 - 部分 akshare 函数在本 checkout 中已更名 / 重构(如 `fund_name`→`fund_open_fund_name_em`、`futures_zh_daily` 已有 Eastmoney 版),已就近对齐实现。
 
 ### 已推迟(DEFERRED)
-- 各领域中需 HTML 表解析 / JS 引擎 / 第三方鉴权的长尾端点(已在 `docs/MAPPING.md` 对应条目下标注跳过原因),如 `air`(JS 签名)、`epidemic`、`food`、`weather`、`fortune` 等纯页面抓取类。
+- 各领域中需 HTML 表解析 / JS 执行 / 第三方鉴权的长尾端点(已在 `docs/MAPPING.md` 对应条目下标注跳过原因),如 `air`(JS 签名)、`epidemic`、`food`、`weather`、`fortune` 等纯页面抓取类。
 - `stock_dividend`(cninfo,需 `Accept-Enckey` JS 鉴权)与 `stock_rank_em`(JSON-POST)已实现联网路径但未纳入离线 fixtures 比对,待补 fixtures。
 - `stock_individual_spot_xq` 及雪球(`stock_*_xq`)族:需 `xq_a_token` 登录态 cookie(第三方会话令牌),按令牌 DEFERRED 政策跳过。
 - `stock_hk_hot_rank_*` 的港币/其他源与 `stock_hk_daily`/`stock_us_daily`/`stock_us_spot`/`stock_hk_index_daily_sina`:新浪源需 `py_mini_racer` 执行 JS 解密(`hk_js_decode`/`zh_js_decode`),DEFERRED。
@@ -226,13 +226,13 @@
 
 | 原因 | 数量 | 是否设计内推迟(ADR) |
 |---|---|---|
-| JS 引擎 / 签名解密(`py_mini_racer` / `hexin-v` / `jm.js` / CYQ) | ~106 | 是(ADR-0005):需 JS 引擎或逐端点纯 Rust 逆向 |
+| JS 执行 / 签名解密(`py_mini_racer` / `hexin-v` / `jm.js` / CYQ) | ~106 | 是(ADR-0005):需 JS 执行,逐端点纯 Rust 逆向(不内嵌 JS 引擎) |
 | 第三方令牌 / 会话(`xq_a_token` / Jin10 `x-csrf-token` / `lg`·`eniu` / 艺恩权限) | ~12 | 是(ADR-0005):令牌门控 |
 | HTML 表抓取(`pd.read_html` / BeautifulSoup,无 JSON 端点) | ~9 | 部分可行:可用 `scraper` 补(见 `air_html_gaps` 等先例) |
 | 反爬令牌(`acs-token` / `_pcc` / huiyan) | 少量 | 是:anti-bot |
 | NBS 目录动态解析 / ZIP·Excel·`demjson` | 少量 | 部分可行 |
 
-> 注:上述 ~106 个 JS 引擎类推迟是「完全重构」的主要剩余障碍。按当前设计(ADR-0005)**保持推迟**,除非接受嵌入 JS 引擎(`rquickjs` / `boa`)。其中少数(如新浪日线 `hk_js_decode` / `zh_js_decode`、CYQ `CYQCalculator`)若逆为纯 Rust,可单独解锁,无需整引擎——属增量工作。
+> 注:上述 ~106 个 JS 引擎类推迟是「完全重构」的主要剩余障碍。按当前设计(ADR-0005,已移除 `rquickjs` 依赖)**保持推迟**,且**不采用**嵌入 JS 引擎(`rquickjs` / `boa`)——统一走纯 Rust 逆向。其中少数(如新浪日线 `hk_js_decode` / `zh_js_decode`、CYQ `CYQCalculator`)若逆为纯 Rust,可单独解锁,无需整引擎——属增量工作。
 
 ### 领域缺口(DEFERRED 按前缀)
 
@@ -241,6 +241,6 @@
 ### 下一步(按设计收敛)
 
 1. **HTML 抓取类(~9 + 部分虚标)**:用 `scraper` 逐端点补实现,复用既有 `*_html_gaps` 模式(需真实 fixture,联网环境补齐)。
-2. **JS 签名类**:要么接受 `rquickjs` 引擎统一解锁,要么挑高频端点(新浪日线、CYQ)做纯 Rust 逆向。
+2. **JS 签名类**:按 ADR-0005 挑高频端点(新浪日线、CYQ)做纯 Rust 逆向解锁(不引入 JS 引擎)。
 3. **令牌类**:仅当用户提供令牌/会话策略时解锁。
 4. 每补一批即回填 fixture + 解析测试,并更新 `docs/MAPPING.md`(ADR-0012)。

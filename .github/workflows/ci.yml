@@ -40,3 +40,27 @@ jobs:
 
       - name: Test
         run: cargo test --verbose
+
+  parity:
+    name: Parity check (MAPPING.md vs source)
+    # Pure-Python parity recompute — no macOS dylib needed, so it runs on Linux.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Recompute parity from source
+        # flip_mapping.py flips any DEFERRED row that now has a real (non-stub)
+        # Rust impl. It must make NO changes on a clean tree; if it does, the
+        # docs have drifted from the source and the job fails.
+        run: |
+          python3 scripts/flip_mapping.py
+          if ! git diff --quiet docs/MAPPING.md; then
+            echo "::error::docs/MAPPING.md is out of sync with source — run scripts/flip_mapping.py locally and commit."
+            git --no-pager diff docs/MAPPING.md
+            exit 1
+          fi

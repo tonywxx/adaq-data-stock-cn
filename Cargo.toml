@@ -1,13 +1,13 @@
 [package]
-name = "adaq-data-stock-cn"
-version = "0.1.1"
-edition = "2024"
-description = "Rust reimplementation of akshare for Chinese A-share market data — the data layer for the AdaQ quant platform"
-readme = "README.md"
-license = "MIT OR Apache-2.0"
-repository = "https://github.com/tony/adaq-data-stock-cn"
-keywords = ["akshare", "stock", "a-share", "quant", "china"]
 categories = ["finance", "api-bindings"]
+description = "Rust reimplementation of akshare for Chinese A-share market data — the data layer for the AdaQ quant platform"
+edition = "2024"
+keywords = ["akshare", "stock", "a-share", "quant", "china"]
+license = "Apache-2.0"
+name = "adaq-data-stock-cn"
+readme = "README.md"
+repository = "https://github.com/tony/adaq-data-stock-cn"
+version = "0.1.2"
 
 # The vendored `libcurl-impersonate` dylib (~14 MiB) is only needed at build/link
 # time and would exceed crates.io's 10 MiB per-crate limit, so it is excluded
@@ -16,23 +16,22 @@ categories = ["finance", "api-bindings"]
 exclude = ["native/"]
 
 [dependencies]
-tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "net"] }
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "charset"] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-chrono = { version = "0.4", features = ["serde"] }
+calamine = "0.36.1"
+chrono = {version = "0.4.45", features = ["serde"]}
 csv = "1"
-thiserror = "1"
-sha2 = "0.10"
-scraper = "0.20"
-calamine = "0.24"
-zip = "2"
-flate2 = "1"
 encoding_rs = "0.8"
+flate2 = "1"
+reqwest = {version = "0.12", default-features = false, features = ["json", "rustls-tls", "charset"]}
+scraper = "0.27"
+serde = {version = "1", features = ["derive"]}
+serde_json = "1"
+sha2 = "0.11"
+thiserror = "2"
+tokio = {version = "1", features = ["rt-multi-thread", "macros", "time", "sync", "net"]}
+zip = "8"
 
-arrow = { version = "53", default-features = false, features = ["json"], optional = true }
-parquet = { version = "53", default-features = false, features = ["async", "zstd", "arrow"], optional = true }
-rquickjs = "0.12.2"
+arrow = {version = "59", default-features = false, features = ["json"], optional = true}
+parquet = {version = "59", default-features = false, features = ["async", "zstd", "arrow"], optional = true}
 
 # Browser-impersonation HTTP backend — the Rust analog of the Python `primp`
 # (curl_cffi) library. Wraps `curl-impersonate` to mimic Chrome/Edge/Firefox
@@ -46,8 +45,8 @@ default = []
 parquet = ["dep:arrow", "dep:parquet"]
 
 [dev-dependencies]
-tokio = { version = "1", features = ["full"] }
+tokio = {version = "1", features = ["full"]}
 
 [profile.release]
-opt-level = 3
 lto = "thin"
+opt-level = 3

@@ -21,5 +21,5 @@ akshare source root: `akshare/akshare/movie/`.
 ## Notes
 
 - 0 ported, 6 deferred. No `src/alt/wv_movie_more.rs` created (no plain-JSON GET identified).
-- The four `GetData.ashx` endpoints (`business_value_artist`, `online_value_artist`, `video_tv`, `video_variety_show`) share one shape: POST form data, then `decrypt()` with the `jm.js` obfuscator. Porting would require a Rust JS engine (e.g. `boa`/`rusty_v8`) — out of scope per the defer policy.
+- The four `GetData.ashx` endpoints (`business_value_artist`, `online_value_artist`, `video_tv`, `video_variety_show`) share one shape: POST form data, then `decrypt()` with the `jm.js` obfuscator. Per ADR-0005 these are to be reversed to pure Rust (no JS engine embedded, e.g. `boa`/`rusty_v8`) — currently DEFERRED.
 - The two weekly box-office fns are hard-gated inside akshare and never reach the network.

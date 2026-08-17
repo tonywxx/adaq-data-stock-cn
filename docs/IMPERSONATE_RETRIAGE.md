@@ -64,7 +64,7 @@ Root-cause breakdown across the ~80 `*_gaps.rs` / `deferred*.rs` modules:
 |---|---|---|---|
 | **B4** HTML / Excel scrape (`read_html` / `read_excel`, HTML tables) | DOM/table parsing | ~78 | ❌ (needs `scraper`/`calamine` parsers) |
 | **B2** Token / auth (`xq_a_token`, `hexin-v`, `x-csrf-token`, cninfo `Accept-Enckey`, app-id) | credentials | ~55 | ❌ (needs secrets / JS token minting) |
-| **B3** JS execution (`py_mini_racer`, `wencode`, JS-decrypt) | JS runtime | ~46 | ❌ (needs a JS engine like the already-present `rquickjs` + script ports) |
+| **B3** JS execution (`py_mini_racer`, `wencode`, JS-decrypt) | JS runtime | ~46 | ❌ (per ADR-0005, solve by reverse-engineering to pure Rust — no JS engine is embedded) |
 | **B1** Header / UA anti-bot only | `Referer`/UA | small | ⚠️ theoretically yes, but **already reachable** by the existing `reqwest` client + correct headers in this env |
 
 ### Why B1 is effectively empty here
@@ -85,10 +85,10 @@ TLS** (Cloudflare/Akamai-style WAFs), not a fix for the deferred set.
 ---
 
 ## What would actually unblock the deferred set (future work)
-- **B3 (JS):** port the `py_mini_racer` scripts to `rquickjs` (already a dependency) — e.g.
-  Sina `zh_js_decode`, Eastmoney `CYQCalculator`, endata `jm.js`.
-- **B2 (tokens):** implement token minting where reversible (e.g. `hexin-v` cookie via
-  `rquickjs`), or accept user-supplied credentials (`xq_a_token`, cninfo `Enckey`).
+- **B3 (JS):** reverse-engineer the `py_mini_racer` scripts to pure Rust (per ADR-0005 — no
+  JS engine is embedded) — e.g. Sina `zh_js_decode`, Eastmoney `CYQCalculator`, endata `jm.js`.
+- **B2 (tokens):** implement token minting where reversible (e.g. `hexin-v` cookie, pure-Rust),
+  or accept user-supplied credentials (`xq_a_token`, cninfo `Enckey`).
 - **B4 (HTML/Excel):** continue the existing `scraper`/`calamine` parsing ports (many are
   already `DONE` in MAPPING).
 

@@ -9,7 +9,7 @@ deferred fns (THS v cookie, dead 404, week-permission, xq token) stay put.
 import os
 import re
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "src")
 MAPPING = os.path.join(ROOT, "docs", "MAPPING.md")
 

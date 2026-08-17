@@ -745,7 +745,7 @@
 
 | akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
 |---|---|---|---|---|
-| `business_value_artist` | — | `movie/artist_yien.py:65` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
+| `business_value_artist` | — | `movie/artist_yien.py:65` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer — reversed to pure Rust per ADR-0005, no JS engine embedded |
 | `decrypt` | — | `movie/artist_yien.py:50` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
 | `get_current_week` | `alt/movie_yien.rs::get_current_week` | `movie/movie_yien.py:50` | DONE |  |
 | `movie_boxoffice_cinema_daily` | `alt/movie_yien.rs::movie_boxoffice_cinema_daily` | `movie/movie_yien.py:581` | DONE |  |
@@ -756,9 +756,9 @@
 | `movie_boxoffice_weekly` | — | `movie/movie_yien.py:340` | DEFERRED | akshare raises week-permission error (endpoint gated) |
 | `movie_boxoffice_yearly` | `alt/movie.rs::movie_boxoffice_yearly` | `movie/movie_yien.py:437` | DONE |  |
 | `movie_boxoffice_yearly_first_week` | `alt/movie_yien.rs::movie_boxoffice_yearly_first_week` | `movie/movie_yien.py:502` | DONE |  |
-| `online_value_artist` | — | `movie/artist_yien.py:103` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
-| `video_tv` | — | `movie/video_yien.py:65` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
-| `video_variety_show` | — | `movie/video_yien.py:96` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer (JS engine, ADR-0005) |
+| `online_value_artist` | — | `movie/artist_yien.py:103` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer — reversed to pure Rust per ADR-0005, no JS engine embedded |
+| `video_tv` | — | `movie/video_yien.py:65` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer — reversed to pure Rust per ADR-0005, no JS engine embedded |
+| `video_variety_show` | — | `movie/video_yien.py:96` | DEFERRED | response encrypted; akshare decrypt() runs jm.js via py_mini_racer — reversed to pure Rust per ADR-0005, no JS engine embedded |
 
 ## news
 
@@ -1374,4 +1374,4 @@
 
 **汇总**: DONE=944 · DEFERRED=156 · INTERNAL=72 · UNKNOWN=0 (共 1172)
 
-> 口径说明:`DONE`=已完整移植为 Rust 端点;`DEFERRED`=受签名/令牌/JS 引擎/HTML/Excel 限制,按 ADR-0005/0008 推迟;`INTERNAL`=akshare 内部辅助函数,非对外数据端点,不计入口径。公开数据端点覆盖 = 944 / (1172 − 72) ≈ 85.9%;其中 `DEFERRED` 占公开端点的 14.1%,为设计内推迟。所有 `UNKNOWN` 已清零(见 `git log` "clear all UNKNOWN")。本汇总由脚本统计生成,若与正文不一致请以正文状态列为准。
+> 口径说明:`DONE`=已完整移植为 Rust 端点;`DEFERRED`=受签名/令牌/JS 执行(按 ADR-0005 逆为纯 Rust,不内嵌 JS 引擎)/HTML/Excel 限制,按 ADR-0005/0008 推迟;`INTERNAL`=akshare 内部辅助函数,非对外数据端点,不计入口径。公开数据端点覆盖 = 944 / (1172 − 72) ≈ 85.9%;其中 `DEFERRED` 占公开端点的 14.1%,为设计内推迟。所有 `UNKNOWN` 已清零(见 `git log` "clear all UNKNOWN")。本汇总由脚本统计生成,若与正文不一致请以正文状态列为准。

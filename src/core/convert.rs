@@ -68,3 +68,46 @@ pub fn to_parquet<T: Serialize>(rows: &[T], path: &std::path::Path) -> Result<()
     writer.close().map_err(|e| Error::Parquet(e.to_string()))?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+    struct Row {
+        code: String,
+        price: Option<f64>,
+    }
+
+    #[test]
+    fn to_json_roundtrip() {
+        let rows = vec![
+            Row { code: "USD".into(), price: Some(7.1) },
+            Row { code: "EUR".into(), price: None },
+        ];
+        let json = to_json(&rows).unwrap();
+        let parsed: Vec<Row> = serde_json::from_str(&json).unwrap();
+        assert_eq!(parsed, rows);
+    }
+
+    #[test]
+    fn to_csv_roundtrip() {
+        let rows = vec![
+            Row { code: "USD".into(), price: Some(7.1) },
+            Row { code: "EUR".into(), price: None },
+        ];
+        let csv = to_csv(&rows).unwrap();
+        let mut reader = csv::Reader::from_reader(csv.as_bytes());
+        let got: Vec<Row> = reader.deserialize().map(|r| r.unwrap()).collect();
+        assert_eq!(got, rows);
+    }
+
+    #[test]
+    fn to_csv_empty_is_empty() {
+        // The csv writer emits a header on the first `serialize` call; with no
+        // rows there is nothing to flush, so the empty input yields empty output.
+        let rows: Vec<Row> = Vec::new();
+        let csv = to_csv(&rows).unwrap();
+        assert!(csv.is_empty());
+    }
+}

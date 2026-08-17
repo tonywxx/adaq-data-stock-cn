@@ -1,5 +1,6 @@
 use crate::core::client::Client;
-use crate::core::error::{Error, Result};
+use crate::core::error::Result;
+use crate::core::source::SourceChain;
 
 pub mod eastmoney;
 pub mod sina;
@@ -21,14 +22,32 @@ pub struct IntradayRow {
 /// Aggregated intraday ticks with multi-source fallback (ADR-0010): eastmoney → sina.
 /// `date` (YYYYMMDD) is only used by the Sina source.
 pub async fn tick(client: &Client, symbol: &str, date: &str) -> Result<Vec<IntradayRow>> {
-    if let Ok(rows) = eastmoney::em(client, symbol).await {
-        return Ok(rows);
+    SourceChain::new()
+        .push(move |c| Box::pin(eastmoney::em(c, symbol)))
+        .push(move |c| Box::pin(sina::sina(c, symbol, date)))
+        .run(client)
+        .await
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::core::convert;
+
+    #[test]
+    fn intraday_row_serializes() {
+        let rows = vec![IntradayRow {
+            symbol: "600519".into(),
+            time: "09:35:00".into(),
+            price: Some(1700.0),
+            volume: Some(500.0),
+            direction: Some("买盘".into()),
+            source: "eastmoney",
+        }];
+        let json = convert::to_json(&rows).unwrap();
+        assert!(json.contains("\"symbol\":\"600519\""));
+        assert!(json.contains("\"time\":\"09:35:00\""));
+        let csv = convert::to_csv(&rows).unwrap();
+        assert!(csv.starts_with("symbol,time"));
     }
-    if let Ok(rows) = sina::sina(client, symbol, date).await {
-        return Ok(rows);
-    }
-    Err(Error::UpstreamChanged {
-        origin: "all",
-        message: "all intraday sources failed".into(),
-    })
 }

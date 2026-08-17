@@ -1,5 +1,6 @@
 use crate::core::client::Client;
-use crate::core::error::{Error, Result};
+use crate::core::error::Result;
+use crate::core::source::SourceChain;
 
 pub mod eastmoney;
 pub mod tencent;
@@ -33,14 +34,40 @@ pub async fn daily(
     start_date: &str,
     end_date: &str,
 ) -> Result<Vec<HistRow>> {
-    if let Ok(rows) = eastmoney::daily(client, symbol, period, adjust, start_date, end_date).await {
-        return Ok(rows);
+    SourceChain::new()
+        .push(move |c| {
+            Box::pin(eastmoney::daily(c, symbol, period, adjust, start_date, end_date))
+        })
+        .push(move |c| {
+            Box::pin(tencent::daily(c, symbol, period, adjust, start_date, end_date))
+        })
+        .run(client)
+        .await
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::core::convert;
+
+    #[test]
+    fn hist_row_serializes() {
+        let rows = vec![HistRow {
+            symbol: "600519".into(),
+            date: "2024-01-02".into(),
+            open: Some(1685.0),
+            close: Some(1700.0),
+            high: Some(1710.0),
+            low: Some(1680.0),
+            volume: Some(1_000_000.0),
+            amount: Some(1_700_000_000.0),
+            pct_change: Some(1.2),
+            source: "eastmoney",
+        }];
+        let json = convert::to_json(&rows).unwrap();
+        assert!(json.contains("\"symbol\":\"600519\""));
+        assert!(json.contains("\"date\":\"2024-01-02\""));
+        let csv = convert::to_csv(&rows).unwrap();
+        assert!(csv.starts_with("symbol,date"));
     }
-    if let Ok(rows) = tencent::daily(client, symbol, period, adjust, start_date, end_date).await {
-        return Ok(rows);
-    }
-    Err(Error::UpstreamChanged {
-        origin: "all",
-        message: "all hist sources failed".into(),
-    })
 }

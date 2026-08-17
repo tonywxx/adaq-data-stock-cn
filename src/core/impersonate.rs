@@ -35,6 +35,14 @@ use serde_json::Value;
 
 use crate::core::error::{Error, Result};
 
+/// Request body for the impersonate backend (GET carries none; POST carries
+/// either form-encoded params or a raw JSON document).
+enum RequestBody<'a> {
+    None,
+    Form(&'a [(&'a str, &'a str)]),
+    Json(&'a Value),
+}
+
 /// Default browser profile to impersonate. Chrome 131 is broadly accepted and
 /// recent enough to clear most WAFs while staying stable in curl-impersonate.
 pub const DEFAULT_BROWSER: Browser = Browser::Chrome131;
@@ -80,7 +88,7 @@ impl Client {
         url: &str,
         headers: Option<&[(&str, &str)]>,
     ) -> Result<String> {
-        self.fetch_text("GET", url, None, headers).await
+        self.fetch_text("GET", url, RequestBody::None, headers).await
     }
 
     /// POST form-encoded params and return the decoded text response.
@@ -90,7 +98,7 @@ impl Client {
         form: &[(&str, &str)],
         headers: Option<&[(&str, &str)]>,
     ) -> Result<String> {
-        self.fetch_text("POST", url, Some(form), headers).await
+        self.fetch_text("POST", url, RequestBody::Form(form), headers).await
     }
 
     /// Fetch a URL and parse the response as JSON (`serde_json::Value`).
@@ -114,11 +122,25 @@ impl Client {
         serde_json::from_str(&text).map_err(Error::Json)
     }
 
+    /// POST a JSON request body and parse the JSON response (used by Eastmoney
+    /// `emappdata` stock-rank endpoints and the unified `Client::post_json`).
+    pub async fn post_json(
+        &self,
+        url: &str,
+        body: &Value,
+        headers: Option<&[(&str, &str)]>,
+    ) -> Result<Value> {
+        let text = self
+            .fetch_text("POST", url, RequestBody::Json(body), headers)
+            .await?;
+        serde_json::from_str(&text).map_err(Error::Json)
+    }
+
     async fn fetch_text(
         &self,
         method: &str,
         url: &str,
-        form: Option<&[(&str, &str)]>,
+        body: RequestBody<'_>,
         headers: Option<&[(&str, &str)]>,
     ) -> Result<String> {
         let inner = self.inner.clone();
@@ -128,9 +150,17 @@ impl Client {
         let extra_headers: Vec<(String, String)> = headers
             .map(|h| h.iter().map(|(k, v)| ((*k).to_string(), (*v).to_string())).collect())
             .unwrap_or_default();
-        let form_pairs: Vec<(String, String)> = form
-            .map(|f| f.iter().map(|(k, v)| ((*k).to_string(), (*v).to_string())).collect())
-            .unwrap_or_default();
+        let form_pairs: Vec<(String, String)> = match body {
+            RequestBody::Form(f) => f
+                .iter()
+                .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
+                .collect(),
+            _ => Vec::new(),
+        };
+        let json_body: Option<String> = match body {
+            RequestBody::Json(v) => Some(serde_json::to_string(v).map_err(Error::Json)?),
+            _ => None,
+        };
 
         tokio::task::spawn_blocking(move || {
             // Build the request. `impersonate_rs::Client` is cheap to clone and
@@ -144,15 +174,24 @@ impl Client {
             for (k, v) in &extra_headers {
                 req = req.header(k, v).map_err(|e| Error::Impersonate(e.to_string()))?;
             }
-            if !form_pairs.is_empty() {
-                // URL-encode the form body manually (avoids an extra serde dep
-                // round-trip in the builder and keeps ordering explicit).
-                let body = form_pairs
-                    .iter()
-                    .map(|(k, v)| format!("{}={}", urlencode(k), urlencode(v)))
-                    .collect::<Vec<_>>()
-                    .join("&");
-                req = req.body(body);
+            match (&json_body, !form_pairs.is_empty()) {
+                (Some(json), _) => {
+                    req = req
+                        .header("Content-Type", "application/json")
+                        .map_err(|e| Error::Impersonate(e.to_string()))?;
+                    req = req.body(json.clone());
+                }
+                (None, true) => {
+                    // URL-encode the form body manually (avoids an extra serde dep
+                    // round-trip in the builder and keeps ordering explicit).
+                    let payload = form_pairs
+                        .iter()
+                        .map(|(k, v)| format!("{}={}", urlencode(k), urlencode(v)))
+                        .collect::<Vec<_>>()
+                        .join("&");
+                    req = req.body(payload);
+                }
+                (None, false) => {}
             }
             let resp = req.send().map_err(|e| Error::Impersonate(e.to_string()))?;
             if resp.status() >= 400 {

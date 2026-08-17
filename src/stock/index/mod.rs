@@ -1,5 +1,6 @@
 use crate::core::client::Client;
-use crate::core::error::{Error, Result};
+use crate::core::error::Result;
+use crate::core::source::SourceChain;
 
 pub mod eastmoney;
 pub mod extra;
@@ -29,14 +30,37 @@ pub struct IndexSpotQuote {
 /// Aggregated real-time index spot with multi-source fallback (ADR-0010):
 /// eastmoney → sina. Returns the first successful source, normalized.
 pub async fn spot(client: &Client) -> Result<Vec<IndexSpotQuote>> {
-    if let Ok(rows) = eastmoney::spot(client).await {
-        return Ok(rows);
+    SourceChain::new()
+        .push(|c| Box::pin(eastmoney::spot(c)))
+        .push(|c| Box::pin(sina::spot(c)))
+        .run(client)
+        .await
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::core::convert;
+
+    #[test]
+    fn index_spot_quote_serializes() {
+        let quotes = vec![IndexSpotQuote {
+            code: "000001".into(),
+            name: "上证指数".into(),
+            price: Some(3000.0),
+            pct_change: Some(0.5),
+            change: Some(15.0),
+            volume: Some(200_000_000.0),
+            amount: Some(300_000_000_000.0),
+            open: Some(2985.0),
+            high: Some(3010.0),
+            low: Some(2980.0),
+            pre_close: Some(2985.0),
+            source: "eastmoney",
+        }];
+        let json = convert::to_json(&quotes).unwrap();
+        assert!(json.contains("\"code\":\"000001\""));
+        let csv = convert::to_csv(&quotes).unwrap();
+        assert!(csv.starts_with("code,name,price"));
     }
-    if let Ok(rows) = sina::spot(client).await {
-        return Ok(rows);
-    }
-    Err(Error::UpstreamChanged {
-        origin: "all",
-        message: "all index spot sources failed".into(),
-    })
 }

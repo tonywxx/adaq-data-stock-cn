@@ -29,3 +29,28 @@ pub async fn repo_rate(client: &Client, start_date: &str, end_date: &str) -> Res
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::core::convert;
+
+    #[test]
+    fn repo_rate_serializes() {
+        let rows = vec![RepoRate {
+            date: "2024-01-02".into(),
+            fr001: Some(1.8),
+            fr007: Some(1.9),
+            fr014: Some(2.0),
+            fdr001: Some(1.7),
+            fdr007: Some(1.85),
+            fdr014: Some(1.95),
+            source: "chinamoney",
+        }];
+        let json = convert::to_json(&rows).unwrap();
+        assert!(json.contains("\"date\":\"2024-01-02\""));
+        assert!(json.contains("\"fr007\":1.9"));
+        let csv = convert::to_csv(&rows).unwrap();
+        assert!(csv.starts_with("date,fr001"));
+    }
+}
