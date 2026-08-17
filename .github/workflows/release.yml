@@ -32,7 +32,7 @@ jobs:
           PKG="$(grep -m1 '^version' Cargo.toml | sed -E 's/version[[:space:]]*=[[:space:]]*"([^"]+)"/\1/')"
           echo "tag=$TAG  Cargo.toml version=$PKG"
           if [ "$TAG" != "$PKG" ]; then
-            echo "::error::Git tag '$TAG' does not match Cargo.toml version '$PKG'. Bump version before tagging."
+            echo "::error::Git tag '$TAG' does not match Cargo.toml version '$PKG'. Bump version before tagging. "
             exit 1
           fi
 
@@ -49,8 +49,11 @@ jobs:
           tar -czf "target/$ASSET" -C target/release "$BIN"
           echo "asset=target/$ASSET" >> "$GITHUB_OUTPUT"
 
+      # The published crate excludes `native/` (crates.io 10 MiB limit), so the
+      # verify build can't link the dylib on the runner. The GitHub Release
+      # binary tarball below is the fully-linked artifact; skip publish verify.
       - name: Publish to crates.io
-        run: cargo publish --token "${CARGO_REGISTRY_TOKEN}"
+        run: cargo publish --no-verify --token "${CARGO_REGISTRY_TOKEN}"
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
 

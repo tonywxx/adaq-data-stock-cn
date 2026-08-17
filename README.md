@@ -135,9 +135,15 @@ let html = client
 ```
 
 - Module: `src/core/impersonate.rs`, exported as `crate::ImpersonateClient` / `crate::impersonate`.
-- Native lib: the `native/libcurl-impersonate/` dylibs are **vendored** in the repo (macOS
-  arm64/x86_64). `build.rs` bakes an `LC_RPATH` into every binary, so **no sudo and no
-  `DYLD_LIBRARY_PATH`** are required.
+- Native lib: the `libcurl-impersonate` dylib (macOS **arm64** only) is **vendored** in
+  `native/libcurl-impersonate/` for local dev — `build.rs` bakes an `LC_RPATH` into every
+  binary, so **no sudo and no `DYLD_LIBRARY_PATH`** are required when building from the repo.
+- Installing from crates.io: the dylib is **not** bundled in the published crate (it would
+  exceed crates.io's 10 MiB per-crate limit). Install it system-wide so
+  `libcurl-impersonate-chrome.dylib` and `libcurl-impersonate.4.dylib` are on the loader
+  path (e.g. `brew install curl-impersonate`, which puts them in `/usr/local/lib`). If your
+  package manager installs elsewhere, symlink the `libcurl-impersonate-chrome.dylib` name
+  into `/usr/local/lib`. `build.rs` fails with explicit instructions if the lib is missing.
 - GBK decoding: Sina/Baidu/jisilu return GBK pages; this backend always decodes via
   `encoding_rs::GBK` (UTF-8/BOM fallback), avoiding the underlying crate's strict UTF-8 panic
   on Chinese pages.
