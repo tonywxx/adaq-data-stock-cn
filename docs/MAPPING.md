@@ -511,7 +511,7 @@
 | `futures_contract_detail` | `src (present)| `futures/futures_contract_detail.py:16| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
 | `futures_contract_detail_em` | `src (present)| `futures/futures_contract_detail.py:41| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
 | `futures_dce_position_rank` | — | `futures/cot.py:818` | DEFERRED | endpoint returns a zip of TSV files; parsing needs a zip/deflate crate absent from Cargo.toml |
-| `futures_dce_position_rank_other` | — | `futures/cot.py:1052` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `futures_dce_position_rank_other` | `futures/cot.rs::futures_dce_position_rank_other` | `futures/cot.py:1052` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `futures_delivery_czce` | `src (present)| `futures/futures_to_spot.py:244| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
 | `futures_delivery_dce` | `src (present)| `futures/futures_to_spot.py:57| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
 | `futures_delivery_match_czce` | `src (present)| `futures/futures_to_spot.py:198| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
@@ -591,7 +591,7 @@
 | `get_shfe_receipt_3` | — | `futures/receipt.py:218` | INTERNAL | akshare internal helper, not a data endpoint |
 | `last_trading_day` | — | `futures/cons.py:590` | INTERNAL | akshare internal helper, not a data endpoint |
 | `match_main_contract` | `src (present)| `futures/futures_zh_sina.py:171| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `pandas_read_html_link` | — | `futures/requests_fun.py:53` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `pandas_read_html_link` | `futures/html_gaps.rs::pandas_read_html_link` | `futures/requests_fun.py:53` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `requests_link` | — | `futures/requests_fun.py:16` | INTERNAL | akshare internal helper, not a data endpoint |
 | `symbol_market` | `src (present)` | `futures/symbol_var.py:25` | DONE |  |
 | `symbol_varieties` | — | `futures/symbol_var.py:13` | INTERNAL | akshare internal helper, not a data endpoint |
@@ -611,9 +611,9 @@
 | `futures_hog_core` | `futures_derivative/hog.rs::futures_hog_core` | `futures_derivative/futures_hog.py:13` | DONE |  |
 | `futures_hog_cost` | `futures_derivative/hog.rs::futures_hog_cost` | `futures_derivative/futures_hog.py:57` | DONE |  |
 | `futures_hog_supply` | `futures_derivative/hog.rs::futures_hog_supply` | `futures_derivative/futures_hog.py:116` | DONE |  |
-| `futures_hold_pos_sina` | — | `futures_derivative/futures_cot_sina.py:15` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `futures_hold_pos_sina` | `futures_derivative/html_gaps.rs::futures_hold_pos_sina` | `futures_derivative/futures_cot_sina.py:15` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `futures_main_sina` | `futures_derivative/sina.rs::futures_main_sina` | `futures_derivative/futures_index_sina.py:103` | DONE |  |
-| `futures_spot_sys` | — | `futures_derivative/futures_spot_sys.py:36` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `futures_spot_sys` | `futures_derivative/html_gaps.rs::futures_spot_sys` | `futures_derivative/futures_spot_sys.py:36` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 
 ## fx
 
@@ -906,20 +906,20 @@
 
 | akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
 |---|---|---|---|---|
-| `spot_corn_price_soozhu` | — | `spot/spot_hog_soozhu.py:137` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_corn_price_soozhu` | `spot/spot_html_gaps.rs::spot_corn_price_soozhu` | `spot/spot_hog_soozhu.py:137` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `spot_golden_benchmark_sge` | `spot/sge.rs::spot_golden_benchmark_sge` | `spot/spot_sge.py:163` | DONE |  |
 | `spot_hist_sge` | `spot/sge.rs::spot_hist_sge` | `spot/spot_sge.py:109` | DONE |  |
-| `spot_hog_crossbred_soozhu` | — | `spot/spot_hog_soozhu.py:113` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
-| `spot_hog_lean_price_soozhu` | — | `spot/spot_hog_soozhu.py:65` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_hog_crossbred_soozhu` | `spot/spot_html_gaps.rs::spot_hog_crossbred_soozhu` | `spot/spot_hog_soozhu.py:113` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_hog_lean_price_soozhu` | `spot/spot_html_gaps.rs::spot_hog_lean_price_soozhu` | `spot/spot_hog_soozhu.py:65` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `spot_hog_soozhu` | `src/spot/spot_html_gaps.rs::spot_hog_soozhu` | `spot/spot_hog_soozhu.py:14` | DONE |  |
-| `spot_hog_three_way_soozhu` | — | `spot/spot_hog_soozhu.py:89` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_hog_three_way_soozhu` | `spot/spot_html_gaps.rs::spot_hog_three_way_soozhu` | `spot/spot_hog_soozhu.py:89` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `spot_hog_year_trend_soozhu` | `src/spot/spot_html_gaps.rs::spot_hog_year_trend_soozhu` | `spot/spot_hog_soozhu.py:41` | DONE |  |
-| `spot_mixed_feed_soozhu` | — | `spot/spot_hog_soozhu.py:185` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_mixed_feed_soozhu` | `spot/spot_html_gaps.rs::spot_mixed_feed_soozhu` | `spot/spot_hog_soozhu.py:185` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `spot_price_qh` | `src/spot/spot_gaps.rs::spot_price_qh` | `spot/spot_price_qh.py:79` | DONE |  |
 | `spot_price_table_qh` | `spot/price_qh.rs::spot_price_table_qh` | `spot/spot_price_qh.py:55` | DONE |  |
 | `spot_quotations_sge` | `spot/sge.rs::spot_quotations_sge` | `spot/spot_sge.py:50` | DONE |  |
 | `spot_silver_benchmark_sge` | `spot/sge.rs::spot_silver_benchmark_sge` | `spot/spot_sge.py:194` | DONE |  |
-| `spot_soybean_price_soozhu` | — | `spot/spot_hog_soozhu.py:161` | DEFERRED | HTML table scraping (pd.read_html/BeautifulSoup) |
+| `spot_soybean_price_soozhu` | `spot/spot_html_gaps.rs::spot_soybean_price_soozhu` | `spot/spot_hog_soozhu.py:161` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `spot_symbol_table_sge` | `spot/sge.rs::spot_symbol_table_sge` | `spot/spot_sge.py:17` | DONE |  |
 
 ## stock

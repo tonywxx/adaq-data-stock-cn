@@ -48,3 +48,6 @@ pub mod wv_futures_more;
 
 // --- futures "gaps" ports: sina main-continuous listing + 99qh inventory ---
 pub mod fut_gaps;
+
+// --- futures "gaps" ports: HTML-table scraping (pd.read_html helpers) ---
+pub mod html_gaps;

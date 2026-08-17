@@ -29,6 +29,9 @@
 //!   BeautifulSoup; needs an HTML parser.
 
 use serde_json::Value;
+use std::collections::HashMap;
+
+use scraper::{Html, Selector};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
@@ -421,6 +424,225 @@ fn variety_of(symbol: &str) -> String {
 }
 
 // ---------------------------------------------------------------------------
+// futures_dce_position_rank_other — DCE member position ranking (HTML)
+// ---------------------------------------------------------------------------
+
+/// DCE member position-ranking row for a specific contract, as returned by
+/// `futures_dce_position_rank_other` (akshare `cot.py:1052`).
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct DcePositionRankOtherRow {
+    /// 名次.
+    pub rank: Option<f64>,
+    /// 成交量会员 (volume broker).
+    pub vol_party_name: String,
+    /// 成交量.
+    pub vol: Option<f64>,
+    /// 比上交易增减 (volume change).
+    pub vol_chg: Option<f64>,
+    /// 持多单会员 (long broker).
+    pub long_party_name: String,
+    /// 持多单 (long open interest).
+    pub long_open_interest: Option<f64>,
+    /// 持多单变化 (long change).
+    pub long_open_interest_chg: Option<f64>,
+    /// 持空单会员 (short broker).
+    pub short_party_name: String,
+    /// 持空单 (short open interest).
+    pub short_open_interest: Option<f64>,
+    /// 持空单变化 (short change).
+    pub short_open_interest_chg: Option<f64>,
+    /// 品种 (variety, e.g. `c`).
+    pub variety: String,
+    /// 合约 (contract, e.g. `c2401`).
+    pub symbol: String,
+}
+
+/// Extract `symbol` from `javascript:setVariety('symbol')` onclick attributes.
+///
+/// Mirrors akshare `soup.find_all(attrs={"class": "selBox"})[-3].find_all("input")`.
+fn parse_dce_symbols(html: &str, endpoint: &'static str) -> Result<Vec<String>> {
+    let doc = Html::parse_document(html);
+    let sel = Selector::parse(".selBox")
+        .map_err(|e| Error::Parse { endpoint, message: format!("selBox selector: {e}") })?;
+    let boxes: Vec<scraper::ElementRef> = doc.select(&sel).collect();
+    if boxes.len() < 3 {
+        return Err(Error::UpstreamChanged {
+            origin: endpoint,
+            message: format!("expected >=3 .selBox, found {}", boxes.len()),
+        });
+    }
+    let box_el = boxes[boxes.len() - 3];
+    let mut out = Vec::new();
+    for inp in box_el.select(&Selector::parse("input").unwrap()) {
+        if let Some(onclick) = inp.value().attr("onclick") {
+            if let Some(s) = onclick.strip_prefix("javascript:setVariety('").and_then(|s| s.strip_suffix("');")) {
+                out.push(s.to_string());
+            }
+        }
+    }
+    Ok(out)
+}
+
+/// Extract `contract` ids from `javascript:setContract_id('id')` onclick
+/// attributes, prefixing 4-char ids with the variety symbol (akshare logic).
+fn parse_dce_contracts(html: &str, symbol: &str, endpoint: &'static str) -> Result<Vec<String>> {
+    let doc = Html::parse_document(html);
+    let sel = Selector::parse("input[name=\"contract\"]")
+        .map_err(|e| Error::Parse { endpoint, message: format!("contract selector: {e}") })?;
+    let mut out = Vec::new();
+    for inp in doc.select(&sel) {
+        if let Some(onclick) = inp.value().attr("onclick") {
+            if let Some(c) = onclick.strip_prefix("javascript:setContract_id('").and_then(|s| s.strip_suffix("');")) {
+                let contract = if c.len() == 4 {
+                    format!("{symbol}{c}")
+                } else {
+                    c.to_string()
+                };
+                out.push(contract);
+            }
+        }
+    }
+    Ok(out)
+}
+
+/// Parse one DCE per-contract ranking table (`pd.read_html(r.text)[1].iloc[:-1, :]`).
+///
+/// The raw table has 12 columns; indices 4 and 9 are spacer columns (`_`) that
+/// akshare drops. The trailing `合计` total row is also dropped.
+pub(crate) fn parse_dce_rank_table(
+    html: &str,
+    symbol: &str,
+    contract: &str,
+    endpoint: &'static str,
+) -> Result<Vec<DcePositionRankOtherRow>> {
+    let doc = Html::parse_document(html);
+    let table_sel = Selector::parse("table").unwrap();
+    let tr_sel = Selector::parse("tr").unwrap();
+    let cell_sel = Selector::parse("td,th").unwrap();
+    let mut tables: Vec<Vec<Vec<String>>> = Vec::new();
+    for table in doc.select(&table_sel) {
+        let rows: Vec<Vec<String>> = table
+            .select(&tr_sel)
+            .map(|tr| {
+                tr.select(&cell_sel)
+                    .map(|c| c.text().collect::<Vec<_>>().join(" ").split_whitespace().collect::<Vec<_>>().join(" "))
+                    .collect()
+            })
+            .collect();
+        if !rows.is_empty() {
+            tables.push(rows);
+        }
+    }
+    let rows = tables.get(1).ok_or_else(|| Error::UpstreamChanged {
+        origin: endpoint,
+        message: "rank table[1] not found".into(),
+    })?;
+    let out: Vec<DcePositionRankOtherRow> = rows
+        .iter()
+        .skip(1) // header
+        .filter(|r| r.len() >= 12 && !r[1].contains("合计"))
+        .map(|r| {
+            let num = |s: &str| -> Option<f64> {
+                let t = s.trim().replace(',', "");
+                if t.is_empty() || t == "--" {
+                    None
+                } else {
+                    t.parse::<f64>().ok()
+                }
+            };
+            DcePositionRankOtherRow {
+                rank: num(&r[0]),
+                vol_party_name: r[1].clone(),
+                vol: num(&r[2]),
+                vol_chg: num(&r[3]),
+                long_party_name: r[5].clone(),
+                long_open_interest: num(&r[6]),
+                long_open_interest_chg: num(&r[7]),
+                short_party_name: r[9].clone(),
+                short_open_interest: num(&r[10]),
+                short_open_interest_chg: num(&r[11]),
+                variety: symbol.to_uppercase(),
+                symbol: contract.to_string(),
+            }
+        })
+        .collect();
+    Ok(out)
+}
+
+/// 大连商品交易所-每日持仓排名-具体合约-补充 (`futures_dce_position_rank_other`,
+/// akshare `cot.py:1052`).
+///
+/// Scrapes the DCE member position-ranking pages in three steps (variety →
+/// contract → ranking table) and returns a map keyed by contract code.
+pub async fn futures_dce_position_rank_other(
+    client: &Client,
+    date: &str,
+) -> Result<HashMap<String, Vec<DcePositionRankOtherRow>>> {
+    let endpoint = "futures_dce_position_rank_other";
+    let url = "http://www.dce.com.cn/publicweb/quotesdata/memberDealPosiQuotes.html";
+    // Build the DCE date payload (year, month-1, day) from YYYYMMDD.
+    let (y, m, d) = if date.len() == 8 {
+        (
+            date[..4].parse::<i32>().unwrap_or(1970),
+            date[4..6].parse::<i32>().unwrap_or(1),
+            date[6..8].parse::<i32>().unwrap_or(1),
+        )
+    } else {
+        (1970, 1, 1)
+    };
+    let year = y.to_string();
+    let month = (m - 1).to_string();
+    let day = d.to_string();
+    let base: Vec<(&str, &str)> = vec![
+        ("memberDealPosiQuotes.variety", "c"),
+        ("memberDealPosiQuotes.trade_type", "0"),
+        ("year", &year),
+        ("month", &month),
+        ("day", &day),
+        ("contract.contract_id", "all"),
+        ("contract.variety_id", "c"),
+        ("contract", ""),
+    ];
+    let html = client.post_form_text(SOURCE_SHFE, endpoint, url, &base, None).await?;
+    let symbols = parse_dce_symbols(&html, endpoint)?;
+    let mut out: HashMap<String, Vec<DcePositionRankOtherRow>> = HashMap::new();
+    for symbol in symbols {
+        let sym_payload: Vec<(&str, &str)> = vec![
+            ("memberDealPosiQuotes.variety", &symbol),
+            ("memberDealPosiQuotes.trade_type", "0"),
+            ("year", &year),
+            ("month", &month),
+            ("day", &day),
+            ("contract.contract_id", "all"),
+            ("contract.variety_id", &symbol),
+            ("contract", ""),
+        ];
+        let html2 = client
+            .post_form_text(SOURCE_SHFE, endpoint, url, &sym_payload, None)
+            .await?;
+        let contracts = parse_dce_contracts(&html2, &symbol, endpoint)?;
+        for contract in contracts {
+            let con_payload: Vec<(&str, &str)> = vec![
+                ("memberDealPosiQuotes.variety", &symbol),
+                ("memberDealPosiQuotes.trade_type", "0"),
+                ("year", &year),
+                ("month", &month),
+                ("day", &day),
+                ("contract.contract_id", &contract),
+                ("contract.variety_id", &symbol),
+                ("contract", ""),
+            ];
+            let html3 = client
+                .post_form_text(SOURCE_SHFE, endpoint, url, &con_payload, None)
+                .await?;
+            let rows = parse_dce_rank_table(&html3, &symbol, &contract, endpoint)?;
+            out.insert(contract, rows);
+        }
+    }
+    Ok(out)
+}
+
+// ---------------------------------------------------------------------------
 // tests (offline fixtures)
 // ---------------------------------------------------------------------------
 
@@ -482,5 +704,53 @@ mod tests {
         // Last member retains its data.
         assert_eq!(rows[2].vol_party_name, "永安期货");
         assert_eq!(rows[2].short_open_interest, Some(7000.0));
+    }
+
+    fn load_html(name: &str) -> String {
+        let p = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures")
+            .join(name);
+        std::fs::read_to_string(p).unwrap()
+    }
+
+    #[test]
+    fn parses_dce_symbols() {
+        // akshare reads `soup.find_all(class="selBox")[-3]` — only the third
+        // box from the end contributes its input symbols.
+        let syms =
+            parse_dce_symbols(&load_html("futures_dce_position_rank_other_symbols.html"), "futures_dce_position_rank_other")
+                .unwrap();
+        assert_eq!(syms, vec!["c".to_string()]);
+    }
+
+    #[test]
+    fn parses_dce_contracts() {
+        let cons = parse_dce_contracts(
+            &load_html("futures_dce_position_rank_other_contracts.html"),
+            "c",
+            "futures_dce_position_rank_other",
+        )
+        .unwrap();
+        // 4-char contract ids are prefixed with the variety symbol.
+        assert!(cons.contains(&"c2401".to_string()));
+        assert!(cons.contains(&"c2405".to_string()));
+    }
+
+    #[test]
+    fn parses_dce_rank_table() {
+        let rows = parse_dce_rank_table(
+            &load_html("futures_dce_position_rank_other_rank.html"),
+            "c",
+            "c2401",
+            "futures_dce_position_rank_other",
+        )
+        .unwrap();
+        assert_eq!(rows.len(), 2, "expected 2 members (合计 dropped)");
+        assert_eq!(rows[0].rank, Some(1.0));
+        assert_eq!(rows[0].vol_party_name, "中信期货");
+        assert!((rows[0].vol.unwrap() - 12345.0).abs() < 1e-9);
+        assert!((rows[0].long_open_interest.unwrap() - 23456.0).abs() < 1e-9);
+        assert_eq!(rows[0].variety, "C");
+        assert_eq!(rows[0].symbol, "c2401");
     }
 }

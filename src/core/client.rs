@@ -240,6 +240,25 @@ impl Client {
         resp.json().await.map_err(Error::Http)
     }
 
+    /// POST form-encoded params and return the raw text response (for sources
+    /// that return HTML, not JSON). Same resilience as [`get_json`].
+    ///
+    /// Used by exchange COT pages (e.g. DCE member position ranks) that answer
+    /// a form POST with an HTML table. Caching is not applied to POSTs (ADR-0009).
+    pub async fn post_form_text(
+        &self,
+        source: &'static str,
+        _endpoint: &'static str,
+        url: &str,
+        params: &[(&str, &str)],
+        headers: Option<&[(&str, &str)]>,
+    ) -> Result<String> {
+        let resp = self
+            .fetch_with_retry(source, reqwest::Method::POST, url, params, None, headers)
+            .await?;
+        resp.text().await.map_err(Error::Http)
+    }
+
     /// POST a JSON request body and parse the JSON response. Same resilience
     /// (retry/backoff, rate limiting, concurrency cap) as [`get_json`].
     ///

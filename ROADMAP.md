@@ -140,7 +140,7 @@
 | 97 | 港股个股人气榜 `stock::hot_rank` 补齐 4 个函数(东财 emappdata JSON-body POST,`marketType=000003`):`stock_hk_hot_rank_em`(POST `getAllCurrHkUsList` + push2 `116.` 前缀实时价)、`stock_hk_hot_rank_detail_em`/`stock_hk_hot_rank_detail_realtime_em`/`stock_hk_hot_rank_latest_em`(POST `getHisHkUsList`/`getCurrentHkUsList`/`getCurrentHkUsLatest`) | ✅ DONE | 4 | 4 ✅ |
 | 98 | 涨停板池 siblings + 两融账户 `stock_feature::board_zt` + `stock_feature::margin_research`(东财 push2ex 5 个涨停/跌停股池 + datacenter `RPTA_WEB_MARGIN_DAILYTRADE` 两融账户统计;补齐 wave-92 预置的空叶子模块) | ✅ DONE | 6 | 6 ✅ |
 
-**累计(2026-08-16 复核)**:1102 个 akshare 对外公开 API 中,**787 个已实现** Rust `pub fn`(其中 781 个为功能性 DONE、6 个为返回 `Err` 的 JS 解密桩函数,归入 DEFERRED);**299 个 DEFERRED/PARTIAL**;**16 个 INTERNAL**(akshare 内部辅助,非对外数据端点);**6 个未跟踪**(异常类 `APIError`/`AkshareException` 等,对应本库 `core::error::Error`,无需移植)。`cargo build` / `cargo test`(992 passed, 19 ignored) / `cargo clippy` 全绿。
+**累计(2026-08-16 复核 + html_gaps 核对)**:1102 个 akshare 对外公开 API 中,**797 个已实现** Rust `pub fn`(其中 791 个为功能性 DONE、6 个为返回 `Err` 的 JS 解密桩函数,归入 DEFERRED);**289 个 DEFERRED/PARTIAL**;**16 个 INTERNAL**(akshare 内部辅助,非对外数据端点);**6 个未跟踪**(异常类 `APIError`/`AkshareException` 等,对应本库 `core::error::Error`,无需移植)。`cargo build` / `cargo test`(1002 passed, 19 ignored) / `cargo clippy` 全绿。
 
 > 复核方法:以本地 `akshare/__init__.py` 的 `__all__`(1102 个对外名)为权威口径,与 `docs/MAPPING.md` 逐行对账,并用 `grep` 校验 `src/` 中每个 `pub fn` 是否真实存在。发现 MAPPING 原 950 个 DONE 标记中有 169 个为**虚标**(无对应 `pub fn`,仅出现在 `deferred_more.rs` 等注释/清单中),已统一更正为 `DEFERRED` 并标注 `NOT IMPLEMENTED`。更正后 MAPPING 与 `src/` 实现完全一致(781 DONE 全部有实现,0 虚标)。
 
@@ -206,7 +206,7 @@
 | INTERNAL | 16 | akshare 内部辅助函数,非对外数据端点,无需移植 |
 | 未跟踪(异常类) | 6 | `APIError`/`AkshareException`/`DataParsingError`/`InvalidParameterError`/`NetworkError`/`RateLimitError`,对应本库 `core::error::Error` |
 
-功能性 DONE 占公开 API 的 **70.9%**(781 / 1102)。
+功能性 DONE 占公开 API 的 **71.8%**(791 / 1102)。
 
 ### 推迟原因分布(299 个 DEFERRED)
 
@@ -222,7 +222,7 @@
 
 ### 领域缺口(DEFERRED 按前缀)
 
-`stock`(68)、`fund`(14)、`macro`(11)、`bond`(8)、`futures`(6)、`spot`(6)、`air`(2)、`migration`(2)、`movie`(2)、`video`(2)、`energy`(1)、`index`(1)、`business`(1)、`online`(1)、`news`(1)、`option`(1)、`pro`(1)、`qhkc`(1)、`tool`(1)。(含本次复核更正的 169 个虚标 DONE。)
+`stock`(68)、`fund`(14)、`macro`(11)、`bond`(8)、`futures`(2)、`air`(2)、`migration`(2)、`movie`(2)、`video`(2)、`energy`(1)、`index`(1)、`business`(1)、`online`(1)、`news`(1)、`option`(1)、`pro`(1)、`qhkc`(1)、`tool`(1)。(含本次复核更正的 169 个虚标 DONE。`spot` 全部 6 个 soozhu 端点已在 `spot_html_gaps` 落地,本轮核对由 DEFERRED 更正为 DONE;`futures` 的 4 个 HTML 抓取端点(futures_dce_position_rank_other / pandas_read_html_link / futures_hold_pos_sina / futures_spot_sys)同批更正为 DONE,仅余令牌/JS 门控( zh_subscribe_exchange_symbol / futures_contract_info_cffex / futures_contract_info_czce )。)
 
 ### 下一步(按设计收敛)
 
