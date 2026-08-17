@@ -3,6 +3,7 @@ name = "adaq-data-stock-cn"
 version = "0.1.0"
 edition = "2024"
 description = "Rust reimplementation of akshare for Chinese A-share market data — the data layer for the AdaQ quant platform"
+readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tony/adaq-data-stock-cn"
 keywords = ["akshare", "stock", "a-share", "quant", "china"]
