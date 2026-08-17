@@ -25,7 +25,15 @@ flate2 = "1"
 encoding_rs = "0.8"
 
 arrow = { version = "53", default-features = false, features = ["json"], optional = true }
-parquet = { version = "53", default-features = false, features = ["async", "zstd"], optional = true }
+parquet = { version = "53", default-features = false, features = ["async", "zstd", "arrow"], optional = true }
+rquickjs = "0.12.2"
+
+# Browser-impersonation HTTP backend — the Rust analog of the Python `primp`
+# (curl_cffi) library. Wraps `curl-impersonate` to mimic Chrome/Edge/Firefox
+# TLS + HTTP/2 fingerprints, so anti-bot middleboxes that fingerprint
+# rustls/reqwest cannot block our requests. Links the vendored
+# `libcurl-impersonate` shared lib (see `.cargo/config.toml` + `native/`).
+impersonate-rs = "0.1.3"
 
 [features]
 default = []

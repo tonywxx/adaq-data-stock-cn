@@ -47,6 +47,9 @@ pub enum Error {
 
     #[error("parquet error: {0}")]
     Parquet(String),
+
+    #[error("browser-impersonation request failed: {0}")]
+    Impersonate(String),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

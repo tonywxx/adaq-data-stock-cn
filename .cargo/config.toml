@@ -1,0 +1,27 @@
+# Build configuration for adaq-data-stock-cn.
+#
+# The browser-impersonation backend (`impersonate-rs`, the Rust analog of the
+# Python `primp` / `curl_cffi` lib) links against a vendored
+# `libcurl-impersonate` shared library so we do NOT need to touch system
+# `/usr/local/lib` or install anything via sudo.
+#
+# The `impersonate-rs` build.rs hardcodes `-lcurl-impersonate-chrome` and a
+# `/usr/local/lib` search path, so we add our vendored dir here. The runtime
+# dynamic loader also needs to find the dylib — set DYLD_LIBRARY_PATH (see
+# README) or install into /usr/local/lib. On macOS SIP may strip
+# DYLD_LIBRARY_PATH for signed binaries; if `cargo test` can't load the lib,
+# copy `native/libcurl-impersonate/libcurl-impersonate-chrome.dylib` into
+# /usr/local/lib (or use `install_name_tool` to set an rpath).
+
+[build]
+rustflags = ["-L", "native/libcurl-impersonate"]
+
+[target.aarch64-apple-darwin]
+rustflags = ["-L", "native/libcurl-impersonate"]
+
+[target.x86_64-apple-darwin]
+rustflags = ["-L", "native/libcurl-impersonate"]
+
+[run]
+# Helps the dynamic loader find the vendored dylib when running tests/binaries.
+env = { DYLD_LIBRARY_PATH = "native/libcurl-impersonate" }

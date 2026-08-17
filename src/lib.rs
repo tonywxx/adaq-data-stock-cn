@@ -47,3 +47,4 @@ pub mod pro;
 pub use core::client::Client;
 pub use core::convert;
 pub use core::error::{Error, Result};
+pub use core::impersonate::{self, Client as ImpersonateClient};

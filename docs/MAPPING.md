@@ -56,7 +56,7 @@
 | `bond_cb_profile_sina` | `src/bond/bond_html_gaps.rs::bond_cb_profile_sina` | `bond/bond_cb_sina.py:15` | DONE |  |
 | `bond_cb_redeem_jsl` | `bond/jisilu.rs::bond_cb_redeem_jsl` | `bond/bond_convert.py:165` | DONE |  |
 | `bond_cb_summary_sina` | `src/bond/bond_html_gaps.rs::bond_cb_summary_sina` | `bond/bond_cb_sina.py:31` | DONE |  |
-| `bond_china_close_return` | `src (present)| `bond/bond_china_money.py:127| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `bond_china_close_return` | `src/bond/chinamoney_pub.rs::bond_china_close_return` | `bond/bond_china_money.py:127` | DONE |  |
 | `bond_china_close_return_map` | `bond/chinamoney_pub.rs::bond_china_close_return_map` | `bond/bond_china_money.py:93` | DONE |  |
 | `bond_china_yield` | `src/bond/bond_html_gaps.rs::bond_china_yield` | `bond/bond_china.py:142` | DONE |  |
 | `bond_composite_index_cbond` | `bond/cbond.rs::bond_composite_index_cbond` | `bond/bond_cbond.py:214` | DONE |  |
@@ -142,17 +142,17 @@
 | `macro_australia_retail_rate_monthly` | `economic/macro_intl.rs::macro_australia_retail_rate_monthly` | `economic/macro_australia.py:14` | DONE |  |
 | `macro_australia_trade` | `economic/macro_intl.rs::macro_australia_trade` | `economic/macro_australia.py:65` | DONE |  |
 | `macro_australia_unemployment_rate` | `economic/macro_intl.rs::macro_australia_unemployment_rate` | `economic/macro_australia.py:116` | DONE |  |
-| `macro_bank_australia_interest_rate` | `src (present)| `economic/macro_bank.py:172| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_brazil_interest_rate` | `src (present)| `economic/macro_bank.py:220| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_china_interest_rate` | `src (present)| `economic/macro_bank.py:136| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_english_interest_rate` | `src (present)| `economic/macro_bank.py:160| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_euro_interest_rate` | `src (present)| `economic/macro_bank.py:112| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_india_interest_rate` | `src (present)| `economic/macro_bank.py:208| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_japan_interest_rate` | `src (present)| `economic/macro_bank.py:184| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_newzealand_interest_rate` | `src (present)| `economic/macro_bank.py:124| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_russia_interest_rate` | `src (present)| `economic/macro_bank.py:196| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_switzerland_interest_rate` | `src (present)| `economic/macro_bank.py:148| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_bank_usa_interest_rate` | `src (present)| `economic/macro_bank.py:101| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_bank_australia_interest_rate` | `src/economic/macro_bank.rs::macro_bank_australia_interest_rate` | `` | DONE |  |
+| `macro_bank_brazil_interest_rate` | `src/economic/macro_bank.rs::macro_bank_brazil_interest_rate` | `` | DONE |  |
+| `macro_bank_china_interest_rate` | `src/economic/macro_bank.rs::macro_bank_china_interest_rate` | `` | DONE |  |
+| `macro_bank_english_interest_rate` | `src/economic/macro_bank.rs::macro_bank_english_interest_rate` | `` | DONE |  |
+| `macro_bank_euro_interest_rate` | `src/economic/macro_bank.rs::macro_bank_euro_interest_rate` | `` | DONE |  |
+| `macro_bank_india_interest_rate` | `src/economic/macro_bank.rs::macro_bank_india_interest_rate` | `` | DONE |  |
+| `macro_bank_japan_interest_rate` | `src/economic/macro_bank.rs::macro_bank_japan_interest_rate` | `` | DONE |  |
+| `macro_bank_newzealand_interest_rate` | `src/economic/macro_bank.rs::macro_bank_newzealand_interest_rate` | `` | DONE |  |
+| `macro_bank_russia_interest_rate` | `src/economic/macro_bank.rs::macro_bank_russia_interest_rate` | `` | DONE |  |
+| `macro_bank_switzerland_interest_rate` | `src/economic/macro_bank.rs::macro_bank_switzerland_interest_rate` | `` | DONE |  |
+| `macro_bank_usa_interest_rate` | `src/economic/macro_bank.rs::macro_bank_usa_interest_rate` | `` | DONE |  |
 | `macro_canada_bank_rate` | `economic/macro_intl.rs::macro_canada_bank_rate` | `economic/macro_canada.py:218` | DONE |  |
 | `macro_canada_core_cpi_monthly` | `economic/macro_intl.rs::macro_canada_core_cpi_monthly` | `economic/macro_canada.py:320` | DONE |  |
 | `macro_canada_core_cpi_yearly` | `economic/macro_intl.rs::macro_canada_core_cpi_yearly` | `economic/macro_canada.py:269` | DONE |  |
@@ -163,34 +163,34 @@
 | `macro_canada_retail_rate_monthly` | `economic/macro_intl.rs::macro_canada_retail_rate_monthly` | `economic/macro_canada.py:167` | DONE |  |
 | `macro_canada_trade` | `economic/macro_intl.rs::macro_canada_trade` | `economic/macro_canada.py:116` | DONE |  |
 | `macro_canada_unemployment_rate` | `economic/macro_intl.rs::macro_canada_unemployment_rate` | `economic/macro_canada.py:65` | DONE |  |
-| `macro_china_agricultural_index` | `src (present)| `economic/macro_china.py:1490| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_agricultural_product` | `src (present)| `economic/macro_china.py:1435| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_agricultural_index` | `src/economic/macro_china2.rs::macro_china_agricultural_index` | `` | DONE |  |
+| `macro_china_agricultural_product` | `src/economic/macro_china2.rs::macro_china_agricultural_product` | `` | DONE |  |
 | `macro_china_au_report` | `economic/macro_china_more.rs::macro_china_au_report` | `economic/macro_china.py:953` | DONE |  |
-| `macro_china_bank_financing` | `src (present)| `economic/macro_china.py:1241| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_bdti_index` | `src (present)| `economic/macro_china.py:1933| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_bsi_index` | `src (present)| `economic/macro_china.py:1988| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_bank_financing` | `src/economic/macro_china2.rs::macro_china_bank_financing` | `` | DONE |  |
+| `macro_china_bdti_index` | `src/economic/macro_china2.rs::macro_china_bdti_index` | `` | DONE |  |
+| `macro_china_bsi_index` | `src/economic/macro_china2.rs::macro_china_bsi_index` | `` | DONE |  |
 | `macro_china_central_bank_balance` | — | `economic/macro_china.py:3526` | DEFERRED | token/JS/HTML-gated |
-| `macro_china_commodity_price_index` | `src (present)| `economic/macro_china.py:1600| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_construction_index` | `src (present)| `economic/macro_china.py:1765| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_construction_price_index` | `src (present)| `economic/macro_china.py:1823| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_commodity_price_index` | `src/economic/macro_china2.rs::macro_china_commodity_price_index` | `` | DONE |  |
+| `macro_china_construction_index` | `src/economic/macro_china2.rs::macro_china_construction_index` | `` | DONE |  |
+| `macro_china_construction_price_index` | `src/economic/macro_china2.rs::macro_china_construction_price_index` | `` | DONE |  |
 | `macro_china_consumer_goods_retail` | `economic/macro2.rs::macro_china_consumer_goods_retail` | `economic/macro_china.py:3180` | DONE |  |
 | `macro_china_cpi` | `economic/china.rs::macro_china_cpi` | `economic/macro_china.py:2425` | DONE |  |
-| `macro_china_cpi_monthly` | `src (present)| `economic/macro_china.py:421| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_cpi_yearly` | `src (present)| `economic/macro_china.py:402| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_cx_pmi_yearly` | `src (present)| `economic/macro_china.py:563| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_cx_services_pmi_yearly` | `src (present)| `economic/macro_china.py:582| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_cpi_monthly` | `src/economic/macro_china3.rs::macro_china_cpi_monthly` | `` | DONE |  |
+| `macro_china_cpi_yearly` | `src/economic/macro_china3.rs::macro_china_cpi_yearly` | `` | DONE |  |
+| `macro_china_cx_pmi_yearly` | `src/economic/macro_china3.rs::macro_china_cx_pmi_yearly` | `` | DONE |  |
+| `macro_china_cx_services_pmi_yearly` | `src/economic/macro_china3.rs::macro_china_cx_services_pmi_yearly` | `` | DONE |  |
 | `macro_china_czsr` | `economic/macro_china2.rs::macro_china_czsr` | `economic/macro_china.py:2814` | DONE |  |
 | `macro_china_daily_energy` | `src/economic/macro_gaps.rs::macro_china_daily_energy` | `economic/macro_china.py:750` | DONE |  |
-| `macro_china_energy_index` | `src (present)| `economic/macro_china.py:1545| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_energy_index` | `src/economic/macro_china2.rs::macro_china_energy_index` | `` | DONE |  |
 | `macro_china_enterprise_boom_index` | `economic/extra.rs::macro_china_enterprise_boom_index` | `economic/macro_china.py:1138` | DONE |  |
-| `macro_china_exports_yoy` | `src (present)| `economic/macro_china.py:459| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_exports_yoy` | `src/economic/macro_china3.rs::macro_china_exports_yoy` | `` | DONE |  |
 | `macro_china_fdi` | `economic/extra.rs::macro_china_fdi` | `economic/macro_china.py:203` | DONE |  |
 | `macro_china_foreign_exchange_gold` | — | `economic/macro_china.py:3628` | DEFERRED | token/JS/HTML-gated |
 | `macro_china_freight_index` | `src/economic/macro_gaps.rs::macro_china_freight_index` | `economic/macro_china.py:3481` | DONE |  |
 | `macro_china_fx_gold` | `economic/macro_china2.rs::macro_china_fx_gold` | `economic/macro_china.py:2190` | DONE |  |
-| `macro_china_fx_reserves_yearly` | `src (present)| `economic/macro_china.py:620| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_fx_reserves_yearly` | `src/economic/macro_china3.rs::macro_china_fx_reserves_yearly` | `` | DONE |  |
 | `macro_china_gdp` | `economic/china.rs::macro_china_gdp` | `economic/macro_china.py:2500` | DONE |  |
-| `macro_china_gdp_yearly` | `src (present)| `economic/macro_china.py:383| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_gdp_yearly` | `src/economic/macro_china3.rs::macro_china_gdp_yearly` | `` | DONE |  |
 | `macro_china_gdzctz` | `economic/macro2.rs::macro_china_gdzctz` | `economic/macro_china.py:2674` | DONE |  |
 | `macro_china_gyzjz` | `economic/macro2.rs::macro_china_gyzjz` | `economic/macro_china.py:3051` | DONE |  |
 | `macro_china_hgjck` | `economic/macro_china2.rs::macro_china_hgjck` | `economic/macro_china.py:2723` | DONE |  |
@@ -205,32 +205,32 @@
 | `macro_china_hk_ppi` | `economic/macro_intl.rs::macro_china_hk_ppi` | `economic/macro_china_hk.py:157` | DONE |  |
 | `macro_china_hk_rate_of_unemployment` | `economic/macro_intl.rs::macro_china_hk_rate_of_unemployment` | `economic/macro_china_hk.py:91` | DONE |  |
 | `macro_china_hk_trade_diff_ratio` | `economic/macro_intl.rs::macro_china_hk_trade_diff_ratio` | `economic/macro_china_hk.py:146` | DONE |  |
-| `macro_china_imports_yoy` | `src (present)| `economic/macro_china.py:480| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_industrial_production_yoy` | `src (present)| `economic/macro_china.py:522| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_insurance` | `src (present)| `economic/macro_china.py:3560| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_china_insurance_income` | `src (present)| `economic/macro_china.py:1287| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_imports_yoy` | `src/economic/macro_china3.rs::macro_china_imports_yoy` | `` | DONE |  |
+| `macro_china_industrial_production_yoy` | `src/economic/macro_china3.rs::macro_china_industrial_production_yoy` | `` | DONE |  |
+| `macro_china_insurance` | — | `economic/macro_china.py:3560` | DEFERRED | Sina JSONP + `demjson` decode (akshare `n.decode`); not source-faithful without JS/JSONP unwrap |
+| `macro_china_insurance_income` | `src/economic/macro_china2.rs::macro_china_insurance_income` | `` | DONE |  |
 | `macro_china_international_tourism_fx` | — | `economic/macro_china.py:3381` | DEFERRED | token/JS/HTML-gated |
-| `macro_china_lpi_index` | `src (present)| `economic/macro_china.py:1878| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_lpi_index` | `src/economic/macro_china2.rs::macro_china_lpi_index` | `` | DONE |  |
 | `macro_china_lpr` | `economic/extra.rs::macro_china_lpr` | `economic/macro_china.py:1012` | DONE |  |
-| `macro_china_m2_yearly` | `src (present)| `economic/macro_china.py:639| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_m2_yearly` | `src/economic/macro_china3.rs::macro_china_m2_yearly` | `` | DONE |  |
 | `macro_china_market_margin_sh` | `economic/macro_china_more.rs::macro_china_market_margin_sh` | `economic/macro_china.py:919` | DONE |  |
 | `macro_china_market_margin_sz` | `economic/macro_china_more.rs::macro_china_market_margin_sz` | `economic/macro_china.py:888` | DONE |  |
-| `macro_china_mobile_number` | `src (present)| `economic/macro_china.py:1333| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_mobile_number` | `src/economic/macro_china2.rs::macro_china_mobile_number` | `` | DONE |  |
 | `macro_china_money_supply` | `economic/china.rs::macro_china_money_supply` | `economic/macro_china.py:2342` | DONE |  |
 | `macro_china_national_tax_receipts` | `economic/extra.rs::macro_china_national_tax_receipts` | `economic/macro_china.py:1206` | DONE |  |
-| `macro_china_nbs_nation` | — | | `economic/macro_china_nbs.py:517` | DEFERRED | needs NBS catalog resolution (dynamic cid/root_id/route from path) |
-| `macro_china_nbs_region` | — | | `economic/macro_china_nbs.py:566` | DEFERRED | needs NBS catalog resolution (dynamic cid/root_id/route from path) |
+| `macro_china_nbs_nation` | — | `economic/macro_china_nbs.py:517` | DEFERRED | needs NBS catalog resolution (dynamic cid/root_id/route from path) |
+| `macro_china_nbs_region` | — | `economic/macro_china_nbs.py:566` | DEFERRED | needs NBS catalog resolution (dynamic cid/root_id/route from path) |
 | `macro_china_new_financial_credit` | `economic/macro_china2.rs::macro_china_new_financial_credit` | `economic/macro_china.py:2142` | DONE |  |
 | `macro_china_new_house_price` | `economic/extra.rs::macro_china_new_house_price` | `economic/macro_china.py:1059` | DONE |  |
-| `macro_china_non_man_pmi` | `src (present)| `economic/macro_china.py:601| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_non_man_pmi` | `src/economic/macro_china3.rs::macro_china_non_man_pmi` | `` | DONE |  |
 | `macro_china_passenger_load_factor` | — | `economic/macro_china.py:3415` | DEFERRED | token/JS/HTML-gated |
 | `macro_china_pmi` | `economic/macro2.rs::macro_china_pmi` | `economic/macro_china.py:2622` | DONE |  |
-| `macro_china_pmi_yearly` | `src (present)| `economic/macro_china.py:544| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_pmi_yearly` | `src/economic/macro_china3.rs::macro_china_pmi_yearly` | `` | DONE |  |
 | `macro_china_postal_telecommunicational` | — | `economic/macro_china.py:3347` | DEFERRED | token/JS/HTML-gated |
 | `macro_china_ppi` | `economic/china.rs::macro_china_ppi` | `economic/macro_china.py:2577` | DONE |  |
-| `macro_china_ppi_yearly` | `src (present)| `economic/macro_china.py:440| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_ppi_yearly` | `src/economic/macro_china3.rs::macro_china_ppi_yearly` | `` | DONE |  |
 | `macro_china_qyspjg` | `economic/extra.rs::macro_china_qyspjg` | `economic/macro_china.py:108` | DONE |  |
-| `macro_china_real_estate` | `src (present)| `economic/macro_china.py:3699| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_real_estate` | `src/economic/macro_china2.rs::macro_china_real_estate` | `` | DONE |  |
 | `macro_china_reserve_requirement_ratio` | `economic/macro_china2.rs::macro_china_reserve_requirement_ratio` | `economic/macro_china.py:3096` | DONE |  |
 | `macro_china_retail_price_index` | — | `economic/macro_china.py:3663` | DEFERRED | token/JS/HTML-gated |
 | `macro_china_rmb` | `economic/macro_china_more.rs::macro_china_rmb` | `economic/macro_china.py:780` | DONE |  |
@@ -240,33 +240,33 @@
 | `macro_china_society_traffic_volume` | — | `economic/macro_china.py:3289` | DEFERRED | token/JS/HTML-gated |
 | `macro_china_stock_market_cap` | `economic/macro_china2.rs::macro_china_stock_market_cap` | `economic/macro_china.py:2256` | DONE |  |
 | `macro_china_supply_of_money` | — | `economic/macro_china.py:3594` | DEFERRED | token/JS/HTML-gated |
-| `macro_china_trade_balance` | `src (present)| `economic/macro_china.py:502| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_trade_balance` | `src/economic/macro_china3.rs::macro_china_trade_balance` | `` | DONE |  |
 | `macro_china_urban_unemployment` | `src/economic/macro_more3.rs::macro_china_urban_unemployment` | `economic/macro_china.py:318` | DONE |  |
-| `macro_china_vegetable_basket` | `src (present)| `economic/macro_china.py:1380| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_vegetable_basket` | `src/economic/macro_china2.rs::macro_china_vegetable_basket` | `` | DONE |  |
 | `macro_china_wbck` | `economic/macro_china2.rs::macro_china_wbck` | `economic/macro_china.py:2917` | DONE |  |
 | `macro_china_whxd` | `economic/macro_china2.rs::macro_china_whxd` | `economic/macro_china.py:2867` | DONE |  |
 | `macro_china_xfzxx` | `economic/macro_china2.rs::macro_china_xfzxx` | `economic/macro_china.py:2966` | DONE |  |
-| `macro_china_yw_electronic_index` | `src (present)| `economic/macro_china.py:1710| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_china_yw_electronic_index` | `src/economic/macro_china2.rs::macro_china_yw_electronic_index` | `` | DONE |  |
 | `macro_cnbs` | `src/economic/excel_gaps.rs::macro_cnbs` | `economic/marco_cnbs.py:12` | DONE |  |
 | `macro_cons_gold` | `src/economic/macro_more3.rs::macro_cons_gold` | `economic/macro_constitute.py:17` | DONE |  |
 | `macro_cons_opec_month` | `src/economic/macro_more3.rs::macro_cons_opec_month` | `economic/macro_constitute.py:147` | DONE |  |
 | `macro_cons_silver` | `src/economic/macro_more3.rs::macro_cons_silver` | `economic/macro_constitute.py:82` | DONE |  |
-| `macro_euro_cpi_mom` | `src (present)| `economic/macro_euro.py:81| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_cpi_yoy` | `src (present)| `economic/macro_euro.py:137| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_current_account_mom` | `src (present)| `economic/macro_euro.py:487| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_employment_change_qoq` | `src (present)| `economic/macro_euro.py:313| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_gdp_yoy` | `src (present)| `economic/macro_euro.py:24| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_industrial_production_mom` | `src (present)| `economic/macro_euro.py:546| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_euro_cpi_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_cpi_mom` | `` | DONE |  |
+| `macro_euro_cpi_yoy` | `src/economic/macro_nbs_euro.rs::macro_euro_cpi_yoy` | `` | DONE |  |
+| `macro_euro_current_account_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_current_account_mom` | `` | DONE |  |
+| `macro_euro_employment_change_qoq` | `src/economic/macro_nbs_euro.rs::macro_euro_employment_change_qoq` | `` | DONE |  |
+| `macro_euro_gdp_yoy` | `src/economic/macro_nbs_euro.rs::macro_euro_gdp_yoy` | `` | DONE |  |
+| `macro_euro_industrial_production_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_industrial_production_mom` | `` | DONE |  |
 | `macro_euro_lme_holding` | `src/economic/macro_gaps.rs::macro_euro_lme_holding` | `economic/macro_euro.py:839` | DONE |  |
 | `macro_euro_lme_stock` | `src/economic/macro_gaps.rs::macro_euro_lme_stock` | `economic/macro_euro.py:870` | DONE |  |
-| `macro_euro_manufacturing_pmi` | `src (present)| `economic/macro_euro.py:605| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_ppi_mom` | `src (present)| `economic/macro_euro.py:196| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_retail_sales_mom` | `src (present)| `economic/macro_euro.py:254| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_sentix_investor_confidence` | `src (present)| `economic/macro_euro.py:781| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_services_pmi` | `src (present)| `economic/macro_euro.py:664| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_trade_balance` | `src (present)| `economic/macro_euro.py:428| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_unemployment_rate_mom` | `src (present)| `economic/macro_euro.py:369| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_euro_zew_economic_sentiment` | `src (present)| `economic/macro_euro.py:723| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_euro_manufacturing_pmi` | `src/economic/macro_nbs_euro.rs::macro_euro_manufacturing_pmi` | `` | DONE |  |
+| `macro_euro_ppi_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_ppi_mom` | `` | DONE |  |
+| `macro_euro_retail_sales_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_retail_sales_mom` | `` | DONE |  |
+| `macro_euro_sentix_investor_confidence` | `src/economic/macro_nbs_euro.rs::macro_euro_sentix_investor_confidence` | `` | DONE |  |
+| `macro_euro_services_pmi` | `src/economic/macro_nbs_euro.rs::macro_euro_services_pmi` | `` | DONE |  |
+| `macro_euro_trade_balance` | `src/economic/macro_nbs_euro.rs::macro_euro_trade_balance` | `` | DONE |  |
+| `macro_euro_unemployment_rate_mom` | `src/economic/macro_nbs_euro.rs::macro_euro_unemployment_rate_mom` | `` | DONE |  |
+| `macro_euro_zew_economic_sentiment` | `src/economic/macro_nbs_euro.rs::macro_euro_zew_economic_sentiment` | `` | DONE |  |
 | `macro_fx_sentiment` | `economic/macro_misc.rs::macro_fx_sentiment` | `economic/macro_other.py:53` | DONE |  |
 | `macro_germany_core` | `economic/wv_macro_core.rs::macro_germany_core` | `economic/macro_germany.py:12` | DONE |  |
 | `macro_germany_cpi_monthly` | `economic/macro_intl.rs::macro_germany_cpi_monthly` | `economic/macro_germany.py:81` | DONE |  |
@@ -277,7 +277,7 @@
 | `macro_germany_retail_sale_yearly` | `economic/macro_intl.rs::macro_germany_retail_sale_yearly` | `economic/macro_germany.py:141` | DONE |  |
 | `macro_germany_trade_adjusted` | `economic/macro_intl.rs::macro_germany_trade_adjusted` | `economic/macro_germany.py:105` | DONE |  |
 | `macro_germany_zew` | `economic/macro_intl.rs::macro_germany_zew` | `economic/macro_germany.py:153` | DONE |  |
-| `macro_global_sox_index` | `src (present)| `economic/macro_china.py:1655| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_global_sox_index` | `src/economic/macro_china2.rs::macro_global_sox_index` | `` | DONE |  |
 | `macro_info_ws` | `economic/macro_misc.rs::macro_info_ws` | `economic/macro_info_ws.py:38` | DONE |  |
 | `macro_japan_bank_rate` | `economic/macro_intl.rs::macro_japan_bank_rate` | `economic/macro_japan.py:70` | DONE |  |
 | `macro_japan_core` | `economic/wv_macro_core.rs::macro_japan_core` | `economic/macro_japan.py:13` | DONE |  |
@@ -315,55 +315,55 @@
 | `macro_uk_rightmove_yearly` | `economic/macro_intl.rs::macro_uk_rightmove_yearly` | `economic/macro_uk.py:190` | DONE |  |
 | `macro_uk_trade` | `economic/macro_intl.rs::macro_uk_trade` | `economic/macro_uk.py:94` | DONE |  |
 | `macro_uk_unemployment_rate` | `economic/macro_intl.rs::macro_uk_unemployment_rate` | `economic/macro_uk.py:238` | DONE |  |
-| `macro_usa_adp_employment` | `economic/macro_usa.rs::macro_usa_adp_employment| | `economic/macro_usa.py:374| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_api_crude_stock` | `economic/macro_usa.rs::macro_usa_api_crude_stock| | `economic/macro_usa.py:534| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_building_permits` | `economic/macro_usa.rs::macro_usa_building_permits| | `economic/macro_usa.py:763| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_business_inventories` | `economic/macro_usa.rs::macro_usa_business_inventories| | `economic/macro_usa.py:668| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_cb_consumer_confidence` | `economic/macro_usa.rs::macro_usa_cb_consumer_confidence| | `economic/macro_usa.py:862| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_usa_adp_employment` | `src/economic/macro_usa.rs::macro_usa_adp_employment` | `` | DONE |  |
+| `macro_usa_api_crude_stock` | `src/economic/macro_usa.rs::macro_usa_api_crude_stock` | `` | DONE |  |
+| `macro_usa_building_permits` | `src/economic/macro_usa.rs::macro_usa_building_permits` | `` | DONE |  |
+| `macro_usa_business_inventories` | `src/economic/macro_usa.rs::macro_usa_business_inventories` | `` | DONE |  |
+| `macro_usa_cb_consumer_confidence` | `src/economic/macro_usa.rs::macro_usa_cb_consumer_confidence` | `` | DONE |  |
 | `macro_usa_cftc_c_holding` | `economic/macro_usa.rs::macro_usa_cftc_c_holding` | `economic/macro_usa.py:1026` | DONE |  |
 | `macro_usa_cftc_merchant_currency_holding` | `economic/macro_usa.rs::macro_usa_cftc_merchant_currency_holding` | `economic/macro_usa.py:1055` | DONE |  |
 | `macro_usa_cftc_merchant_goods_holding` | `economic/macro_usa.rs::macro_usa_cftc_merchant_goods_holding` | `economic/macro_usa.py:1084` | DONE |  |
 | `macro_usa_cftc_nc_holding` | `economic/macro_usa.rs::macro_usa_cftc_nc_holding` | `economic/macro_usa.py:997` | DONE |  |
 | `macro_usa_cme_merchant_goods_holding` | `economic/macro_usa.rs::macro_usa_cme_merchant_goods_holding` | `economic/macro_usa.py:1113` | DONE |  |
-| `macro_usa_core_cpi_monthly` | `economic/macro_usa.rs::macro_usa_core_cpi_monthly| | `economic/macro_usa.py:205| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_core_pce_price` | `economic/macro_usa.rs::macro_usa_core_pce_price| | `economic/macro_usa.py:392| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_core_ppi` | `economic/macro_usa.rs::macro_usa_core_ppi| | `economic/macro_usa.py:515| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_cpi_monthly` | `economic/macro_usa.rs::macro_usa_cpi_monthly| | `economic/macro_usa.py:186| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_usa_core_cpi_monthly` | `src/economic/macro_usa.rs::macro_usa_core_cpi_monthly` | `` | DONE |  |
+| `macro_usa_core_pce_price` | `src/economic/macro_usa.rs::macro_usa_core_pce_price` | `` | DONE |  |
+| `macro_usa_core_ppi` | `src/economic/macro_usa.rs::macro_usa_core_ppi` | `` | DONE |  |
+| `macro_usa_cpi_monthly` | `src/economic/macro_usa.rs::macro_usa_cpi_monthly` | `` | DONE |  |
 | `macro_usa_cpi_yoy` | `economic/macro2.rs::macro_usa_cpi_yoy` | `economic/macro_usa.py:129` | DONE |  |
 | `macro_usa_crude_inner` | `economic/macro_usa.rs::macro_usa_crude_inner` | `economic/macro_usa.py:961` | DONE |  |
-| `macro_usa_current_account` | `economic/macro_usa.rs::macro_usa_current_account| | `economic/macro_usa.py:448| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_durable_goods_orders` | `economic/macro_usa.rs::macro_usa_durable_goods_orders| | `economic/macro_usa.py:611| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_eia_crude_rate` | `economic/macro_usa.rs::macro_usa_eia_crude_rate| | `economic/macro_usa.py:923| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_exist_home_sales` | `economic/macro_usa.rs::macro_usa_exist_home_sales| | `economic/macro_usa.py:782| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_export_price` | `economic/macro_usa.rs::macro_usa_export_price| | `economic/macro_usa.py:281| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_factory_orders` | `economic/macro_usa.rs::macro_usa_factory_orders| | `economic/macro_usa.py:630| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_gdp_monthly` | `economic/macro_usa.rs::macro_usa_gdp_monthly| | `economic/macro_usa.py:167| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_house_price_index` | `economic/macro_usa.rs::macro_usa_house_price_index| | `economic/macro_usa.py:801| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_house_starts` | `economic/macro_usa.rs::macro_usa_house_starts| | `economic/macro_usa.py:725| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_import_price` | `economic/macro_usa.rs::macro_usa_import_price| | `economic/macro_usa.py:262| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_industrial_production` | `economic/macro_usa.rs::macro_usa_industrial_production| | `economic/macro_usa.py:592| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_initial_jobless` | `economic/macro_usa.rs::macro_usa_initial_jobless| | `economic/macro_usa.py:942| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_ism_non_pmi` | `economic/macro_usa.rs::macro_usa_ism_non_pmi| | `economic/macro_usa.py:687| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_ism_pmi` | `economic/macro_usa.rs::macro_usa_ism_pmi| | `economic/macro_usa.py:573| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_job_cuts` | `economic/macro_usa.rs::macro_usa_job_cuts| | `economic/macro_usa.py:338| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_lmci` | `economic/macro_usa.rs::macro_usa_lmci| | `economic/macro_usa.py:301| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_michigan_consumer_sentiment` | `economic/macro_usa.rs::macro_usa_michigan_consumer_sentiment| | `economic/macro_usa.py:902| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_nahb_house_market_index` | `economic/macro_usa.rs::macro_usa_nahb_house_market_index| | `economic/macro_usa.py:706| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_new_home_sales` | `economic/macro_usa.rs::macro_usa_new_home_sales| | `economic/macro_usa.py:744| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_nfib_small_business` | `economic/macro_usa.rs::macro_usa_nfib_small_business| | `economic/macro_usa.py:881| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_non_farm` | `economic/macro_usa.rs::macro_usa_non_farm| | `economic/macro_usa.py:356| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_pending_home_sales` | `economic/macro_usa.rs::macro_usa_pending_home_sales| | `economic/macro_usa.py:841| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_personal_spending` | `economic/macro_usa.rs::macro_usa_personal_spending| | `economic/macro_usa.py:224| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_usa_current_account` | `src/economic/macro_usa.rs::macro_usa_current_account` | `` | DONE |  |
+| `macro_usa_durable_goods_orders` | `src/economic/macro_usa.rs::macro_usa_durable_goods_orders` | `` | DONE |  |
+| `macro_usa_eia_crude_rate` | `src/economic/macro_usa.rs::macro_usa_eia_crude_rate` | `` | DONE |  |
+| `macro_usa_exist_home_sales` | `src/economic/macro_usa.rs::macro_usa_exist_home_sales` | `` | DONE |  |
+| `macro_usa_export_price` | `src/economic/macro_usa.rs::macro_usa_export_price` | `` | DONE |  |
+| `macro_usa_factory_orders` | `src/economic/macro_usa.rs::macro_usa_factory_orders` | `` | DONE |  |
+| `macro_usa_gdp_monthly` | `src/economic/macro_usa.rs::macro_usa_gdp_monthly` | `` | DONE |  |
+| `macro_usa_house_price_index` | `src/economic/macro_usa.rs::macro_usa_house_price_index` | `` | DONE |  |
+| `macro_usa_house_starts` | `src/economic/macro_usa.rs::macro_usa_house_starts` | `` | DONE |  |
+| `macro_usa_import_price` | `src/economic/macro_usa.rs::macro_usa_import_price` | `` | DONE |  |
+| `macro_usa_industrial_production` | `src/economic/macro_usa.rs::macro_usa_industrial_production` | `` | DONE |  |
+| `macro_usa_initial_jobless` | `src/economic/macro_usa.rs::macro_usa_initial_jobless` | `` | DONE |  |
+| `macro_usa_ism_non_pmi` | `src/economic/macro_usa.rs::macro_usa_ism_non_pmi` | `` | DONE |  |
+| `macro_usa_ism_pmi` | `src/economic/macro_usa.rs::macro_usa_ism_pmi` | `` | DONE |  |
+| `macro_usa_job_cuts` | `src/economic/macro_usa.rs::macro_usa_job_cuts` | `` | DONE |  |
+| `macro_usa_lmci` | `src/economic/macro_usa.rs::macro_usa_lmci` | `` | DONE |  |
+| `macro_usa_michigan_consumer_sentiment` | `src/economic/macro_usa.rs::macro_usa_michigan_consumer_sentiment` | `` | DONE |  |
+| `macro_usa_nahb_house_market_index` | `src/economic/macro_usa.rs::macro_usa_nahb_house_market_index` | `` | DONE |  |
+| `macro_usa_new_home_sales` | `src/economic/macro_usa.rs::macro_usa_new_home_sales` | `` | DONE |  |
+| `macro_usa_nfib_small_business` | `src/economic/macro_usa.rs::macro_usa_nfib_small_business` | `` | DONE |  |
+| `macro_usa_non_farm` | `src/economic/macro_usa.rs::macro_usa_non_farm` | `` | DONE |  |
+| `macro_usa_pending_home_sales` | `src/economic/macro_usa.rs::macro_usa_pending_home_sales` | `` | DONE |  |
+| `macro_usa_personal_spending` | `src/economic/macro_usa.rs::macro_usa_personal_spending` | `` | DONE |  |
 | `macro_usa_phs` | `economic/macro2.rs::macro_usa_phs` | `economic/macro_usa.py:79` | DONE |  |
-| `macro_usa_pmi` | `economic/macro_usa.rs::macro_usa_pmi| | `economic/macro_usa.py:554| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_ppi` | `economic/macro_usa.rs::macro_usa_ppi| | `economic/macro_usa.py:496| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_real_consumer_spending` | `economic/macro_usa.rs::macro_usa_real_consumer_spending| | `economic/macro_usa.py:410| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_retail_sales` | `economic/macro_usa.rs::macro_usa_retail_sales| | `economic/macro_usa.py:243| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_usa_pmi` | `src/economic/macro_usa.rs::macro_usa_pmi` | `` | DONE |  |
+| `macro_usa_ppi` | `src/economic/macro_usa.rs::macro_usa_ppi` | `` | DONE |  |
+| `macro_usa_real_consumer_spending` | `src/economic/macro_usa.rs::macro_usa_real_consumer_spending` | `` | DONE |  |
+| `macro_usa_retail_sales` | `src/economic/macro_usa.rs::macro_usa_retail_sales` | `` | DONE |  |
 | `macro_usa_rig_count` | `economic/macro_usa.rs::macro_usa_rig_count` | `economic/macro_usa.py:466` | DONE |  |
-| `macro_usa_services_pmi` | `economic/macro_usa.rs::macro_usa_services_pmi| | `economic/macro_usa.py:649| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_spcs20` | `economic/macro_usa.rs::macro_usa_spcs20| | `economic/macro_usa.py:820| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_trade_balance` | `economic/macro_usa.rs::macro_usa_trade_balance| | `economic/macro_usa.py:430| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `macro_usa_unemployment_rate` | `economic/macro_usa.rs::macro_usa_unemployment_rate| | `economic/macro_usa.py:320| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `macro_usa_services_pmi` | `src/economic/macro_usa.rs::macro_usa_services_pmi` | `` | DONE |  |
+| `macro_usa_spcs20` | `src/economic/macro_usa.rs::macro_usa_spcs20` | `` | DONE |  |
+| `macro_usa_trade_balance` | `src/economic/macro_usa.rs::macro_usa_trade_balance` | `` | DONE |  |
+| `macro_usa_unemployment_rate` | `src/economic/macro_usa.rs::macro_usa_unemployment_rate` | `` | DONE |  |
 
 ## energy
 
@@ -382,15 +382,15 @@
 
 | akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
 |---|---|---|---|---|
-| `migration_area_baidu` | — | | `event/migration.py:16` | DEFERRED | token/JS/HTML-gated (baidu migration) |
-| `migration_scale_baidu` | — | | `event/migration.py:56` | DEFERRED | token/JS/HTML-gated (baidu migration) |
+| `migration_area_baidu` | — | `event/migration.py:16` | DEFERRED | token/JS/HTML-gated (baidu migration) |
+| `migration_scale_baidu` | — | `event/migration.py:56` | DEFERRED | token/JS/HTML-gated (baidu migration) |
 
 ## forex
 
 | akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
 |---|---|---|---|---|
-| `forex_hist_em` | `src (present)| `forex/forex_em.py:77| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `forex_spot_em` | `src (present)| `forex/forex_em.py:16| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `forex_hist_em` | `src/forex/eastmoney.rs::hist` | `` | DONE |  |
+| `forex_spot_em` | `src/forex/eastmoney.rs::spot` | `` | DONE |  |
 
 ## fortune
 
@@ -452,12 +452,12 @@
 | `fund_hk_fund_hist_em` | `fund/em.rs::fund_hk_fund_hist_em` | `fund/fund_em.py:1260` | DONE |  |
 | `fund_hk_rank_em` | `fund/wv_fund_misc.rs::fund_hk_rank_em` | `fund/fund_rank_em.py:427` | DONE |  |
 | `fund_hold_structure_em` | `fund/more.rs::fund_hold_structure_em` | `fund/fund_scale_em.py:71` | DONE |  |
-| `fund_individual_achievement_xq` | — | | `fund/fund_xq.py:78` | DEFERRED | session/token gated (xq_a_token) |
-| `fund_individual_analysis_xq` | — | | `fund/fund_xq.py:132` | DEFERRED | session/token gated (xq_a_token) |
-| `fund_individual_basic_info_xq` | — | | `fund/fund_xq.py:13` | DEFERRED | session/token gated (xq_a_token) |
-| `fund_individual_detail_hold_xq` | — | | `fund/fund_xq.py:270` | DEFERRED | session/token gated (xq_a_token) |
-| `fund_individual_detail_info_xq` | — | | `fund/fund_xq.py:224` | DEFERRED | session/token gated (xq_a_token) |
-| `fund_individual_profit_probability_xq` | — | | `fund/fund_xq.py:185` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_achievement_xq` | — | `fund/fund_xq.py:78` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_analysis_xq` | — | `fund/fund_xq.py:132` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_basic_info_xq` | — | `fund/fund_xq.py:13` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_detail_hold_xq` | — | `fund/fund_xq.py:270` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_detail_info_xq` | — | `fund/fund_xq.py:224` | DEFERRED | session/token gated (xq_a_token) |
+| `fund_individual_profit_probability_xq` | — | `fund/fund_xq.py:185` | DEFERRED | session/token gated (xq_a_token) |
 | `fund_info_index_em` | `fund/em.rs::fund_info_index_em` | `fund/fund_em.py:234` | DONE |  |
 | `fund_info_ths` | `src/fund/fund_html_gaps.rs::fund_info_ths` | `fund/fund_info_ths.py:16` | DONE |  |
 | `fund_lcx_rank_em` | `fund/more2.rs::fund_lcx_rank_em` | `fund/fund_rank_em.py:346` | DONE |  |
@@ -503,24 +503,24 @@
 | akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
 |---|---|---|---|---|
 | `chinese_to_english` | — | `futures/symbol_var.py:48` | INTERNAL | akshare internal helper, not a data endpoint |
-| `convert_date` | — | | `futures/cons.py:522` | INTERNAL | akshare internal helper (utils/func.py), not a data endpoint |
+| `convert_date` | — | `futures/cons.py:522` | INTERNAL | akshare internal helper (utils/func.py), not a data endpoint |
 | `find_chinese` | — | `futures/symbol_var.py:37` | INTERNAL | akshare internal helper, not a data endpoint |
 | `futures_comex_inventory` | `futures/extra.rs::futures_comex_inventory` | `futures/futures_comex_em.py:15` | DONE |  |
-| `futures_comm_info` | `src (present)| `futures/futures_comm_qihuo.py:172| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_comm_js` | `src (present)| `futures/futures_comm_js.py:15| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_contract_detail` | `src (present)| `futures/futures_contract_detail.py:16| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_contract_detail_em` | `src (present)| `futures/futures_contract_detail.py:41| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_comm_info` | — | `` | DEFERRED | `pd.read_html` scrape of 9qihuo.com fee table |
+| `futures_comm_js` | — | `` | DEFERRED | Jin10 endpoint (Jin10 token gate / fixed app-id), per porting-rule deferral |
+| `futures_contract_detail` | — | `` | DEFERRED | `pd.read_html` scrape of Sina shtml |
+| `futures_contract_detail_em` | — | `` | DEFERRED | BeautifulSoup HTML parse to discover inner symbol, then JSON |
 | `futures_dce_position_rank` | — | `futures/cot.py:818` | DEFERRED | endpoint returns a zip of TSV files; parsing needs a zip/deflate crate absent from Cargo.toml |
 | `futures_dce_position_rank_other` | `futures/cot.rs::futures_dce_position_rank_other` | `futures/cot.py:1052` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
-| `futures_delivery_czce` | `src (present)| `futures/futures_to_spot.py:244| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_delivery_dce` | `src (present)| `futures/futures_to_spot.py:57| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_delivery_match_czce` | `src (present)| `futures/futures_to_spot.py:198| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_delivery_match_dce` | `src (present)| `futures/futures_to_spot.py:128| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_delivery_czce` | — | `` | DEFERRED | CZCE `.xls` Excel download |
+| `futures_delivery_dce` | — | `` | DEFERRED | DCE `pd.read_html` scrape |
+| `futures_delivery_match_czce` | — | `` | DEFERRED | CZCE `.xls` Excel download |
+| `futures_delivery_match_dce` | — | `` | DEFERRED | DCE `pd.read_html` scrape |
 | `futures_delivery_shfe` | `futures/exchange_shfe.rs::futures_delivery_shfe` | `futures/futures_to_spot.py:269` | DONE |  |
-| `futures_fees_info` | `src (present)| `futures/futures_comm_ctp.py:17| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_fees_info` | — | `` | DEFERRED | BeautifulSoup + `pd.read_html` scrape of openctp.cn |
 | `futures_foreign_commodity_realtime` | `futures/sina_hq.rs::futures_foreign_commodity_realtime` | `futures/futures_hq_sina.py:103` | DONE |  |
-| `futures_foreign_commodity_subscribe_exchange_symbol` | `src (present)| `futures/futures_hq_sina.py:38| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_foreign_detail` | `src (present)| `futures/futures_foreign.py:45| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_foreign_commodity_subscribe_exchange_symbol` | — | `` | DEFERRED | `demjson` JS decode (static equivalent already in `sina_hq.rs`) |
+| `futures_foreign_detail` | — | `` | DEFERRED | `pd.read_html` scrape of Sina shtml |
 | `futures_foreign_hist` | `src/futures/wv_futures_more.rs::futures_foreign_hist` | `futures/futures_foreign.py:20` | DONE |  |
 | `futures_gfex_position_rank` | `futures/cot.rs::futures_gfex_position_rank` | `futures/cot.py:1292` | DONE |  |
 | `futures_gfex_warehouse_receipt` | `futures/exchange_gfex.rs::futures_gfex_warehouse_receipt` | `futures/futures_warehouse_receipt.py:159` | DONE |  |
@@ -534,7 +534,7 @@
 | `futures_inventory_99` | `src/futures/fut_gaps.rs::futures_inventory_99` | `futures/futures_inventory_99.py:47` | DONE |  |
 | `futures_inventory_em` | `futures/extra.rs::futures_inventory_em` | `futures/futures_inventory_em.py:14` | DONE |  |
 | `futures_news_shmet` | `futures/wv_futures_news.rs::futures_news_shmet` | `futures/futures_news_shmet.py:13` | DONE |  |
-| `futures_rule` | `src (present)| `futures/futures_rule.py:15| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_rule` | `src/futures/wv_futures_more.rs::futures_rule_em` | `` | DONE |  |
 | `futures_rule_em` | `src/futures/wv_futures_more.rs::futures_rule_em` | `futures/futures_rule_em.py:14` | DONE |  |
 | `futures_settle` | `futures/wv_futures_settle.rs::futures_settle` | `futures/futures_settle.py:481` | DONE |  |
 | `futures_settle_cffex` | `futures/wv_futures_settle.rs::futures_settle_cffex` | `futures/futures_settle.py:175` | DONE |  |
@@ -542,26 +542,26 @@
 | `futures_settle_gfex` | `futures/wv_futures_settle.rs::futures_settle_gfex` | `futures/futures_settle.py:288` | DONE |  |
 | `futures_settle_ine` | `futures/wv_futures_settle.rs::futures_settle_ine` | `futures/futures_settle.py:420` | DONE |  |
 | `futures_settle_shfe` | `futures/wv_futures_settle.rs::futures_settle_shfe` | `futures/futures_settle.py:359` | DONE |  |
-| `futures_settlement_price_sgx` | `src (present)| `futures/futures_settlement_price_sgx.py:63| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_settlement_price_sgx` | — | `` | DEFERRED | SGX ZIP download |
 | `futures_shfe_warehouse_receipt` | `futures/warehouse_receipt_shfe.rs::futures_shfe_warehouse_receipt` | `futures/futures_warehouse_receipt.py:104` | DONE |  |
-| `futures_spot_price` | `src (present)| `futures/futures_basis.py:79| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_spot_price_daily` | `src (present)| `futures/futures_basis.py:31| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_spot_price_previous` | `src (present)| `futures/futures_basis.py:300| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_spot_stock` | `src (present)| `futures/futures_spot_stock_em.py:15| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_stock_shfe_js` | `src (present)| `futures/futures_stock_js.py:14| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_symbol_mark` | `src (present)| `futures/futures_zh_sina.py:28| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_to_spot_czce` | `src (present)| `futures/futures_to_spot.py:155| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `futures_to_spot_dce` | `src (present)| `futures/futures_to_spot.py:97| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_spot_price` | — | `` | DEFERRED | `pandas_read_html_link` scrape of 100ppi.com |
+| `futures_spot_price_daily` | — | `` | DEFERRED | HTML scrape of 生意社 (100ppi.com) via `pandas_read_html_link` |
+| `futures_spot_price_previous` | — | `` | DEFERRED | `pandas_read_html_link` scrape of 100ppi.com |
+| `futures_spot_stock` | — | `` | DEFERRED | `demjson` JS decode of Eastmoney page |
+| `futures_stock_shfe_js` | — | `` | DEFERRED | JS execution (`py_mini_racer`) |
+| `futures_symbol_mark` | — | `` | DEFERRED | `demjson` JS decode |
+| `futures_to_spot_czce` | — | `` | DEFERRED | CZCE `.xls` Excel download |
+| `futures_to_spot_dce` | — | `` | DEFERRED | DCE `pd.read_html` scrape |
 | `futures_to_spot_shfe` | `futures/exchange_shfe.rs::futures_to_spot_shfe` | `futures/futures_to_spot.py:14` | DONE |  |
 | `futures_trading_hours_em` | `futures/wv_futures_rule.rs::futures_trading_hours_em` | `futures/futures_rule_em.py:28` | DONE |  |
-| `futures_warehouse_receipt_czce` | `src (present)| `futures/futures_warehouse_receipt.py:23| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_warehouse_receipt_czce` | — | `` | DEFERRED | CZCE `.xls`/`.xlsx` Excel download |
 | `futures_warehouse_receipt_dce` | `futures/exchange_dce.rs::futures_warehouse_receipt_dce` | `futures/futures_warehouse_receipt.py:61` | DONE |  |
 | `futures_zh_daily_sina` | `futures/extra.rs::futures_zh_daily_sina` | `futures/futures_zh_sina.py:651` | DONE |  |
 | `futures_zh_minute_sina` | `futures/sina.rs::futures_zh_minute_sina` | `futures/futures_zh_sina.py:615` | DONE |  |
-| `futures_zh_realtime` | `src (present)| `futures/futures_zh_sina.py:91| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `futures_zh_realtime` | — | `` | DEFERRED | depends on `futures_symbol_mark()` which uses `demjson` to decode a JS document (and `py_mini_racer` is imported in the module) |
 | `futures_zh_spot` | `futures/spot.rs::futures_zh_spot` | `futures/futures_zh_sina.py:205` | DONE |  |
 | `get_calendar` | — | `futures/cons.py:577` | INTERNAL | akshare internal helper, not a data endpoint |
-| `get_cffex_daily` | `src (present)| `futures/futures_daily_bar.py:108| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `get_cffex_daily` | — | `` | DEFERRED | CFFEX ZIP download (CSV inside) |
 | `get_cffex_rank_table` | — | `futures/cot.py:716` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_czce_daily` | `futures/exchange_czce.rs::get_czce_daily` | `futures/futures_daily_bar.py:341` | DONE |  |
 | `get_czce_receipt_1` | — | `futures/receipt.py:269` | INTERNAL | akshare internal helper, not a data endpoint |
@@ -570,7 +570,7 @@
 | `get_dce_daily` | `futures/exchange_dce.rs::get_dce_daily` | `futures/futures_daily_bar.py:527` | DONE |  |
 | `get_dce_rank_table` | — | `futures/cot.py:566` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_dce_receipt` | — | `futures/receipt.py:37` | INTERNAL | akshare internal helper, not a data endpoint |
-| `get_futures_daily` | `src (present)| `futures/futures_daily_bar.py:637| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `get_futures_daily` | — | `` | DEFERRED | date-looping dispatcher over per-market daily fns; the CFFEX branch calls `get_cffex_daily` (CFFEX daily, not assigned/ported) and requires the trading `calendar` |
 | `get_gfex_daily` | `futures/exchange_gfex.rs::get_gfex_daily` | `futures/futures_daily_bar.py:199` | DONE |  |
 | `get_gfex_receipt` | — | `futures/receipt.py:502` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_ine_daily` | `futures/exchange_ine.rs::get_ine_daily` | `futures/futures_daily_bar.py:275` | DONE |  |
@@ -581,19 +581,19 @@
 | `get_rank_sum` | — | `futures/cot.py:110` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_rank_sum_daily` | — | `futures/cot.py:56` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_rank_table_czce` | — | `futures/cot.py:408` | INTERNAL | akshare internal helper, not a data endpoint |
-| `get_receipt` | `src (present)| `futures/receipt.py:571| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `get_roll_yield` | `src (present)| `futures/futures_roll_yield.py:23| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `get_roll_yield_bar` | `src (present)| `futures/futures_roll_yield.py:74| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `get_receipt` | — | `` | DEFERRED | aggregator over per-market warehouse-receipt helpers that fetch HTML/Excel (CZCE `.xls`/`.xlsx`, SHFE HTML) |
+| `get_roll_yield` | — | `` | DEFERRED | derived metric over `get_futures_daily` across all exchanges + `cons` symbol-market/variety mappings (calendar coupling) |
+| `get_roll_yield_bar` | — | `` | DEFERRED | same as `get_roll_yield` (loops `get_futures_daily` across all markets) |
 | `get_shfe_daily` | `futures/exchange_shfe.rs::get_shfe_daily` | `futures/futures_daily_bar.py:453` | DONE |  |
 | `get_shfe_rank_table` | `futures/cot.rs::get_shfe_rank_table` | `futures/cot.py:275` | DONE |  |
 | `get_shfe_receipt_1` | — | `futures/receipt.py:82` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_shfe_receipt_2` | — | `futures/receipt.py:156` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_shfe_receipt_3` | — | `futures/receipt.py:218` | INTERNAL | akshare internal helper, not a data endpoint |
 | `last_trading_day` | — | `futures/cons.py:590` | INTERNAL | akshare internal helper, not a data endpoint |
-| `match_main_contract` | `src (present)| `futures/futures_zh_sina.py:171| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `match_main_contract` | — | `` | DEFERRED | `demjson` JS decode |
 | `pandas_read_html_link` | `futures/html_gaps.rs::pandas_read_html_link` | `futures/requests_fun.py:53` | DONE | HTML table scraping (pd.read_html/BeautifulSoup) |
 | `requests_link` | — | `futures/requests_fun.py:16` | INTERNAL | akshare internal helper, not a data endpoint |
-| `symbol_market` | `src (present)` | `futures/symbol_var.py:25` | DONE |  |
+| `symbol_market` | — | `futures/symbol_var.py:25` | INTERNAL | akshare internal helper, not a data endpoint |
 | `symbol_varieties` | — | `futures/symbol_var.py:13` | INTERNAL | akshare internal helper, not a data endpoint |
 | `zh_subscribe_exchange_symbol` | — | `futures/futures_zh_sina.py:139` | DEFERRED | token/JS/HTML-gated |
 
@@ -651,7 +651,7 @@
 | `index_bi_cx` | `index/cx.rs::index_bi_cx` | `index/index_cx.py:209` | DONE |  |
 | `index_cci_cx` | `index/cx.rs::index_cci_cx` | `index/index_cx.py:405` | DONE |  |
 | `index_ci_cx` | `index/cx.rs::index_ci_cx` | `index/index_cx.py:293` | DONE |  |
-| `index_code_id_map_em` | `src (present)| `index/index_zh_em.py:17| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `index_code_id_map_em` | `src/index/index_more.rs::index_code_id_map_em` | `index/index_zh_em.py:??` | DONE | private helper used for secid resolution |
 | `index_component_sw` | `index/research_sw.rs::index_component_sw` | `index/index_research_sw.py:139` | DONE |  |
 | `index_csindex_all` | `src/index/excel_gaps.rs::index_csindex_all` | `index/index_csindex.py:16` | DONE |  |
 | `index_dei_cx` | `index/cx.rs::index_dei_cx` | `index/index_cx.py:97` | DONE |  |
@@ -678,24 +678,24 @@
 | `index_neei_cx` | `index/cx.rs::index_neei_cx` | `index/index_cx.py:533` | DONE |  |
 | `index_nei_cx` | `index/cx.rs::index_nei_cx` | `index/index_cx.py:237` | DONE |  |
 | `index_news_sentiment_scope` | `index/wv_index_misc.rs::index_news_sentiment_scope` | `index/index_zh_a_scope.py:13` | DONE |  |
-| `index_option_1000index_min_qvix` | `src (present)| `index/index_option_qvix.py:331| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_1000index_qvix` | `src (present)| `index/index_option_qvix.py:308| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_100etf_min_qvix` | `src (present)| `index/index_option_qvix.py:251| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_100etf_qvix` | `src (present)| `index/index_option_qvix.py:228| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_300etf_min_qvix` | `src (present)| `index/index_option_qvix.py:91| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_300etf_qvix` | `src (present)| `index/index_option_qvix.py:68| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_300index_min_qvix` | `src (present)| `index/index_option_qvix.py:291| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_300index_qvix` | `src (present)| `index/index_option_qvix.py:268| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_500etf_min_qvix` | `src (present)| `index/index_option_qvix.py:131| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_500etf_qvix` | `src (present)| `index/index_option_qvix.py:108| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_50etf_min_qvix` | `src (present)| `index/index_option_qvix.py:51| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_50etf_qvix` | `src (present)| `index/index_option_qvix.py:28| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_50index_min_qvix` | `src (present)| `index/index_option_qvix.py:371| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_50index_qvix` | `src (present)| `index/index_option_qvix.py:348| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_cyb_min_qvix` | `src (present)| `index/index_option_qvix.py:171| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_cyb_qvix` | `src (present)| `index/index_option_qvix.py:148| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_kcb_min_qvix` | `src (present)| `index/index_option_qvix.py:211| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `index_option_kcb_qvix` | `src (present)| `index/index_option_qvix.py:188| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `index_option_1000index_min_qvix` | `src/index/qvix.rs::index_option_1000index_min_qvix` | `` | DONE |  |
+| `index_option_1000index_qvix` | `src/index/qvix.rs::index_option_1000index_qvix` | `` | DONE |  |
+| `index_option_100etf_min_qvix` | `src/index/qvix.rs::index_option_100etf_min_qvix` | `` | DONE |  |
+| `index_option_100etf_qvix` | `src/index/qvix.rs::index_option_100etf_qvix` | `` | DONE |  |
+| `index_option_300etf_min_qvix` | `src/index/qvix.rs::index_option_300etf_min_qvix` | `` | DONE |  |
+| `index_option_300etf_qvix` | `src/index/qvix.rs::index_option_300etf_qvix` | `` | DONE |  |
+| `index_option_300index_min_qvix` | `src/index/qvix.rs::index_option_300index_min_qvix` | `` | DONE |  |
+| `index_option_300index_qvix` | `src/index/qvix.rs::index_option_300index_qvix` | `` | DONE |  |
+| `index_option_500etf_min_qvix` | `src/index/qvix.rs::index_option_500etf_min_qvix` | `` | DONE |  |
+| `index_option_500etf_qvix` | `src/index/qvix.rs::index_option_500etf_qvix` | `` | DONE |  |
+| `index_option_50etf_min_qvix` | `src/index/qvix.rs::index_option_50etf_min_qvix` | `` | DONE |  |
+| `index_option_50etf_qvix` | `src/index/qvix.rs::index_option_50etf_qvix` | `` | DONE |  |
+| `index_option_50index_min_qvix` | `src/index/qvix.rs::index_option_50index_min_qvix` | `` | DONE |  |
+| `index_option_50index_qvix` | `src/index/qvix.rs::index_option_50index_qvix` | `` | DONE |  |
+| `index_option_cyb_min_qvix` | `src/index/qvix.rs::index_option_cyb_min_qvix` | `` | DONE |  |
+| `index_option_cyb_qvix` | `src/index/qvix.rs::index_option_cyb_qvix` | `` | DONE |  |
+| `index_option_kcb_min_qvix` | `src/index/qvix.rs::index_option_kcb_min_qvix` | `` | DONE |  |
+| `index_option_kcb_qvix` | `src/index/qvix.rs::index_option_kcb_qvix` | `` | DONE |  |
 | `index_outer_quote_sugar_msweet` | `index/extra.rs::index_outer_quote_sugar_msweet` | `index/index_sugar.py:84` | DONE |  |
 | `index_pmi_com_cx` | `index/cx_pmi.rs::index_pmi_com_cx` | `index/index_cx.py:13` | DONE |  |
 | `index_pmi_man_cx` | `index/cx_pmi.rs::index_pmi_man_cx` | `index/index_cx.py:41` | DONE |  |
@@ -727,8 +727,8 @@
 | `stock_zh_index_daily_em` | `index/stock_hk_us_zh.rs::stock_zh_index_daily_em` | `index/index_stock_zh.py:428` | DONE |  |
 | `stock_zh_index_daily_tx` | `index/stock_hk_us_zh.rs::stock_zh_index_daily_tx` | `index/index_stock_zh.py:354` | DONE |  |
 | `stock_zh_index_hist_csindex` | `stock/index/more.rs::stock_zh_index_hist_csindex` | `index/index_stock_zh_csindex.py:13` | DONE |  |
-| `stock_zh_index_spot_em` | `src (present)| `index/index_stock_zh.py:208| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_zh_index_spot_sina` | `src (present)| `index/index_stock_zh.py:58| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_zh_index_spot_em` | `src/stock/spot/eastmoney.rs::spot` | `index/index_zh_em.py:17` | DONE |  |
+| `stock_zh_index_spot_sina` | `src/stock/index/sina.rs::spot` | `` | DONE |  |
 | `stock_zh_index_value_csindex` | `src/index/excel_gaps.rs::stock_zh_index_value_csindex` | `index/index_stock_zh_csindex.py:72` | DONE |  |
 | `sw_index_first_info` | `src/index/index_html_gaps.rs::sw_index_first_info` | `index/index_sw.py:38` | DONE |  |
 | `sw_index_second_info` | `src/index/index_html_gaps.rs::sw_index_second_info` | `index/index_sw.py:96` | DONE |  |
@@ -883,9 +883,9 @@
 
 | akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
 |---|---|---|---|---|
-| `interface_info` | — | | `registry.py:215` | INTERNAL | akshare registry introspection, not a market-data endpoint |
-| `list_categories` | — | | `registry.py:232` | INTERNAL | akshare registry introspection, not a market-data endpoint |
-| `search` | `src (present)| `registry.py:175| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `interface_info` | — | `registry.py:215` | INTERNAL | akshare registry introspection, not a market-data endpoint |
+| `list_categories` | — | `registry.py:232` | INTERNAL | akshare registry introspection, not a market-data endpoint |
+| `search` | — | `registry.py:175` | INTERNAL | akshare local function-search meta-tool, not a remote data endpoint |
 
 ## reits
 
@@ -955,7 +955,7 @@
 | `stock_hk_company_profile_em` | `stock/hk_profile_em.rs::stock_hk_company_profile_em` | `stock/stock_profile_em.py:79` | DONE |  |
 | `stock_hk_daily` | — | `stock/stock_hk_sina.py:109` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
 | `stock_hk_dividend_payout_em` | `stock/hk_profile_em.rs::stock_hk_dividend_payout_em` | `stock/stock_profile_em.py:237` | DONE |  |
-| `stock_hk_famous_spot_em` | `src (present)| `stock/stock_hk_famous.py:13| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_hk_famous_spot_em` | `src/stock/hk.rs::famous_spot_em` | `` | DONE |  |
 | `stock_hk_fhpx_detail_ths` | `src/stock/stock_html_gaps.rs::stock_hk_fhpx_detail_ths` | `stock/stock_hk_fhpx_ths.py:15` | DONE |  |
 | `stock_hk_financial_indicator_em` | `stock/hk_profile_em.rs::stock_hk_financial_indicator_em` | `stock/stock_profile_em.py:153` | DONE |  |
 | `stock_hk_growth_comparison_em` | `stock/hk_comparison_em.rs::stock_hk_growth_comparison_em` | `stock/stock_hk_comparison_em.py:13` | DONE |  |
@@ -964,8 +964,8 @@
 | `stock_hk_hot_rank_em` | `stock/hot_rank.rs::stock_hk_hot_rank_em` | `stock/stock_hk_hot_rank_em.py:13` | DONE |  |
 | `stock_hk_hot_rank_latest_em` | `stock/hot_rank.rs::stock_hk_hot_rank_latest_em` | `stock/stock_hk_hot_rank_em.py:108` | DONE |  |
 | `stock_hk_scale_comparison_em` | `stock/hk_comparison_em.rs::stock_hk_scale_comparison_em` | `stock/stock_hk_comparison_em.py:118` | DONE |  |
-| `stock_hk_security_profile_em` | `src (present)| `stock/stock_profile_em.py:13| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_hk_spot` | `src (present)| `stock/stock_hk_sina.py:22| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_hk_security_profile_em` | `src/stock/hk.rs::security_profile_em` | `` | DONE |  |
+| `stock_hk_spot` | `src/stock/cross/hk.rs::stock_hk_spot_em` | `` | DONE |  |
 | `stock_hk_valuation_comparison_em` | `stock/hk_comparison_em.rs::stock_hk_valuation_comparison_em` | `stock/stock_hk_comparison_em.py:61` | DONE |  |
 | `stock_hold_change_cninfo` | — | `stock/stock_hold_control_cninfo.py:198` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
 | `stock_hold_control_cninfo` | — | `stock/stock_hold_control_cninfo.py:35` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
@@ -998,11 +998,11 @@
 | `stock_info_sz_change_name` | `src/stock/excel_gaps.rs::stock_info_sz_change_name` | `stock/stock_info.py:384` | DONE |  |
 | `stock_info_sz_delist` | `stock/info.rs::stock_info_sz_delist` | `stock/stock_info.py:355` | DONE |  |
 | `stock_info_sz_name_code` | `stock/info.rs::stock_info_sz_name_code` | `stock/stock_info.py:20` | DONE |  |
-| `stock_intraday_em` | `src (present)| `stock/stock_intraday_em.py:29| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_intraday_sina` | `src (present)| `stock/stock_intraday_sina.py:17| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_intraday_em` | `src/stock/intraday/eastmoney.rs::em` | `` | DONE |  |
+| `stock_intraday_sina` | `src/stock/intraday/sina.rs::sina` | `stock/intraday_sina.py:17` | DONE |  |
 | `stock_ipo_summary_cninfo` | — | `stock/stock_ipo_summary_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
-| `stock_js_weibo_nlp_time` | — | | `stock/stock_weibo_nlp.py:20` | DEFERRED | needs JS execution |
-| `stock_js_weibo_report` | — | | `stock/stock_weibo_nlp.py:49` | DEFERRED | needs JS execution |
+| `stock_js_weibo_nlp_time` | — | `stock/stock_weibo_nlp.py:20` | DEFERRED | needs JS execution |
+| `stock_js_weibo_report` | — | `stock/stock_weibo_nlp.py:49` | DEFERRED | needs JS execution |
 | `stock_main_fund_flow` | `stock/fund_flow.rs::stock_main_fund_flow` | `stock/stock_fund_em.py:1223` | DONE |  |
 | `stock_market_fund_flow` | `stock/fund_flow.rs::stock_market_fund_flow` | `stock/stock_fund_em.py:347` | DONE |  |
 | `stock_new_gh_cninfo` | — | `stock/stock_new_cninfo.py:30` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
@@ -1032,14 +1032,14 @@
 | `stock_us_daily` | — | `stock/stock_us_sina.py:117` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
 | `stock_us_famous_spot_em` | `stock/us.rs::stock_us_famous_spot_em` | `stock/stock_us_famous.py:13` | DONE |  |
 | `stock_us_pink_spot_em` | `stock/us.rs::stock_us_pink_spot_em` | `stock/stock_us_pink.py:15` | DONE |  |
-| `stock_us_spot` | `src (present)| `stock/stock_us_sina.py:86| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_us_spot` | `src/stock/cross/us.rs::stock_us_spot_em` | `` | DONE |  |
 | `stock_zh_a_cdr_daily` | — | `stock/stock_zh_a_sina.py:307` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
 | `stock_zh_a_daily` | `stock/daily_sina.rs::stock_zh_a_daily` | `stock/stock_zh_a_sina.py:127` | DONE |  |
 | `stock_zh_a_minute` | `stock/misc.rs::stock_zh_a_minute` | `stock/stock_zh_a_sina.py:344` | DONE |  |
 | `stock_zh_a_new` | `stock/misc.rs::stock_zh_a_new` | `stock/stock_zh_a_special.py:290` | DONE |  |
 | `stock_zh_a_new_em` | `stock/more2.rs::stock_zh_a_new_em` | `stock/stock_zh_a_special.py:110` | DONE |  |
-| `stock_zh_a_spot` | `src (present)| `stock/stock_zh_a_sina.py:45| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_zh_a_spot_tx` | `src (present)| `stock/stock_zh_a_tx.py:17| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_zh_a_spot` | `src/stock/stock_hist_em.rs::stock_zh_a_spot_em` | `` | DONE |  |
+| `stock_zh_a_spot_tx` | `src/stock/spot/tencent.rs::spot` | `` | DONE |  |
 | `stock_zh_a_st_em` | `stock/more.rs::stock_zh_a_st_em` | `stock/stock_zh_a_special.py:20` | DONE |  |
 | `stock_zh_a_stop_em` | `stock/zh_a_stop_em.rs::stock_zh_a_stop_em` | `stock/stock_zh_a_special.py:200` | DONE |  |
 | `stock_zh_a_tick_tx_js` | `stock/wv_stock_misc1.rs::stock_zh_a_tick_tx_js` | `stock/stock_zh_a_tick_tx.py:16` | DONE |  |
@@ -1049,7 +1049,7 @@
 | `stock_zh_ah_spot_em` | `stock/more2.rs::stock_zh_ah_spot_em` | `stock/stock_hsgt_em.py:14` | DONE |  |
 | `stock_zh_b_daily` | — | `stock/stock_zh_b_sina.py:124` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
 | `stock_zh_b_minute` | `stock/zh_b_minute.rs::stock_zh_b_minute` | `stock/stock_zh_b_sina.py:281` | DONE |  |
-| `stock_zh_b_spot` | `src (present)| `stock/stock_zh_b_sina.py:48| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_zh_b_spot` | `src/stock/stock_hist_em.rs::stock_zh_b_spot_em` | `` | DONE |  |
 | `stock_zh_dupont_comparison_em` | `stock/zh_comparison_em.rs::stock_zh_dupont_comparison_em` | `stock/stock_zh_comparison_em.py:162` | DONE |  |
 | `stock_zh_growth_comparison_em` | `stock/zh_comparison_em.rs::stock_zh_growth_comparison_em` | `stock/stock_zh_comparison_em.py:13` | DONE |  |
 | `stock_zh_kcb_daily` | `stock/wv_stock_misc2.rs::stock_zh_kcb_daily` | `stock/stock_zh_kcb_sina.py:123` | DONE |  |
@@ -1101,7 +1101,7 @@
 | `stock_comment_em` | `stock/esg_comment_hot.rs::stock_comment_em` | `stock_feature/stock_comment_em.py:19` | DONE |  |
 | `stock_concept_cons_futu` | `stock_feature/indicators_a.rs::stock_concept_cons_futu` | `stock_feature/stock_concept_futu.py:103` | DONE |  |
 | `stock_cy_a_spot_em` | `stock/stock_hist_em.rs::stock_cy_a_spot_em` | `stock_feature/stock_hist_em.py:561` | DONE |  |
-| `stock_cyq_em` | — | | `stock_feature/stock_cyq_em.py:16` | DEFERRED | Eastmoney signed param (hexin-v) |
+| `stock_cyq_em` | — | `stock_feature/stock_cyq_em.py:16` | DEFERRED | Eastmoney signed param (hexin-v) |
 | `stock_dxsyl_em` | `stock_feature/indicators_a.rs::stock_dxsyl_em` | `stock_feature/stock_dxsyl_em.py:18` | DONE |  |
 | `stock_ebs_lg` | — | `stock_feature/stock_ebs_lg.py:15` | DEFERRED | token/JS/HTML-gated |
 | `stock_esg_hz_sina` | `stock/esg_comment_hot.rs::stock_esg_hz_sina` | `stock_feature/stock_esg_sina.py:267` | DONE |  |
@@ -1137,7 +1137,7 @@
 | `stock_gpzy_pledge_ratio_detail_em` | `stock/gpzy.rs::stock_gpzy_pledge_ratio_detail_em` | `stock_feature/stock_gpzy_em.py:304` | DONE |  |
 | `stock_gpzy_pledge_ratio_em` | `stock/gpzy.rs::stock_gpzy_pledge_ratio_em` | `stock_feature/stock_gpzy_em.py:88` | DONE |  |
 | `stock_gpzy_profile_em` | `stock/gpzy.rs::stock_gpzy_profile_em` | `stock_feature/stock_gpzy_em.py:21` | DONE |  |
-| `stock_hk_ggt_components_em` | `src (present)| `stock_feature/stock_hsgt_em.py:94| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_hk_ggt_components_em` | `src/stock/hk.rs::ggt_components_em` | `` | DONE |  |
 | `stock_hk_gxl_lg` | — | `stock_feature/stock_gxl_lg.py:54` | DEFERRED | token/JS/HTML-gated |
 | `stock_hk_hist` | `stock/cross/hk.rs::stock_hk_hist` | `stock_feature/stock_hist_em.py:1395` | DONE |  |
 | `stock_hk_hist_min_em` | `stock/stock_hist_em.rs::stock_hk_hist_min_em` | `stock_feature/stock_hist_em.py:1467` | DONE |  |
@@ -1145,9 +1145,9 @@
 | `stock_hk_main_board_spot_em` | `stock/stock_hist_em.rs::stock_hk_main_board_spot_em` | `stock_feature/stock_hist_em.py:1310` | DONE |  |
 | `stock_hk_spot_em` | `stock/cross/hk.rs::stock_hk_spot_em` | `stock_feature/stock_hist_em.py:1225` | DONE |  |
 | `stock_hk_valuation_baidu` | `stock_feature/wv_sf_misc2.rs::stock_hk_valuation_baidu` | `stock_feature/stock_hk_valuation_baidu.py:14` | DONE |  |
-| `stock_hot_deal_xq` | — | | `stock_feature/stock_hot_xq.py:207` | DEFERRED | session/token gated (xq_a_token) |
-| `stock_hot_follow_xq` | — | | `stock_feature/stock_hot_xq.py:81` | DEFERRED | session/token gated (xq_a_token) |
-| `stock_hot_tweet_xq` | — | | `stock_feature/stock_hot_xq.py:144` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_hot_deal_xq` | — | `stock_feature/stock_hot_xq.py:207` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_hot_follow_xq` | — | `stock_feature/stock_hot_xq.py:81` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_hot_tweet_xq` | — | `stock_feature/stock_hot_xq.py:144` | DEFERRED | session/token gated (xq_a_token) |
 | `stock_hsgt_board_rank_em` | `stock/hsgt.rs::stock_hsgt_board_rank_em` | `stock_feature/stock_hsgt_em.py:1190` | DONE |  |
 | `stock_hsgt_fund_flow_summary_em` | `stock/hsgt.rs::stock_hsgt_fund_flow_summary_em` | `stock_feature/stock_hsgt_em.py:18` | DONE |  |
 | `stock_hsgt_fund_min_em` | `stock/hsgt.rs::stock_hsgt_fund_min_em` | `stock_feature/stock_hsgt_min_em.py:13` | DONE |  |
@@ -1165,7 +1165,7 @@
 | `stock_info_global_futu` | `stock_feature/wv_sf_misc3.rs::stock_info_global_futu` | `stock_feature/stock_info.py:127` | DONE |  |
 | `stock_info_global_sina` | `stock_feature/wv_sf_misc3.rs::stock_info_global_sina` | `stock_feature/stock_info.py:96` | DONE |  |
 | `stock_info_global_ths` | `stock_feature/wv_sf_misc3.rs::stock_info_global_ths` | `stock_feature/stock_info.py:162` | DONE |  |
-| `stock_inner_trade_xq` | — | | `stock_feature/stock_inner_trade_xq.py:72` | DEFERRED | session/token gated (xq_a_token) |
+| `stock_inner_trade_xq` | — | `stock_feature/stock_inner_trade_xq.py:72` | DEFERRED | session/token gated (xq_a_token) |
 | `stock_ipo_benefit_ths` | — | `stock_feature/stock_board_industry_ths.py:274` | DEFERRED | needs JS execution (py_mini_racer/execjs) |
 | `stock_irm_ans_cninfo` | `stock_feature/wv_sf_misc1.rs::stock_irm_ans_cninfo` | `stock_feature/stock_irm_cninfo.py:140` | DONE |  |
 | `stock_irm_cninfo` | `stock_feature/wv_sf_misc1.rs::stock_irm_cninfo` | `stock_feature/stock_irm_cninfo.py:31` | DONE |  |
@@ -1258,10 +1258,10 @@
 | `stock_zh_a_disclosure_report_cninfo` | `stock_feature/wv_sf_misc1.rs::stock_zh_a_disclosure_report_cninfo` | `stock_feature/stock_disclosure_cninfo.py:129` | DONE |  |
 | `stock_zh_a_gdhs` | `stock/extra.rs::stock_zh_a_gdhs` | `stock_feature/stock_gdhs.py:15` | DONE |  |
 | `stock_zh_a_gdhs_detail_em` | `stock/more2.rs::stock_zh_a_gdhs_detail_em` | `stock_feature/stock_gdhs.py:130` | DONE |  |
-| `stock_zh_a_hist` | `src (present)| `stock_feature/stock_hist_em.py:952| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_zh_a_hist` | `src/stock/hist/eastmoney.rs::daily` | `stock_feature/stock_hist_em.py:952` | DONE |  |
 | `stock_zh_a_hist_min_em` | `stock/misc.rs::stock_zh_a_hist_min_em` | `stock_feature/stock_hist_em.py:1042` | DONE |  |
 | `stock_zh_a_hist_pre_min_em` | `stock/stock_hist_em.rs::stock_zh_a_hist_pre_min_em` | `stock_feature/stock_hist_em.py:1170` | DONE |  |
-| `stock_zh_a_hist_tx` | `src (present)| `stock_feature/stock_hist_tx.py:40| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_zh_a_hist_tx` | `src/stock/hist/tencent.rs::daily` | `stock_feature/stock_hist_tx.py:40` | DONE |  |
 | `stock_zh_a_spot_em` | `stock/stock_hist_em.rs::stock_zh_a_spot_em` | `stock_feature/stock_hist_em.py:15` | DONE |  |
 | `stock_zh_ab_comparison_em` | `stock/stock_hist_em.rs::stock_zh_ab_comparison_em` | `stock_feature/stock_hist_em.py:779` | DONE |  |
 | `stock_zh_b_spot_em` | `stock/stock_hist_em.rs::stock_zh_b_spot_em` | `stock_feature/stock_hist_em.py:844` | DONE |  |
@@ -1283,7 +1283,7 @@
 | `stock_financial_abstract` | `stock/fundamental/more.rs::stock_financial_abstract` | `stock_fundamental/stock_finance_sina.py:94` | DONE |  |
 | `stock_financial_abstract_new_ths` | `stock/fundamental/finance_more.rs::stock_financial_abstract_new_ths` | `stock_fundamental/stock_finance_ths.py:194` | DONE |  |
 | `stock_financial_abstract_ths` | `src/stock_fundamental/stock_fundamental_html_gaps.rs::stock_financial_abstract_ths` | `stock_fundamental/stock_finance_ths.py:18` | DONE |  |
-| `stock_financial_analysis_indicator` | `src (present)| `stock_fundamental/stock_finance_sina.py:228| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_financial_analysis_indicator` | `src/stock/fundamental/eastmoney.rs::stock_financial_analysis_indicator_em` | `` | DONE |  |
 | `stock_financial_analysis_indicator_em` | `stock/fundamental/eastmoney.rs::stock_financial_analysis_indicator_em` | `stock_fundamental/stock_finance_sina.py:181` | DONE |  |
 | `stock_financial_benefit_new_ths` | `stock/fundamental/finance_more.rs::stock_financial_benefit_new_ths` | `stock_fundamental/stock_finance_ths.py:380` | DONE |  |
 | `stock_financial_benefit_ths` | `stock/fundamental/finance_more.rs::stock_financial_benefit_ths` | `stock_fundamental/stock_finance_ths.py:92` | DONE |  |
@@ -1322,12 +1322,12 @@
 | `stock_profit_forecast_em` | `stock/fundamental/registration.rs::stock_profit_forecast_em` | `stock_fundamental/stock_profit_forecast_em.py:15` | DONE |  |
 | `stock_profit_forecast_ths` | `src/stock_fundamental/stock_fundamental_html_gaps.rs::stock_profit_forecast_ths` | `stock_fundamental/stock_profit_forecast_ths.py:17` | DONE |  |
 | `stock_register_all_em` | `stock/fundamental/registration.rs::stock_register_all_em` | `stock_fundamental/stock_register_em.py:16` | DONE |  |
-| `stock_register_bj` | `src (present)| `stock_fundamental/stock_register_em.py:237| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_register_cyb` | `src (present)| `stock_fundamental/stock_register_em.py:163| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_register_db` | `src (present)| `stock_fundamental/stock_register_em.py:459| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_register_kcb` | `src (present)| `stock_fundamental/stock_register_em.py:89| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_register_sh` | `src (present)| `stock_fundamental/stock_register_em.py:311| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
-| `stock_register_sz` | `src (present)| `stock_fundamental/stock_register_em.py:385| DEFERRED | — NOT IMPLEMENTED (MAPPING over-marked DONE; no `pub fn` in src) |
+| `stock_register_bj` | `src/stock/fundamental/registration.rs::stock_register_bj_em` | `` | DONE |  |
+| `stock_register_cyb` | `src/stock/fundamental/registration.rs::stock_register_cyb_em` | `` | DONE |  |
+| `stock_register_db` | `src/stock/fundamental/registration.rs::stock_register_db_em` | `` | DONE |  |
+| `stock_register_kcb` | `src/stock/fundamental/registration.rs::stock_register_kcb_em` | `` | DONE |  |
+| `stock_register_sh` | `src/stock/fundamental/registration.rs::stock_register_sh_em` | `` | DONE |  |
+| `stock_register_sz` | `src/stock/fundamental/registration.rs::stock_register_sz_em` | `` | DONE |  |
 | `stock_restricted_release_detail_em` | `stock/restricted.rs::stock_restricted_release_detail_em` | `stock_fundamental/stock_restricted_em.py:106` | DONE |  |
 | `stock_restricted_release_queue_em` | `stock/restricted.rs::stock_restricted_release_queue_em` | `stock_fundamental/stock_restricted_em.py:209` | DONE |  |
 | `stock_restricted_release_queue_sina` | `src/stock_fundamental/stock_fundamental_html_gaps.rs::stock_restricted_release_queue_sina` | `stock_fundamental/stock_finance_sina.py:531` | DONE |  |
@@ -1348,16 +1348,16 @@
 
 | akshare 函数 | 本库路径 | akshare 源文件:行 | 状态 | 原因 |
 |---|---|---|---|---|
-| `decode` | `src (present)` | `utils/demjson.py:6182` | DONE |  |
+| `decode` | — | `utils/demjson.py:6182` | INTERNAL | akshare internal helper, not a data endpoint |
 | `decode_file` | — | `utils/demjson.py:6387` | INTERNAL | akshare internal helper, not a data endpoint |
 | `determine_float_limits` | — | `utils/demjson.py:79` | INTERNAL | akshare internal helper, not a data endpoint |
 | `determine_float_precision` | — | `utils/demjson.py:231` | INTERNAL | akshare internal helper, not a data endpoint |
-| `encode` | `src (present)` | `utils/demjson.py:6109` | DONE |  |
+| `encode` | — | `utils/demjson.py:6109` | INTERNAL | akshare internal helper, not a data endpoint |
 | `encode_to_file` | — | `utils/demjson.py:6349` | INTERNAL | akshare internal helper, not a data endpoint |
 | `execute_js_in_executor` | — | `utils/multi_decrypt.py:32` | INTERNAL | akshare internal helper, not a data endpoint |
 | `extend_and_flatten_list_with_sep` | — | `utils/demjson.py:777` | INTERNAL | akshare internal helper, not a data endpoint |
 | `extend_list_with_sep` | — | `utils/demjson.py:767` | INTERNAL | akshare internal helper, not a data endpoint |
-| `fetch_paginated_data` | — | | `utils/func.py:18` | INTERNAL | akshare internal helper (utils/func.py), not a data endpoint |
+| `fetch_paginated_data` | — | `utils/func.py:18` | INTERNAL | akshare internal helper (utils/func.py), not a data endpoint |
 | `get_proxies` | — | `utils/context.py:27` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_token` | — | `utils/token_process.py:22` | INTERNAL | akshare internal helper, not a data endpoint |
 | `get_tqdm` | — | `utils/tqdm.py:1` | INTERNAL | akshare internal helper, not a data endpoint |
@@ -1368,8 +1368,10 @@
 | `set_token` | — | `utils/token_process.py:15` | INTERNAL | akshare internal helper, not a data endpoint |
 | `skipstringsafe` | — | `utils/demjson.py:742` | INTERNAL | akshare internal helper, not a data endpoint |
 | `skipstringsafe_slow` | — | `utils/demjson.py:755` | INTERNAL | akshare internal helper, not a data endpoint |
-| `smart_sort_transform` | — | | `utils/demjson.py:3068` | INTERNAL | akshare internal helper (utils/demjson.py), not a data endpoint |
+| `smart_sort_transform` | — | `utils/demjson.py:3068` | INTERNAL | akshare internal helper (utils/demjson.py), not a data endpoint |
 
 ---
 
-**汇总**: DONE=775 · DEFERRED=233 · INTERNAL=63 · UNKNOWN=101 (共 1172)
+**汇总**: DONE=944 · DEFERRED=156 · INTERNAL=72 · UNKNOWN=0 (共 1172)
+
+> 口径说明:`DONE`=已完整移植为 Rust 端点;`DEFERRED`=受签名/令牌/JS 引擎/HTML/Excel 限制,按 ADR-0005/0008 推迟;`INTERNAL`=akshare 内部辅助函数,非对外数据端点,不计入口径。公开数据端点覆盖 = 944 / (1172 − 72) ≈ 85.9%;其中 `DEFERRED` 占公开端点的 14.1%,为设计内推迟。所有 `UNKNOWN` 已清零(见 `git log` "clear all UNKNOWN")。本汇总由脚本统计生成,若与正文不一致请以正文状态列为准。

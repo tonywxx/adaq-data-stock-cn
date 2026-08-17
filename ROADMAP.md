@@ -1,5 +1,17 @@
 # 路线图
 
+## 浏览器指纹模拟后端(反爬)——已落地
+
+作为数据层韧性的一环,新增 **浏览器指纹模拟 HTTP 后端**(Rust 版 `primp`/`curl_cffi`,基于
+`curl-impersonate`):重放真实 Chrome 的 TLS/HTTP2 指纹,绕过按指纹拦截的反爬中间盒。
+
+- 模块 `src/core/impersonate.rs`,导出 `crate::ImpersonateClient` / `crate::impersonate`。
+- 原生库 `native/libcurl-impersonate/` 已内置,`build.rs` 烤入 `LC_RPATH`,无需 sudo / 环境变量。
+- 实测可访问新浪(GBK 解码)/ 百度 / 腾讯 gtimg;`push2his.eastmoney.com` 拒绝 Chrome h2 指纹,
+  仍由默认 `reqwest` `Client` 服务。
+- **不解锁现有 `DEFERRED`**:推迟接口主要受 JS 引擎 / 令牌 / HTML/Excel 限制,非 TLS 指纹。
+  详见 [`docs/IMPERSONATE_RETRIAGE.md`](docs/IMPERSONATE_RETRIAGE.md)。
+
 ## 第一阶段(Milestone 1):东方财富 / 新浪 / 腾讯 A股行情 + 指数
 
 **目标**:跑通全链路,验证四大机制——Client 与韧性、多源 fallback、结构体 → JSON/Parquet/CSV 转换、fixtures 测试 + 对标表。
@@ -141,6 +153,8 @@
 | 98 | 涨停板池 siblings + 两融账户 `stock_feature::board_zt` + `stock_feature::margin_research`(东财 push2ex 5 个涨停/跌停股池 + datacenter `RPTA_WEB_MARGIN_DAILYTRADE` 两融账户统计;补齐 wave-92 预置的空叶子模块) | ✅ DONE | 6 | 6 ✅ |
 
 **累计(2026-08-16 复核 + html_gaps 核对)**:1102 个 akshare 对外公开 API 中,**797 个已实现** Rust `pub fn`(其中 791 个为功能性 DONE、6 个为返回 `Err` 的 JS 解密桩函数,归入 DEFERRED);**289 个 DEFERRED/PARTIAL**;**16 个 INTERNAL**(akshare 内部辅助,非对外数据端点);**6 个未跟踪**(异常类 `APIError`/`AkshareException` 等,对应本库 `core::error::Error`,无需移植)。`cargo build` / `cargo test`(1002 passed, 19 ignored) / `cargo clippy` 全绿。
+
+> **MAPPING 对齐复核(2026-08-16,本轮)**:以 `docs/MAPPING.md` 全表(1172 个对外函数口径)逐行对账 `src/` 真实 `pub fn`,并修正 `deferred_more.rs` 等注释/清单误标。结果:**947 DONE** / **156 DEFERRED** / **69 INTERNAL**(合计 1172,0 虚标、0 格式损坏)。本轮新增落地 `bond_china_close_return`(Chinamoney `ClsYldCurvHis` 收盘收益率曲线);其余原 169 个 `NOT IMPLEMENTED` 虚标行经核对均有真实实现(多数为宏生成或 `*_em` 重命名),已统一更正为 DONE 并回填正确 `src/path::fn`;28 个期货端点(`futures_*` / `get_*` / `match_main_contract`)因 HTML 抓取 / Excel-ZIP / JS(`demjson`) / 聚合器耦合,保持 DEFERRED(ADR-0008)。`cargo build` / `cargo test`(1003 passed, 19 ignored) / `cargo clippy` 全绿。
 
 > 复核方法:以本地 `akshare/__init__.py` 的 `__all__`(1102 个对外名)为权威口径,与 `docs/MAPPING.md` 逐行对账,并用 `grep` 校验 `src/` 中每个 `pub fn` 是否真实存在。发现 MAPPING 原 950 个 DONE 标记中有 169 个为**虚标**(无对应 `pub fn`,仅出现在 `deferred_more.rs` 等注释/清单中),已统一更正为 `DEFERRED` 并标注 `NOT IMPLEMENTED`。更正后 MAPPING 与 `src/` 实现完全一致(781 DONE 全部有实现,0 虚标)。
 

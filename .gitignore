@@ -11,3 +11,10 @@ target
 target/
 tony/
 graphify-out/
+.workbuddy/
+.codebuddy/
+
+# Vendored native lib: keep the small .dylib + symlinks, ignore the large static archive if added
+native/libcurl-impersonate/*.a
+# Local probe/scratch dirs
+/tmp-probe/
