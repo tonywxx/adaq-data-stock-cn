@@ -7,7 +7,7 @@ license = "Apache-2.0"
 name = "adaq-data-stock-cn"
 readme = "README.md"
 repository = "https://github.com/tonywxx/adaq-data-stock-cn"
-version = "0.1.3"
+version = "0.1.4"
 
 # The vendored `libcurl-impersonate` dylib (~14 MiB) is only needed at build/link
 # time and would exceed crates.io's 10 MiB per-crate limit, so it is excluded
