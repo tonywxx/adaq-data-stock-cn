@@ -48,6 +48,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const JJJZ_URL: &str = "https://fund.eastmoney.com/Data/Fund_JJJZ_Data.aspx";
 const RANK_URL: &str = "https://api.fund.eastmoney.com/FundTradeRank/GetRankList";
@@ -71,15 +72,6 @@ fn emg_data_array(resp: &Value) -> Result<&Vec<Value>> {
         })
 }
 
-/// Object field as `String` (also stringifies numbers, like akshare does).
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(val_str)
-}
-
-/// Object field as `f64` (handles `Number` and numeric `String`).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(val_num)
-}
 
 fn val_str(v: &Value) -> Option<String> {
     match v {
@@ -341,7 +333,7 @@ pub async fn fund_info_index_em(
             Some(&headers),
         )
         .await?;
-    let data_str = fstr(&v, "Data").ok_or_else(|| Error::UpstreamChanged {
+    let data_str = opt_str(&v, "Data").ok_or_else(|| Error::UpstreamChanged {
         origin: SOURCE_EASTMONEY,
         message: "missing Data".into(),
     })?;
@@ -467,11 +459,11 @@ fn parse_money_fund_info(items: &[Value]) -> Vec<FundMoneyFundInfoRow> {
     items
         .iter()
         .map(|item| FundMoneyFundInfoRow {
-            date: fstr(item, "FSRQ"),
-            per_million: fnum(item, "DWJZ"),
-            annual_7d: fnum(item, "LJJZ"),
-            purchase_status: fstr(item, "SGZT"),
-            redeem_status: fstr(item, "SHZT"),
+            date: opt_str(item, "FSRQ"),
+            per_million: opt_f64(item, "DWJZ"),
+            annual_7d: opt_f64(item, "LJJZ"),
+            purchase_status: opt_str(item, "SGZT"),
+            redeem_status: opt_str(item, "SHZT"),
         })
         .collect()
 }
@@ -523,18 +515,18 @@ fn parse_financial_daily(list: &[Value], showday: &[String]) -> Vec<FundFinancia
     let date_2 = showday.get(1).cloned();
     list.iter()
         .map(|item| FundFinancialDailyRow {
-            seq: fstr(item, "Id"),
-            fund_code: fstr(item, "fcode"),
-            fund_name: fstr(item, "shortname"),
-            prev_annual_yield: fnum(item, "actualsyi"),
+            seq: opt_str(item, "Id"),
+            fund_code: opt_str(item, "fcode"),
+            fund_name: opt_str(item, "shortname"),
+            prev_annual_yield: opt_f64(item, "actualsyi"),
             date_1: date_1.clone(),
-            mui_1: fnum(item, "mui"),
-            syi_1: fnum(item, "syi"),
+            mui_1: opt_f64(item, "mui"),
+            syi_1: opt_f64(item, "syi"),
             date_2: date_2.clone(),
-            mui_2: fnum(item, "zrmui"),
-            syi_2: fnum(item, "zrsyi"),
-            cycle: fstr(item, "cycle"),
-            purchase_status: fstr(item, "kfr"),
+            mui_2: opt_f64(item, "zrmui"),
+            syi_2: opt_f64(item, "zrsyi"),
+            cycle: opt_str(item, "cycle"),
+            purchase_status: opt_str(item, "kfr"),
         })
         .collect()
 }
@@ -621,13 +613,13 @@ fn parse_financial_fund_info(items: &[Value]) -> Vec<FundFinancialFundInfoRow> {
     items
         .iter()
         .map(|item| FundFinancialFundInfoRow {
-            date: fstr(item, "FSRQ"),
-            nav: fnum(item, "DWJZ"),
-            cum_nav: fnum(item, "LJJZ"),
-            daily_growth: fnum(item, "JZZZL"),
-            purchase_status: fstr(item, "SGZT"),
-            redeem_status: fstr(item, "SHZT"),
-            dividend: fstr(item, "FHSP"),
+            date: opt_str(item, "FSRQ"),
+            nav: opt_f64(item, "DWJZ"),
+            cum_nav: opt_f64(item, "LJJZ"),
+            daily_growth: opt_f64(item, "JZZZL"),
+            purchase_status: opt_str(item, "SGZT"),
+            redeem_status: opt_str(item, "SHZT"),
+            dividend: opt_str(item, "FHSP"),
         })
         .collect()
 }
@@ -762,12 +754,12 @@ fn parse_nav_history(items: &[Value]) -> Vec<FundNavHistoryRow> {
     items
         .iter()
         .map(|item| FundNavHistoryRow {
-            date: fstr(item, "FSRQ"),
-            nav: fnum(item, "DWJZ"),
-            cum_nav: fnum(item, "LJJZ"),
-            daily_growth: fnum(item, "JZZZL"),
-            purchase_status: fstr(item, "SGZT"),
-            redeem_status: fstr(item, "SHZT"),
+            date: opt_str(item, "FSRQ"),
+            nav: opt_f64(item, "DWJZ"),
+            cum_nav: opt_f64(item, "LJJZ"),
+            daily_growth: opt_f64(item, "JZZZL"),
+            purchase_status: opt_str(item, "SGZT"),
+            redeem_status: opt_str(item, "SHZT"),
         })
         .collect()
 }
@@ -1189,7 +1181,7 @@ mod tests {
     #[test]
     fn parses_fund_info_index_em() {
         let v = fixture("fund_info_index_em.json");
-        let data_str = fstr(&v, "Data").unwrap();
+        let data_str = opt_str(&v, "Data").unwrap();
         let inner: Value = serde_json::from_str(&data_str).unwrap();
         let datas = inner.get("datas").unwrap().as_array().unwrap();
         let rows = parse_info_index(datas, "沪深指数", "被动指数型");

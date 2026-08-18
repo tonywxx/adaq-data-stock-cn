@@ -14,6 +14,8 @@ use serde_json::Value;
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
+use crate::core::json::*;
+
 /// Eastmoney datacenter financial REST endpoint (no JS signing — ADR-0005).
 const DATACENTER: &str = "https://datacenter.eastmoney.com/securities/api/data/get";
 /// Static client `v` token (matches akshare delisted variants).
@@ -44,21 +46,6 @@ fn result_data<'a>(resp: &'a Value, endpoint: &'static str) -> Result<&'a [Value
             origin: SOURCE_EASTMONEY,
             message: format!("missing result.data at {endpoint}"),
         })
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 // ---------------------------------------------------------------------------
@@ -144,27 +131,27 @@ pub(crate) fn parse_profit(resp: &Value) -> Result<Vec<ProfitSheetRow>> {
 }
 
 fn profit_row(item: &Value) -> Option<ProfitSheetRow> {
-    let report_date = fstr(item, "REPORT_DATE");
+    let report_date = opt_str_or(item, "REPORT_DATE", "");
     if report_date.is_empty() {
         return None;
     }
     Some(ProfitSheetRow {
-        secucode: fstr(item, "SECUCODE"),
-        security_code: fstr(item, "SECURITY_CODE"),
-        security_name: fstr(item, "SECURITY_NAME_ABBR"),
-        org_code: fstr(item, "ORG_CODE"),
+        secucode: opt_str_or(item, "SECUCODE", ""),
+        security_code: opt_str_or(item, "SECURITY_CODE", ""),
+        security_name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+        org_code: opt_str_or(item, "ORG_CODE", ""),
         report_date,
-        report_type: fstr(item, "REPORT_TYPE"),
-        report_date_name: fstr(item, "REPORT_DATE_NAME"),
-        total_operate_income: fnum(item, "TOTAL_OPERATE_INCOME"),
-        operate_income: fnum(item, "OPERATE_INCOME"),
-        operate_cost: fnum(item, "OPERATE_COST"),
-        operate_profit: fnum(item, "OPERATE_PROFIT"),
-        sum_income: fnum(item, "SUM_INCOME"),
-        parent_netprofit: fnum(item, "PARENT_NETPROFIT"),
-        basic_eps: fnum(item, "BASIC_EPS"),
-        dilute_eps: fnum(item, "DILUTE_EPS"),
-        weightavg_roe: fnum(item, "WEIGHTAVG_ROE"),
+        report_type: opt_str_or(item, "REPORT_TYPE", ""),
+        report_date_name: opt_str_or(item, "REPORT_DATE_NAME", ""),
+        total_operate_income: opt_f64(item, "TOTAL_OPERATE_INCOME"),
+        operate_income: opt_f64(item, "OPERATE_INCOME"),
+        operate_cost: opt_f64(item, "OPERATE_COST"),
+        operate_profit: opt_f64(item, "OPERATE_PROFIT"),
+        sum_income: opt_f64(item, "SUM_INCOME"),
+        parent_netprofit: opt_f64(item, "PARENT_NETPROFIT"),
+        basic_eps: opt_f64(item, "BASIC_EPS"),
+        dilute_eps: opt_f64(item, "DILUTE_EPS"),
+        weightavg_roe: opt_f64(item, "WEIGHTAVG_ROE"),
         source: SOURCE_EASTMONEY,
     })
 }
@@ -252,27 +239,27 @@ pub(crate) fn parse_balance(resp: &Value) -> Result<Vec<BalanceSheetRow>> {
 }
 
 fn balance_row(item: &Value) -> Option<BalanceSheetRow> {
-    let report_date = fstr(item, "REPORT_DATE");
+    let report_date = opt_str_or(item, "REPORT_DATE", "");
     if report_date.is_empty() {
         return None;
     }
     Some(BalanceSheetRow {
-        secucode: fstr(item, "SECUCODE"),
-        security_code: fstr(item, "SECURITY_CODE"),
-        security_name: fstr(item, "SECURITY_NAME_ABBR"),
-        org_code: fstr(item, "ORG_CODE"),
+        secucode: opt_str_or(item, "SECUCODE", ""),
+        security_code: opt_str_or(item, "SECURITY_CODE", ""),
+        security_name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+        org_code: opt_str_or(item, "ORG_CODE", ""),
         report_date,
-        report_type: fstr(item, "REPORT_TYPE"),
-        report_date_name: fstr(item, "REPORT_DATE_NAME"),
-        monetary_cap: fnum(item, "MONETARY_CAP"),
-        accounts_receivable: fnum(item, "ACCOUNTS_RECEIVABLE"),
-        inventory: fnum(item, "INVENTORY"),
-        total_current_assets: fnum(item, "TOTAL_CURRENT_ASSETS"),
-        total_assets: fnum(item, "TOTAL_ASSETS"),
-        total_current_liab: fnum(item, "TOTAL_CURRENT_LIAB"),
-        total_liab: fnum(item, "TOTAL_LIAB"),
-        total_equity: fnum(item, "TOTAL_EQUITY"),
-        parent_equity: fnum(item, "PARENT_EQUITY"),
+        report_type: opt_str_or(item, "REPORT_TYPE", ""),
+        report_date_name: opt_str_or(item, "REPORT_DATE_NAME", ""),
+        monetary_cap: opt_f64(item, "MONETARY_CAP"),
+        accounts_receivable: opt_f64(item, "ACCOUNTS_RECEIVABLE"),
+        inventory: opt_f64(item, "INVENTORY"),
+        total_current_assets: opt_f64(item, "TOTAL_CURRENT_ASSETS"),
+        total_assets: opt_f64(item, "TOTAL_ASSETS"),
+        total_current_liab: opt_f64(item, "TOTAL_CURRENT_LIAB"),
+        total_liab: opt_f64(item, "TOTAL_LIAB"),
+        total_equity: opt_f64(item, "TOTAL_EQUITY"),
+        parent_equity: opt_f64(item, "PARENT_EQUITY"),
         source: SOURCE_EASTMONEY,
     })
 }
@@ -352,23 +339,23 @@ pub(crate) fn parse_cash_flow(resp: &Value) -> Result<Vec<CashFlowSheetRow>> {
 }
 
 fn cash_flow_row(item: &Value) -> Option<CashFlowSheetRow> {
-    let report_date = fstr(item, "REPORT_DATE");
+    let report_date = opt_str_or(item, "REPORT_DATE", "");
     if report_date.is_empty() {
         return None;
     }
     Some(CashFlowSheetRow {
-        secucode: fstr(item, "SECUCODE"),
-        security_code: fstr(item, "SECURITY_CODE"),
-        security_name: fstr(item, "SECURITY_NAME_ABBR"),
-        org_code: fstr(item, "ORG_CODE"),
+        secucode: opt_str_or(item, "SECUCODE", ""),
+        security_code: opt_str_or(item, "SECURITY_CODE", ""),
+        security_name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+        org_code: opt_str_or(item, "ORG_CODE", ""),
         report_date,
-        report_type: fstr(item, "REPORT_TYPE"),
-        report_date_name: fstr(item, "REPORT_DATE_NAME"),
-        cash_receive_sale: fnum(item, "CASH_RECEIVE_SALE"),
-        net_operate_cash_flow: fnum(item, "NET_OPERATE_CASH_FLOW"),
-        net_invest_cash_flow: fnum(item, "NET_INVEST_CASH_FLOW"),
-        net_finance_cash_flow: fnum(item, "NET_FINANCE_CASH_FLOW"),
-        cash_end_period: fnum(item, "CASH_END_PERIOD"),
+        report_type: opt_str_or(item, "REPORT_TYPE", ""),
+        report_date_name: opt_str_or(item, "REPORT_DATE_NAME", ""),
+        cash_receive_sale: opt_f64(item, "CASH_RECEIVE_SALE"),
+        net_operate_cash_flow: opt_f64(item, "NET_OPERATE_CASH_FLOW"),
+        net_invest_cash_flow: opt_f64(item, "NET_INVEST_CASH_FLOW"),
+        net_finance_cash_flow: opt_f64(item, "NET_FINANCE_CASH_FLOW"),
+        cash_end_period: opt_f64(item, "CASH_END_PERIOD"),
         source: SOURCE_EASTMONEY,
     })
 }
@@ -475,23 +462,23 @@ pub(crate) fn parse_indicator(resp: &Value) -> Result<Vec<FinancialIndicatorRow>
 }
 
 fn indicator_row(item: &Value) -> Option<FinancialIndicatorRow> {
-    let report_date = fstr(item, "REPORT_DATE");
+    let report_date = opt_str_or(item, "REPORT_DATE", "");
     if report_date.is_empty() {
         return None;
     }
     Some(FinancialIndicatorRow {
-        secucode: fstr(item, "SECUCODE"),
-        security_code: fstr(item, "SECURITY_CODE"),
-        security_name: fstr(item, "SECURITY_NAME_ABBR"),
-        org_code: fstr(item, "ORG_CODE"),
+        secucode: opt_str_or(item, "SECUCODE", ""),
+        security_code: opt_str_or(item, "SECURITY_CODE", ""),
+        security_name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+        org_code: opt_str_or(item, "ORG_CODE", ""),
         report_date,
-        report_type: fstr(item, "REPORT_TYPE"),
-        report_date_name: fstr(item, "REPORT_DATE_NAME"),
-        basic_eps: fnum(item, "BASIC_EPS"),
-        weightavg_roe: fnum(item, "WEIGHTAVG_ROE"),
-        gross_margin: fnum(item, "GROSS_MARGIN"),
-        net_profit_yoy: fnum(item, "NET_PROFIT_YOY"),
-        total_income_yoy: fnum(item, "TOTAL_INCOME_YOY"),
+        report_type: opt_str_or(item, "REPORT_TYPE", ""),
+        report_date_name: opt_str_or(item, "REPORT_DATE_NAME", ""),
+        basic_eps: opt_f64(item, "BASIC_EPS"),
+        weightavg_roe: opt_f64(item, "WEIGHTAVG_ROE"),
+        gross_margin: opt_f64(item, "GROSS_MARGIN"),
+        net_profit_yoy: opt_f64(item, "NET_PROFIT_YOY"),
+        total_income_yoy: opt_f64(item, "TOTAL_INCOME_YOY"),
         source: SOURCE_EASTMONEY,
     })
 }

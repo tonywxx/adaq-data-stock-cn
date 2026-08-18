@@ -18,25 +18,12 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ---------------------------------------------------------------------------
 // Shared helpers (mirror src/stock/fundamental/eastmoney.rs)
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ===========================================================================
 // stock_individual_info_em — 东方财富-个股-股票信息
@@ -107,15 +94,15 @@ pub(crate) fn parse_individual_info(resp: &Value) -> Result<Vec<StockIndividualI
         })?;
     let d = Value::Object(data.clone());
     let row = StockIndividualInfoRow {
-        code: fstr(&d, "f57"),
-        name: fstr(&d, "f58"),
-        total_shares: fnum(&d, "f84"),
-        float_shares: fnum(&d, "f85"),
-        industry: fstr(&d, "f127"),
-        total_mktcap: fnum(&d, "f116"),
-        float_mktcap: fnum(&d, "f117"),
-        list_date: fstr(&d, "f189"),
-        latest_price: fnum(&d, "f43"),
+        code: opt_str_or(&d, "f57", ""),
+        name: opt_str_or(&d, "f58", ""),
+        total_shares: opt_f64(&d, "f84"),
+        float_shares: opt_f64(&d, "f85"),
+        industry: opt_str_or(&d, "f127", ""),
+        total_mktcap: opt_f64(&d, "f116"),
+        float_mktcap: opt_f64(&d, "f117"),
+        list_date: opt_str_or(&d, "f189", ""),
+        latest_price: opt_f64(&d, "f43"),
         source: SOURCE_EASTMONEY,
     };
     Ok(vec![row])
@@ -194,17 +181,17 @@ pub(crate) fn parse_zygc(resp: &Value) -> Result<Vec<StockZygcRow>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(StockZygcRow {
-            security_code: fstr(item, "SECURITY_CODE"),
-            report_date: fstr(item, "REPORT_DATE"),
-            mainop_type: map_mainop_type(fstr(item, "MAINOP_TYPE").as_str()),
-            item_name: fstr(item, "ITEM_NAME"),
-            main_business_income: fnum(item, "MAIN_BUSINESS_INCOME"),
-            mbi_ratio: fnum(item, "MBI_RATIO"),
-            main_business_cost: fnum(item, "MAIN_BUSINESS_COST"),
-            mbc_ratio: fnum(item, "MBC_RATIO"),
-            main_business_profit: fnum(item, "MAIN_BUSINESS_RPOFIT"),
-            mbr_ratio: fnum(item, "MBR_RATIO"),
-            gross_profit_ratio: fnum(item, "GROSS_RPOFIT_RATIO"),
+            security_code: opt_str_or(item, "SECURITY_CODE", ""),
+            report_date: opt_str_or(item, "REPORT_DATE", ""),
+            mainop_type: map_mainop_type(opt_str_or(item, "MAINOP_TYPE", "").as_str()),
+            item_name: opt_str_or(item, "ITEM_NAME", ""),
+            main_business_income: opt_f64(item, "MAIN_BUSINESS_INCOME"),
+            mbi_ratio: opt_f64(item, "MBI_RATIO"),
+            main_business_cost: opt_f64(item, "MAIN_BUSINESS_COST"),
+            mbc_ratio: opt_f64(item, "MBC_RATIO"),
+            main_business_profit: opt_f64(item, "MAIN_BUSINESS_RPOFIT"),
+            mbr_ratio: opt_f64(item, "MBR_RATIO"),
+            gross_profit_ratio: opt_f64(item, "GROSS_RPOFIT_RATIO"),
             source: SOURCE_EASTMONEY,
         });
     }

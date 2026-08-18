@@ -8,6 +8,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const URL: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 const TOKEN: &str = "894050c76af8597a853f5b408b759f5d";
@@ -89,10 +90,10 @@ pub(crate) fn parse(resp: &Value) -> Result<Vec<LprRow>> {
             .map(|s| s[..10].to_string());
         let row = LprRow {
             date,
-            lpr_1y: num_opt(item, "LPR1Y"),
-            lpr_5y: num_opt(item, "LPR5Y"),
-            rate_1: num_opt(item, "RATE_1"),
-            rate_2: num_opt(item, "RATE_2"),
+            lpr_1y: opt_f64(item, "LPR1Y"),
+            lpr_5y: opt_f64(item, "LPR5Y"),
+            rate_1: opt_f64(item, "RATE_1"),
+            rate_2: opt_f64(item, "RATE_2"),
         };
         // Skip rows that carry no usable data at all.
         if row.date.is_none()
@@ -108,13 +109,6 @@ pub(crate) fn parse(resp: &Value) -> Result<Vec<LprRow>> {
     Ok(out)
 }
 
-fn num_opt(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.parse::<f64>().ok(),
-        _ => None,
-    }
-}
 
 #[cfg(test)]
 mod tests {

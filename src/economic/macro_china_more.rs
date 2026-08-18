@@ -66,6 +66,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_JIN10: &str = "jin10";
 const BASE_EM: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
@@ -89,20 +90,6 @@ fn emg_data_array(resp: &Value) -> Result<&Vec<Value>> {
             origin: SOURCE_EASTMONEY,
             message: "missing result.data".into(),
         })
-}
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Numeric field: accepts a JSON number or a numeric string (Jin10 returns
-/// prices/changes as strings, e.g. `"1.3630"`).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 /// Numeric scalar: accepts a JSON number or a numeric string.
@@ -175,18 +162,18 @@ pub struct EmIndicatorRow {
 pub(crate) fn parse_em_indicator(items: &[Value]) -> Result<Vec<EmIndicatorRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(date) = fstr(item, "REPORT_DATE") else {
+        let Some(date) = opt_str(item, "REPORT_DATE") else {
             continue;
         };
         out.push(EmIndicatorRow {
             date,
-            latest_value: fnum(item, "INDICATOR_VALUE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            change_3m: fnum(item, "CHANGERATE_3M"),
-            change_6m: fnum(item, "CHANGERATE_6M"),
-            change_1y: fnum(item, "CHANGERATE_1Y"),
-            change_2y: fnum(item, "CHANGERATE_2Y"),
-            change_3y: fnum(item, "CHANGERATE_3Y"),
+            latest_value: opt_f64(item, "INDICATOR_VALUE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            change_3m: opt_f64(item, "CHANGERATE_3M"),
+            change_6m: opt_f64(item, "CHANGERATE_6M"),
+            change_1y: opt_f64(item, "CHANGERATE_1Y"),
+            change_2y: opt_f64(item, "CHANGERATE_2Y"),
+            change_3y: opt_f64(item, "CHANGERATE_3Y"),
         });
     }
     Ok(out)

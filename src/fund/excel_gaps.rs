@@ -4,6 +4,7 @@ use calamine::{open_workbook_auto_from_rs, Reader, Sheets};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36";
 
@@ -50,15 +51,6 @@ fn read_rows(bytes: &[u8], endpoint: &'static str) -> Result<Vec<Vec<String>>> {
         .rows()
         .map(|r| r.iter().map(cell_to_string).collect())
         .collect())
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t: String = s.chars().filter(|c| *c != ',').collect();
-    let t = t.trim();
-    if t.is_empty() {
-        return None;
-    }
-    t.parse::<f64>().ok()
 }
 
 fn cell_to_string(c: &calamine::Data) -> String {
@@ -134,11 +126,11 @@ pub(crate) fn parse_fund_etf_scale_szse(bytes: &[u8]) -> Result<Vec<FundEtfScale
             fund_category: col(r, 2).to_string(),
             invest_category: col(r, 3).to_string(),
             list_date: col(r, 4).to_string(),
-            fund_scale: parse_f64(col(r, 5)),
+            fund_scale: parse_f64_str(col(r, 5)),
             fund_manager: col(r, 6).to_string(),
             fund_sponsor: col(r, 7).to_string(),
             fund_trustee: col(r, 8).to_string(),
-            net_value: parse_f64(col(r, 9)),
+            net_value: parse_f64_str(col(r, 9)),
         });
     }
     Ok(out)
@@ -201,7 +193,7 @@ pub(crate) fn parse_fund_scale_daily_szse(bytes: &[u8]) -> Result<Vec<FundScaleD
             date: col(r, 0).to_string(),
             fund_code: col(r, 1).to_string(),
             fund_abbr: col(r, 2).to_string(),
-            fund_scale: parse_f64(col(r, 3)),
+            fund_scale: parse_f64_str(col(r, 3)),
         });
     }
     Ok(out)

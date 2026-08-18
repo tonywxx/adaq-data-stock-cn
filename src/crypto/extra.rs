@@ -26,6 +26,8 @@ use serde_json::Value;
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
+use crate::core::json::*;
+
 /// Binance public REST (keyless).
 const SOURCE_BINANCE: &str = "binance";
 /// OKX public REST (keyless).
@@ -330,14 +332,14 @@ pub async fn crypto_spot(
 
 /// Parse a Binance `/api/v3/ticker/24hr` response (a single JSON object).
 pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
-    let symbol = str_opt(resp, "symbol");
+    let symbol = opt_str_or(resp, "symbol", "");
     if symbol.is_empty() {
         return Err(Error::UpstreamChanged {
             origin: SOURCE_BINANCE,
             message: "missing symbol".into(),
         });
     }
-    let price = match num_opt(resp, "lastPrice") {
+    let price = match opt_f64(resp, "lastPrice") {
         Some(v) => v,
         None => {
             return Err(Error::UpstreamChanged {
@@ -349,15 +351,15 @@ pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
     Ok(vec![CryptoSpotRow {
         symbol,
         price,
-        price_change: num_opt(resp, "priceChange"),
-        price_change_percent: num_opt(resp, "priceChangePercent"),
-        weighted_avg_price: num_opt(resp, "weightedAvgPrice"),
-        prev_close_price: num_opt(resp, "prevClosePrice"),
-        open_price: num_opt(resp, "openPrice"),
-        high_price: num_opt(resp, "highPrice"),
-        low_price: num_opt(resp, "lowPrice"),
-        volume: num_opt(resp, "volume"),
-        quote_volume: num_opt(resp, "quoteVolume"),
+        price_change: opt_f64(resp, "priceChange"),
+        price_change_percent: opt_f64(resp, "priceChangePercent"),
+        weighted_avg_price: opt_f64(resp, "weightedAvgPrice"),
+        prev_close_price: opt_f64(resp, "prevClosePrice"),
+        open_price: opt_f64(resp, "openPrice"),
+        high_price: opt_f64(resp, "highPrice"),
+        low_price: opt_f64(resp, "lowPrice"),
+        volume: opt_f64(resp, "volume"),
+        quote_volume: opt_f64(resp, "quoteVolume"),
         source: SOURCE_BINANCE,
     }])
 }
@@ -375,14 +377,14 @@ pub(crate) fn parse_spot_okx(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
         origin: SOURCE_OKX,
         message: "empty ticker data".into(),
     })?;
-    let symbol = str_opt(item, "instId");
+    let symbol = opt_str_or(item, "instId", "");
     if symbol.is_empty() {
         return Err(Error::UpstreamChanged {
             origin: SOURCE_OKX,
             message: "missing instId".into(),
         });
     }
-    let price = match num_opt(item, "last") {
+    let price = match opt_f64(item, "last") {
         Some(v) => v,
         None => {
             return Err(Error::UpstreamChanged {
@@ -395,14 +397,14 @@ pub(crate) fn parse_spot_okx(resp: &Value) -> Result<Vec<CryptoSpotRow>> {
         symbol,
         price,
         price_change: None,
-        price_change_percent: num_opt(item, "changeRatePct"),
+        price_change_percent: opt_f64(item, "changeRatePct"),
         weighted_avg_price: None,
-        prev_close_price: num_opt(item, "open24h"),
-        open_price: num_opt(item, "open24h"),
-        high_price: num_opt(item, "high24h"),
-        low_price: num_opt(item, "low24h"),
-        volume: num_opt(item, "vol24h"),
-        quote_volume: num_opt(item, "volCcy24h"),
+        prev_close_price: opt_f64(item, "open24h"),
+        open_price: opt_f64(item, "open24h"),
+        high_price: opt_f64(item, "high24h"),
+        low_price: opt_f64(item, "low24h"),
+        volume: opt_f64(item, "vol24h"),
+        quote_volume: opt_f64(item, "volCcy24h"),
         source: SOURCE_OKX,
     }])
 }
@@ -466,16 +468,16 @@ pub(crate) fn parse_info(resp: &Value) -> Result<Vec<CryptoInfoRow>> {
         })?;
     let mut out = Vec::with_capacity(symbols.len());
     for s in symbols {
-        let symbol = str_opt(s, "symbol");
+        let symbol = opt_str_or(s, "symbol", "");
         if symbol.is_empty() {
             continue;
         }
         let (min_qty, min_notional) = parse_filters(s);
         out.push(CryptoInfoRow {
             symbol,
-            status: str_opt(s, "status"),
-            base_asset: str_opt(s, "baseAsset"),
-            quote_asset: str_opt(s, "quoteAsset"),
+            status: opt_str_or(s, "status", ""),
+            base_asset: opt_str_or(s, "baseAsset", ""),
+            quote_asset: opt_str_or(s, "quoteAsset", ""),
             base_asset_precision: u32_opt(s, "baseAssetPrecision"),
             quote_asset_precision: u32_opt(s, "quoteAssetPrecision"),
             is_spot_trading_allowed: s
@@ -540,15 +542,15 @@ pub(crate) fn parse_name_map(resp: &Value) -> Result<Vec<CryptoNameMapRow>> {
         })?;
     let mut out = Vec::with_capacity(symbols.len());
     for s in symbols {
-        let symbol = str_opt(s, "symbol");
+        let symbol = opt_str_or(s, "symbol", "");
         if symbol.is_empty() {
             continue;
         }
         out.push(CryptoNameMapRow {
             symbol,
-            base_asset: str_opt(s, "baseAsset"),
-            quote_asset: str_opt(s, "quoteAsset"),
-            status: str_opt(s, "status"),
+            base_asset: opt_str_or(s, "baseAsset", ""),
+            quote_asset: opt_str_or(s, "quoteAsset", ""),
+            status: opt_str_or(s, "status", ""),
             is_spot_trading_allowed: s
                 .get("isSpotTradingAllowed")
                 .and_then(|v| v.as_bool())
@@ -573,17 +575,6 @@ fn date_to_ms(s: &str) -> Result<i64> {
         .and_hms_opt(0, 0, 0)
         .ok_or_else(|| Error::InvalidParam(format!("bad date: {s}")))?;
     Ok(nt.and_utc().timestamp_millis())
-}
-
-fn str_opt(v: &Value, k: &str) -> String {
-    v.get(k)
-        .and_then(|x| x.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn num_opt(v: &Value, k: &str) -> Option<f64> {
-    v.get(k).and_then(num_val)
 }
 
 fn u32_opt(v: &Value, k: &str) -> Option<u32> {

@@ -4,6 +4,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ---------------------------------------------------------------------------
 // bond_zh_us_rate — 东方财富网 中美国债收益率 (datacenter API)
@@ -252,24 +253,24 @@ pub(crate) fn parse_cov_comparison(resp: &Value) -> Result<Vec<BondCovComparison
 
 fn parse_cov_item(item: &Value) -> BondCovComparison {
     let mut row = BondCovComparison::new();
-    row.code = fstr(item, "f12");
-    row.name = fstr(item, "f14");
-    row.latest_price = fnum(item, "f2");
-    row.pct_change = fnum(item, "f3");
-    row.stock_code = fstr(item, "f234");
-    row.stock_name = fstr(item, "f236");
-    row.stock_price = fnum(item, "f231");
-    row.stock_pct_change = fnum(item, "f232");
-    row.transfer_price = fnum(item, "f237");
-    row.transfer_value = fnum(item, "f238");
-    row.transfer_premium_ratio = fnum(item, "f239");
-    row.pure_bond_premium_ratio = fnum(item, "f240");
-    row.resale_trigger_price = fnum(item, "f241");
-    row.redeem_trigger_price = fnum(item, "f242");
-    row.pure_bond_value = fnum(item, "f229");
-    row.maturity_redeem_price = fnum(item, "f243");
-    row.listing_date = fstr(item, "f227");
-    row.start_transfer_date = fstr(item, "f26");
+    row.code = opt_str_or(item, "f12", "");
+    row.name = opt_str_or(item, "f14", "");
+    row.latest_price = opt_f64(item, "f2");
+    row.pct_change = opt_f64(item, "f3");
+    row.stock_code = opt_str_or(item, "f234", "");
+    row.stock_name = opt_str_or(item, "f236", "");
+    row.stock_price = opt_f64(item, "f231");
+    row.stock_pct_change = opt_f64(item, "f232");
+    row.transfer_price = opt_f64(item, "f237");
+    row.transfer_value = opt_f64(item, "f238");
+    row.transfer_premium_ratio = opt_f64(item, "f239");
+    row.pure_bond_premium_ratio = opt_f64(item, "f240");
+    row.resale_trigger_price = opt_f64(item, "f241");
+    row.redeem_trigger_price = opt_f64(item, "f242");
+    row.pure_bond_value = opt_f64(item, "f229");
+    row.maturity_redeem_price = opt_f64(item, "f243");
+    row.listing_date = opt_str_or(item, "f227", "");
+    row.start_transfer_date = opt_str_or(item, "f26", "");
     row
 }
 
@@ -284,21 +285,6 @@ pub(crate) fn fmt_date(s: &str) -> String {
     } else {
         s.to_string()
     }
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 fn num(v: Option<&Value>) -> Option<f64> {

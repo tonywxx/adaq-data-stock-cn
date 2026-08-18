@@ -37,6 +37,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE: &str = "eastmoney";
 const PUSH2_URL: &str = "https://95.push2.eastmoney.com/api/qt/clist/get";
@@ -47,18 +48,6 @@ const PUSH2HIS_UT: &str = "f057cbcbce2a86e2866ab8877db1d059";
 // ---------------------------------------------------------------------------
 // Shared helpers (push2 response shape)
 // ---------------------------------------------------------------------------
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `data.diff` (the realtime row array) from a push2 clist response.
 fn push2_diff_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -125,17 +114,17 @@ pub(crate) fn parse_reits_realtime(diff: &[Value]) -> Result<Vec<ReitsRealtimeRo
     for (i, item) in diff.iter().enumerate() {
         out.push(ReitsRealtimeRow {
             seq: i + 1,
-            code: fstr(item, "f12").unwrap_or_default(),
-            name: fstr(item, "f14").unwrap_or_default(),
-            latest_price: fnum(item, "f2"),
-            change_amount: fnum(item, "f4"),
-            change_pct: fnum(item, "f3"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            open: fnum(item, "f17"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            prev_close: fnum(item, "f18"),
+            code: opt_str(item, "f12").unwrap_or_default(),
+            name: opt_str(item, "f14").unwrap_or_default(),
+            latest_price: opt_f64(item, "f2"),
+            change_amount: opt_f64(item, "f4"),
+            change_pct: opt_f64(item, "f3"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            open: opt_f64(item, "f17"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            prev_close: opt_f64(item, "f18"),
         });
     }
     Ok(out)
@@ -242,10 +231,10 @@ async fn reits_code_market_map(client: &Client) -> Result<HashMap<String, String
     let diff = push2_diff_array(&v)?;
     let mut map = HashMap::with_capacity(diff.len());
     for item in diff {
-        let Some(code) = fstr(item, "f12") else {
+        let Some(code) = opt_str(item, "f12") else {
             continue;
         };
-        let market = fnum(item, "f13").map(|m| m as i64).unwrap_or(0).to_string();
+        let market = opt_f64(item, "f13").map(|m| m as i64).unwrap_or(0).to_string();
         map.insert(code, market);
     }
     Ok(map)

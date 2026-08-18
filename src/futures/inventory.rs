@@ -8,6 +8,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 
@@ -116,30 +117,16 @@ pub(crate) fn parse_inventory(resp: &Value) -> Result<Vec<FuturesInventoryRow>> 
             continue;
         }
         out.push(FuturesInventoryRow {
-            symbol: fstr(item, "SECURITY_CODE"),
-            date: fstr(item, "TRADE_DATE"),
-            inventory: fnum(item, "ON_WARRANT_NUM"),
-            change: fnum(item, "ADDCHANGE"),
+            symbol: opt_str_or(item, "SECURITY_CODE", ""),
+            date: opt_str_or(item, "TRADE_DATE", ""),
+            inventory: opt_f64(item, "ON_WARRANT_NUM"),
+            change: opt_f64(item, "ADDCHANGE"),
             source: SOURCE_EASTMONEY,
         });
     }
     Ok(out)
 }
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 #[cfg(test)]
 mod tests {

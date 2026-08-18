@@ -35,6 +35,7 @@ use scraper::{Html, Selector};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// SHFE daily position-rank endpoint (JSON, `o_cursor`).
 const SOURCE_SHFE: &str = "shfe";
@@ -142,19 +143,19 @@ pub(crate) fn parse_shfe_rank(resp: &Value, date: &str) -> Result<Vec<ShfeRankRo
     };
     let mut out = Vec::with_capacity(cursor.len());
     for item in cursor {
-        let symbol = fstr(item, "INSTRUMENTID").unwrap_or_default();
+        let symbol = opt_str(item, "INSTRUMENTID").unwrap_or_default();
         let variety = variety_of(&symbol);
         out.push(ShfeRankRow {
-            rank: inum(item, "RANK"),
-            vol_party_name: fstr(item, "PARTICIPANTABBR1").unwrap_or_default(),
-            vol: fnum(item, "CJ1"),
-            vol_chg: fnum(item, "CJ1_CHG"),
-            long_party_name: fstr(item, "PARTICIPANTABBR2").unwrap_or_default(),
-            long_open_interest: fnum(item, "CJ2"),
-            long_open_interest_chg: fnum(item, "CJ2_CHG"),
-            short_party_name: fstr(item, "PARTICIPANTABBR3").unwrap_or_default(),
-            short_open_interest: fnum(item, "CJ3"),
-            short_open_interest_chg: fnum(item, "CJ3_CHG"),
+            rank: opt_i64(item, "RANK"),
+            vol_party_name: opt_str(item, "PARTICIPANTABBR1").unwrap_or_default(),
+            vol: opt_f64(item, "CJ1"),
+            vol_chg: opt_f64(item, "CJ1_CHG"),
+            long_party_name: opt_str(item, "PARTICIPANTABBR2").unwrap_or_default(),
+            long_open_interest: opt_f64(item, "CJ2"),
+            long_open_interest_chg: opt_f64(item, "CJ2_CHG"),
+            short_party_name: opt_str(item, "PARTICIPANTABBR3").unwrap_or_default(),
+            short_open_interest: opt_f64(item, "CJ3"),
+            short_open_interest_chg: opt_f64(item, "CJ3_CHG"),
             symbol,
             variety,
             date: date.to_string(),
@@ -321,9 +322,9 @@ fn parse_gfex_page(page: &Value) -> Vec<GfexPageRow> {
     if let Some(arr) = page.get("data").and_then(|d| d.as_array()) {
         for item in arr {
             out.push(GfexPageRow {
-                abbr: fstr(item, "abbr").unwrap_or_default(),
-                qty: fnum(item, "todayQty"),
-                qty_chg: fnum(item, "qtySub"),
+                abbr: opt_str(item, "abbr").unwrap_or_default(),
+                qty: opt_f64(item, "todayQty"),
+                qty_chg: opt_f64(item, "qtySub"),
             });
         }
     }
@@ -377,43 +378,6 @@ pub(crate) fn parse_gfex_contract_data(
 // ---------------------------------------------------------------------------
 // helpers
 // ---------------------------------------------------------------------------
-
-/// Extract a string field, returning `None` when missing or not a string.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Extract a numeric field, tolerating numeric strings (commas stripped, `-`/empty → `None`).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => {
-            let t = s.replace(',', "");
-            if t.is_empty() || t == "-" {
-                None
-            } else {
-                t.parse::<f64>().ok()
-            }
-        }
-        _ => None,
-    })
-}
-
-/// Extract an integer field, tolerating numeric strings (commas stripped, `-`/empty → `None`).
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => {
-            let t = s.replace(',', "");
-            if t.is_empty() || t == "-" {
-                None
-            } else {
-                t.parse::<i64>().ok()
-            }
-        }
-        _ => None,
-    })
-}
 
 /// Variety = leading alphabetic prefix of a contract symbol (e.g. `cu2410` → `cu`).
 fn variety_of(symbol: &str) -> String {
@@ -515,28 +479,14 @@ pub(crate) fn parse_dce_rank_table(
     contract: &str,
     endpoint: &'static str,
 ) -> Result<Vec<DcePositionRankOtherRow>> {
-    let doc = Html::parse_document(html);
-    let table_sel = Selector::parse("table").unwrap();
-    let tr_sel = Selector::parse("tr").unwrap();
-    let cell_sel = Selector::parse("td,th").unwrap();
-    let mut tables: Vec<Vec<Vec<String>>> = Vec::new();
-    for table in doc.select(&table_sel) {
-        let rows: Vec<Vec<String>> = table
-            .select(&tr_sel)
-            .map(|tr| {
-                tr.select(&cell_sel)
-                    .map(|c| c.text().collect::<Vec<_>>().join(" ").split_whitespace().collect::<Vec<_>>().join(" "))
-                    .collect()
-            })
-            .collect();
-        if !rows.is_empty() {
-            tables.push(rows);
-        }
-    }
-    let rows = tables.get(1).ok_or_else(|| Error::UpstreamChanged {
-        origin: endpoint,
-        message: "rank table[1] not found".into(),
-    })?;
+    let all = crate::core::html::tables_with(html, endpoint, "table")?;
+    let rows = all
+        .into_iter()
+        .nth(1)
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: endpoint,
+            message: "rank table[1] not found".into(),
+        })?;
     let out: Vec<DcePositionRankOtherRow> = rows
         .iter()
         .skip(1) // header

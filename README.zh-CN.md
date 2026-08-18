@@ -30,7 +30,7 @@ tokio = { version = "1", features = ["full"] }   # 异步运行时(示例用 mac
 
 可选特性:
 
-- `parquet` — 启用 Parquet 导出(默认关闭,保持核心精简,见 ADR-0001/0014)。
+- `parquet` — 启用 Parquet 导出(默认关闭,保持核心精简,见 ADR-0001/0008)。
 
 ```toml
 adaq-data-stock-cn = { version = "0.1", features = ["parquet"] }
@@ -131,6 +131,7 @@ let html = client
 
 ## 文档
 
+- 更新日志:[`CHANGELOG.md`](CHANGELOG.md)
 - 对标表(覆盖率 / 上游锚点):[`docs/MAPPING.md`](docs/MAPPING.md)
 - 浏览器模拟重审:[`docs/IMPERSONATE_RETRIAGE.md`](docs/IMPERSONATE_RETRIAGE.md)
 - 路线图:[`ROADMAP.md`](ROADMAP.md)

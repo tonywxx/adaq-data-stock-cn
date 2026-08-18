@@ -33,7 +33,10 @@ use std::time::Duration;
 use impersonate_rs::{Browser, Client as ImpClient};
 use serde_json::Value;
 
+use crate::core::client::ClientConfig;
 use crate::core::error::{Error, Result};
+use crate::core::resilience::{CacheLayer, RateLimiter, RetryPolicy};
+use crate::core::util::urlencode;
 
 /// Request body for the impersonate backend (GET carries none; POST carries
 /// either form-encoded params or a raw JSON document).
@@ -41,6 +44,24 @@ enum RequestBody<'a> {
     None,
     Form(&'a [(&'a str, &'a str)]),
     Json(&'a Value),
+}
+
+/// Owned copy of [`RequestBody`] so the retry closure (which may run more than
+/// once) carries its own data without borrowing across the retry loop.
+#[derive(Clone)]
+enum OwnedBody {
+    None,
+    Form(Vec<(String, String)>),
+    Json(Value),
+}
+
+/// Owned copy of an impersonate request, used inside the retry loop.
+#[derive(Clone)]
+struct OwnedRequest {
+    method: String,
+    url: String,
+    body: OwnedBody,
+    headers: Vec<(String, String)>,
 }
 
 /// Default browser profile to impersonate. Chrome 131 is broadly accepted and
@@ -53,11 +74,23 @@ pub const DEFAULT_TIMEOUT: Duration = Duration::from_secs(20);
 /// Default Accept-Language, matching a typical zh-CN desktop Chrome.
 const DEFAULT_ACCEPT_LANGUAGE: &str = "zh-CN,zh;q=0.9,en;q=0.8";
 
+/// Source bucket for the impersonate backend's rate-limit / cache. It serves
+/// many anti-bot hosts, so a single shared bucket is sufficient (the reqwest
+/// backend buckets per source; see `crate::core::client::SOURCE_*`).
+const SOURCE_IMPERSONATE: &str = "impersonate";
+
 /// A browser-impersonating HTTP client (async wrapper over `impersonate_rs`).
+///
+/// Shares the same retry/backoff, per-source rate-limiting and on-disk cache
+/// primitives as the reqwest backend (see `crate::core::resilience`), so
+/// Sina/Baidu/jisilu traffic is no longer silently missing resilience (C2).
 #[derive(Clone)]
 pub struct Client {
     inner: ImpClient,
     timeout: Duration,
+    rate_limiter: RateLimiter,
+    retry_policy: RetryPolicy,
+    cache: Option<CacheLayer>,
 }
 
 impl Client {
@@ -67,8 +100,11 @@ impl Client {
         Self::with_browser(DEFAULT_BROWSER)
     }
 
-    /// Build a client impersonating a specific [`Browser`] profile.
+    /// Build a client impersonating a specific [`Browser`] profile, with the
+    /// default resilience config (retry/backoff + per-source rate limiting;
+    /// cache off by default, mirroring `ClientConfig::default`).
     pub fn with_browser(browser: Browser) -> Self {
+        let cfg = ClientConfig::default();
         let inner = ImpClient::builder()
             .impersonate(browser)
             .timeout(DEFAULT_TIMEOUT)
@@ -76,6 +112,9 @@ impl Client {
         Self {
             inner,
             timeout: DEFAULT_TIMEOUT,
+            rate_limiter: RateLimiter::new(cfg.per_source_rps),
+            retry_policy: RetryPolicy::new(cfg.max_retries, cfg.base_backoff),
+            cache: None,
         }
     }
 
@@ -107,8 +146,17 @@ impl Client {
         url: &str,
         headers: Option<&[(&str, &str)]>,
     ) -> Result<Value> {
+        if let Some(c) = &self.cache {
+            if let Some(v) = c.read(&c.key(SOURCE_IMPERSONATE, url, &[])) {
+                return Ok(v);
+            }
+        }
         let text = self.get_text(url, headers).await?;
-        serde_json::from_str(&text).map_err(Error::Json)
+        let v = serde_json::from_str(&text).map_err(Error::Json)?;
+        if let Some(c) = &self.cache {
+            c.write(&c.key(SOURCE_IMPERSONATE, url, &[]), &v);
+        }
+        Ok(v)
     }
 
     /// POST form-encoded params and parse the JSON response.
@@ -118,8 +166,17 @@ impl Client {
         form: &[(&str, &str)],
         headers: Option<&[(&str, &str)]>,
     ) -> Result<Value> {
+        if let Some(c) = &self.cache {
+            if let Some(v) = c.read(&c.key(SOURCE_IMPERSONATE, url, &[])) {
+                return Ok(v);
+            }
+        }
         let text = self.post_form_text(url, form, headers).await?;
-        serde_json::from_str(&text).map_err(Error::Json)
+        let v = serde_json::from_str(&text).map_err(Error::Json)?;
+        if let Some(c) = &self.cache {
+            c.write(&c.key(SOURCE_IMPERSONATE, url, &[]), &v);
+        }
+        Ok(v)
     }
 
     /// POST a JSON request body and parse the JSON response (used by Eastmoney
@@ -130,10 +187,19 @@ impl Client {
         body: &Value,
         headers: Option<&[(&str, &str)]>,
     ) -> Result<Value> {
+        if let Some(c) = &self.cache {
+            if let Some(v) = c.read(&c.key(SOURCE_IMPERSONATE, url, &[])) {
+                return Ok(v);
+            }
+        }
         let text = self
             .fetch_text("POST", url, RequestBody::Json(body), headers)
             .await?;
-        serde_json::from_str(&text).map_err(Error::Json)
+        let v = serde_json::from_str(&text).map_err(Error::Json)?;
+        if let Some(c) = &self.cache {
+            c.write(&c.key(SOURCE_IMPERSONATE, url, &[]), &v);
+        }
+        Ok(v)
     }
 
     async fn fetch_text(
@@ -143,68 +209,85 @@ impl Client {
         body: RequestBody<'_>,
         headers: Option<&[(&str, &str)]>,
     ) -> Result<String> {
+        // Owned copy of the borrowed body/headers: the retry closure may run
+        // more than once, so it must carry self-contained data.
+        let owned = OwnedRequest {
+            method: method.to_string(),
+            url: url.to_string(),
+            body: match body {
+                RequestBody::None => OwnedBody::None,
+                RequestBody::Form(f) => OwnedBody::Form(
+                    f.iter()
+                        .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
+                        .collect(),
+                ),
+                RequestBody::Json(v) => OwnedBody::Json(v.clone()),
+            },
+            headers: headers
+                .map(|h| h.iter().map(|(k, v)| ((*k).to_string(), (*v).to_string())).collect())
+                .unwrap_or_default(),
+        };
+        let rl = self.rate_limiter.clone();
         let inner = self.inner.clone();
         let timeout = self.timeout;
-        let url = url.to_string();
-        let method = method.to_string();
-        let extra_headers: Vec<(String, String)> = headers
-            .map(|h| h.iter().map(|(k, v)| ((*k).to_string(), (*v).to_string())).collect())
-            .unwrap_or_default();
-        let form_pairs: Vec<(String, String)> = match body {
-            RequestBody::Form(f) => f
-                .iter()
-                .map(|(k, v)| ((*k).to_string(), (*v).to_string()))
-                .collect(),
-            _ => Vec::new(),
-        };
-        let json_body: Option<String> = match body {
-            RequestBody::Json(v) => Some(serde_json::to_string(v).map_err(Error::Json)?),
-            _ => None,
-        };
 
-        tokio::task::spawn_blocking(move || {
-            // Build the request. `impersonate_rs::Client` is cheap to clone and
-            // already carries the browser profile + default Chrome headers.
-            let mut req = match method.as_str() {
-                "POST" => inner.post(&url),
-                _ => inner.get(&url),
-            };
-            req = req.timeout(timeout);
-
-            for (k, v) in &extra_headers {
-                req = req.header(k, v).map_err(|e| Error::Impersonate(e.to_string()))?;
-            }
-            match (&json_body, !form_pairs.is_empty()) {
-                (Some(json), _) => {
-                    req = req
-                        .header("Content-Type", "application/json")
-                        .map_err(|e| Error::Impersonate(e.to_string()))?;
-                    req = req.body(json.clone());
+        // Retry/backoff + rate limiting are shared with the reqwest backend via
+        // `crate::core::resilience`. `impersonate_rs` is blocking curl, so the
+        // curl call runs on `spawn_blocking`; the rate-limit acquire happens in
+        // the async context before it.
+        self.retry_policy
+            .run(|| {
+                let rl = rl.clone();
+                let inner = inner.clone();
+                let owned = owned.clone();
+                async move {
+                    rl.acquire(SOURCE_IMPERSONATE).await;
+                    let out: Result<String> = tokio::task::spawn_blocking(move || {
+                        let mut req = match owned.method.as_str() {
+                            "POST" => inner.post(&owned.url),
+                            _ => inner.get(&owned.url),
+                        };
+                        req = req.timeout(timeout);
+                        for (k, v) in &owned.headers {
+                            req = req
+                                .header(k, v)
+                                .map_err(|e| Error::Impersonate(e.to_string()))?;
+                        }
+                        match &owned.body {
+                            OwnedBody::Json(v) => {
+                                req = req
+                                    .header("Content-Type", "application/json")
+                                    .map_err(|e| Error::Impersonate(e.to_string()))?;
+                                req = req.body(serde_json::to_string(v).map_err(Error::Json)?);
+                            }
+                            OwnedBody::Form(f) => {
+                                // URL-encode the form body manually (avoids an extra
+                                // serde dep round-trip and keeps ordering explicit).
+                                let payload = f
+                                    .iter()
+                                    .map(|(k, v)| format!("{}={}", urlencode(k), urlencode(v)))
+                                    .collect::<Vec<_>>()
+                                    .join("&");
+                                req = req.body(payload);
+                            }
+                            OwnedBody::None => {}
+                        }
+                        let resp =
+                            req.send().map_err(|e| Error::Impersonate(e.to_string()))?;
+                        if resp.status() >= 400 {
+                            return Err(Error::UpstreamChanged {
+                                origin: "impersonate",
+                                message: format!("HTTP {}", resp.status()),
+                            });
+                        }
+                        Ok(decode_body(&resp.bytes()))
+                    })
+                    .await
+                    .map_err(|e| Error::Impersonate(format!("task join error: {e}")))?;
+                    out
                 }
-                (None, true) => {
-                    // URL-encode the form body manually (avoids an extra serde dep
-                    // round-trip in the builder and keeps ordering explicit).
-                    let payload = form_pairs
-                        .iter()
-                        .map(|(k, v)| format!("{}={}", urlencode(k), urlencode(v)))
-                        .collect::<Vec<_>>()
-                        .join("&");
-                    req = req.body(payload);
-                }
-                (None, false) => {}
-            }
-            let resp = req.send().map_err(|e| Error::Impersonate(e.to_string()))?;
-            if resp.status() >= 400 {
-                return Err(Error::UpstreamChanged {
-                    origin: "impersonate",
-                    message: format!("HTTP {}", resp.status()),
-                });
-            }
-            let bytes = resp.bytes();
-            Ok(decode_body(bytes))
-        })
-        .await
-        .map_err(|e| Error::Impersonate(format!("task join error: {e}")))?
+            })
+            .await
     }
 }
 
@@ -237,34 +320,6 @@ pub fn decode_body(bytes: &[u8]) -> String {
     }
 }
 
-/// Minimal percent-encoder for form bodies (RFC 3986, encode spaces as `+`
-/// and everything non-alphanumeric as `%XX`). Mirrors how browsers submit
-/// `application/x-www-form-urlencoded`.
-fn urlencode(input: &str) -> String {
-    let mut out = String::with_capacity(input.len());
-    for b in input.bytes() {
-        match b {
-            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => {
-                out.push(b as char)
-            }
-            b' ' => out.push('+'),
-            _ => {
-                out.push('%');
-                out.push(hex_digit(b >> 4));
-                out.push(hex_digit(b & 0x0f));
-            }
-        }
-    }
-    out
-}
-
-fn hex_digit(n: u8) -> char {
-    match n {
-        0..=9 => (b'0' + n) as char,
-        _ => (b'A' + (n - 10)) as char,
-    }
-}
-
 /// Convenience: a one-shot impersonated GET returning decoded text.
 pub async fn get_text(url: &str, headers: Option<&[(&str, &str)]>) -> Result<String> {
     Client::new().get_text(url, headers).await
@@ -288,6 +343,7 @@ pub fn default_headers_map() -> HashMap<&'static str, &'static str> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::core::util::urlencode;
 
     #[test]
     fn decode_utf8_passthrough() {

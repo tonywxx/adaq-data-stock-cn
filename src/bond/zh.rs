@@ -35,6 +35,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// NAFMII source id (local, not in `core::client`).
 const SOURCE_NAFMII: &str = "nafmii";
@@ -218,11 +219,11 @@ pub(crate) fn parse_bond_debt_nafmii(items: &[Value]) -> Result<Vec<BondDebtNafm
 
 /// Parse one NAFMII `rows` object (`&Value`) into a [`BondDebtNafmii`].
 fn parse_nafmii_item(item: &Value) -> Option<BondDebtNafmii> {
-    let bond_name = fstr(item, "regFileName");
+    let bond_name = opt_str_or(item, "regFileName", "");
     if bond_name.is_empty() {
         return None;
     }
-    let notice = fstr(item, "regNoticeNo");
+    let notice = opt_str_or(item, "regNoticeNo", "");
     let reg_notice_no = if notice.is_empty() {
         None
     } else {
@@ -230,12 +231,12 @@ fn parse_nafmii_item(item: &Value) -> Option<BondDebtNafmii> {
     };
     Some(BondDebtNafmii {
         bond_name,
-        product_type: fstr(item, "regPrdtType"),
-        is_reg: fstr(item, "isReg"),
-        amount: fnum(item, "firstIssueAmount"),
+        product_type: opt_str_or(item, "regPrdtType", ""),
+        is_reg: opt_str_or(item, "isReg", ""),
+        amount: opt_f64(item, "firstIssueAmount"),
         reg_notice_no,
         release_time: fstr_opt(item, "releaseTime"),
-        proj_phase: fstr(item, "projPhase"),
+        proj_phase: opt_str_or(item, "projPhase", ""),
         source: SOURCE_NAFMII,
     })
 }
@@ -266,24 +267,11 @@ fn at_num(arr: &[Value], idx: usize) -> Option<f64> {
     })
 }
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
 
 fn fstr_opt(item: &Value, k: &str) -> Option<String> {
     item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
 }
 
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // tests

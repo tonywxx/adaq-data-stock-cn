@@ -30,6 +30,8 @@ use serde_json::Value;
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
+use crate::core::json::*;
+
 /// Eastmoney source bucket, for rate limiting / error context.
 const SOURCE_EASTMONEY: &str = "eastmoney";
 
@@ -39,29 +41,6 @@ const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 // ---------------------------------------------------------------------------
 // Shared helpers (mirrors `lhb.rs` / `gdfx.rs` convention)
 // ---------------------------------------------------------------------------
-
-/// Read a string field, returning `None` when missing/null.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
-#[allow(dead_code)]
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from a datacenter-web response.
 fn data_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -254,19 +233,19 @@ pub(crate) fn parse_stock_register_em(resp: &Value) -> Result<Vec<RptIpoInfoalln
     let mut out = Vec::with_capacity(data.len());
     for (i, item) in data.iter().enumerate() {
         let prospectus =
-            fstr(item, "INFO_CODE").map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
+            opt_str(item, "INFO_CODE").map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
         out.push(RptIpoInfoallnewRow {
             seq: i + 1,
-            declare_org: fstr(item, "DECLARE_ORG"),
-            state: fstr(item, "STATE"),
-            reg_address: fstr(item, "REG_ADDRESS"),
-            csrc_industry: fstr(item, "CSRC_INDUSTRY"),
-            recommend_org: fstr(item, "RECOMMEND_ORG"),
-            law_firm: fstr(item, "LAW_FIRM"),
-            account_firm: fstr(item, "ACCOUNT_FIRM"),
-            update_date: fstr(item, "UPDATE_DATE"),
-            accept_date: fstr(item, "ACCEPT_DATE"),
-            predict_listing_market: fstr(item, "PREDICT_LISTING_MARKET"),
+            declare_org: opt_str(item, "DECLARE_ORG"),
+            state: opt_str(item, "STATE"),
+            reg_address: opt_str(item, "REG_ADDRESS"),
+            csrc_industry: opt_str(item, "CSRC_INDUSTRY"),
+            recommend_org: opt_str(item, "RECOMMEND_ORG"),
+            law_firm: opt_str(item, "LAW_FIRM"),
+            account_firm: opt_str(item, "ACCOUNT_FIRM"),
+            update_date: opt_str(item, "UPDATE_DATE"),
+            accept_date: opt_str(item, "ACCEPT_DATE"),
+            predict_listing_market: opt_str(item, "PREDICT_LISTING_MARKET"),
             prospectus,
         });
     }
@@ -309,7 +288,7 @@ pub(crate) fn parse_stock_register_db_em(resp: &Value) -> Result<Vec<RptKcbIpoRo
     for (i, item) in data.iter().enumerate() {
         out.push(RptKcbIpoRow {
             seq: i + 1,
-            org_name: fstr(item, "ORG_NAME"),
+            org_name: opt_str(item, "ORG_NAME"),
         });
     }
     Ok(out)
@@ -372,17 +351,17 @@ pub(crate) fn parse_stock_ipo_declare_em(resp: &Value) -> Result<Vec<RptIpoDecor
     let mut out = Vec::with_capacity(data.len());
     for (i, item) in data.iter().enumerate() {
         let prospectus =
-            fstr(item, "INFO_CODE").map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
+            opt_str(item, "INFO_CODE").map(|c| format!("https://pdf.dfcfw.com/pdf/H2_{}_1.pdf", c));
         out.push(RptIpoDecorgnewestRow {
             seq: i + 1,
-            declare_org: fstr(item, "DECLARE_ORG"),
-            state: fstr(item, "STATE"),
-            reg_address: fstr(item, "REG_ADDRESS"),
-            recommend_org: fstr(item, "RECOMMEND_ORG"),
-            law_firm: fstr(item, "LAW_FIRM"),
-            account_firm: fstr(item, "ACCOUNT_FIRM"),
-            predict_listing_market: fstr(item, "PREDICT_LISTING_MARKET"),
-            update_date: fstr(item, "END_DATE"),
+            declare_org: opt_str(item, "DECLARE_ORG"),
+            state: opt_str(item, "STATE"),
+            reg_address: opt_str(item, "REG_ADDRESS"),
+            recommend_org: opt_str(item, "RECOMMEND_ORG"),
+            law_firm: opt_str(item, "LAW_FIRM"),
+            account_firm: opt_str(item, "ACCOUNT_FIRM"),
+            predict_listing_market: opt_str(item, "PREDICT_LISTING_MARKET"),
+            update_date: opt_str(item, "END_DATE"),
             prospectus,
         });
     }
@@ -448,18 +427,18 @@ pub(crate) fn parse_stock_ipo_review_em(resp: &Value) -> Result<Vec<RptIpoReview
     for (i, item) in data.iter().enumerate() {
         out.push(RptIpoReviewRow {
             seq: i + 1,
-            org_name: fstr(item, "ORG_NAME"),
-            security_name_abbr: fstr(item, "SECURITY_NAME_ABBR"),
-            security_code: fstr(item, "SECURITY_CODE"),
-            trade_market: fstr(item, "TRADE_MARKET"),
-            review_date: fstr(item, "REVIEW_DATE"),
-            review_state: fstr(item, "REVIEW_STATE"),
-            review_member: fstr(item, "REVIEW_MEMBER"),
-            lead_underwriter: fstr(item, "LEAD_UNDERWRITER"),
-            issue_num: fnum(item, "ISSUE_NUM"),
-            finance_amt_upper: fnum(item, "FINANCE_AMT_UPPER"),
-            notice_date: fstr(item, "NOTICE_DATE"),
-            listing_date: fstr(item, "LISTING_DATE"),
+            org_name: opt_str(item, "ORG_NAME"),
+            security_name_abbr: opt_str(item, "SECURITY_NAME_ABBR"),
+            security_code: opt_str(item, "SECURITY_CODE"),
+            trade_market: opt_str(item, "TRADE_MARKET"),
+            review_date: opt_str(item, "REVIEW_DATE"),
+            review_state: opt_str(item, "REVIEW_STATE"),
+            review_member: opt_str(item, "REVIEW_MEMBER"),
+            lead_underwriter: opt_str(item, "LEAD_UNDERWRITER"),
+            issue_num: opt_f64(item, "ISSUE_NUM"),
+            finance_amt_upper: opt_f64(item, "FINANCE_AMT_UPPER"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
+            listing_date: opt_str(item, "LISTING_DATE"),
         });
     }
     Ok(out)
@@ -518,13 +497,13 @@ pub(crate) fn parse_stock_ipo_tutor_em(resp: &Value) -> Result<Vec<RptIpoTutreco
     for (i, item) in data.iter().enumerate() {
         out.push(RptIpoTutrecordRow {
             seq: i + 1,
-            tutor_object: fstr(item, "TUTOR_OBJECT"),
-            tutor_org: fstr(item, "TUTOR_ORG"),
-            tutor_process_state: fstr(item, "TUTOR_PROCESS_STATE"),
-            report_type: fstr(item, "REPORT_TYPE"),
-            dispatch_org: fstr(item, "DISPATCH_ORG"),
-            report_title: fstr(item, "REPORT_TITLE"),
-            record_date: fstr(item, "RECORD_DATE"),
+            tutor_object: opt_str(item, "TUTOR_OBJECT"),
+            tutor_org: opt_str(item, "TUTOR_ORG"),
+            tutor_process_state: opt_str(item, "TUTOR_PROCESS_STATE"),
+            report_type: opt_str(item, "REPORT_TYPE"),
+            dispatch_org: opt_str(item, "DISPATCH_ORG"),
+            report_title: opt_str(item, "REPORT_TITLE"),
+            record_date: opt_str(item, "RECORD_DATE"),
         });
     }
     Ok(out)
@@ -616,18 +595,18 @@ pub(crate) fn parse_stock_profit_forecast_em(resp: &Value) -> Result<Vec<RptWebR
         };
         out.push(RptWebRespredictRow {
             seq: i + 1,
-            rating_org_num: fnum(&inner, "RATING_ORG_NUM"),
-            security_code: fstr(&inner, "SECURITY_CODE"),
-            security_name_abbr: fstr(&inner, "SECURITY_NAME_ABBR"),
-            num_buy: fnum(&inner, "NUM_BUY"),
-            num_add: fnum(&inner, "NUM_ADD"),
-            num_neutral: fnum(&inner, "NUM_NEUTRAL"),
-            num_reduce: fnum(&inner, "NUM_REDUCE"),
-            num_sale: fnum(&inner, "NUM_SALE"),
-            predict_eps1: fnum(&inner, "PREDICT_EPS1"),
-            predict_eps2: fnum(&inner, "PREDICT_EPS2"),
-            predict_eps3: fnum(&inner, "PREDICT_EPS3"),
-            predict_eps4: fnum(&inner, "PREDICT_EPS4"),
+            rating_org_num: opt_f64(&inner, "RATING_ORG_NUM"),
+            security_code: opt_str(&inner, "SECURITY_CODE"),
+            security_name_abbr: opt_str(&inner, "SECURITY_NAME_ABBR"),
+            num_buy: opt_f64(&inner, "NUM_BUY"),
+            num_add: opt_f64(&inner, "NUM_ADD"),
+            num_neutral: opt_f64(&inner, "NUM_NEUTRAL"),
+            num_reduce: opt_f64(&inner, "NUM_REDUCE"),
+            num_sale: opt_f64(&inner, "NUM_SALE"),
+            predict_eps1: opt_f64(&inner, "PREDICT_EPS1"),
+            predict_eps2: opt_f64(&inner, "PREDICT_EPS2"),
+            predict_eps3: opt_f64(&inner, "PREDICT_EPS3"),
+            predict_eps4: opt_f64(&inner, "PREDICT_EPS4"),
         });
     }
     Ok(out)

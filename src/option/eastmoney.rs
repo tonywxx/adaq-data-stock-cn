@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Static, well-known Eastmoney `ut` token — no JS signing required (ADR-0005).
 const UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
@@ -148,13 +149,13 @@ pub(crate) fn parse(resp: &Value) -> Result<Vec<OptionDailyRow>> {
         out.push(OptionDailyRow {
             symbol: String::new(),
             date: parts[0].to_string(),
-            open: parse_f64(parts[1]),
-            close: parse_f64(parts[2]),
-            high: parse_f64(parts[3]),
-            low: parse_f64(parts[4]),
-            volume: parse_f64(parts[5]),
-            amount: parse_f64(parts[6]),
-            open_interest: parts.get(11).and_then(|v| parse_f64(v)),
+            open: parse_f64_str(parts[1]),
+            close: parse_f64_str(parts[2]),
+            high: parse_f64_str(parts[3]),
+            low: parse_f64_str(parts[4]),
+            volume: parse_f64_str(parts[5]),
+            amount: parse_f64_str(parts[6]),
+            open_interest: parts.get(11).and_then(|v| parse_f64_str(v)),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -183,11 +184,11 @@ pub(crate) fn parse_minute(resp: &Value, secid: &str) -> Result<Vec<OptionMinute
         out.push(OptionMinuteRow {
             secid: secid.to_string(),
             time: parts[0].to_string(),
-            close: parse_f64(parts[1]),
-            high: parse_f64(parts[2]),
-            low: parse_f64(parts[3]),
-            volume: parse_f64(parts[4]),
-            amount: parse_f64(parts[5]),
+            close: parse_f64_str(parts[1]),
+            high: parse_f64_str(parts[2]),
+            low: parse_f64_str(parts[3]),
+            volume: parse_f64_str(parts[4]),
+            amount: parse_f64_str(parts[5]),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -229,15 +230,6 @@ fn adjust_map(adjust: &str) -> Result<&'static str> {
         .find(|(k, _)| *k == adjust)
         .map(|(_, v)| *v)
         .ok_or_else(|| Error::InvalidParam(format!("unknown adjust: {adjust}")))
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
 }
 
 #[cfg(test)]

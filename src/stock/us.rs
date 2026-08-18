@@ -33,6 +33,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_USHKNEWS: &str = "ushknews";
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -50,17 +51,6 @@ const PINK_URL: &str = "https://23.push2.eastmoney.com/api/qt/clist/get";
 const PINK_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const PINK_PAGE_SIZE: u32 = 100;
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ===========================================================================
 // stock_us_famous_spot_em  (akshare stock_us_js.py:13, stock_price_js)
@@ -197,21 +187,21 @@ pub(crate) fn parse_stock_us_pink_spot_em(resp: &Value) -> Result<Vec<UsPinkSpot
     for item in diff {
         let code = format!(
             "{}.{}",
-            fstr(item, "f14").unwrap_or_default(),
-            fstr(item, "f13").unwrap_or_default()
+            opt_str(item, "f14").unwrap_or_default(),
+            opt_str(item, "f13").unwrap_or_default()
         );
         out.push(UsPinkSpotRow {
             code,
-            name: fstr(item, "f15").unwrap_or_default(),
-            latest_price: fnum(item, "f2"),
-            change: fnum(item, "f4"),
-            pct_change: fnum(item, "f3"),
-            open: fnum(item, "f18"),
-            high: fnum(item, "f16"),
-            low: fnum(item, "f17"),
-            pre_close: fnum(item, "f20"),
-            total_mv: fnum(item, "f21"),
-            pe: fnum(item, "f128"),
+            name: opt_str(item, "f15").unwrap_or_default(),
+            latest_price: opt_f64(item, "f2"),
+            change: opt_f64(item, "f4"),
+            pct_change: opt_f64(item, "f3"),
+            open: opt_f64(item, "f18"),
+            high: opt_f64(item, "f16"),
+            low: opt_f64(item, "f17"),
+            pre_close: opt_f64(item, "f20"),
+            total_mv: opt_f64(item, "f21"),
+            pe: opt_f64(item, "f128"),
         });
     }
     Ok(out)

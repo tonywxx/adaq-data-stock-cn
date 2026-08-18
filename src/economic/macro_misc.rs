@@ -36,6 +36,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_WALLSTREETCN: &str = "wallstreetcn";
 const SOURCE_JIN10: &str = "jin10";
@@ -51,11 +52,6 @@ fn cell_num(v: &Value) -> Option<f64> {
         Value::String(s) => s.trim().parse::<f64>().ok(),
         _ => None,
     }
-}
-
-/// Read a string field.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
 }
 
 /// Format a wallstreetcn unix-seconds `public_date` to `Asia/Shanghai`
@@ -121,13 +117,13 @@ pub(crate) fn parse_macro_info_ws(resp: &Value) -> Result<Vec<MacroInfoWsRow>> {
         let previous = revised.or_else(|| item.get("previous").and_then(cell_num));
         out.push(MacroInfoWsRow {
             time: fmt_ws_time(ts),
-            region: fstr(item, "country"),
-            event: fstr(item, "title"),
+            region: opt_str(item, "country"),
+            event: opt_str(item, "title"),
             importance: item.get("importance").and_then(cell_num),
             actual: item.get("actual").and_then(cell_num),
             forecast: item.get("forecast").and_then(cell_num),
             previous,
-            uri: fstr(item, "uri"),
+            uri: opt_str(item, "uri"),
         });
     }
     Ok(out)

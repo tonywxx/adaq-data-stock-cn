@@ -36,6 +36,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_TENCENT: &str = "tencent";
 
@@ -141,29 +142,8 @@ pub struct ZhIndexDailyTxRow {
 // Helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
 
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
-}
 
 /// Strip a JSONP wrapper (`callback={...}` or `var x={...}`) down to the bare
 /// JSON object so `serde_json` can parse it.
@@ -206,18 +186,18 @@ pub(crate) fn parse_hk_index_spot_em(resp: &Value) -> Result<Vec<HkIndexSpotEmRo
     for (i, item) in diff.iter().enumerate() {
         out.push(HkIndexSpotEmRow {
             index: Some((i + 1) as u32),
-            inner_code: fnum(item, "f13").map(|n| n.to_string()),
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2"),
-            change: fnum(item, "f4"),
-            pct_change: fnum(item, "f3"),
-            open: fnum(item, "f17"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            pre_close: fnum(item, "f18"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
+            inner_code: opt_f64(item, "f13").map(|n| n.to_string()),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
+            price: opt_f64(item, "f2"),
+            change: opt_f64(item, "f4"),
+            pct_change: opt_f64(item, "f3"),
+            open: opt_f64(item, "f17"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            pre_close: opt_f64(item, "f18"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
         });
     }
     Ok(out)
@@ -289,10 +269,10 @@ pub(crate) fn parse_hk_index_klines(resp: &Value) -> Result<Vec<HkIndexDailyEmRo
         }
         out.push(HkIndexDailyEmRow {
             date: p[0].to_string(),
-            open: parse_f64(p[1]),
-            latest: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
+            open: parse_f64_str(p[1]),
+            latest: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
         });
     }
     Ok(out)
@@ -361,13 +341,13 @@ pub(crate) fn parse_hk_index_spot_sina(text: &str) -> Vec<HkIndexSpotSinaRow> {
         out.push(HkIndexSpotSinaRow {
             code: p[0].to_string(),
             name: p[1].to_string(),
-            latest: parse_f64(p[6]),
-            change: parse_f64(p[7]),
-            pct_change: parse_f64(p[8]),
-            pre_close: parse_f64(p[3]),
-            open: parse_f64(p[2]),
-            high: parse_f64(p[4]),
-            low: parse_f64(p[5]),
+            latest: parse_f64_str(p[6]),
+            change: parse_f64_str(p[7]),
+            pct_change: parse_f64_str(p[8]),
+            pre_close: parse_f64_str(p[3]),
+            open: parse_f64_str(p[2]),
+            high: parse_f64_str(p[4]),
+            low: parse_f64_str(p[5]),
         });
     }
     out
@@ -411,12 +391,12 @@ pub(crate) fn parse_zh_index_klines(resp: &Value) -> Result<Vec<ZhIndexDailyEmRo
         }
         out.push(ZhIndexDailyEmRow {
             date: p[0].to_string(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
         });
     }
     Ok(out)
@@ -503,7 +483,7 @@ pub(crate) fn parse_zh_index_tx(resp: &Value, symbol: &str) -> Result<Vec<ZhInde
                 message: format!("tx index row has {} fields, expected >= 6", a.len()),
             });
         }
-        let get = |i: usize| a.get(i).and_then(|v| v.as_str()).and_then(parse_f64);
+        let get = |i: usize| a.get(i).and_then(|v| v.as_str()).and_then(parse_f64_str);
         out.push(ZhIndexDailyTxRow {
             date: a
                 .first()

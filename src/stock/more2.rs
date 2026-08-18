@@ -52,6 +52,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney `clist/get` endpoint base (matches `src/stock/more.rs`).
 const CLIST_BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
@@ -69,22 +70,6 @@ const PAGE_SIZE: u32 = 100;
 // Shared helpers (mirror src/stock/more.rs)
 // ---------------------------------------------------------------------------
 
-/// Read a string field, defaulting to `""` when missing/null.
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Validate an `YYYYMMDD` date string and reformat as `YYYY-MM-DD` (as akshare
 /// feeds the datacenter `filter` / `REPORT_DATE`).
@@ -289,15 +274,15 @@ pub(crate) fn parse_ah(items: &[Value]) -> Result<Vec<StockZhAhSpotEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockZhAhSpotEmRow {
-            name: fstr(item, "f193"),
-            h_code: fstr(item, "f12"),
-            h_price: fnum(item, "f2").map(|x| x / 1000.0),
-            h_pct: fnum(item, "f3").map(|x| x / 100.0),
-            a_code: fstr(item, "f191"),
-            a_price: fnum(item, "f186").map(|x| x / 1000.0),
-            a_pct: fnum(item, "f187").map(|x| x / 100.0),
-            ratio: fnum(item, "f189").map(|x| x / 100.0),
-            premium: fnum(item, "f188").map(|x| x / 100.0),
+            name: opt_str_or(item, "f193", ""),
+            h_code: opt_str_or(item, "f12", ""),
+            h_price: opt_f64(item, "f2").map(|x| x / 1000.0),
+            h_pct: opt_f64(item, "f3").map(|x| x / 100.0),
+            a_code: opt_str_or(item, "f191", ""),
+            a_price: opt_f64(item, "f186").map(|x| x / 1000.0),
+            a_pct: opt_f64(item, "f187").map(|x| x / 100.0),
+            ratio: opt_f64(item, "f189").map(|x| x / 100.0),
+            premium: opt_f64(item, "f188").map(|x| x / 100.0),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -361,17 +346,17 @@ pub(crate) fn parse_sh_hk(items: &[Value]) -> Result<Vec<StockHsgtShHkSpotEmRow>
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockHsgtShHkSpotEmRow {
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2").map(|x| x / 1000.0),
-            change: fnum(item, "f4").map(|x| x / 1000.0),
-            pct_change: fnum(item, "f3").map(|x| x / 100.0),
-            open: fnum(item, "f17").map(|x| x / 1000.0),
-            high: fnum(item, "f15").map(|x| x / 1000.0),
-            low: fnum(item, "f16").map(|x| x / 1000.0),
-            pre_close: fnum(item, "f18").map(|x| x / 1000.0),
-            volume: fnum(item, "f5").map(|x| x / 100_000_000.0),
-            amount: fnum(item, "f6").map(|x| x / 100_000_000.0),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
+            price: opt_f64(item, "f2").map(|x| x / 1000.0),
+            change: opt_f64(item, "f4").map(|x| x / 1000.0),
+            pct_change: opt_f64(item, "f3").map(|x| x / 100.0),
+            open: opt_f64(item, "f17").map(|x| x / 1000.0),
+            high: opt_f64(item, "f15").map(|x| x / 1000.0),
+            low: opt_f64(item, "f16").map(|x| x / 1000.0),
+            pre_close: opt_f64(item, "f18").map(|x| x / 1000.0),
+            volume: opt_f64(item, "f5").map(|x| x / 100_000_000.0),
+            amount: opt_f64(item, "f6").map(|x| x / 100_000_000.0),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -454,10 +439,10 @@ pub(crate) fn parse_kcb(items: &[Value]) -> Result<Vec<StockZhKcbReportEmRow>> {
         out.push(StockZhKcbReportEmRow {
             code,
             name,
-            title: fstr(item, "title"),
+            title: opt_str_or(item, "title", ""),
             ann_type,
-            notice_date: fstr(item, "notice_date"),
-            art_code: fstr(item, "art_code"),
+            notice_date: opt_str_or(item, "notice_date", ""),
+            art_code: opt_str_or(item, "art_code", ""),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -527,30 +512,30 @@ pub(crate) fn parse_repurchase(items: &[Value]) -> Result<Vec<StockRepurchaseEmR
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockRepurchaseEmRow {
-            code: fstr(item, "DIM_SCODE"),
-            name: fstr(item, "SECURITYSHORTNAME"),
-            new_price: fnum(item, "NEWPRICE"),
+            code: opt_str_or(item, "DIM_SCODE", ""),
+            name: opt_str_or(item, "SECURITYSHORTNAME", ""),
+            new_price: opt_f64(item, "NEWPRICE"),
             repur_price_cap: item
                 .get("REPURPRICECAP")
                 .and_then(|v| v.as_str())
                 .map(|s| s.to_string()),
-            repur_num_lower: fnum(item, "REPURNUMLOWER"),
-            repur_num_cap: fnum(item, "REPURNUMCAP"),
-            ratio_lower: fnum(item, "ZSZXX"),
-            ratio_cap: fnum(item, "ZSZSX"),
-            amount_lower: fnum(item, "JEXX"),
-            amount_cap: fnum(item, "JESX"),
-            start_date: fstr(item, "DIM_TRADEDATE"),
+            repur_num_lower: opt_f64(item, "REPURNUMLOWER"),
+            repur_num_cap: opt_f64(item, "REPURNUMCAP"),
+            ratio_lower: opt_f64(item, "ZSZXX"),
+            ratio_cap: opt_f64(item, "ZSZSX"),
+            amount_lower: opt_f64(item, "JEXX"),
+            amount_cap: opt_f64(item, "JESX"),
+            start_date: opt_str_or(item, "DIM_TRADEDATE", ""),
             progress: match item.get("REPURPROGRESS") {
                 Some(Value::String(s)) => Some(s.clone()),
                 Some(Value::Number(n)) => Some(n.to_string()),
                 _ => None,
             },
-            repur_price_lower1: fnum(item, "REPURPRICELOWER1"),
-            repur_price_cap1: fnum(item, "REPURPRICECAP1"),
-            repur_num: fnum(item, "REPURNUM"),
-            repur_amount: fnum(item, "REPURAMOUNT"),
-            update_date: fstr(item, "UPDATEDATE"),
+            repur_price_lower1: opt_f64(item, "REPURPRICELOWER1"),
+            repur_price_cap1: opt_f64(item, "REPURPRICECAP1"),
+            repur_num: opt_f64(item, "REPURNUM"),
+            repur_amount: opt_f64(item, "REPURAMOUNT"),
+            update_date: opt_str_or(item, "UPDATEDATE", ""),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -603,11 +588,11 @@ pub(crate) fn parse_gsrl(items: &[Value]) -> Result<Vec<StockGsrlGsdtEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockGsrlGsdtEmRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            event_type: fstr(item, "EVENT_TYPE"),
-            event_content: fstr(item, "EVENT_CONTENT"),
-            trade_date: fstr(item, "TRADE_DATE"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            event_type: opt_str_or(item, "EVENT_TYPE", ""),
+            event_content: opt_str_or(item, "EVENT_CONTENT", ""),
+            trade_date: opt_str_or(item, "TRADE_DATE", ""),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -686,31 +671,31 @@ pub async fn stock_zh_a_new_em(client: &Client) -> Result<Vec<StockZhANewEmRow>>
 pub(crate) fn parse_new(items: &[Value]) -> Result<Vec<StockZhANewEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let code = fstr(item, "f12");
-        let name = fstr(item, "f14");
+        let code = opt_str_or(item, "f12", "");
+        let name = opt_str_or(item, "f14", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(StockZhANewEmRow {
             code,
-            market: fnum(item, "f13"),
+            market: opt_f64(item, "f13"),
             name,
-            price: fnum(item, "f2"),
-            pct_change: fnum(item, "f3"),
-            change: fnum(item, "f4"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            amplitude: fnum(item, "f7"),
-            turnover: fnum(item, "f8"),
-            pe_ttm: fnum(item, "f9"),
-            volume_ratio: fnum(item, "f10"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            open: fnum(item, "f17"),
-            pre_close: fnum(item, "f18"),
-            total_mktcap: fnum(item, "f20"),
-            float_mktcap: fnum(item, "f21"),
-            pb: fnum(item, "f23"),
+            price: opt_f64(item, "f2"),
+            pct_change: opt_f64(item, "f3"),
+            change: opt_f64(item, "f4"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            amplitude: opt_f64(item, "f7"),
+            turnover: opt_f64(item, "f8"),
+            pe_ttm: opt_f64(item, "f9"),
+            volume_ratio: opt_f64(item, "f10"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            open: opt_f64(item, "f17"),
+            pre_close: opt_f64(item, "f18"),
+            total_mktcap: opt_f64(item, "f20"),
+            float_mktcap: opt_f64(item, "f21"),
+            pb: opt_f64(item, "f23"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -785,22 +770,22 @@ pub(crate) fn parse_hold_management(
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockHoldManagementDetailEmRow {
-            change_date: fstr(item, "CHANGE_DATE"),
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME"),
-            person: fstr(item, "PERSON_NAME"),
-            change_shares: fnum(item, "CHANGE_SHARES"),
-            avg_price: fnum(item, "AVERAGE_PRICE"),
-            change_amount: fnum(item, "CHANGE_AMOUNT"),
-            change_reason: fstr(item, "CHANGE_REASON"),
-            change_ratio: fnum(item, "CHANGE_RATIO"),
-            hold_after: fnum(item, "CHANGE_AFTER_HOLDNUM"),
-            hold_type: fstr(item, "HOLD_TYPE"),
-            dse_person: fstr(item, "DSE_PERSON_NAME"),
-            position: fstr(item, "POSITION_NAME"),
-            person_dse_relation: fstr(item, "PERSON_DSE_RELATION"),
-            begin_hold: fnum(item, "BEGIN_HOLD_NUM"),
-            end_hold: fnum(item, "END_HOLD_NUM"),
+            change_date: opt_str_or(item, "CHANGE_DATE", ""),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME", ""),
+            person: opt_str_or(item, "PERSON_NAME", ""),
+            change_shares: opt_f64(item, "CHANGE_SHARES"),
+            avg_price: opt_f64(item, "AVERAGE_PRICE"),
+            change_amount: opt_f64(item, "CHANGE_AMOUNT"),
+            change_reason: opt_str_or(item, "CHANGE_REASON", ""),
+            change_ratio: opt_f64(item, "CHANGE_RATIO"),
+            hold_after: opt_f64(item, "CHANGE_AFTER_HOLDNUM"),
+            hold_type: opt_str_or(item, "HOLD_TYPE", ""),
+            dse_person: opt_str_or(item, "DSE_PERSON_NAME", ""),
+            position: opt_str_or(item, "POSITION_NAME", ""),
+            person_dse_relation: opt_str_or(item, "PERSON_DSE_RELATION", ""),
+            begin_hold: opt_f64(item, "BEGIN_HOLD_NUM"),
+            end_hold: opt_f64(item, "END_HOLD_NUM"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -904,9 +889,9 @@ pub(crate) fn parse_yysj(items: &[Value]) -> Result<Vec<StockYysjEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockYysjEmRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            first_appoint: fstr(item, "FIRST_APPOINT_DATE"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            first_appoint: opt_str_or(item, "FIRST_APPOINT_DATE", ""),
             first_change: item.get("FIRST_CHANGE_DATE").and_then(|v| v.as_str()).map(|s| s.to_string()),
             second_change: item.get("SECOND_CHANGE_DATE").and_then(|v| v.as_str()).map(|s| s.to_string()),
             third_change: item.get("THIRD_CHANGE_DATE").and_then(|v| v.as_str()).map(|s| s.to_string()),
@@ -981,18 +966,18 @@ pub(crate) fn parse_jgdy(items: &[Value]) -> Result<Vec<StockJgdyDetailEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockJgdyDetailEmRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            close_price: fnum(item, "CLOSE_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            receive_object: fstr(item, "RECEIVE_OBJECT"),
-            org_type: fstr(item, "ORG_TYPE"),
-            investigators: fstr(item, "INVESTIGATORS"),
-            receptionist: fstr(item, "RECEPTIONIST"),
-            receive_way: fstr(item, "RECEIVE_WAY_EXPLAIN"),
-            receive_place: fstr(item, "RECEIVE_PLACE"),
-            receive_start_date: fstr(item, "RECEIVE_START_DATE"),
-            notice_date: fstr(item, "NOTICE_DATE"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            close_price: opt_f64(item, "CLOSE_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            receive_object: opt_str_or(item, "RECEIVE_OBJECT", ""),
+            org_type: opt_str_or(item, "ORG_TYPE", ""),
+            investigators: opt_str_or(item, "INVESTIGATORS", ""),
+            receptionist: opt_str_or(item, "RECEPTIONIST", ""),
+            receive_way: opt_str_or(item, "RECEIVE_WAY_EXPLAIN", ""),
+            receive_place: opt_str_or(item, "RECEIVE_PLACE", ""),
+            receive_start_date: opt_str_or(item, "RECEIVE_START_DATE", ""),
+            notice_date: opt_str_or(item, "NOTICE_DATE", ""),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1054,22 +1039,22 @@ pub(crate) fn parse_gddh(items: &[Value]) -> Result<Vec<StockGddhEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockGddhEmRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            meeting_title: fstr(item, "MEETING_TITLE"),
-            start_date: fstr(item, "START_ADJUST_DATE"),
-            equity_record_date: fstr(item, "EQUITY_RECORD_DATE"),
-            onsite_record_date: fstr(item, "ONSITE_RECORD_DATE"),
-            decision_notice_date: fstr(item, "DECISION_NOTICE_DATE"),
-            notice_date: fstr(item, "NOTICE_DATE"),
-            web_start_date: fstr(item, "WEB_START_DATE"),
-            web_end_date: fstr(item, "WEB_END_DATE"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            meeting_title: opt_str_or(item, "MEETING_TITLE", ""),
+            start_date: opt_str_or(item, "START_ADJUST_DATE", ""),
+            equity_record_date: opt_str_or(item, "EQUITY_RECORD_DATE", ""),
+            onsite_record_date: opt_str_or(item, "ONSITE_RECORD_DATE", ""),
+            decision_notice_date: opt_str_or(item, "DECISION_NOTICE_DATE", ""),
+            notice_date: opt_str_or(item, "NOTICE_DATE", ""),
+            web_start_date: opt_str_or(item, "WEB_START_DATE", ""),
+            web_end_date: opt_str_or(item, "WEB_END_DATE", ""),
             serial_num: match item.get("SERIAL_NUM") {
                 Some(Value::String(s)) => Some(s.clone()),
                 Some(Value::Number(n)) => Some(n.to_string()),
                 _ => None,
             },
-            proposal: fstr(item, "PROPOSAL"),
+            proposal: opt_str_or(item, "PROPOSAL", ""),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1139,21 +1124,21 @@ pub(crate) fn parse_qsjy(items: &[Value]) -> Result<Vec<StockQsjyEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockQsjyEmRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            end_date: fstr(item, "END_DATE"),
-            net_profit: fnum(item, "NETPROFIT"),
-            np_yoy: fnum(item, "NP_YOY"),
-            np_qoq: fnum(item, "NP_QOQ"),
-            accum_profit: fnum(item, "ACCUMPROFIT"),
-            accum_profit_yoy: fnum(item, "ACCUMPROFIT_YOY"),
-            operate_income: fnum(item, "OPERATE_INCOME"),
-            oi_yoy: fnum(item, "OI_YOY"),
-            oi_qoq: fnum(item, "OI_QOQ"),
-            accum_oi: fnum(item, "ACCUMOI"),
-            accum_oi_yoy: fnum(item, "ACCUMOI_YOY"),
-            net_assets: fnum(item, "NET_ASSETS"),
-            na_yoy: fnum(item, "NA_YOY"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            end_date: opt_str_or(item, "END_DATE", ""),
+            net_profit: opt_f64(item, "NETPROFIT"),
+            np_yoy: opt_f64(item, "NP_YOY"),
+            np_qoq: opt_f64(item, "NP_QOQ"),
+            accum_profit: opt_f64(item, "ACCUMPROFIT"),
+            accum_profit_yoy: opt_f64(item, "ACCUMPROFIT_YOY"),
+            operate_income: opt_f64(item, "OPERATE_INCOME"),
+            oi_yoy: opt_f64(item, "OI_YOY"),
+            oi_qoq: opt_f64(item, "OI_QOQ"),
+            accum_oi: opt_f64(item, "ACCUMOI"),
+            accum_oi_yoy: opt_f64(item, "ACCUMOI_YOY"),
+            net_assets: opt_f64(item, "NET_ASSETS"),
+            na_yoy: opt_f64(item, "NA_YOY"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1215,17 +1200,17 @@ pub(crate) fn parse_qbzf(items: &[Value]) -> Result<Vec<StockQbzfEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockQbzfEmRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            corre_code: fstr(item, "CORRECODE"),
-            seo_type: fnum(item, "SEO_TYPE"),
-            issue_num: fnum(item, "ISSUE_NUM"),
-            online_issue_num: fnum(item, "ONLINE_ISSUE_NUM"),
-            issue_price: fnum(item, "ISSUE_PRICE"),
-            new_price: fnum(item, "NEW_PRICE"),
-            issue_date: fstr(item, "ISSUE_DATE"),
-            issue_listing_date: fstr(item, "ISSUE_LISTING_DATE"),
-            lockin_period: fnum(item, "LOCKIN_PERIOD"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            corre_code: opt_str_or(item, "CORRECODE", ""),
+            seo_type: opt_f64(item, "SEO_TYPE"),
+            issue_num: opt_f64(item, "ISSUE_NUM"),
+            online_issue_num: opt_f64(item, "ONLINE_ISSUE_NUM"),
+            issue_price: opt_f64(item, "ISSUE_PRICE"),
+            new_price: opt_f64(item, "NEW_PRICE"),
+            issue_date: opt_str_or(item, "ISSUE_DATE", ""),
+            issue_listing_date: opt_str_or(item, "ISSUE_LISTING_DATE", ""),
+            lockin_period: opt_f64(item, "LOCKIN_PERIOD"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1295,19 +1280,19 @@ pub(crate) fn parse_zdhtmx(items: &[Value]) -> Result<Vec<StockZdhtmxEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockZdhtmxEmRow {
-            contract_name: fstr(item, "CONTRACTNAME"),
-            counterparty: fstr(item, "COUNTERPARTY"),
-            notice_date: fstr(item, "DIM_RDATE"),
-            signatory: fstr(item, "SIGNATORY"),
-            signatory_rel: fstr(item, "SIGNATORYREL"),
-            sign_date: fstr(item, "SIGNDATE"),
-            amounts: fnum(item, "AMOUNTS"),
-            code: fstr(item, "SECURITYCODE"),
-            name: fstr(item, "SECURITYSHORTNAME"),
-            contract_type: fstr(item, "CONTRACTTYPENAME"),
-            snd_yysr: fnum(item, "SNDYYSR"),
-            operate_reve: fnum(item, "OPERATEREVE"),
-            zsnd_yysr_bl: fnum(item, "ZSNDYYSRBL"),
+            contract_name: opt_str_or(item, "CONTRACTNAME", ""),
+            counterparty: opt_str_or(item, "COUNTERPARTY", ""),
+            notice_date: opt_str_or(item, "DIM_RDATE", ""),
+            signatory: opt_str_or(item, "SIGNATORY", ""),
+            signatory_rel: opt_str_or(item, "SIGNATORYREL", ""),
+            sign_date: opt_str_or(item, "SIGNDATE", ""),
+            amounts: opt_f64(item, "AMOUNTS"),
+            code: opt_str_or(item, "SECURITYCODE", ""),
+            name: opt_str_or(item, "SECURITYSHORTNAME", ""),
+            contract_type: opt_str_or(item, "CONTRACTTYPENAME", ""),
+            snd_yysr: opt_f64(item, "SNDYYSR"),
+            operate_reve: opt_f64(item, "OPERATEREVE"),
+            zsnd_yysr_bl: opt_f64(item, "ZSNDYYSRBL"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1388,16 +1373,16 @@ pub(crate) fn parse_scale_comparison(
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockZhScaleComparisonEmRow {
-            code: fstr(item, "CORRE_SECURITY_CODE"),
-            name: fstr(item, "CORRE_SECURITY_NAME"),
-            total_cap: fnum(item, "TOTAL_CAP"),
-            total_cap_rank: fnum(item, "TOTAL_CAP_RANK"),
-            free_cap: fnum(item, "FREECAP"),
-            free_cap_rank: fnum(item, "FREECAP_RANK"),
-            total_operate_income: fnum(item, "TOTAL_OPERATEINCOME"),
-            total_operate_income_rank: fnum(item, "TOTAL_OPERATEINCOME_RANK"),
-            net_profit: fnum(item, "NETPROFIT"),
-            net_profit_rank: fnum(item, "NETPROFIT_RANK"),
+            code: opt_str_or(item, "CORRE_SECURITY_CODE", ""),
+            name: opt_str_or(item, "CORRE_SECURITY_NAME", ""),
+            total_cap: opt_f64(item, "TOTAL_CAP"),
+            total_cap_rank: opt_f64(item, "TOTAL_CAP_RANK"),
+            free_cap: opt_f64(item, "FREECAP"),
+            free_cap_rank: opt_f64(item, "FREECAP_RANK"),
+            total_operate_income: opt_f64(item, "TOTAL_OPERATEINCOME"),
+            total_operate_income_rank: opt_f64(item, "TOTAL_OPERATEINCOME_RANK"),
+            net_profit: opt_f64(item, "NETPROFIT"),
+            net_profit_rank: opt_f64(item, "NETPROFIT_RANK"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1471,21 +1456,21 @@ pub(crate) fn parse_gdhs_detail(items: &[Value]) -> Result<Vec<StockZhAGdhsDetai
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(StockZhAGdhsDetailEmRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            change_shares: fnum(item, "CHANGE_SHARES"),
-            change_reason: fstr(item, "CHANGE_REASON"),
-            end_date: fstr(item, "END_DATE"),
-            interval_chrate: fnum(item, "INTERVAL_CHRATE"),
-            avg_market_cap: fnum(item, "AVG_MARKET_CAP"),
-            avg_hold_num: fnum(item, "AVG_HOLD_NUM"),
-            total_market_cap: fnum(item, "TOTAL_MARKET_CAP"),
-            total_a_shares: fnum(item, "TOTAL_A_SHARES"),
-            hold_notice_date: fstr(item, "HOLD_NOTICE_DATE"),
-            holder_num: fnum(item, "HOLDER_NUM"),
-            pre_holder_num: fnum(item, "PRE_HOLDER_NUM"),
-            holder_num_change: fnum(item, "HOLDER_NUM_CHANGE"),
-            holder_num_ratio: fnum(item, "HOLDER_NUM_RATIO"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            change_shares: opt_f64(item, "CHANGE_SHARES"),
+            change_reason: opt_str_or(item, "CHANGE_REASON", ""),
+            end_date: opt_str_or(item, "END_DATE", ""),
+            interval_chrate: opt_f64(item, "INTERVAL_CHRATE"),
+            avg_market_cap: opt_f64(item, "AVG_MARKET_CAP"),
+            avg_hold_num: opt_f64(item, "AVG_HOLD_NUM"),
+            total_market_cap: opt_f64(item, "TOTAL_MARKET_CAP"),
+            total_a_shares: opt_f64(item, "TOTAL_A_SHARES"),
+            hold_notice_date: opt_str_or(item, "HOLD_NOTICE_DATE", ""),
+            holder_num: opt_f64(item, "HOLDER_NUM"),
+            pre_holder_num: opt_f64(item, "PRE_HOLDER_NUM"),
+            holder_num_change: opt_f64(item, "HOLDER_NUM_CHANGE"),
+            holder_num_ratio: opt_f64(item, "HOLDER_NUM_RATIO"),
             source: SOURCE_EASTMONEY,
         });
     }

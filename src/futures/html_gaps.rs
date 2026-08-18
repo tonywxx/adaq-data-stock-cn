@@ -8,10 +8,8 @@
 //! Sources / akshare references:
 //! * [`pandas_read_html_link`] — `futures/requests_fun.py:53`
 
-use scraper::{Html, Selector};
-
 use crate::core::client::Client;
-use crate::core::error::{Error, Result};
+use crate::core::error::Result;
 
 /// One HTML table, rows of trimmed cells. Mirrors akshare `pd.read_html`
 /// returning a list of DataFrames (each a 2-D grid).
@@ -23,40 +21,8 @@ pub struct HtmlTable {
 
 /// Parse every `<table>` on the page into a [`HtmlTable`].
 pub(crate) fn parse_html_tables(html: &str, endpoint: &'static str) -> Result<Vec<HtmlTable>> {
-    let doc = Html::parse_document(html);
-    let table_sel = Selector::parse("table")
-        .map_err(|e| Error::Parse { endpoint, message: format!("table selector: {e}") })?;
-    let tr_sel = Selector::parse("tr").unwrap();
-    let cell_sel = Selector::parse("td,th").unwrap();
-    let mut out = Vec::new();
-    for table in doc.select(&table_sel) {
-        let rows: Vec<Vec<String>> = table
-            .select(&tr_sel)
-            .map(|tr| {
-                tr.select(&cell_sel)
-                    .map(|c| {
-                        c.text()
-                            .collect::<Vec<_>>()
-                            .join(" ")
-                            .split_whitespace()
-                            .collect::<Vec<_>>()
-                            .join(" ")
-                    })
-                    .collect()
-            })
-            .filter(|r: &Vec<String>| !r.is_empty())
-            .collect();
-        if !rows.is_empty() {
-            out.push(HtmlTable { rows });
-        }
-    }
-    if out.is_empty() {
-        return Err(Error::UpstreamChanged {
-            origin: endpoint,
-            message: "no <table> found".into(),
-        });
-    }
-    Ok(out)
+    let all = crate::core::html::tables_with(html, endpoint, "table")?;
+    Ok(all.into_iter().map(|rows| HtmlTable { rows }).collect())
 }
 
 /// Generic HTML-table reader (`pandas_read_html_link`, akshare

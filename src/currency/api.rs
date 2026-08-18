@@ -35,6 +35,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_CURRENCYSCOOP: &str = "currencyscoop";
 const SOURCE_CHINAMONEY: &str = "chinamoney";
@@ -42,10 +43,6 @@ const SOURCE_CHINAMONEY: &str = "chinamoney";
 const BASE_CURRENCYSCOOP: &str = "https://api.currencyscoop.com/v1";
 const CHINAMONEY_C_SWAP_URL: &str =
     "https://www.chinamoney.org.cn/r/cms/www/chinamoney/data/fx/fx-c-sw-curv-USD.CNY.json";
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
 
 /// Render any JSON scalar/value as a plain string for the `currency_convert`
 /// (item, value) table (mirrors akshare's `pd.Series(...).reset_index()`).
@@ -82,8 +79,8 @@ pub(crate) fn parse_currency_rates(resp: &Value) -> Result<Vec<CurrencyRateRow>>
         origin: SOURCE_CURRENCYSCOOP,
         message: "missing response".into(),
     })?;
-    let date = fstr(response, "date").unwrap_or_default();
-    let base = fstr(response, "base").unwrap_or_default();
+    let date = opt_str(response, "date").unwrap_or_default();
+    let base = opt_str(response, "base").unwrap_or_default();
     let rates = response
         .get("rates")
         .and_then(|v| v.as_object())
@@ -236,13 +233,13 @@ pub(crate) fn parse_currency_currencies(resp: &Value) -> Result<Vec<CurrencyInfo
         })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
-        let Some(code) = fstr(item, "code") else {
+        let Some(code) = opt_str(item, "code") else {
             continue;
         };
         out.push(CurrencyInfoRow {
             code,
-            name: fstr(item, "name").unwrap_or_default(),
-            symbol: fstr(item, "symbol"),
+            name: opt_str(item, "name").unwrap_or_default(),
+            symbol: opt_str(item, "symbol"),
             decimal_units: item.get("decimal_units").and_then(|v| v.as_f64()),
         });
     }
@@ -352,11 +349,11 @@ pub(crate) fn parse_fx_c_swap_cm(resp: &Value) -> Result<Vec<FxCSwapCmRow>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(FxCSwapCmRow {
-            curve_time: fstr(item, "curveTime").unwrap_or_default(),
-            tenor: fstr(item, "tenor").unwrap_or_default(),
+            curve_time: opt_str(item, "curveTime").unwrap_or_default(),
+            tenor: opt_str(item, "tenor").unwrap_or_default(),
             swap_pnt: item.get("swapPnt").and_then(|v| v.as_f64()),
             swap_all_prc: item.get("swapAllPrc").and_then(|v| v.as_f64()),
-            data_source: fstr(item, "dataSource").unwrap_or_default(),
+            data_source: opt_str(item, "dataSource").unwrap_or_default(),
         });
     }
     Ok(out)

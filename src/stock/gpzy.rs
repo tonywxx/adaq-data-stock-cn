@@ -41,6 +41,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney source bucket, for rate limiting / error context.
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -51,20 +52,6 @@ const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 // ---------------------------------------------------------------------------
 // Shared helpers
 // ---------------------------------------------------------------------------
-
-/// Read a string field, returning `None` when missing/null.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from a datacenter-web response.
 fn data_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -184,15 +171,15 @@ pub(crate) fn parse_stock_gpzy_profile_em(resp: &Value) -> Result<Vec<GpzyProfil
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GpzyProfileRow {
-            trade_date: fstr(item, "TRADE_DATE").unwrap_or_default(),
+            trade_date: opt_str(item, "TRADE_DATE").unwrap_or_default(),
             // akshare: big_df["A股质押总比例"] = ... / 100
-            pledge_ratio: fnum(item, "PLEDGE_RATIO").map(|v| v / 100.0),
-            pledge_company_num: fnum(item, "PLEDGE_COMPANY_NUM"),
-            pledge_num: fnum(item, "PLEDGE_NUM"),
-            pledge_total_shares: fnum(item, "PLEDGE_TOTAL_SHARES"),
-            pledge_total_marketcap: fnum(item, "PLEDGE_TOTAL_MARKETCAP"),
-            csi300_index: fnum(item, "CSI300_POINT"),
-            change_rate: fnum(item, "CHANGE_RATE"),
+            pledge_ratio: opt_f64(item, "PLEDGE_RATIO").map(|v| v / 100.0),
+            pledge_company_num: opt_f64(item, "PLEDGE_COMPANY_NUM"),
+            pledge_num: opt_f64(item, "PLEDGE_NUM"),
+            pledge_total_shares: opt_f64(item, "PLEDGE_TOTAL_SHARES"),
+            pledge_total_marketcap: opt_f64(item, "PLEDGE_TOTAL_MARKETCAP"),
+            csi300_index: opt_f64(item, "CSI300_POINT"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -264,24 +251,24 @@ pub(crate) fn parse_stock_gpzy_pledge_ratio_em(resp: &Value) -> Result<Vec<GpzyP
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(GpzyPledgeRatioRow {
             code,
             name,
-            trade_date: fstr(item, "TRADE_DATE").unwrap_or_default(),
-            industry: fstr(item, "INDUSTRY"),
-            pledge_ratio: fnum(item, "PLEDGE_RATIO"),
-            pledge_shares: fnum(item, "PLEDGE_SHARES"),
-            pledge_marketcap: fnum(item, "PLEDGE_MARKETCAP"),
-            pledge_num: fnum(item, "PLEDGE_NUM"),
-            unrestricted_pledge_shares: fnum(item, "UNRESTRICTED_PLEDGE_SHARES"),
-            restricted_pledge_shares: fnum(item, "RESTRICTED_PLEDGE_SHARES"),
-            year_change_rate: fnum(item, "YEAR_CHANGE_RATE"),
-            industry_code: fstr(item, "INDUSTRY_CODE"),
+            trade_date: opt_str(item, "TRADE_DATE").unwrap_or_default(),
+            industry: opt_str(item, "INDUSTRY"),
+            pledge_ratio: opt_f64(item, "PLEDGE_RATIO"),
+            pledge_shares: opt_f64(item, "PLEDGE_SHARES"),
+            pledge_marketcap: opt_f64(item, "PLEDGE_MARKETCAP"),
+            pledge_num: opt_f64(item, "PLEDGE_NUM"),
+            unrestricted_pledge_shares: opt_f64(item, "UNRESTRICTED_PLEDGE_SHARES"),
+            restricted_pledge_shares: opt_f64(item, "RESTRICTED_PLEDGE_SHARES"),
+            year_change_rate: opt_f64(item, "YEAR_CHANGE_RATE"),
+            industry_code: opt_str(item, "INDUSTRY_CODE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -386,26 +373,26 @@ pub(crate) fn parse_stock_gpzy_pledge_ratio_detail_em(
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(GpzyPledgeRatioDetailRow {
             code,
             name,
-            holder_name: fstr(item, "HOLDER_NAME"),
-            pledge_shares: fnum(item, "PLEDGE_SHARES"),
-            pledge_hold_ratio: fnum(item, "PLEDGE_HOLD_RATIO"),
-            pledge_total_ratio: fnum(item, "PLEDGE_TOTAL_RATIO"),
-            pledge_org: fstr(item, "PLEDGE_ORG"),
-            latest_price: fnum(item, "LATEST_PRICE"),
-            pledge_price: fnum(item, "PLEDGE_PRICE"),
-            close_line: fnum(item, "CLOSE_LINE"),
-            pledge_start_date: fstr(item, "PLEDGE_START_DATE"),
-            pledge_end_date: fstr(item, "PLEDGE_END_DATE"),
-            status: fstr(item, "STATUS"),
-            notice_date: fstr(item, "NOTICE_DATE"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            pledge_shares: opt_f64(item, "PLEDGE_SHARES"),
+            pledge_hold_ratio: opt_f64(item, "PLEDGE_HOLD_RATIO"),
+            pledge_total_ratio: opt_f64(item, "PLEDGE_TOTAL_RATIO"),
+            pledge_org: opt_str(item, "PLEDGE_ORG"),
+            latest_price: opt_f64(item, "LATEST_PRICE"),
+            pledge_price: opt_f64(item, "PLEDGE_PRICE"),
+            close_line: opt_f64(item, "CLOSE_LINE"),
+            pledge_start_date: opt_str(item, "PLEDGE_START_DATE"),
+            pledge_end_date: opt_str(item, "PLEDGE_END_DATE"),
+            status: opt_str(item, "STATUS"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -475,18 +462,18 @@ pub(crate) fn parse_stock_gpzy_distribute_statistics_company_em(
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let org_name = fstr(item, "ORG_NAME").unwrap_or_default();
+        let org_name = opt_str(item, "ORG_NAME").unwrap_or_default();
         if org_name.is_empty() {
             continue;
         }
         out.push(GpzyDistributeStatisticsRow {
             org_name,
-            pledge_company_num: fnum(item, "PLEDGE_COMPANY_NUM"),
-            pledge_num: fnum(item, "PLEDGE_NUM"),
-            pledge_shares: fnum(item, "PLEDGE_SHARES"),
-            ratio_below_warning: fnum(item, "RATIO_BELOW_WARNING"),
-            ratio_warning_to_close: fnum(item, "RATIO_WARNING_TO_CLOSE"),
-            ratio_above_close: fnum(item, "RATIO_ABOVE_CLOSE"),
+            pledge_company_num: opt_f64(item, "PLEDGE_COMPANY_NUM"),
+            pledge_num: opt_f64(item, "PLEDGE_NUM"),
+            pledge_shares: opt_f64(item, "PLEDGE_SHARES"),
+            ratio_below_warning: opt_f64(item, "RATIO_BELOW_WARNING"),
+            ratio_warning_to_close: opt_f64(item, "RATIO_WARNING_TO_CLOSE"),
+            ratio_above_close: opt_f64(item, "RATIO_ABOVE_CLOSE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -533,18 +520,18 @@ pub(crate) fn parse_stock_gpzy_distribute_statistics_bank_em(
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let org_name = fstr(item, "ORG_NAME").unwrap_or_default();
+        let org_name = opt_str(item, "ORG_NAME").unwrap_or_default();
         if org_name.is_empty() {
             continue;
         }
         out.push(GpzyDistributeStatisticsRow {
             org_name,
-            pledge_company_num: fnum(item, "PLEDGE_COMPANY_NUM"),
-            pledge_num: fnum(item, "PLEDGE_NUM"),
-            pledge_shares: fnum(item, "PLEDGE_SHARES"),
-            ratio_below_warning: fnum(item, "RATIO_BELOW_WARNING"),
-            ratio_warning_to_close: fnum(item, "RATIO_WARNING_TO_CLOSE"),
-            ratio_above_close: fnum(item, "RATIO_ABOVE_CLOSE"),
+            pledge_company_num: opt_f64(item, "PLEDGE_COMPANY_NUM"),
+            pledge_num: opt_f64(item, "PLEDGE_NUM"),
+            pledge_shares: opt_f64(item, "PLEDGE_SHARES"),
+            ratio_below_warning: opt_f64(item, "RATIO_BELOW_WARNING"),
+            ratio_warning_to_close: opt_f64(item, "RATIO_WARNING_TO_CLOSE"),
+            ratio_above_close: opt_f64(item, "RATIO_ABOVE_CLOSE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -609,19 +596,19 @@ pub(crate) fn parse_stock_gpzy_industry_data_em(resp: &Value) -> Result<Vec<Gpzy
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let industry = fstr(item, "INDUSTRY").unwrap_or_default();
-        let trade_date = fstr(item, "TRADE_DATE").unwrap_or_default();
+        let industry = opt_str(item, "INDUSTRY").unwrap_or_default();
+        let trade_date = opt_str(item, "TRADE_DATE").unwrap_or_default();
         if industry.is_empty() || trade_date.is_empty() {
             continue;
         }
         out.push(GpzyIndustryDataRow {
             industry,
             trade_date,
-            average_pledge_ratio: fnum(item, "AVERAGE_PLEDGE_RATIO"),
-            company_num: fnum(item, "ORG_NUM"),
-            pledge_total_num: fnum(item, "PLEDGE_TOTAL_NUM"),
-            total_pledge_shares: fnum(item, "TOTAL_PLEDGE_SHARES"),
-            pledge_total_marketcap: fnum(item, "PLEDGE_TOTAL_MARKETCAP"),
+            average_pledge_ratio: opt_f64(item, "AVERAGE_PLEDGE_RATIO"),
+            company_num: opt_f64(item, "ORG_NUM"),
+            pledge_total_num: opt_f64(item, "PLEDGE_TOTAL_NUM"),
+            total_pledge_shares: opt_f64(item, "TOTAL_PLEDGE_SHARES"),
+            pledge_total_marketcap: opt_f64(item, "PLEDGE_TOTAL_MARKETCAP"),
             source: SOURCE_EASTMONEY,
         });
     }

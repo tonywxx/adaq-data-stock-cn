@@ -7,6 +7,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 const PAGE_SIZE: &str = "2000";
@@ -88,19 +89,19 @@ pub(crate) fn parse_china_gdp(resp: &Value) -> Result<Vec<ChinaGdp>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaGdp {
             date,
-            gdp_total: fnum(item, "DOMESTICL_PRODUCT_BASE"),
-            gdp_total_yoy: fnum(item, "SUM_SAME"),
-            primary_total: fnum(item, "FIRST_PRODUCT_BASE"),
-            primary_yoy: fnum(item, "FIRST_SAME"),
-            secondary_total: fnum(item, "SECOND_PRODUCT_BASE"),
-            secondary_yoy: fnum(item, "SECOND_SAME"),
-            tertiary_total: fnum(item, "THIRD_PRODUCT_BASE"),
-            tertiary_yoy: fnum(item, "THIRD_SAME"),
+            gdp_total: opt_f64(item, "DOMESTICL_PRODUCT_BASE"),
+            gdp_total_yoy: opt_f64(item, "SUM_SAME"),
+            primary_total: opt_f64(item, "FIRST_PRODUCT_BASE"),
+            primary_yoy: opt_f64(item, "FIRST_SAME"),
+            secondary_total: opt_f64(item, "SECOND_PRODUCT_BASE"),
+            secondary_yoy: opt_f64(item, "SECOND_SAME"),
+            tertiary_total: opt_f64(item, "THIRD_PRODUCT_BASE"),
+            tertiary_yoy: opt_f64(item, "THIRD_SAME"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -162,23 +163,23 @@ pub(crate) fn parse_china_cpi(resp: &Value) -> Result<Vec<ChinaCpi>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaCpi {
             date,
-            national_current: fnum(item, "NATIONAL_BASE"),
-            national_yoy: fnum(item, "NATIONAL_SAME"),
-            national_mom: fnum(item, "NATIONAL_SEQUENTIAL"),
-            national_accumulate: fnum(item, "NATIONAL_ACCUMULATE"),
-            city_current: fnum(item, "CITY_BASE"),
-            city_yoy: fnum(item, "CITY_SAME"),
-            city_mom: fnum(item, "CITY_SEQUENTIAL"),
-            city_accumulate: fnum(item, "CITY_ACCUMULATE"),
-            rural_current: fnum(item, "RURAL_BASE"),
-            rural_yoy: fnum(item, "RURAL_SAME"),
-            rural_mom: fnum(item, "RURAL_SEQUENTIAL"),
-            rural_accumulate: fnum(item, "RURAL_ACCUMULATE"),
+            national_current: opt_f64(item, "NATIONAL_BASE"),
+            national_yoy: opt_f64(item, "NATIONAL_SAME"),
+            national_mom: opt_f64(item, "NATIONAL_SEQUENTIAL"),
+            national_accumulate: opt_f64(item, "NATIONAL_ACCUMULATE"),
+            city_current: opt_f64(item, "CITY_BASE"),
+            city_yoy: opt_f64(item, "CITY_SAME"),
+            city_mom: opt_f64(item, "CITY_SEQUENTIAL"),
+            city_accumulate: opt_f64(item, "CITY_ACCUMULATE"),
+            rural_current: opt_f64(item, "RURAL_BASE"),
+            rural_yoy: opt_f64(item, "RURAL_SAME"),
+            rural_mom: opt_f64(item, "RURAL_SEQUENTIAL"),
+            rural_accumulate: opt_f64(item, "RURAL_ACCUMULATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -220,14 +221,14 @@ pub(crate) fn parse_china_ppi(resp: &Value) -> Result<Vec<ChinaPpi>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaPpi {
             date,
-            current: fnum(item, "BASE"),
-            yoy: fnum(item, "BASE_SAME"),
-            accumulate: fnum(item, "BASE_ACCUMULATE"),
+            current: opt_f64(item, "BASE"),
+            yoy: opt_f64(item, "BASE_SAME"),
+            accumulate: opt_f64(item, "BASE_ACCUMULATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -282,20 +283,20 @@ pub(crate) fn parse_china_money_supply(resp: &Value) -> Result<Vec<ChinaMoneySup
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaMoneySupply {
             date,
-            m2: fnum(item, "BASIC_CURRENCY"),
-            m2_yoy: fnum(item, "BASIC_CURRENCY_SAME"),
-            m2_mom: fnum(item, "BASIC_CURRENCY_SEQUENTIAL"),
-            m1: fnum(item, "CURRENCY"),
-            m1_yoy: fnum(item, "CURRENCY_SAME"),
-            m1_mom: fnum(item, "CURRENCY_SEQUENTIAL"),
-            m0: fnum(item, "FREE_CASH"),
-            m0_yoy: fnum(item, "FREE_CASH_SAME"),
-            m0_mom: fnum(item, "FREE_CASH_SEQUENTIAL"),
+            m2: opt_f64(item, "BASIC_CURRENCY"),
+            m2_yoy: opt_f64(item, "BASIC_CURRENCY_SAME"),
+            m2_mom: opt_f64(item, "BASIC_CURRENCY_SEQUENTIAL"),
+            m1: opt_f64(item, "CURRENCY"),
+            m1_yoy: opt_f64(item, "CURRENCY_SAME"),
+            m1_mom: opt_f64(item, "CURRENCY_SEQUENTIAL"),
+            m0: opt_f64(item, "FREE_CASH"),
+            m0_yoy: opt_f64(item, "FREE_CASH_SAME"),
+            m0_mom: opt_f64(item, "FREE_CASH_SEQUENTIAL"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -305,18 +306,6 @@ pub(crate) fn parse_china_money_supply(resp: &Value) -> Result<Vec<ChinaMoneySup
 // ---------------------------------------------------------------------------
 // helpers
 // ---------------------------------------------------------------------------
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 #[cfg(test)]
 mod tests {

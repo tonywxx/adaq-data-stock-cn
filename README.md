@@ -39,7 +39,7 @@ tokio = { version = "1", features = ["full"] }   # async runtime (for examples u
 
 Optional features:
 
-- `parquet` — enable Parquet export (off by default to keep the core lean; see ADR-0001/0014).
+- `parquet` — enable Parquet export (off by default to keep the core lean; see ADR-0001/0008).
 
 ```toml
 adaq-data-stock-cn = { version = "0.1", features = ["parquet"] }
@@ -158,6 +158,7 @@ let html = client
 
 ## Documentation
 
+- Changelog: [`CHANGELOG.md`](CHANGELOG.md)
 - Benchmark map (coverage / upstream anchors): [`docs/MAPPING.md`](docs/MAPPING.md)
 - Browser-impersonation re-triage: [`docs/IMPERSONATE_RETRIAGE.md`](docs/IMPERSONATE_RETRIAGE.md)
 - Roadmap: [`ROADMAP.md`](ROADMAP.md)

@@ -20,6 +20,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 
@@ -123,19 +124,19 @@ pub(crate) fn parse_china_new_house_price(resp: &Value) -> Result<Vec<ChinaNewHo
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "REPORT_DATE") else {
+        let Some(date) = opt_str(item, "REPORT_DATE") else {
             continue;
         };
-        let city = fstr(item, "CITY").unwrap_or_default();
+        let city = opt_str(item, "CITY").unwrap_or_default();
         out.push(ChinaNewHousePrice {
             date,
             city,
-            new_house_yoy: fnum(item, "FIRST_COMHOUSE_SAME"),
-            new_house_mom: fnum(item, "FIRST_COMHOUSE_SEQUENTIAL"),
-            new_house_base: fnum(item, "FIRST_COMHOUSE_BASE"),
-            second_hand_yoy: fnum(item, "SECOND_HOUSE_SAME"),
-            second_hand_mom: fnum(item, "SECOND_HOUSE_SEQUENTIAL"),
-            second_hand_base: fnum(item, "SECOND_HOUSE_BASE"),
+            new_house_yoy: opt_f64(item, "FIRST_COMHOUSE_SAME"),
+            new_house_mom: opt_f64(item, "FIRST_COMHOUSE_SEQUENTIAL"),
+            new_house_base: opt_f64(item, "FIRST_COMHOUSE_BASE"),
+            second_hand_yoy: opt_f64(item, "SECOND_HOUSE_SAME"),
+            second_hand_mom: opt_f64(item, "SECOND_HOUSE_SEQUENTIAL"),
+            second_hand_base: opt_f64(item, "SECOND_HOUSE_BASE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -192,15 +193,15 @@ pub(crate) fn parse_china_lpr(resp: &Value) -> Result<Vec<ChinaLpr>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TRADE_DATE") else {
+        let Some(date) = opt_str(item, "TRADE_DATE") else {
             continue;
         };
         out.push(ChinaLpr {
             date,
-            lpr_1y: fnum(item, "LPR1Y"),
-            lpr_5y: fnum(item, "LPR5Y"),
-            rate_1: fnum(item, "RATE_1"),
-            rate_2: fnum(item, "RATE_2"),
+            lpr_1y: opt_f64(item, "LPR1Y"),
+            lpr_5y: opt_f64(item, "LPR5Y"),
+            rate_1: opt_f64(item, "RATE_1"),
+            rate_2: opt_f64(item, "RATE_2"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -252,17 +253,17 @@ pub(crate) fn parse_china_enterprise_boom_index(resp: &Value) -> Result<Vec<Chin
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaEnterpriseBoom {
             date,
-            boom_index: fnum(item, "BOOM_INDEX"),
-            boom_index_yoy: fnum(item, "BOOM_INDEX_SAME"),
-            boom_index_mom: fnum(item, "BOOM_INDEX_SEQUENTIAL"),
-            faith_index: fnum(item, "FAITH_INDEX"),
-            faith_index_yoy: fnum(item, "FAITH_INDEX_SAME"),
-            faith_index_mom: fnum(item, "FAITH_INDEX_SEQUENTIAL"),
+            boom_index: opt_f64(item, "BOOM_INDEX"),
+            boom_index_yoy: opt_f64(item, "BOOM_INDEX_SAME"),
+            boom_index_mom: opt_f64(item, "BOOM_INDEX_SEQUENTIAL"),
+            faith_index: opt_f64(item, "FAITH_INDEX"),
+            faith_index_yoy: opt_f64(item, "FAITH_INDEX_SAME"),
+            faith_index_mom: opt_f64(item, "FAITH_INDEX_SEQUENTIAL"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -304,14 +305,14 @@ pub(crate) fn parse_china_national_tax_receipts(resp: &Value) -> Result<Vec<Chin
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaNationalTax {
             date,
-            tax_income: fnum(item, "TAX_INCOME"),
-            tax_income_yoy: fnum(item, "TAX_INCOME_SAME"),
-            tax_income_mom: fnum(item, "TAX_INCOME_SEQUENTIAL"),
+            tax_income: opt_f64(item, "TAX_INCOME"),
+            tax_income_yoy: opt_f64(item, "TAX_INCOME_SAME"),
+            tax_income_mom: opt_f64(item, "TAX_INCOME_SEQUENTIAL"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -373,23 +374,23 @@ pub(crate) fn parse_china_qyspjg(resp: &Value) -> Result<Vec<ChinaGoodsPriceInde
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaGoodsPriceIndex {
             date,
-            total_index: fnum(item, "BASE"),
-            total_index_yoy: fnum(item, "BASE_SAME"),
-            total_index_mom: fnum(item, "BASE_SEQUENTIAL"),
-            farm_index: fnum(item, "FARM_BASE"),
-            farm_yoy: fnum(item, "FARM_BASE_SAME"),
-            farm_mom: fnum(item, "FARM_BASE_SEQUENTIAL"),
-            mineral_index: fnum(item, "MINERAL_BASE"),
-            mineral_yoy: fnum(item, "MINERAL_BASE_SAME"),
-            mineral_mom: fnum(item, "MINERAL_BASE_SEQUENTIAL"),
-            energy_index: fnum(item, "ENERGY_BASE"),
-            energy_yoy: fnum(item, "ENERGY_BASE_SAME"),
-            energy_mom: fnum(item, "ENERGY_BASE_SEQUENTIAL"),
+            total_index: opt_f64(item, "BASE"),
+            total_index_yoy: opt_f64(item, "BASE_SAME"),
+            total_index_mom: opt_f64(item, "BASE_SEQUENTIAL"),
+            farm_index: opt_f64(item, "FARM_BASE"),
+            farm_yoy: opt_f64(item, "FARM_BASE_SAME"),
+            farm_mom: opt_f64(item, "FARM_BASE_SEQUENTIAL"),
+            mineral_index: opt_f64(item, "MINERAL_BASE"),
+            mineral_yoy: opt_f64(item, "MINERAL_BASE_SAME"),
+            mineral_mom: opt_f64(item, "MINERAL_BASE_SEQUENTIAL"),
+            energy_index: opt_f64(item, "ENERGY_BASE"),
+            energy_yoy: opt_f64(item, "ENERGY_BASE_SAME"),
+            energy_mom: opt_f64(item, "ENERGY_BASE_SEQUENTIAL"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -436,16 +437,16 @@ pub(crate) fn parse_china_fdi(resp: &Value) -> Result<Vec<ChinaFdi>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaFdi {
             date,
-            actual_foreign: fnum(item, "ACTUAL_FOREIGN"),
-            actual_foreign_yoy: fnum(item, "ACTUAL_FOREIGN_SAME"),
-            actual_foreign_mom: fnum(item, "ACTUAL_FOREIGN_SEQUENTIAL"),
-            actual_foreign_accumulate: fnum(item, "ACTUAL_FOREIGN_ACCUMULATE"),
-            accumulate_yoy: fnum(item, "FOREIGN_ACCUMULATE_SAME"),
+            actual_foreign: opt_f64(item, "ACTUAL_FOREIGN"),
+            actual_foreign_yoy: opt_f64(item, "ACTUAL_FOREIGN_SAME"),
+            actual_foreign_mom: opt_f64(item, "ACTUAL_FOREIGN_SEQUENTIAL"),
+            actual_foreign_accumulate: opt_f64(item, "ACTUAL_FOREIGN_ACCUMULATE"),
+            accumulate_yoy: opt_f64(item, "FOREIGN_ACCUMULATE_SAME"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -455,18 +456,6 @@ pub(crate) fn parse_china_fdi(resp: &Value) -> Result<Vec<ChinaFdi>> {
 // ---------------------------------------------------------------------------
 // helpers
 // ---------------------------------------------------------------------------
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 #[cfg(test)]
 mod tests {

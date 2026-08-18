@@ -30,6 +30,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney source bucket, for rate limiting / error context.
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -40,20 +41,6 @@ const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 // ---------------------------------------------------------------------------
 // Shared helpers (mirrors lhb.rs / gdfx.rs conventions)
 // ---------------------------------------------------------------------------
-
-/// Read a string field, returning `None` when missing/null.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from a datacenter-web response.
 fn data_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -177,14 +164,14 @@ pub(crate) fn parse_stock_sy_profile_em(resp: &Value) -> Result<Vec<SyProfileRow
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(SyProfileRow {
-            report_date: fstr(item, "REPORT_DATE").unwrap_or_default(),
-            goodwill: fnum(item, "GOODWILL"),
-            impairment: fnum(item, "IMPAIRMENT"),
-            net_asset: fnum(item, "NET_ASSET"),
-            goodwill_netasset_ratio: fnum(item, "GOODWILL_NETASSET_RATIO"),
-            impairment_netasset_ratio: fnum(item, "IMPAIRMENT_NETASSET_RATIO"),
-            net_profit: fnum(item, "NET_PROFIT"),
-            impairment_netprofit_ratio: fnum(item, "IMPAIRMENT_NETPROFIT_RATIO"),
+            report_date: opt_str(item, "REPORT_DATE").unwrap_or_default(),
+            goodwill: opt_f64(item, "GOODWILL"),
+            impairment: opt_f64(item, "IMPAIRMENT"),
+            net_asset: opt_f64(item, "NET_ASSET"),
+            goodwill_netasset_ratio: opt_f64(item, "GOODWILL_NETASSET_RATIO"),
+            impairment_netasset_ratio: opt_f64(item, "IMPAIRMENT_NETASSET_RATIO"),
+            net_profit: opt_f64(item, "NET_PROFIT"),
+            impairment_netprofit_ratio: opt_f64(item, "IMPAIRMENT_NETPROFIT_RATIO"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -255,25 +242,25 @@ pub(crate) fn parse_stock_sy_yq_em(resp: &Value) -> Result<Vec<SyYqRow>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(SyYqRow {
             code,
             name,
-            perform_change_explain: fstr(item, "PERFORM_CHANGE_EXPLAIN"),
-            newest_report_date: fstr(item, "NEWEST_REPORT_DATE"),
-            newest_goodwill: fnum(item, "NEWEST_GOODWILL"),
-            pe_goodwill: fnum(item, "PE_GOODWILL"),
-            predict_netprofit_lower: fnum(item, "PREDICT_NETPROFIT_LOWER"),
-            predict_netprofit_upper: fnum(item, "PREDICT_NETPROFIT_UPPER"),
-            perform_change_lower: fnum(item, "PERFORM_CHANGE_LOWER"),
-            perform_change_upper: fnum(item, "PERFORM_CHANGE_UPPER"),
-            pe_samereport_netprofit: fnum(item, "PE_SAMEREPORT_NETPROFIT"),
-            notice_date: fstr(item, "NOTICE_DATE"),
-            trade_market: fstr(item, "TRADE_MARKET"),
+            perform_change_explain: opt_str(item, "PERFORM_CHANGE_EXPLAIN"),
+            newest_report_date: opt_str(item, "NEWEST_REPORT_DATE"),
+            newest_goodwill: opt_f64(item, "NEWEST_GOODWILL"),
+            pe_goodwill: opt_f64(item, "PE_GOODWILL"),
+            predict_netprofit_lower: opt_f64(item, "PREDICT_NETPROFIT_LOWER"),
+            predict_netprofit_upper: opt_f64(item, "PREDICT_NETPROFIT_UPPER"),
+            perform_change_lower: opt_f64(item, "PERFORM_CHANGE_LOWER"),
+            perform_change_upper: opt_f64(item, "PERFORM_CHANGE_UPPER"),
+            pe_samereport_netprofit: opt_f64(item, "PE_SAMEREPORT_NETPROFIT"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
+            trade_market: opt_str(item, "TRADE_MARKET"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -338,22 +325,22 @@ pub(crate) fn parse_stock_sy_jz_em(resp: &Value) -> Result<Vec<SyJzRow>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(SyJzRow {
             code,
             name,
-            goodwill: fnum(item, "GOODWILL"),
-            goodwill_change: fnum(item, "GOODWILL_CHANGE"),
-            sumshequity_ratio: fnum(item, "SUMSHEQUITY_RATIO"),
-            se_change_ratio: fnum(item, "SE_CHANGE_RATIO"),
-            parentnetprofit: fnum(item, "PARENTNETPROFIT"),
-            pnp_change_ratio: fnum(item, "PNP_CHANGE_RATIO"),
-            notice_date: fstr(item, "NOTICE_DATE"),
-            trade_board: fstr(item, "TRADE_BOARD"),
+            goodwill: opt_f64(item, "GOODWILL"),
+            goodwill_change: opt_f64(item, "GOODWILL_CHANGE"),
+            sumshequity_ratio: opt_f64(item, "SUMSHEQUITY_RATIO"),
+            se_change_ratio: opt_f64(item, "SE_CHANGE_RATIO"),
+            parentnetprofit: opt_f64(item, "PARENTNETPROFIT"),
+            pnp_change_ratio: opt_f64(item, "PNP_CHANGE_RATIO"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
+            trade_board: opt_str(item, "TRADE_BOARD"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -416,21 +403,21 @@ pub(crate) fn parse_stock_sy_em(resp: &Value) -> Result<Vec<SyEmRow>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(SyEmRow {
             code,
             name,
-            goodwill: fnum(item, "GOODWILL"),
-            sumshequity_ratio: fnum(item, "SUMSHEQUITY_RATIO"),
-            parentnetprofit: fnum(item, "PARENTNETPROFIT"),
-            pnp_yoy_ratio: fnum(item, "PNP_YOY_RATIO"),
-            goodwill_pre: fnum(item, "GOODWILL_PRE"),
-            notice_date: fstr(item, "NOTICE_DATE"),
-            trade_board: fstr(item, "TRADE_BOARD"),
+            goodwill: opt_f64(item, "GOODWILL"),
+            sumshequity_ratio: opt_f64(item, "SUMSHEQUITY_RATIO"),
+            parentnetprofit: opt_f64(item, "PARENTNETPROFIT"),
+            pnp_yoy_ratio: opt_f64(item, "PNP_YOY_RATIO"),
+            goodwill_pre: opt_f64(item, "GOODWILL_PRE"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
+            trade_board: opt_str(item, "TRADE_BOARD"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -487,17 +474,17 @@ pub(crate) fn parse_stock_sy_hy_em(resp: &Value) -> Result<Vec<SyHyRow>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let industry_name = fstr(item, "INDUSTRY_NAME").unwrap_or_default();
+        let industry_name = opt_str(item, "INDUSTRY_NAME").unwrap_or_default();
         if industry_name.is_empty() {
             continue;
         }
         out.push(SyHyRow {
             industry_name,
-            org_num: fnum(item, "ORG_NUM"),
-            goodwill: fnum(item, "GOODWILL"),
-            sumshequity: fnum(item, "SUMSHEQUITY"),
-            sumshequity_ratio: fnum(item, "SUMSHEQUITY_RATIO"),
-            parentnetprofit: fnum(item, "PARENTNETPROFIT"),
+            org_num: opt_f64(item, "ORG_NUM"),
+            goodwill: opt_f64(item, "GOODWILL"),
+            sumshequity: opt_f64(item, "SUMSHEQUITY"),
+            sumshequity_ratio: opt_f64(item, "SUMSHEQUITY_RATIO"),
+            parentnetprofit: opt_f64(item, "PARENTNETPROFIT"),
             source: SOURCE_EASTMONEY,
         });
     }

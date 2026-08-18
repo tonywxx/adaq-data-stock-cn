@@ -31,6 +31,8 @@ use serde_json::Value;
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
 
+use crate::core::json::*;
+
 const SOURCE: &str = "eastmoney";
 const PUSH2: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 
@@ -40,20 +42,6 @@ const FS_SZ_MAIN: &str = "m:0 t:6"; // 深市主板 A 股
 const FS_BJ: &str = "m:0 t:81"; // 北交所
 const FS_ALL_A: &str = "m:0 t:6,m:0 t:80,m:1 t:2,m:1 t:23,m:0 t:81"; // 全部 A 股
 const FS_DELIST: &str = "m:0 s:3"; // 两网及退市 (delisted board)
-
-/// Read a string field.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field (number or numeric string).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract the `data.diff` row array from a push2 clist response.
 fn emg_clist_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -136,12 +124,12 @@ pub struct DelistRow {
 pub(crate) fn parse_code_name(items: &[Value]) -> Result<Vec<CodeNameRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "f12") else {
+        let Some(code) = opt_str(item, "f12") else {
             continue;
         };
         out.push(CodeNameRow {
             code,
-            name: fstr(item, "f14").unwrap_or_default(),
+            name: opt_str(item, "f14").unwrap_or_default(),
         });
     }
     Ok(out)
@@ -151,14 +139,14 @@ pub(crate) fn parse_code_name(items: &[Value]) -> Result<Vec<CodeNameRow>> {
 pub(crate) fn parse_bj_name_code(items: &[Value]) -> Result<Vec<BjNameCodeRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "f12") else {
+        let Some(code) = opt_str(item, "f12") else {
             continue;
         };
         out.push(BjNameCodeRow {
             code,
-            name: fstr(item, "f14").unwrap_or_default(),
-            total_mv: fnum(item, "f20"),
-            float_mv: fnum(item, "f21"),
+            name: opt_str(item, "f14").unwrap_or_default(),
+            total_mv: opt_f64(item, "f20"),
+            float_mv: opt_f64(item, "f21"),
         });
     }
     Ok(out)
@@ -182,7 +170,7 @@ fn is_exchange(code: &str, ex: Exchange) -> bool {
 pub(crate) fn parse_delist(items: &[Value], ex: Exchange) -> Result<Vec<DelistRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "f12") else {
+        let Some(code) = opt_str(item, "f12") else {
             continue;
         };
         if !is_exchange(&code, ex) {
@@ -190,7 +178,7 @@ pub(crate) fn parse_delist(items: &[Value], ex: Exchange) -> Result<Vec<DelistRo
         }
         out.push(DelistRow {
             code,
-            name: fstr(item, "f14").unwrap_or_default(),
+            name: opt_str(item, "f14").unwrap_or_default(),
         });
     }
     Ok(out)

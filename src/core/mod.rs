@@ -2,5 +2,8 @@ pub mod client;
 pub mod convert;
 pub mod error;
 pub mod html;
+pub mod json;
+pub mod resilience;
 pub mod impersonate;
 pub mod source;
+pub mod util;

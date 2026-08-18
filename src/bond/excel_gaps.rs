@@ -4,6 +4,7 @@ use calamine::{open_workbook_auto_from_rs, Reader, Sheets};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
 
@@ -52,14 +53,6 @@ fn read_rows(bytes: &[u8], endpoint: &'static str) -> Result<Vec<Vec<String>>> {
         .collect())
 }
 
-fn parse_f64(s: &str) -> Option<f64> {
-    let t: String = s.chars().filter(|c| *c != ',').collect();
-    let t = t.trim();
-    if t.is_empty() {
-        return None;
-    }
-    t.parse::<f64>().ok()
-}
 
 fn cell_to_string(c: &calamine::Data) -> String {
     match c {
@@ -119,9 +112,9 @@ pub(crate) fn parse_bond_cash_summary_sse(bytes: &[u8]) -> Result<Vec<BondCashSu
         }
         out.push(BondCashSummarySse {
             bond_type: col(r, 0).to_string(),
-            custody_count: parse_f64(col(r, 1)),
-            custody_market_value: parse_f64(col(r, 2)),
-            custody_face_value: parse_f64(col(r, 3)),
+            custody_count: parse_f64_str(col(r, 1)),
+            custody_market_value: parse_f64_str(col(r, 2)),
+            custody_face_value: parse_f64_str(col(r, 3)),
             date: col(r, 4).to_string(),
         });
     }
@@ -167,10 +160,10 @@ pub(crate) fn parse_bond_deal_summary_sse(bytes: &[u8]) -> Result<Vec<BondDealSu
         }
         out.push(BondDealSummarySse {
             bond_type: col(r, 0).to_string(),
-            deal_count_today: parse_f64(col(r, 1)),
-            deal_amount_today: parse_f64(col(r, 2)),
-            deal_count_year: parse_f64(col(r, 3)),
-            deal_amount_year: parse_f64(col(r, 4)),
+            deal_count_today: parse_f64_str(col(r, 1)),
+            deal_amount_today: parse_f64_str(col(r, 2)),
+            deal_count_year: parse_f64_str(col(r, 3)),
+            deal_amount_year: parse_f64_str(col(r, 4)),
             date: col(r, 5).to_string(),
         });
     }

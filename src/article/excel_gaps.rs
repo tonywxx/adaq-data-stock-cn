@@ -6,6 +6,7 @@ use calamine::{open_workbook_auto_from_rs, Reader, Sheets};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const BASE: &str = "http://www.policyuncertainty.com/media";
 const UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36";
@@ -55,14 +56,6 @@ fn read_rows(bytes: &[u8], endpoint: &'static str) -> Result<Vec<Vec<String>>> {
         .collect())
 }
 
-fn parse_f64(s: &str) -> Option<f64> {
-    let t: String = s.chars().filter(|c| *c != ',').collect();
-    let t = t.trim();
-    if t.is_empty() {
-        return None;
-    }
-    t.parse::<f64>().ok()
-}
 
 fn cell_to_string(c: &calamine::Data) -> String {
     match c {
@@ -154,7 +147,7 @@ pub(crate) fn parse_article_epu_index(bytes: &[u8]) -> Result<Vec<EpuIndexRow>> 
             if i == yi || i == mi || h.is_empty() {
                 continue;
             }
-            values.insert(h.clone(), parse_f64(&r[i]));
+            values.insert(h.clone(), parse_f64_str(&r[i]));
         }
         out.push(EpuIndexRow {
             year: r[yi].clone(),

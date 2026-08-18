@@ -19,6 +19,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const EM_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const EM_SPOT_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
@@ -185,8 +186,8 @@ pub(crate) fn parse_global_spot(resp: &Value) -> Result<Vec<GlobalSpotRow>> {
     let mut out = Vec::with_capacity(diff.len());
     for item in diff {
         out.push(GlobalSpotRow {
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
             price: fnum_scale(item, "f2", 100.0),
             change: fnum_scale(item, "f4", 100.0),
             pct_change: fnum_scale(item, "f3", 100.0),
@@ -314,11 +315,11 @@ pub(crate) fn parse_global_hist(resp: &Value) -> Result<Vec<GlobalHistRow>> {
             date: p[0].to_string(),
             code: code.clone(),
             name: name.clone(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            amplitude: parse_f64(p[7]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            amplitude: parse_f64_str(p[7]),
         });
     }
     Ok(out)
@@ -456,13 +457,13 @@ pub(crate) fn parse_min_trends(resp: &Value) -> Result<Vec<IndexMinRow>> {
         }
         out.push(IndexMinRow {
             time: p[0].to_string(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
-            avg: parse_f64(p[7]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
+            avg: parse_f64_str(p[7]),
             amplitude: None,
             pct_change: None,
             change: None,
@@ -508,17 +509,17 @@ pub(crate) fn parse_min_kline(resp: &Value) -> Result<Vec<IndexMinRow>> {
         }
         out.push(IndexMinRow {
             time: p[0].to_string(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
             avg: None,
-            amplitude: parse_f64(p[7]),
-            pct_change: parse_f64(p[8]),
-            change: parse_f64(p[9]),
-            turnover: parse_f64(p[10]),
+            amplitude: parse_f64_str(p[7]),
+            pct_change: parse_f64_str(p[8]),
+            change: parse_f64_str(p[9]),
+            turnover: parse_f64_str(p[10]),
         });
     }
     Ok(out)
@@ -603,19 +604,19 @@ pub(crate) fn parse_csindex_hist(resp: &Value) -> Result<Vec<CsindexHistRow>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(CsindexHistRow {
-            date: fstr(item, "日期"),
-            index_code: fstr(item, "指数代码"),
-            name: fstr(item, "指数中文简称"),
-            open: fnum(item, "开盘"),
-            high: fnum(item, "最高"),
-            low: fnum(item, "最低"),
-            close: fnum(item, "收盘"),
-            change: fnum(item, "涨跌"),
-            pct_change: fnum(item, "涨跌幅"),
-            volume: fnum(item, "成交量"),
-            amount: fnum(item, "成交金额"),
-            sample_count: fnum(item, "样本数量"),
-            pe_ttm: fnum(item, "滚动市盈率"),
+            date: opt_str_or(item, "日期", ""),
+            index_code: opt_str_or(item, "指数代码", ""),
+            name: opt_str_or(item, "指数中文简称", ""),
+            open: opt_f64(item, "开盘"),
+            high: opt_f64(item, "最高"),
+            low: opt_f64(item, "最低"),
+            close: opt_f64(item, "收盘"),
+            change: opt_f64(item, "涨跌"),
+            pct_change: opt_f64(item, "涨跌幅"),
+            volume: opt_f64(item, "成交量"),
+            amount: opt_f64(item, "成交金额"),
+            sample_count: opt_f64(item, "样本数量"),
+            pe_ttm: opt_f64(item, "滚动市盈率"),
         });
     }
     Ok(out)
@@ -700,17 +701,6 @@ pub(crate) fn parse_pmi_cx(resp: &Value, value_key: &str) -> Result<Vec<PmiCxRow
 // shared helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(num)
-}
-
 /// Parse an Eastmoney field that may be a number or a numeric string (`"-"` / empty => None),
 /// then divide by `scale` (used because `fltt=1` returns raw *100 values).
 fn fnum_scale(item: &Value, k: &str, scale: f64) -> Option<f64> {
@@ -730,15 +720,6 @@ fn num(v: &Value) -> Option<f64> {
             }
         }
         _ => None,
-    }
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
     }
 }
 

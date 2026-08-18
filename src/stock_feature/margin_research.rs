@@ -18,6 +18,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 const REPORT: &str = "RPTA_WEB_MARGIN_DAILYTRADE";
@@ -25,14 +26,6 @@ const REPORT: &str = "RPTA_WEB_MARGIN_DAILYTRADE";
 // ---------------------------------------------------------------------------
 // shared helpers
 // ---------------------------------------------------------------------------
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Normalize an Eastmoney datetime `"YYYY-MM-DD HH:MM:SS"` (or `"YYYY-MM-DD"`)
 /// to a plain `YYYY-MM-DD` date. `None` when null/empty.
@@ -142,18 +135,18 @@ pub(crate) fn parse_margin_account(resp: &Value) -> Result<Vec<MarginAccountRow>
         };
         out.push(MarginAccountRow {
             date,
-            fin_balance: fnum(&item, "FIN_BALANCE"),
-            loan_balance: fnum(&item, "LOAN_BALANCE"),
-            fin_buy_amt: fnum(&item, "FIN_BUY_AMT"),
-            loan_sell_amt: fnum(&item, "LOAN_SELL_AMT"),
-            security_org_num: fnum(&item, "SECURITY_ORG_NUM"),
-            operate_dept_num: fnum(&item, "OPERATEDEPT_NUM"),
-            personal_investor_num: fnum(&item, "PERSONAL_INVESTOR_NUM"),
-            org_investor_num: fnum(&item, "ORG_INVESTOR_NUM"),
-            investor_num: fnum(&item, "INVESTOR_NUM"),
-            marginliab_investor_num: fnum(&item, "MARGINLIAB_INVESTOR_NUM"),
-            total_guarantee: fnum(&item, "TOTAL_GUARANTEE"),
-            avg_guarantee_ratio: fnum(&item, "AVG_GUARANTEE_RATIO"),
+            fin_balance: opt_f64(&item, "FIN_BALANCE"),
+            loan_balance: opt_f64(&item, "LOAN_BALANCE"),
+            fin_buy_amt: opt_f64(&item, "FIN_BUY_AMT"),
+            loan_sell_amt: opt_f64(&item, "LOAN_SELL_AMT"),
+            security_org_num: opt_f64(&item, "SECURITY_ORG_NUM"),
+            operate_dept_num: opt_f64(&item, "OPERATEDEPT_NUM"),
+            personal_investor_num: opt_f64(&item, "PERSONAL_INVESTOR_NUM"),
+            org_investor_num: opt_f64(&item, "ORG_INVESTOR_NUM"),
+            investor_num: opt_f64(&item, "INVESTOR_NUM"),
+            marginliab_investor_num: opt_f64(&item, "MARGINLIAB_INVESTOR_NUM"),
+            total_guarantee: opt_f64(&item, "TOTAL_GUARANTEE"),
+            avg_guarantee_ratio: opt_f64(&item, "AVG_GUARANTEE_RATIO"),
         });
     }
     Ok(out)

@@ -17,6 +17,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Default 科创板 audit number used by `stock_kcb_detail_renewal` (akshare hardcodes 926).
 const DEFAULT_KCB_AUDIT_NUM: &str = "926";
@@ -30,29 +31,6 @@ const EM_NOTICE: &str = "https://np-anotice-stock.eastmoney.com/api/security/ann
 // ---------------------------------------------------------------------------
 // Shared parse helpers
 // ---------------------------------------------------------------------------
-
-/// Read a string field, returning `None` when missing/null.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
-/// Read an integer field that may be a JSON number or a numeric string.
-fn finum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 /// Read a field whose value may be a string *or* a number, returning it as a
 /// string (used for `registeResult`, which is `1` in some SSE responses and
@@ -122,22 +100,22 @@ fn parse_kcb_renewal(resp: &Value) -> Result<Vec<KcbRenewalRow>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(KcbRenewalRow {
-            stock_audit_num: fstr(item, "stockAuditNum"),
-            stock_audit_name: fstr(item, "stockAuditName"),
-            curr_status: finum(item, "currStatus"),
-            project_type: finum(item, "projectType"),
+            stock_audit_num: opt_str(item, "stockAuditNum"),
+            stock_audit_name: opt_str(item, "stockAuditName"),
+            curr_status: opt_i64(item, "currStatus"),
+            project_type: opt_i64(item, "projectType"),
             registe_result: fstr_flex(item, "registeResult"),
-            update_date: fstr(item, "updateDate"),
-            create_time: fstr(item, "createTime"),
-            audit_apply_date: fstr(item, "auditApplyDate"),
-            plan_issue_capital: fnum(item, "planIssueCapital"),
-            issue_amount: fstr(item, "issueAmount"),
-            suspend_status: fstr(item, "suspendStatus"),
-            wen_hao: fstr(item, "wenHao"),
-            collect_type: finum(item, "collectType"),
-            commiti_result: fstr(item, "commitiResult"),
-            issue_market_type: finum(item, "issueMarketType"),
-            uniform_code: fstr(item, "uniformCode"),
+            update_date: opt_str(item, "updateDate"),
+            create_time: opt_str(item, "createTime"),
+            audit_apply_date: opt_str(item, "auditApplyDate"),
+            plan_issue_capital: opt_f64(item, "planIssueCapital"),
+            issue_amount: opt_str(item, "issueAmount"),
+            suspend_status: opt_str(item, "suspendStatus"),
+            wen_hao: opt_str(item, "wenHao"),
+            collect_type: opt_i64(item, "collectType"),
+            commiti_result: opt_str(item, "commitiResult"),
+            issue_market_type: opt_i64(item, "issueMarketType"),
+            uniform_code: opt_str(item, "uniformCode"),
         });
     }
     Ok(out)
@@ -308,7 +286,7 @@ fn parse_notice_list(resp: &Value) -> Result<Vec<NoticeRow>> {
             .and_then(|c| c.get("short_name"))
             .and_then(|s| s.as_str())
             .map(|s| s.to_string());
-        let art_code = fstr(item, "art_code");
+        let art_code = opt_str(item, "art_code");
         let column_name = item
             .get("columns")
             .and_then(|c| c.as_array())
@@ -325,9 +303,9 @@ fn parse_notice_list(resp: &Value) -> Result<Vec<NoticeRow>> {
         out.push(NoticeRow {
             stock_code: code,
             short_name,
-            title: fstr(item, "title"),
+            title: opt_str(item, "title"),
             column_name,
-            notice_date: fstr(item, "notice_date"),
+            notice_date: opt_str(item, "notice_date"),
             url,
         });
     }

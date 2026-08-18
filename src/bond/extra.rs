@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ---------------------------------------------------------------------------
 // bond_zh_cov — 东方财富网-数据中心-可转债数据 (datacenter `RPT_BOND_CB_LIST`)
@@ -142,8 +143,8 @@ pub(crate) fn parse_bond_zh_cov(resp: &Value) -> Result<Vec<BondZhCov>> {
 }
 
 fn parse_cov_item(item: &Value) -> Option<BondZhCov> {
-    let code = fstr(item, "SECURITY_CODE");
-    let name = fstr(item, "SECURITY_NAME_ABBR");
+    let code = opt_str_or(item, "SECURITY_CODE", "");
+    let name = opt_str_or(item, "SECURITY_NAME_ABBR", "");
     if code.is_empty() && name.is_empty() {
         return None;
     }
@@ -153,15 +154,15 @@ fn parse_cov_item(item: &Value) -> Option<BondZhCov> {
     row.convert_stock_code = fstr_opt(item, "CONVERT_STOCK_CODE");
     row.convert_stock_name = fstr_opt(item, "SECURITY_SHORT_NAME");
     row.rating = fstr_opt(item, "RATING");
-    row.issue_scale = fnum(item, "ACTUAL_ISSUE_SCALE");
+    row.issue_scale = opt_f64(item, "ACTUAL_ISSUE_SCALE");
     row.listing_date = fstr_opt(item, "LISTING_DATE");
     row.record_date = fstr_opt(item, "SECURITY_START_DATE");
-    row.per_preplacing = fnum(item, "FIRST_PER_PREPLACING");
-    row.convert_stock_price = fnum(item, "CONVERT_STOCK_PRICE");
-    row.transfer_price = fnum(item, "TRANSFER_PRICE");
-    row.transfer_value = fnum(item, "TRANSFER_VALUE");
-    row.current_bond_price = fnum(item, "CURRENT_BOND_PRICE");
-    row.transfer_premium_ratio = fnum(item, "TRANSFER_PREMIUM_RATIO");
+    row.per_preplacing = opt_f64(item, "FIRST_PER_PREPLACING");
+    row.convert_stock_price = opt_f64(item, "CONVERT_STOCK_PRICE");
+    row.transfer_price = opt_f64(item, "TRANSFER_PRICE");
+    row.transfer_value = opt_f64(item, "TRANSFER_VALUE");
+    row.current_bond_price = opt_f64(item, "CURRENT_BOND_PRICE");
+    row.transfer_premium_ratio = opt_f64(item, "TRANSFER_PREMIUM_RATIO");
     Some(row)
 }
 
@@ -255,14 +256,14 @@ pub(crate) fn parse_bond_zh_cov_value_analysis(
         })?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let zcode = fstr(item, "ZCODE");
+        let zcode = opt_str_or(item, "ZCODE", "");
         let mut row = BondZhCovValueAnalysis::new(zcode);
         row.date = fstr_opt(item, "DATE");
-        row.close = fnum(item, "FCLOSE");
-        row.pure_bond_value = fnum(item, "PUREBONDVALUE");
-        row.swap_value = fnum(item, "SWAPVALUE");
-        row.pure_bond_premium_ratio = fnum(item, "PUREBONDOR");
-        row.swap_premium_ratio = fnum(item, "SWAPOR");
+        row.close = opt_f64(item, "FCLOSE");
+        row.pure_bond_value = opt_f64(item, "PUREBONDVALUE");
+        row.swap_value = opt_f64(item, "SWAPVALUE");
+        row.pure_bond_premium_ratio = opt_f64(item, "PUREBONDOR");
+        row.swap_premium_ratio = opt_f64(item, "SWAPOR");
         out.push(row);
     }
     Ok(out)
@@ -350,21 +351,21 @@ pub(crate) fn parse_bond_buy_back_em(resp: &Value) -> Result<Vec<BondBuyBackEm>>
     for (i, item) in diff.iter().enumerate() {
         let mut row = BondBuyBackEm {
             index: (i + 1) as u32,
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            latest_price: fnum(item, "f2").map(|v| v / 1000.0),
-            change: fnum(item, "f4").map(|v| v / 1000.0),
-            pct_change: fnum(item, "f3").map(|v| v / 100.0),
-            open: fnum(item, "f17").map(|v| v / 1000.0),
-            high: fnum(item, "f15").map(|v| v / 1000.0),
-            low: fnum(item, "f16").map(|v| v / 1000.0),
-            prev_close: fnum(item, "f18").map(|v| v / 1000.0),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
+            latest_price: opt_f64(item, "f2").map(|v| v / 1000.0),
+            change: opt_f64(item, "f4").map(|v| v / 1000.0),
+            pct_change: opt_f64(item, "f3").map(|v| v / 100.0),
+            open: opt_f64(item, "f17").map(|v| v / 1000.0),
+            high: opt_f64(item, "f15").map(|v| v / 1000.0),
+            low: opt_f64(item, "f16").map(|v| v / 1000.0),
+            prev_close: opt_f64(item, "f18").map(|v| v / 1000.0),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
             source: SOURCE_EASTMONEY,
         };
         if row.code.is_empty() {
-            row.code = fstr(item, "f13");
+            row.code = opt_str_or(item, "f13", "");
         }
         out.push(row);
     }
@@ -375,24 +376,10 @@ pub(crate) fn parse_bond_buy_back_em(resp: &Value) -> Result<Vec<BondBuyBackEm>>
 // Shared helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
 fn fstr_opt(item: &Value, k: &str) -> Option<String> {
     item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
 }
 
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 #[cfg(test)]
 mod tests {

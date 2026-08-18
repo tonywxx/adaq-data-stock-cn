@@ -22,6 +22,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY, SOURCE_TENCENT};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // Source labels for rate-limit buckets / error context (no new constants in client.rs).
 const SOURCE_BAIDU: &str = "baidu";
@@ -35,21 +36,6 @@ const SOURCE_TICK: &str = "tencent";
 // ---------------------------------------------------------------------------
 // shared parse helpers
 // ---------------------------------------------------------------------------
-
-/// Read a string field, returning `None` when missing / null / not a string.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field, accepting a JSON number or a (possibly comma-grouped,
-/// whitespace-padded) numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.replace(',', "").trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Current hour (UTC) as a string — used only as a Tencent/Baidu request param.
 fn now_hour() -> String {
@@ -108,22 +94,22 @@ pub(crate) fn parse_hold_management_person(data: &[Value]) -> Vec<HoldManagement
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(HoldManagementPersonRow {
-            date: fstr(item, "CHANGE_DATE"),
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME"),
-            person: fstr(item, "PERSON_NAME"),
-            change_shares: fnum(item, "CHANGE_SHARES"),
-            avg_price: fnum(item, "AVERAGE_PRICE"),
-            change_amount: fnum(item, "CHANGE_AMOUNT"),
-            reason: fstr(item, "CHANGE_REASON"),
-            change_ratio: fnum(item, "CHANGE_RATIO"),
-            after_hold: fnum(item, "CHANGE_AFTER_HOLDNUM"),
-            hold_type: fstr(item, "HOLD_TYPE"),
-            dse_person: fstr(item, "DSE_PERSON_NAME"),
-            position: fstr(item, "POSITION_NAME"),
-            relation: fstr(item, "PERSON_DSE_RELATION"),
-            begin_hold: fnum(item, "BEGIN_HOLD_NUM"),
-            end_hold: fnum(item, "END_HOLD_NUM"),
+            date: opt_str(item, "CHANGE_DATE"),
+            code: opt_str(item, "SECURITY_CODE"),
+            name: opt_str(item, "SECURITY_NAME"),
+            person: opt_str(item, "PERSON_NAME"),
+            change_shares: opt_f64(item, "CHANGE_SHARES"),
+            avg_price: opt_f64(item, "AVERAGE_PRICE"),
+            change_amount: opt_f64(item, "CHANGE_AMOUNT"),
+            reason: opt_str(item, "CHANGE_REASON"),
+            change_ratio: opt_f64(item, "CHANGE_RATIO"),
+            after_hold: opt_f64(item, "CHANGE_AFTER_HOLDNUM"),
+            hold_type: opt_str(item, "HOLD_TYPE"),
+            dse_person: opt_str(item, "DSE_PERSON_NAME"),
+            position: opt_str(item, "POSITION_NAME"),
+            relation: opt_str(item, "PERSON_DSE_RELATION"),
+            begin_hold: opt_f64(item, "BEGIN_HOLD_NUM"),
+            end_hold: opt_f64(item, "END_HOLD_NUM"),
         });
     }
     out
@@ -188,13 +174,13 @@ pub struct HotSearchRow {
 pub(crate) fn parse_hot_search(body: &[Value]) -> Vec<HotSearchRow> {
     let mut out = Vec::with_capacity(body.len());
     for item in body {
-        let Some(name) = fstr(item, "name") else {
+        let Some(name) = opt_str(item, "name") else {
             continue;
         };
         out.push(HotSearchRow {
             name,
-            change_rate: fnum(item, "pxChangeRate"),
-            heat: fnum(item, "heat"),
+            change_rate: opt_f64(item, "pxChangeRate"),
+            heat: opt_f64(item, "heat"),
         });
     }
     out
@@ -286,19 +272,19 @@ pub(crate) fn parse_sse_share_hold(result: &[Value]) -> Vec<SseShareHoldRow> {
     let mut out = Vec::with_capacity(result.len());
     for item in result {
         out.push(SseShareHoldRow {
-            company_code: fstr(item, "COMPANY_CODE"),
-            company_name: fstr(item, "COMPANY_ABBR"),
-            name: fstr(item, "NAME"),
-            duty: fstr(item, "DUTY"),
-            stock_type: fstr(item, "STOCK_TYPE"),
-            currency_type: fstr(item, "CURRENCY_TYPE"),
-            pre_hold_num: fnum(item, "CURRENT_NUM"),
-            change_num: fnum(item, "CHANGE_NUM"),
-            avg_price: fnum(item, "CURRENT_AVG_PRICE"),
-            after_hold_num: fnum(item, "HOLDSTOCK_NUM"),
-            reason: fstr(item, "CHANGE_REASON"),
-            change_date: fstr(item, "CHANGE_DATE"),
-            form_date: fstr(item, "FORM_DATE"),
+            company_code: opt_str(item, "COMPANY_CODE"),
+            company_name: opt_str(item, "COMPANY_ABBR"),
+            name: opt_str(item, "NAME"),
+            duty: opt_str(item, "DUTY"),
+            stock_type: opt_str(item, "STOCK_TYPE"),
+            currency_type: opt_str(item, "CURRENCY_TYPE"),
+            pre_hold_num: opt_f64(item, "CURRENT_NUM"),
+            change_num: opt_f64(item, "CHANGE_NUM"),
+            avg_price: opt_f64(item, "CURRENT_AVG_PRICE"),
+            after_hold_num: opt_f64(item, "HOLDSTOCK_NUM"),
+            reason: opt_str(item, "CHANGE_REASON"),
+            change_date: opt_str(item, "CHANGE_DATE"),
+            form_date: opt_str(item, "FORM_DATE"),
         });
     }
     out
@@ -429,18 +415,18 @@ pub(crate) fn parse_szse_share_hold(data: &[Value]) -> Vec<SzseShareHoldRow> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(SzseShareHoldRow {
-            code: fstr(item, "zqdm"),
-            name: fstr(item, "zqjc"),
-            person: fstr(item, "ggxm"),
-            change_date: fstr(item, "jyrq"),
-            change_num: fnum(item, "bdgs"),
-            avg_price: fnum(item, "bdjj"),
-            reason: fstr(item, "bdyy"),
-            change_ratio: fnum(item, "cgbdbl"),
-            after_hold: fnum(item, "cgzs"),
-            person_name: fstr(item, "gdxm"),
-            duty: fstr(item, "zw"),
-            relation: fstr(item, "gxlb"),
+            code: opt_str(item, "zqdm"),
+            name: opt_str(item, "zqjc"),
+            person: opt_str(item, "ggxm"),
+            change_date: opt_str(item, "jyrq"),
+            change_num: opt_f64(item, "bdgs"),
+            avg_price: opt_f64(item, "bdjj"),
+            reason: opt_str(item, "bdyy"),
+            change_ratio: opt_f64(item, "cgbdbl"),
+            after_hold: opt_f64(item, "cgzs"),
+            person_name: opt_str(item, "gdxm"),
+            duty: opt_str(item, "zw"),
+            relation: opt_str(item, "gxlb"),
         });
     }
     out
@@ -577,16 +563,16 @@ pub(crate) fn parse_bse_share_hold(content: &[Value]) -> Vec<BseShareHoldRow> {
     let mut out = Vec::with_capacity(content.len());
     for item in content {
         out.push(BseShareHoldRow {
-            code: fstr(item, "stockCode"),
-            name: fstr(item, "stockName"),
-            person: fstr(item, "djgName"),
-            duty: fstr(item, "duty"),
-            change_date: fstr(item, "changeDate"),
-            change_amount: fnum(item, "changeAmount"),
-            pre_amount: fnum(item, "preAmount"),
-            new_amount: fnum(item, "newAmount"),
-            price: fnum(item, "price"),
-            reason: fstr(item, "reason"),
+            code: opt_str(item, "stockCode"),
+            name: opt_str(item, "stockName"),
+            person: opt_str(item, "djgName"),
+            duty: opt_str(item, "duty"),
+            change_date: opt_str(item, "changeDate"),
+            change_amount: opt_f64(item, "changeAmount"),
+            pre_amount: opt_f64(item, "preAmount"),
+            new_amount: opt_f64(item, "newAmount"),
+            price: opt_f64(item, "price"),
+            reason: opt_str(item, "reason"),
         });
     }
     out
@@ -704,9 +690,9 @@ pub(crate) fn parse_news_main_cx(data: &[Value]) -> Vec<NewsMainCxRow> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(NewsMainCxRow {
-            tag: fstr(item, "tag"),
-            summary: fstr(item, "summary"),
-            url: fstr(item, "url"),
+            tag: opt_str(item, "tag"),
+            summary: opt_str(item, "summary"),
+            url: opt_str(item, "url"),
         });
     }
     out
@@ -869,12 +855,12 @@ pub(crate) fn parse_price_target(list: &[Value]) -> Vec<PriceTargetRow> {
     let mut out = Vec::with_capacity(list.len());
     for item in list {
         out.push(PriceTargetRow {
-            date: fstr(item, "date"),
-            stock_name: fstr(item, "stock_name"),
-            rating: fstr(item, "rating"),
-            prev_target_price: fnum(item, "prev_target_price"),
-            latest_target_price: fnum(item, "latest_target_price"),
-            institution: fstr(item, "institution"),
+            date: opt_str(item, "date"),
+            stock_name: opt_str(item, "stock_name"),
+            rating: opt_str(item, "rating"),
+            prev_target_price: opt_f64(item, "prev_target_price"),
+            latest_target_price: opt_f64(item, "latest_target_price"),
+            institution: opt_str(item, "institution"),
         });
     }
     out
@@ -951,10 +937,10 @@ pub struct StaqNetStopRow {
 pub(crate) fn parse_staq_net_stop(diff: &[Value]) -> Vec<StaqNetStopRow> {
     let mut out = Vec::with_capacity(diff.len());
     for (i, item) in diff.iter().enumerate() {
-        let Some(code) = fstr(item, "f12") else {
+        let Some(code) = opt_str(item, "f12") else {
             continue;
         };
-        let Some(name) = fstr(item, "f14") else {
+        let Some(name) = opt_str(item, "f14") else {
             continue;
         };
         out.push(StaqNetStopRow {
@@ -1240,21 +1226,6 @@ pub struct AhDailyRow {
     pub volume: Option<f64>,
 }
 
-fn arr_str(arr: &[Value], i: usize) -> String {
-    arr.get(i)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn arr_num(arr: &[Value], i: usize) -> Option<f64> {
-    arr.get(i).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.replace(',', "").trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
 /// Parse `stock_zh_ah_daily` rows from a `day` (or `{adjust}day`) array.
 pub(crate) fn parse_ah_daily(day: &[Value]) -> Vec<AhDailyRow> {
     let mut out = Vec::with_capacity(day.len());
@@ -1266,12 +1237,12 @@ pub(crate) fn parse_ah_daily(day: &[Value]) -> Vec<AhDailyRow> {
             continue;
         }
         out.push(AhDailyRow {
-            date: arr_str(arr, 0),
-            open: arr_num(arr, 1),
-            close: arr_num(arr, 2),
-            high: arr_num(arr, 3),
-            low: arr_num(arr, 4),
-            volume: arr_num(arr, 5),
+            date: str_at(arr, 0),
+            open: f64_at(arr, 1),
+            close: f64_at(arr, 2),
+            high: f64_at(arr, 3),
+            low: f64_at(arr, 4),
+            volume: f64_at(arr, 5),
         });
     }
     out

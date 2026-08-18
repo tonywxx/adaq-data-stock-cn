@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::stock::index::IndexSpotQuote;
 
 const COUNT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple?node=hs_s";
@@ -68,17 +69,17 @@ pub(crate) fn parse_rows(resp: &Value) -> Result<Vec<IndexSpotQuote>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(IndexSpotQuote {
-            code: norm_code(fstr(item, "code")),
-            name: fstr(item, "name"),
-            price: fnum(item, "trade"),
-            pct_change: fnum(item, "changepercent"),
-            change: fnum(item, "pricechange"),
-            volume: fnum(item, "volume"),
-            amount: fnum(item, "amount"),
-            open: fnum(item, "open"),
-            high: fnum(item, "high"),
-            low: fnum(item, "low"),
-            pre_close: fnum(item, "settlement"),
+            code: norm_code(opt_str_or(item, "code", "")),
+            name: opt_str_or(item, "name", ""),
+            price: opt_f64(item, "trade"),
+            pct_change: opt_f64(item, "changepercent"),
+            change: opt_f64(item, "pricechange"),
+            volume: opt_f64(item, "volume"),
+            amount: opt_f64(item, "amount"),
+            open: opt_f64(item, "open"),
+            high: opt_f64(item, "high"),
+            low: opt_f64(item, "low"),
+            pre_close: opt_f64(item, "settlement"),
             source: SOURCE_SINA,
         });
     }
@@ -96,21 +97,6 @@ fn norm_code(s: String) -> String {
         return rest.to_string();
     }
     s.to_string()
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 fn extract_first_number(text: &str) -> Option<u32> {

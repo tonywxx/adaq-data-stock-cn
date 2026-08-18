@@ -44,6 +44,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const SOURCE_SINA: &str = "sina";
@@ -61,21 +62,6 @@ const UT: &str = "b2884a393a59ad64002292a3e90d46a5";
 // ---------------------------------------------------------------------------
 // shared helpers
 // ---------------------------------------------------------------------------
-
-/// Read a string field.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field, accepting either a JSON number or a numeric string
-/// (Eastmoney `push2` returns everything as strings).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `data.diff` (the row-object array) from a `push2` clist response.
 fn emh_diff(resp: &Value) -> Result<&Vec<Value>> {
@@ -205,7 +191,7 @@ pub(crate) fn parse_sector_fund_flow_hist(klines: &[String]) -> Vec<FundFlowHist
 pub(crate) fn parse_name_code_map(diff: &[Value]) -> HashMap<String, String> {
     let mut map = HashMap::new();
     for item in diff {
-        if let (Some(name), Some(code)) = (fstr(item, "f14"), fstr(item, "f12")) {
+        if let (Some(name), Some(code)) = (opt_str(item, "f14"), opt_str(item, "f12")) {
             map.insert(name, code);
         }
     }
@@ -347,27 +333,27 @@ pub struct MainFundFlowRow {
 pub(crate) fn parse_main_fund_flow(diff: &[Value]) -> Vec<MainFundFlowRow> {
     let mut out = Vec::with_capacity(diff.len());
     for (i, item) in diff.iter().enumerate() {
-        let Some(code) = fstr(item, "f12") else {
+        let Some(code) = opt_str(item, "f12") else {
             continue;
         };
-        let Some(name) = fstr(item, "f14") else {
+        let Some(name) = opt_str(item, "f14") else {
             continue;
         };
         out.push(MainFundFlowRow {
             seq: i + 1,
             code,
             name,
-            price: fnum(item, "f2"),
-            main_pct_today: fnum(item, "f184"),
-            rank_today: fnum(item, "f225"),
-            change_today: fnum(item, "f3"),
-            main_pct_5d: fnum(item, "f165"),
-            rank_5d: fnum(item, "f263"),
-            change_5d: fnum(item, "f109"),
-            main_pct_10d: fnum(item, "f175"),
-            rank_10d: fnum(item, "f264"),
-            change_10d: fnum(item, "f160"),
-            sector: fstr(item, "f100"),
+            price: opt_f64(item, "f2"),
+            main_pct_today: opt_f64(item, "f184"),
+            rank_today: opt_f64(item, "f225"),
+            change_today: opt_f64(item, "f3"),
+            main_pct_5d: opt_f64(item, "f165"),
+            rank_5d: opt_f64(item, "f263"),
+            change_5d: opt_f64(item, "f109"),
+            main_pct_10d: opt_f64(item, "f175"),
+            rank_10d: opt_f64(item, "f264"),
+            change_10d: opt_f64(item, "f160"),
+            sector: opt_str(item, "f100"),
         });
     }
     out
@@ -509,23 +495,23 @@ pub(crate) fn parse_sector_fund_flow_rank(
     let f = period.fields();
     let mut out = Vec::with_capacity(diff.len());
     for item in diff {
-        let Some(name) = fstr(item, "f14") else {
+        let Some(name) = opt_str(item, "f14") else {
             continue;
         };
         out.push(SectorFundFlowRankRow {
             name,
-            change_pct: fnum(item, f[2]),
-            main_net_in: fnum(item, f[0]),
-            main_net_pct: fnum(item, f[1]),
-            xxl_net_in: fnum(item, f[3]),
-            xxl_net_pct: fnum(item, f[4]),
-            big_net_in: fnum(item, f[5]),
-            big_net_pct: fnum(item, f[6]),
-            mid_net_in: fnum(item, f[7]),
-            mid_net_pct: fnum(item, f[8]),
-            small_net_in: fnum(item, f[9]),
-            small_net_pct: fnum(item, f[10]),
-            top_stock: fstr(item, f[11]),
+            change_pct: opt_f64(item, f[2]),
+            main_net_in: opt_f64(item, f[0]),
+            main_net_pct: opt_f64(item, f[1]),
+            xxl_net_in: opt_f64(item, f[3]),
+            xxl_net_pct: opt_f64(item, f[4]),
+            big_net_in: opt_f64(item, f[5]),
+            big_net_pct: opt_f64(item, f[6]),
+            mid_net_in: opt_f64(item, f[7]),
+            mid_net_pct: opt_f64(item, f[8]),
+            small_net_in: opt_f64(item, f[9]),
+            small_net_pct: opt_f64(item, f[10]),
+            top_stock: opt_str(item, f[11]),
         });
     }
     out
@@ -624,28 +610,28 @@ pub(crate) fn parse_sector_fund_flow_summary(
     let f = period.fields();
     let mut out = Vec::with_capacity(diff.len());
     for (i, item) in diff.iter().enumerate() {
-        let Some(code) = fstr(item, "f12") else {
+        let Some(code) = opt_str(item, "f12") else {
             continue;
         };
-        let Some(name) = fstr(item, "f14") else {
+        let Some(name) = opt_str(item, "f14") else {
             continue;
         };
         out.push(SectorFundFlowSummaryRow {
             seq: i + 1,
             code,
             name,
-            price: fnum(item, "f2"),
-            change_pct: fnum(item, f[2]),
-            main_net_in: fnum(item, f[0]),
-            main_net_pct: fnum(item, f[1]),
-            xxl_net_in: fnum(item, f[3]),
-            xxl_net_pct: fnum(item, f[4]),
-            big_net_in: fnum(item, f[5]),
-            big_net_pct: fnum(item, f[6]),
-            mid_net_in: fnum(item, f[7]),
-            mid_net_pct: fnum(item, f[8]),
-            small_net_in: fnum(item, f[9]),
-            small_net_pct: fnum(item, f[10]),
+            price: opt_f64(item, "f2"),
+            change_pct: opt_f64(item, f[2]),
+            main_net_in: opt_f64(item, f[0]),
+            main_net_pct: opt_f64(item, f[1]),
+            xxl_net_in: opt_f64(item, f[3]),
+            xxl_net_pct: opt_f64(item, f[4]),
+            big_net_in: opt_f64(item, f[5]),
+            big_net_pct: opt_f64(item, f[6]),
+            mid_net_in: opt_f64(item, f[7]),
+            mid_net_pct: opt_f64(item, f[8]),
+            small_net_in: opt_f64(item, f[9]),
+            small_net_pct: opt_f64(item, f[10]),
         });
     }
     out
@@ -746,35 +732,35 @@ pub struct SectorDetailRow {
 pub(crate) fn parse_sector_detail(arr: &[Value]) -> Vec<SectorDetailRow> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
-        let Some(symbol) = fstr(item, "symbol") else {
+        let Some(symbol) = opt_str(item, "symbol") else {
             continue;
         };
-        let Some(code) = fstr(item, "code") else {
+        let Some(code) = opt_str(item, "code") else {
             continue;
         };
-        let Some(name) = fstr(item, "name") else {
+        let Some(name) = opt_str(item, "name") else {
             continue;
         };
         out.push(SectorDetailRow {
             symbol,
             code,
             name,
-            trade: fnum(item, "trade"),
-            price_change: fnum(item, "pricechange"),
-            change_percent: fnum(item, "changepercent"),
-            buy: fnum(item, "buy"),
-            sell: fnum(item, "sell"),
-            settlement: fnum(item, "settlement"),
-            open: fnum(item, "open"),
-            high: fnum(item, "high"),
-            low: fnum(item, "low"),
-            volume: fnum(item, "volume"),
-            amount: fnum(item, "amount"),
-            pe: fnum(item, "per"),
-            pb: fnum(item, "pb"),
-            mkt_cap: fnum(item, "mktcap"),
-            nmc: fnum(item, "nmc"),
-            turnover_ratio: fnum(item, "turnoverratio"),
+            trade: opt_f64(item, "trade"),
+            price_change: opt_f64(item, "pricechange"),
+            change_percent: opt_f64(item, "changepercent"),
+            buy: opt_f64(item, "buy"),
+            sell: opt_f64(item, "sell"),
+            settlement: opt_f64(item, "settlement"),
+            open: opt_f64(item, "open"),
+            high: opt_f64(item, "high"),
+            low: opt_f64(item, "low"),
+            volume: opt_f64(item, "volume"),
+            amount: opt_f64(item, "amount"),
+            pe: opt_f64(item, "per"),
+            pb: opt_f64(item, "pb"),
+            mkt_cap: opt_f64(item, "mktcap"),
+            nmc: opt_f64(item, "nmc"),
+            turnover_ratio: opt_f64(item, "turnoverratio"),
         });
     }
     out
@@ -1038,25 +1024,25 @@ pub(crate) fn parse_individual_rank(
 ) -> Vec<IndividualRankRow> {
     let mut out = Vec::with_capacity(diff.len());
     for (i, item) in diff.iter().enumerate() {
-        let Some(name) = fstr(item, "f14") else {
+        let Some(name) = opt_str(item, "f14") else {
             continue;
         };
         out.push(IndividualRankRow {
             rank: (i + 1) as u32,
-            code: fstr(item, "f12").unwrap_or_default(),
+            code: opt_str(item, "f12").unwrap_or_default(),
             name,
-            price: fnum(item, "f2"),
-            change_pct: fnum(item, pct_field),
-            main_net_in: fnum(item, net_fields[0]),
-            main_net_pct: fnum(item, net_fields[1]),
-            xxl_net_in: fnum(item, net_fields[2]),
-            xxl_net_pct: fnum(item, net_fields[3]),
-            big_net_in: fnum(item, net_fields[4]),
-            big_net_pct: fnum(item, net_fields[5]),
-            mid_net_in: fnum(item, net_fields[6]),
-            mid_net_pct: fnum(item, net_fields[7]),
-            small_net_in: fnum(item, net_fields[8]),
-            small_net_pct: fnum(item, net_fields[9]),
+            price: opt_f64(item, "f2"),
+            change_pct: opt_f64(item, pct_field),
+            main_net_in: opt_f64(item, net_fields[0]),
+            main_net_pct: opt_f64(item, net_fields[1]),
+            xxl_net_in: opt_f64(item, net_fields[2]),
+            xxl_net_pct: opt_f64(item, net_fields[3]),
+            big_net_in: opt_f64(item, net_fields[4]),
+            big_net_pct: opt_f64(item, net_fields[5]),
+            mid_net_in: opt_f64(item, net_fields[6]),
+            mid_net_pct: opt_f64(item, net_fields[7]),
+            small_net_in: opt_f64(item, net_fields[8]),
+            small_net_pct: opt_f64(item, net_fields[9]),
         });
     }
     out

@@ -4,6 +4,8 @@ use crate::core::client::{Client, SOURCE_TENCENT};
 use crate::core::error::{Error, Result};
 use crate::stock::hist::HistRow;
 
+use crate::core::json::*;
+
 const BASE: &str = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get";
 
 /// Per-symbol historical OHLC from Tencent (`stock_zh_a_hist_tx`).
@@ -93,15 +95,15 @@ pub(crate) fn parse_klines(
         if !in_range(&date, start_date, end_date) {
             continue;
         }
-        let volume = num_at(arr, 5).map(|v| if scale_volume { v * 100.0 } else { v });
-        let amount = num_at(arr, 8).map(|v| v * 10000.0);
+        let volume = f64_at(arr, 5).map(|v| if scale_volume { v * 100.0 } else { v });
+        let amount = f64_at(arr, 8).map(|v| v * 10000.0);
         out.push(HistRow {
             symbol: symbol.to_string(),
             date,
-            open: num_at(arr, 1),
-            close: num_at(arr, 2),
-            high: num_at(arr, 3),
-            low: num_at(arr, 4),
+            open: f64_at(arr, 1),
+            close: f64_at(arr, 2),
+            high: f64_at(arr, 3),
+            low: f64_at(arr, 4),
             volume,
             amount,
             pct_change: None,
@@ -166,21 +168,6 @@ fn in_range(date: &str, start: &str, end: &str) -> bool {
 
 fn normalize_date(d: &str) -> String {
     d.chars().filter(|c| c.is_ascii_digit()).collect()
-}
-
-fn str_at(arr: &[Value], i: usize) -> String {
-    arr.get(i)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn num_at(arr: &[Value], i: usize) -> Option<f64> {
-    match arr.get(i)? {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    }
 }
 
 #[cfg(test)]

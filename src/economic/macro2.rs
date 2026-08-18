@@ -27,6 +27,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 
@@ -39,18 +40,6 @@ fn data_array(resp: &Value) -> Result<&Vec<Value>> {
             origin: SOURCE_EASTMONEY,
             message: "missing result.data".into(),
         })
-}
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 // ---------------------------------------------------------------------------
@@ -98,15 +87,15 @@ pub(crate) fn parse_china_pmi(resp: &Value) -> Result<Vec<ChinaPmi>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaPmi {
             date,
-            manufacturing_index: fnum(item, "MAKE_INDEX"),
-            manufacturing_yoy: fnum(item, "MAKE_SAME"),
-            non_manufacturing_index: fnum(item, "NMAKE_INDEX"),
-            non_manufacturing_yoy: fnum(item, "NMAKE_SAME"),
+            manufacturing_index: opt_f64(item, "MAKE_INDEX"),
+            manufacturing_yoy: opt_f64(item, "MAKE_SAME"),
+            non_manufacturing_index: opt_f64(item, "NMAKE_INDEX"),
+            non_manufacturing_yoy: opt_f64(item, "NMAKE_SAME"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -158,15 +147,15 @@ pub(crate) fn parse_china_gdzctz(resp: &Value) -> Result<Vec<ChinaFixedAssetInve
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaFixedAssetInvest {
             date,
-            current: fnum(item, "BASE"),
-            yoy: fnum(item, "BASE_SAME"),
-            mom: fnum(item, "BASE_SEQUENTIAL"),
-            accumulate: fnum(item, "BASE_ACCUMULATE"),
+            current: opt_f64(item, "BASE"),
+            yoy: opt_f64(item, "BASE_SAME"),
+            mom: opt_f64(item, "BASE_SEQUENTIAL"),
+            accumulate: opt_f64(item, "BASE_ACCUMULATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -216,14 +205,14 @@ pub(crate) fn parse_china_gyzjz(resp: &Value) -> Result<Vec<ChinaIndustrialAdded
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaIndustrialAddedValue {
             date,
-            yoy: fnum(item, "BASE_SAME"),
-            accumulate_yoy: fnum(item, "BASE_ACCUMULATE"),
-            report_date: fstr(item, "REPORT_DATE"),
+            yoy: opt_f64(item, "BASE_SAME"),
+            accumulate_yoy: opt_f64(item, "BASE_ACCUMULATE"),
+            report_date: opt_str(item, "REPORT_DATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -284,16 +273,16 @@ pub(crate) fn parse_china_consumer_goods_retail(resp: &Value) -> Result<Vec<Chin
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(ChinaRetailSales {
             date,
-            current: fnum(item, "RETAIL_TOTAL"),
-            yoy: fnum(item, "RETAIL_TOTAL_SAME"),
-            mom: fnum(item, "RETAIL_TOTAL_SEQUENTIAL"),
-            accumulate: fnum(item, "RETAIL_TOTAL_ACCUMULATE"),
-            accumulate_yoy: fnum(item, "RETAIL_ACCUMULATE_SAME"),
+            current: opt_f64(item, "RETAIL_TOTAL"),
+            yoy: opt_f64(item, "RETAIL_TOTAL_SAME"),
+            mom: opt_f64(item, "RETAIL_TOTAL_SEQUENTIAL"),
+            accumulate: opt_f64(item, "RETAIL_TOTAL_ACCUMULATE"),
+            accumulate_yoy: opt_f64(item, "RETAIL_ACCUMULATE_SAME"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -344,14 +333,14 @@ pub(crate) fn parse_usa_cpi_yoy(resp: &Value) -> Result<Vec<UsaCpi>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "REPORT_DATE") else {
+        let Some(date) = opt_str(item, "REPORT_DATE") else {
             continue;
         };
         out.push(UsaCpi {
             date,
-            publish_date: fstr(item, "PUBLISH_DATE"),
-            value: fnum(item, "VALUE"),
-            pre_value: fnum(item, "PRE_VALUE"),
+            publish_date: opt_str(item, "PUBLISH_DATE"),
+            value: opt_f64(item, "VALUE"),
+            pre_value: opt_f64(item, "PRE_VALUE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -398,14 +387,14 @@ pub(crate) fn parse_usa_phs(resp: &Value) -> Result<Vec<UsaPhs>> {
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "REPORT_DATE") else {
+        let Some(date) = opt_str(item, "REPORT_DATE") else {
             continue;
         };
         out.push(UsaPhs {
             date,
-            publish_date: fstr(item, "PUBLISH_DATE"),
-            value: fnum(item, "VALUE"),
-            pre_value: fnum(item, "PRE_VALUE"),
+            publish_date: opt_str(item, "PUBLISH_DATE"),
+            value: opt_f64(item, "VALUE"),
+            pre_value: opt_f64(item, "PRE_VALUE"),
             source: SOURCE_EASTMONEY,
         });
     }

@@ -15,6 +15,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Sina source identifier (defined locally; mirrors `core::client::SOURCE_SINA`).
 const SOURCE_SINA: &str = "sina";
@@ -89,12 +90,12 @@ pub(crate) fn parse_cffex_daily(resp: &Value) -> Result<Vec<CffexOptionDailyRow>
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(CffexOptionDailyRow {
-            date: fstr(item, "date"),
-            open: fnum(item, "open"),
-            high: fnum(item, "high"),
-            low: fnum(item, "low"),
-            close: fnum(item, "close"),
-            volume: fnum(item, "volume"),
+            date: opt_str(item, "date"),
+            open: opt_f64(item, "open"),
+            high: opt_f64(item, "high"),
+            low: opt_f64(item, "low"),
+            close: opt_f64(item, "close"),
+            volume: opt_f64(item, "volume"),
             source: SOURCE_SINA,
         });
     }
@@ -105,20 +106,6 @@ pub(crate) fn parse_cffex_daily(resp: &Value) -> Result<Vec<CffexOptionDailyRow>
 // Shared helpers
 // ---------------------------------------------------------------------------
 
-/// Extract a `String` field (missing => `None`).
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Extract an `f64` from a field that may be a number or a numeric string
-/// (`trim().parse`).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    }
-}
 
 /// Extract an `i64` from a field (numeric or numeric string). Currently unused
 /// by the ported parsers; retained for parity with sibling modules.

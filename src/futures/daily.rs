@@ -13,6 +13,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Static Eastmoney `ut` token — no JS signing required.
 const UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
@@ -100,16 +101,16 @@ pub(crate) fn parse_klines(resp: &Value) -> Result<Vec<FuturesDailyRow>> {
         out.push(FuturesDailyRow {
             symbol: symbol.clone(),
             date: p[0].to_string(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
-            amplitude: parse_f64(p[7]),
-            pct_change: parse_f64(p[8]),
-            change: parse_f64(p[9]),
-            open_interest: parse_f64(p[12]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
+            amplitude: parse_f64_str(p[7]),
+            pct_change: parse_f64_str(p[8]),
+            change: parse_f64_str(p[9]),
+            open_interest: parse_f64_str(p[12]),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -122,15 +123,6 @@ fn period_map(period: &str) -> Result<&'static str> {
         .find(|(k, _)| *k == period)
         .map(|(_, v)| *v)
         .ok_or_else(|| Error::InvalidParam(format!("unknown period: {period}")))
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
 }
 
 #[cfg(test)]

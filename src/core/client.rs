@@ -1,13 +1,14 @@
-use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use serde_json::Value;
-use tokio::sync::{Mutex, Semaphore};
+use tokio::sync::Semaphore;
 
 use crate::core::error::{Error, Result};
 use crate::core::impersonate;
+use crate::core::resilience::{CacheLayer, RateLimiter, RetryPolicy};
+use crate::core::util::urlencode;
 
 /// Source identifiers, used for rate-limit buckets and error context.
 pub const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -50,21 +51,18 @@ pub enum CacheConfig {
     On { dir: PathBuf, ttl: Duration },
 }
 
-#[derive(Clone)]
-struct CacheLayer {
-    dir: PathBuf,
-    ttl: Duration,
-}
-
 /// Reqwest-backed HTTP client with resilience: retry/backoff, per-source rate
 /// limiting, global concurrency cap, and an optional on-disk response cache
 /// (ADR-0009). One of the two [`Backend`]s behind the unified [`Client`].
+///
+/// The retry/rate-limit/cache logic lives in [`crate::core::resilience`] so the
+/// `impersonate` backend shares the exact same implementation (see C2).
 #[derive(Clone)]
 struct ReqwestBackend {
     inner: reqwest::Client,
-    cfg: ClientConfig,
     sem: Arc<Semaphore>,
-    rate: Arc<Mutex<HashMap<&'static str, Instant>>>,
+    rate_limiter: RateLimiter,
+    retry_policy: RetryPolicy,
     cache: Option<CacheLayer>,
 }
 
@@ -87,51 +85,25 @@ impl ReqwestBackend {
         };
         Self {
             inner,
-            cfg: cfg.clone(),
             sem: Arc::new(Semaphore::new(cfg.max_concurrency.max(1))),
-            rate: Arc::new(Mutex::new(HashMap::new())),
+            rate_limiter: RateLimiter::new(cfg.per_source_rps),
+            retry_policy: RetryPolicy::new(cfg.max_retries, cfg.base_backoff),
             cache,
         }
     }
 
-    fn cache_key(&self, source: &str, endpoint: &str, params: &[(&str, &str)]) -> String {
-        use sha2::{Digest, Sha256};
-        let mut s = format!("{source}:{endpoint}");
-        for (k, v) in params {
-            s.push_str(&format!("&{k}={v}"));
-        }
-        let mut h = Sha256::new();
-        h.update(s.as_bytes());
-        let digest = h.finalize();
-        let mut out = String::with_capacity(digest.len() * 2);
-        for b in digest.iter() {
-            out.push_str(&format!("{:02x}", b));
-        }
-        out
+    /// Read a still-fresh cached JSON response, if caching is on.
+    fn cached(&self, source: &str, endpoint: &str, params: &[(&str, &str)]) -> Option<Value> {
+        let cache = self.cache.as_ref()?;
+        let key = cache.key(source, endpoint, params);
+        cache.read(&key)
     }
 
-    fn cache_path(&self, key: &str) -> PathBuf {
-        self.cache.as_ref().unwrap().dir.join(format!("{key}.json"))
-    }
-
-    async fn rate_limit(&self, source: &'static str) {
-        let rps = match self.cfg.per_source_rps {
-            Some(r) if r > 0.0 => r,
-            _ => return,
-        };
-        let min_interval = Duration::from_secs_f64(1.0 / rps);
-        let mut guard = self.rate.lock().await;
-        match guard.get(&source) {
-            Some(last) if last.elapsed() < min_interval => {
-                let wait = min_interval - last.elapsed();
-                drop(guard);
-                tokio::time::sleep(wait).await;
-                let mut g = self.rate.lock().await;
-                g.insert(source, Instant::now());
-            }
-            _ => {
-                guard.insert(source, Instant::now());
-            }
+    /// Best-effort write of a response to the on-disk cache.
+    fn store(&self, source: &str, endpoint: &str, params: &[(&str, &str)], v: &Value) {
+        if let Some(cache) = &self.cache {
+            let key = cache.key(source, endpoint, params);
+            cache.write(&key, v);
         }
     }
 
@@ -143,16 +115,8 @@ impl ReqwestBackend {
         url: &str,
         params: &[(&str, &str)],
     ) -> Result<Value> {
-        let key = self.cache_key(source, endpoint, params);
-        if let Some(cache) = &self.cache {
-            let p = self.cache_path(&key);
-            if let (Ok(data), Ok(meta)) = (std::fs::read(&p), std::fs::metadata(&p))
-                && let Ok(modified) = meta.modified()
-                && modified.elapsed().map(|e| e < cache.ttl).unwrap_or(false)
-                && let Ok(v) = serde_json::from_slice::<Value>(&data)
-            {
-                return Ok(v);
-            }
+        if let Some(v) = self.cached(source, endpoint, params) {
+            return Ok(v);
         }
 
         let resp = self
@@ -160,12 +124,7 @@ impl ReqwestBackend {
             .await?;
         let value: Value = resp.json().await.map_err(Error::Http)?;
 
-        if let Some(_cache) = &self.cache {
-            let p = self.cache_path(&key);
-            if let Ok(bytes) = serde_json::to_vec(&value) {
-                let _ = std::fs::write(p, bytes);
-            }
-        }
+        self.store(source, endpoint, params, &value);
         Ok(value)
     }
 
@@ -180,16 +139,8 @@ impl ReqwestBackend {
         params: &[(&str, &str)],
         headers: Option<&[(&str, &str)]>,
     ) -> Result<Value> {
-        let key = self.cache_key(source, endpoint, params);
-        if let Some(cache) = &self.cache {
-            let p = self.cache_path(&key);
-            if let (Ok(data), Ok(meta)) = (std::fs::read(&p), std::fs::metadata(&p))
-                && let Ok(modified) = meta.modified()
-                && modified.elapsed().map(|e| e < cache.ttl).unwrap_or(false)
-                && let Ok(v) = serde_json::from_slice::<Value>(&data)
-            {
-                return Ok(v);
-            }
+        if let Some(v) = self.cached(source, endpoint, params) {
+            return Ok(v);
         }
 
         let resp = self
@@ -197,12 +148,7 @@ impl ReqwestBackend {
             .await?;
         let value: Value = resp.json().await.map_err(Error::Http)?;
 
-        if let Some(_cache) = &self.cache {
-            let p = self.cache_path(&key);
-            if let Ok(bytes) = serde_json::to_vec(&value) {
-                let _ = std::fs::write(p, bytes);
-            }
-        }
+        self.store(source, endpoint, params, &value);
         Ok(value)
     }
 
@@ -299,104 +245,76 @@ impl ReqwestBackend {
     ) -> Result<reqwest::Response> {
         // Hold a concurrency permit for the whole request lifecycle.
         let _permit = self.sem.acquire().await.map_err(|_| Error::RateLimited)?;
-
-        let mut attempt: u32 = 0;
-        loop {
-            self.rate_limit(source).await;
-            let mut req = self.inner.request(method.clone(), url);
-            if let Some(b) = body {
-                req = req.json(b);
-            } else {
-                req = req.query(params);
-            }
-            if let Some(h) = headers {
-                for (k, v) in h {
-                    req = req.header(*k, *v);
-                }
-            }
-            let resp = match req.send().await {
-                Ok(r) => r,
-                Err(e) => {
-                    attempt += 1;
-                    if attempt > self.cfg.max_retries {
-                        return Err(Error::Http(e));
+        let rl = &self.rate_limiter;
+        let inner = self.inner.clone();
+        let url = url.to_string();
+        let params = params.to_vec();
+        let body = body.cloned();
+        let headers = headers.map(|h| h.to_vec());
+        // Retry/backoff now lives in `crate::core::resilience::RetryPolicy`,
+        // shared with the impersonate backend.
+        self.retry_policy
+            .run(|| {
+                let inner = inner.clone();
+                let method = method.clone();
+                let url = url.clone();
+                let params = params.clone();
+                let body = body.clone();
+                let headers = headers.clone();
+                async move {
+                    rl.acquire(source).await;
+                    let mut req = inner.request(method, &url);
+                    if let Some(b) = body {
+                        req = req.json(&b);
+                    } else {
+                        req = req.query(&params);
                     }
-                    self.backoff(attempt).await;
-                    continue;
+                    if let Some(h) = headers {
+                        for (k, v) in h {
+                            req = req.header(k, v);
+                        }
+                    }
+                    let resp = match req.send().await {
+                        Ok(r) => r,
+                        Err(e) => return Err(Error::Http(e)),
+                    };
+                    if resp.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
+                        let retry_after = resp
+                            .headers()
+                            .get(reqwest::header::RETRY_AFTER)
+                            .and_then(|v| v.to_str().ok())
+                            .and_then(|s| s.parse::<u64>().ok())
+                            .unwrap_or(1);
+                        let _ = resp.bytes().await;
+                        tokio::time::sleep(Duration::from_secs(retry_after)).await;
+                        return Err(Error::RateLimited);
+                    }
+                    if !resp.status().is_success() {
+                        return Err(Error::UpstreamChanged {
+                            origin: source,
+                            message: format!("HTTP {}", resp.status()),
+                        });
+                    }
+                    Ok(resp)
                 }
-            };
-
-            if resp.status() == reqwest::StatusCode::TOO_MANY_REQUESTS {
-                attempt += 1;
-                if attempt > self.cfg.max_retries {
-                    return Err(Error::RateLimited);
-                }
-                let retry_after = resp
-                    .headers()
-                    .get(reqwest::header::RETRY_AFTER)
-                    .and_then(|v| v.to_str().ok())
-                    .and_then(|s| s.parse::<u64>().ok())
-                    .unwrap_or(1);
-                let _ = resp.bytes().await;
-                tokio::time::sleep(Duration::from_secs(retry_after)).await;
-                continue;
-            }
-
-            if !resp.status().is_success() {
-                attempt += 1;
-                if attempt > self.cfg.max_retries {
-                    return Err(Error::UpstreamChanged {
-                        origin: source,
-                        message: format!("HTTP {}", resp.status()),
-                    });
-                }
-                self.backoff(attempt).await;
-                continue;
-            }
-
-            return Ok(resp);
-        }
-    }
-
-    async fn backoff(&self, attempt: u32) {
-        let factor = 2u32.saturating_pow(attempt.saturating_sub(1));
-        let ms = (self.cfg.base_backoff.as_millis() as u64) * factor as u64;
-        let d = Duration::from_millis(ms).min(Duration::from_secs(10));
-        tokio::time::sleep(d).await;
+            })
+            .await
     }
 }
 
 /// Which HTTP backend a [`Client`] dispatches to. Both implement the same
 /// method surface, so callers depend on one `Client` interface and the
 /// browser-impersonation (anti-bot) backend is reachable without a second type
-/// (ADR-0009). The reqwest backend carries full resilience; the impersonate
-/// backend trades that for a real Chrome TLS/HTTP2 fingerprint.
+/// (ADR-0009). Both backends share the same retry/backoff, per-source rate
+/// limiting and on-disk cache via `crate::core::resilience` (C2): the reqwest
+/// backend additionally enforces a global concurrency cap; the impersonate
+/// backend additionally provides a real Chrome TLS/HTTP2 fingerprint.
 #[derive(Clone)]
 enum Backend {
     Reqwest(ReqwestBackend),
     Impersonate(impersonate::Client),
 }
 
-const URLSAFE_HEX: &[u8; 16] = b"0123456789ABCDEF";
-
-/// Percent-encode query params (RFC 3986, spaces as `+`).
-fn urlencode(input: &str) -> String {
-    let mut out = String::with_capacity(input.len());
-    for b in input.bytes() {
-        match b {
-            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => {
-                out.push(b as char)
-            }
-            b' ' => out.push('+'),
-            _ => {
-                out.push('%');
-                out.push(URLSAFE_HEX[(b >> 4) as usize] as char);
-                out.push(URLSAFE_HEX[(b & 0x0f) as usize] as char);
-            }
-        }
-    }
-    out
-}
 
 /// Append `params` as a query string to `url` (used by the impersonate backend,
 /// which takes a full URL rather than separate params).
@@ -442,9 +360,10 @@ impl Client {
     }
 
     /// Browser-impersonation backend (Chrome TLS/HTTP2 fingerprint) for sources
-    /// behind anti-bot WAFs (Sina, Baidu, …). Note: this backend does not apply
-    /// the reqwest retry/rate-limit/cache resilience — it trades that for a
-    /// genuine browser handshake.
+    /// behind anti-bot WAFs (Sina, Baidu, …). It now shares the reqwest
+    /// backend's retry/backoff + per-source rate-limiting via
+    /// `crate::core::resilience` (C2); only the global concurrency cap is
+    /// reqwest-specific. Cache stays off unless explicitly enabled.
     pub fn with_impersonate() -> Self {
         Self {
             backend: Backend::Impersonate(impersonate::Client::new()),

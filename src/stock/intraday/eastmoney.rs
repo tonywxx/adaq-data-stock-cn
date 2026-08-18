@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::stock::intraday::IntradayRow;
 
 const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
@@ -75,8 +76,8 @@ pub(crate) fn parse_details(event: &Value, symbol: &str) -> Result<Vec<IntradayR
         out.push(IntradayRow {
             symbol: symbol.to_string(),
             time: parts[0].to_string(),
-            price: parse_f64(parts[1]),
-            volume: parse_f64(parts[2]),
+            price: parse_f64_str(parts[1]),
+            volume: parse_f64_str(parts[2]),
             direction: map_direction(parts[4]),
             source: SOURCE_EASTMONEY,
         });
@@ -90,15 +91,6 @@ fn map_direction(code: &str) -> Option<String> {
         "2" => Some("买盘".into()),
         "4" => Some("中性盘".into()),
         _ => None,
-    }
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
     }
 }
 

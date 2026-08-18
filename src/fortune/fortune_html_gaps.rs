@@ -145,16 +145,16 @@ fn parse_forbes_index(html: &str, endpoint: &'static str) -> Result<HashMap<Stri
 /// it as the header). We treat every `<tr>` as a data row so all entries —
 /// including #1 — are returned.
 pub(crate) fn parse_forbes_rank(html: &str, endpoint: &'static str) -> Result<Vec<ForbesRank>> {
-    let doc = Html::parse_document(html);
-    let tr_sel = Selector::parse("table#data-view tr")
-        .map_err(|e| Error::Parse { endpoint, message: format!("tr selector: {e}") })?;
-    let cell_sel = Selector::parse("th,td").unwrap();
+    let all = crate::core::html::tables_with(html, endpoint, "table#data-view")?;
+    let rows = all
+        .into_iter()
+        .next()
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: endpoint,
+            message: "data-view table not found".into(),
+        })?;
     let mut out = Vec::new();
-    for tr in doc.select(&tr_sel) {
-        let cells: Vec<String> = tr
-            .select(&cell_sel)
-            .map(|c| c.text().collect::<Vec<_>>().join(" ").trim().to_string())
-            .collect();
+    for cells in &rows {
         if cells.len() < 6 {
             continue;
         }

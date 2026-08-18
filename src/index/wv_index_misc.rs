@@ -11,6 +11,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_NXIN: &str = "nxin";
 const SOURCE_CHINASCOPE: &str = "chinascope";
@@ -119,10 +120,10 @@ pub(crate) fn parse_spot_goods(resp: &Value) -> Result<Vec<SpotGoodsRow>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(SpotGoodsRow {
-            date: fstr(item, "opendate"),
-            index: fnum(item, "price"),
-            change_amount: fnum(item, "zde"),
-            change_pct: fnum(item, "zdf"),
+            date: opt_str(item, "opendate"),
+            index: opt_f64(item, "price"),
+            change_amount: opt_f64(item, "zde"),
+            change_pct: opt_f64(item, "zdf"),
         });
     }
     Ok(out)
@@ -137,9 +138,9 @@ pub(crate) fn parse_index_news_sentiment_scope(resp: &Value) -> Result<Vec<NewsS
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(NewsSentimentScopeRow {
-            date: fstr(item, "tradeDate"),
-            sentiment_index: fnum(item, "maIndex1"),
-            hs300_index: fnum(item, "marketClose"),
+            date: opt_str(item, "tradeDate"),
+            sentiment_index: opt_f64(item, "maIndex1"),
+            hs300_index: opt_f64(item, "marketClose"),
         });
     }
     Ok(out)
@@ -204,18 +205,6 @@ pub async fn index_news_sentiment_scope(client: &Client) -> Result<Vec<NewsSenti
 // private helpers (verbatim per task instructions)
 // ---------------------------------------------------------------------------
 
-#[allow(dead_code)]
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Read a numeric element at `idx` of an upstream array row.
 fn arr_num(cells: &[Value], idx: usize) -> Option<f64> {

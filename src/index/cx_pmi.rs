@@ -10,6 +10,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::index::cx::CxTrendRow;
 
 const SOURCE_CCXE: &str = "ccxe";
@@ -42,8 +43,8 @@ pub(crate) fn parse_cx_pmi(resp: &Value, value_key: &str) -> Result<Vec<CxTrendR
                 Some(Value::String(s)) => s.trim().parse::<i64>().ok(),
                 _ => None,
             },
-            value: fnum(item, value_key),
-            change: fnum(item, "变化值"),
+            value: opt_f64(item, value_key),
+            change: opt_f64(item, "变化值"),
         });
     }
     Ok(out)
@@ -84,18 +85,6 @@ pub async fn index_pmi_ser_cx(client: &Client) -> Result<Vec<CxTrendRow>> {
 // private helpers
 // ---------------------------------------------------------------------------
 
-#[allow(dead_code)]
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // offline parse tests

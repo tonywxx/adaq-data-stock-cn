@@ -9,6 +9,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ---------------------------------------------------------------------------
 // stock_zh_a_gdhs — shareholder count
@@ -105,7 +106,7 @@ pub(crate) fn parse_gdhs(resp: &Value) -> Result<Vec<GdhsRow>> {
         })?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = str_opt(item, "SECURITY_CODE");
+        let code = opt_str_or(item, "SECURITY_CODE", "");
         if code.is_empty() {
             continue;
         }
@@ -116,11 +117,11 @@ pub(crate) fn parse_gdhs(resp: &Value) -> Result<Vec<GdhsRow>> {
             .map(|s| s[..10].to_string());
         out.push(GdhsRow {
             code,
-            name: str_opt(item, "SECURITY_NAME_ABBR"),
-            holder_count: num_opt(item, "HOLDER_NUM"),
-            prev_holder_count: num_opt(item, "PRE_HOLDER_NUM"),
-            holder_change: num_opt(item, "HOLDER_NUM_CHANGE"),
-            holder_ratio: num_opt(item, "HOLDER_NUM_RATIO"),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            holder_count: opt_f64(item, "HOLDER_NUM"),
+            prev_holder_count: opt_f64(item, "PRE_HOLDER_NUM"),
+            holder_change: opt_f64(item, "HOLDER_NUM_CHANGE"),
+            holder_ratio: opt_f64(item, "HOLDER_NUM_RATIO"),
             notice_date,
             source: SOURCE_EASTMONEY,
         });
@@ -181,9 +182,9 @@ pub(crate) fn parse_dividend(resp: &Value) -> Result<Vec<DividendRow>> {
         out.push(DividendRow {
             announce_date: non_empty(strf("F006D")),
             dividend_type: strf("F044V"),
-            bonus_share_ratio: num_opt(item, "F010N"),
-            reserve_to_share_ratio: num_opt(item, "F011N"),
-            cash_div_ratio: num_opt(item, "F012N"),
+            bonus_share_ratio: opt_f64(item, "F010N"),
+            reserve_to_share_ratio: opt_f64(item, "F011N"),
+            cash_div_ratio: opt_f64(item, "F012N"),
             record_date: non_empty(strf("F018D")),
             ex_date: non_empty(strf("F020D")),
             pay_date: non_empty(strf("F023D")),
@@ -268,21 +269,6 @@ pub(crate) fn parse_rank(resp: &Value) -> Result<Vec<RankRow>> {
 // ---------------------------------------------------------------------------
 // shared helpers
 // ---------------------------------------------------------------------------
-
-fn str_opt(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn num_opt(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.parse::<f64>().ok(),
-        _ => None,
-    }
-}
 
 #[cfg(test)]
 mod tests {

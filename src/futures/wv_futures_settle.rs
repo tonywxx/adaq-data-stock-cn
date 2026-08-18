@@ -10,6 +10,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ---------------------------------------------------------------------------
 // Per-exchange row types (akshare native column names)
@@ -250,19 +251,10 @@ fn variety_of(symbol: &str) -> String {
         .collect()
 }
 
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.replace(',', "").parse::<f64>().ok()
-    }
-}
-
 fn parse_f64_val(v: &Value) -> Option<f64> {
     match v {
         Value::Number(n) => n.as_f64(),
-        Value::String(s) => parse_f64(s),
+        Value::String(s) => parse_f64_str(s),
         _ => None,
     }
 }
@@ -288,11 +280,11 @@ pub(crate) fn parse_cffex_settle(text: &str, date: &str) -> Result<Vec<CffexSett
             date: date.to_string(),
             variety: variety_of(&symbol),
             symbol,
-            long_margin_ratio: parse_f64(p[1]),
-            short_margin_ratio: parse_f64(p[2]),
-            trade_fee_ratio: parse_f64(p[3]),
-            delivery_fee_ratio: parse_f64(p[4]),
-            close_today_fee_ratio: parse_f64(p[5]),
+            long_margin_ratio: parse_f64_str(p[1]),
+            short_margin_ratio: parse_f64_str(p[2]),
+            trade_fee_ratio: parse_f64_str(p[3]),
+            delivery_fee_ratio: parse_f64_str(p[4]),
+            close_today_fee_ratio: parse_f64_str(p[5]),
         });
     }
     Ok(out)
@@ -323,17 +315,17 @@ pub(crate) fn parse_czce_settle(text: &str, date: &str) -> Result<Vec<CzceSettle
             date: date.to_string(),
             variety: variety_of(&symbol),
             symbol,
-            settle_price: parse_f64(p[1]),
+            settle_price: parse_f64_str(p[1]),
             is_single_market: Some(p[2].trim().to_string()),
             single_market_days: Some(p[3].trim().to_string()),
-            margin_ratio: parse_f64(p[4]),
-            limit_ratio: parse_f64(p[5]),
+            margin_ratio: parse_f64_str(p[4]),
+            limit_ratio: parse_f64_str(p[5]),
             trade_fee: Some(p[6].trim().to_string()),
             fee_type: Some(p[7].trim().to_string()),
             delivery_fee: Some(p[8].trim().to_string()),
             close_today_fee: Some(p[9].trim().to_string()),
-            position_limit: parse_f64(p[10]),
-            trade_limit: parse_f64(p[11]),
+            position_limit: parse_f64_str(p[10]),
+            trade_limit: parse_f64_str(p[11]),
         });
     }
     Ok(out)

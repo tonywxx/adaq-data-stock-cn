@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::forex::{ForexHistRow, ForexSpotQuote};
 
 const FS: &str = "m:119,m:120,m:133";
@@ -146,15 +147,15 @@ pub(crate) fn parse_hist_klines(resp: &Value) -> Result<Vec<ForexHistRow>> {
 
 fn parse_spot_item(item: &Value) -> ForexSpotQuote {
     ForexSpotQuote {
-        code: fstr(item, "f12"),
-        name: fstr(item, "f14"),
-        price: fnum(item, "f2"),
-        change: fnum(item, "f4"),
-        pct_change: fnum(item, "f3"),
-        open: fnum(item, "f17"),
-        high: fnum(item, "f15"),
-        low: fnum(item, "f16"),
-        pre_close: fnum(item, "f18"),
+        code: opt_str_or(item, "f12", ""),
+        name: opt_str_or(item, "f14", ""),
+        price: opt_f64(item, "f2"),
+        change: opt_f64(item, "f4"),
+        pct_change: opt_f64(item, "f3"),
+        open: opt_f64(item, "f17"),
+        high: opt_f64(item, "f15"),
+        low: opt_f64(item, "f16"),
+        pre_close: opt_f64(item, "f18"),
         source: SOURCE_EASTMONEY,
     }
 }
@@ -357,21 +358,6 @@ fn symbol_market(symbol: &str) -> Result<u32> {
         .find(|(s, _)| *s == symbol)
         .map(|(_, m)| *m)
         .ok_or_else(|| Error::InvalidParam(format!("unknown forex symbol: {symbol}")))
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 #[cfg(test)]

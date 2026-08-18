@@ -28,6 +28,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ---------------------------------------------------------------------------
 // Source / endpoints
@@ -1026,7 +1027,7 @@ pub(crate) fn parse_bond_new_composite_index_cbond(
         if let Some(date) = key_to_date(k) {
             out.push(BondNewCompositeIndex {
                 date,
-                value: fnum(series, k),
+                value: opt_f64(series, k),
                 source: SOURCE_CHINABOND,
             });
         }
@@ -1093,7 +1094,7 @@ pub(crate) fn parse_bond_composite_index_cbond(
         if let Some(date) = key_to_date(k) {
             out.push(BondCompositeIndex {
                 date,
-                value: fnum(series, k),
+                value: opt_f64(series, k),
                 source: SOURCE_CHINABOND,
             });
         }
@@ -1126,7 +1127,7 @@ fn parse_dqc_points(resp: &Value, zslxt: &str) -> Result<Vec<DqcPoint>> {
     })?;
     let mut out = Vec::new();
     for (pcode, _) in dqc_map {
-        let term = fstr(dqc, pcode);
+        let term = opt_str_or(dqc, pcode, "");
         let series_key = format!("{zslxt}_{pcode}");
         if let Some(series) = resp.get(&series_key)
             && let Some(map) = series.as_object()
@@ -1136,7 +1137,7 @@ fn parse_dqc_points(resp: &Value, zslxt: &str) -> Result<Vec<DqcPoint>> {
                     out.push(DqcPoint {
                         date,
                         term: term.clone(),
-                        value: fnum(series, k),
+                        value: opt_f64(series, k),
                     });
                 }
             }
@@ -1267,34 +1268,6 @@ pub(crate) fn parse_bond_index_general_cbond(
 // ---------------------------------------------------------------------------
 // Shared field helpers (mirror `src/bond/extra.rs` / `src/economic/macro2.rs`)
 // ---------------------------------------------------------------------------
-
-/// String field, trimmed (akshare columns are often strings).
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .trim()
-        .to_string()
-}
-
-/// Numeric field: accept a JSON number or a numeric string (trimmed + parse).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
-/// Integer numeric field (unused here, kept for parity with sibling modules).
-#[allow(dead_code)]
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // tests

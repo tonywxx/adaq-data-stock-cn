@@ -4,6 +4,7 @@ use calamine::{open_workbook_auto_from_rs, Reader, Sheets};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36";
 
@@ -44,15 +45,6 @@ fn read_rows_named(bytes: &[u8], name: &str, endpoint: &'static str) -> Result<V
         .rows()
         .map(|r| r.iter().map(cell_to_string).collect())
         .collect())
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t: String = s.chars().filter(|c| *c != ',').collect();
-    let t = t.trim();
-    if t.is_empty() {
-        return None;
-    }
-    t.parse::<f64>().ok()
 }
 
 fn cell_to_string(c: &calamine::Data) -> String {
@@ -145,19 +137,19 @@ pub(crate) fn parse_macro_cnbs(bytes: &[u8]) -> Result<Vec<MacroCnbs>> {
         if r.iter().all(|c| c.is_empty()) {
             continue;
         }
-        let serial = parse_f64(r[i_period].trim());
+        let serial = parse_f64_str(r[i_period].trim());
         out.push(MacroCnbs {
             year_month: serial
                 .and_then(excel_serial_to_month)
                 .unwrap_or_default(),
-            household: parse_f64(r[i_hh].trim()),
-            non_financial_corporations: parse_f64(r[i_nfc].trim()),
-            central_government: parse_f64(r[i_cg].trim()),
-            local_government: parse_f64(r[i_lg].trim()),
-            general_government: parse_f64(r[i_gg].trim()),
-            non_financial_sector: parse_f64(r[i_nfs].trim()),
-            financial_sector_asset: parse_f64(r[i_fa].trim()),
-            financial_sector_liability: parse_f64(r[i_fl].trim()),
+            household: parse_f64_str(r[i_hh].trim()),
+            non_financial_corporations: parse_f64_str(r[i_nfc].trim()),
+            central_government: parse_f64_str(r[i_cg].trim()),
+            local_government: parse_f64_str(r[i_lg].trim()),
+            general_government: parse_f64_str(r[i_gg].trim()),
+            non_financial_sector: parse_f64_str(r[i_nfs].trim()),
+            financial_sector_asset: parse_f64_str(r[i_fa].trim()),
+            financial_sector_liability: parse_f64_str(r[i_fl].trim()),
         });
     }
     Ok(out)

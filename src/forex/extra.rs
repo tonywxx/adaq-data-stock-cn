@@ -19,6 +19,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_BOC: &str = "boc";
 const SOURCE_SINA: &str = "sina";
@@ -268,13 +269,13 @@ pub(crate) fn parse_fx_swap_quote(resp: &Value) -> Result<Vec<FxSwapQuoteRow>> {
     let mut out = Vec::with_capacity(records.len());
     for r in records {
         out.push(FxSwapQuoteRow {
-            ccy_pair: fstr(r, "ccyPair"),
-            swap_1w: fnum(r, "label_1W"),
-            swap_1m: fnum(r, "label_1M"),
-            swap_3m: fnum(r, "label_3M"),
-            swap_6m: fnum(r, "label_6M"),
-            swap_9m: fnum(r, "label_9M"),
-            swap_1y: fnum(r, "label_1Y"),
+            ccy_pair: opt_str_or(r, "ccyPair", ""),
+            swap_1w: opt_f64(r, "label_1W"),
+            swap_1m: opt_f64(r, "label_1M"),
+            swap_3m: opt_f64(r, "label_3M"),
+            swap_6m: opt_f64(r, "label_6M"),
+            swap_9m: opt_f64(r, "label_9M"),
+            swap_1y: opt_f64(r, "label_1Y"),
             source: SOURCE_CHINAMONEY,
         });
     }
@@ -397,21 +398,6 @@ fn is_ymd(s: &str) -> bool {
 // ---------------------------------------------------------------------------
 // small JSON helpers
 // ---------------------------------------------------------------------------
-
-fn fstr(v: &Value, k: &str) -> String {
-    v.get(k)
-        .and_then(|x| x.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(v: &Value, k: &str) -> Option<f64> {
-    v.get(k).and_then(|x| match x {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // offline tests

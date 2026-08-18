@@ -13,6 +13,7 @@ use calamine::{open_workbook_auto_from_rs, Reader, Sheets};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36";
 
@@ -77,15 +78,6 @@ fn read_rows(bytes: &[u8], endpoint: &'static str) -> Result<Vec<Vec<String>>> {
         .rows()
         .map(|r| r.iter().map(cell_to_string).collect())
         .collect())
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t: String = s.chars().filter(|c| *c != ',').collect();
-    let t = t.trim();
-    if t.is_empty() {
-        return None;
-    }
-    t.parse::<f64>().ok()
 }
 
 fn cell_to_string(c: &calamine::Data) -> String {
@@ -189,11 +181,11 @@ pub(crate) fn parse_index_csindex_all(bytes: &[u8]) -> Result<Vec<IndexCsindexAl
             index_abbr: col(r, 1).to_string(),
             index_full: col(r, 2).to_string(),
             base_date: col(r, 3).to_string(),
-            base_point: parse_f64(col(r, 4)),
+            base_point: parse_f64_str(col(r, 4)),
             index_series: col(r, 5).to_string(),
-            sample_count: parse_f64(col(r, 6)),
-            latest_close: parse_f64(col(r, 7)),
-            one_month_return: parse_f64(col(r, 8)),
+            sample_count: parse_f64_str(col(r, 6)),
+            latest_close: parse_f64_str(col(r, 7)),
+            one_month_return: parse_f64_str(col(r, 8)),
             asset_class: col(r, 9).to_string(),
             index_hot: col(r, 10).to_string(),
             currency: col(r, 11).to_string(),
@@ -237,8 +229,8 @@ fn parse_index_detail_cni_impl(bytes: &[u8], endpoint: &'static str) -> Result<V
             sample_code: zfill6(col(r, 1)),
             sample_abbr: col(r, 2).to_string(),
             industry: col(r, 3).to_string(),
-            total_market_value: parse_f64(col(r, 4)),
-            weight: parse_f64(col(r, 5)),
+            total_market_value: parse_f64_str(col(r, 4)),
+            weight: parse_f64_str(col(r, 5)),
         });
     }
     Ok(out)
@@ -375,7 +367,7 @@ pub(crate) fn parse_index_stock_cons_weight_csindex(
             constituent_name_en: col(r, 6).to_string(),
             exchange: col(r, 7).to_string(),
             exchange_en: col(r, 8).to_string(),
-            weight: parse_f64(col(r, 9)),
+            weight: parse_f64_str(col(r, 9)),
         });
     }
     Ok(out)
@@ -438,10 +430,10 @@ pub(crate) fn parse_stock_zh_index_value_csindex(
             index_cn_abbr: col(r, 3).to_string(),
             index_en_full: col(r, 4).to_string(),
             index_en_abbr: col(r, 5).to_string(),
-            pe1: parse_f64(col(r, 6)),
-            pe2: parse_f64(col(r, 7)),
-            dp1: parse_f64(col(r, 8)),
-            dp2: parse_f64(col(r, 9)),
+            pe1: parse_f64_str(col(r, 6)),
+            pe2: parse_f64_str(col(r, 7)),
+            dp1: parse_f64_str(col(r, 8)),
+            dp2: parse_f64_str(col(r, 9)),
         });
     }
     Ok(out)

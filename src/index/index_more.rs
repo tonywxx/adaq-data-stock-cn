@@ -43,6 +43,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // Eastmoney quote API base URLs (push2 = realtime clist, push2his = history).
 const EM_CLIST_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
@@ -68,12 +69,6 @@ i:100.MXX,i:100.AS51,i:100.AORD,i:100.NZ50,i:100.UDI,i:100.BDI,i:100.CRB";
 // Shared field helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
 
 /// Read a field that may be a JSON string or number, returning it as a `String`
 /// (used for Eastmoney `f13` ids, which are numbers in some responses).
@@ -85,27 +80,12 @@ fn fid(item: &Value, k: &str) -> String {
     }
 }
 
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// `fnum` divided by `div` (Eastmoney returns some feeds scaled ×100).
 fn fnum_div(item: &Value, k: &str, div: f64) -> Option<f64> {
-    fnum(item, k).map(|x| x / div)
+    opt_f64(item, k).map(|x| x / div)
 }
 
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
-}
 
 /// Extract the `data.diff` array (a row array) from an Eastmoney clist response.
 fn em_diff_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -168,7 +148,7 @@ async fn index_code_id_map_em(client: &Client) -> Result<HashMap<String, String>
     let diff = em_diff_array(&v)?;
     let mut m = HashMap::new();
     for item in diff {
-        let code = fstr(item, "f12");
+        let code = opt_str_or(item, "f12", "");
         if !code.is_empty() {
             m.insert(code, fid(item, "f13"));
         }
@@ -347,16 +327,16 @@ pub(crate) fn parse_index_zh_a_hist(resp: &Value) -> Result<Vec<ZhAHistRow>> {
         }
         out.push(ZhAHistRow {
             date: p[0].to_string(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
-            amplitude: parse_f64(p[7]),
-            pct_change: p.get(8).and_then(|s| parse_f64(s)),
-            change: p.get(9).and_then(|s| parse_f64(s)),
-            turnover: p.get(10).and_then(|s| parse_f64(s)),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
+            amplitude: parse_f64_str(p[7]),
+            pct_change: p.get(8).and_then(|s| parse_f64_str(s)),
+            change: p.get(9).and_then(|s| parse_f64_str(s)),
+            turnover: p.get(10).and_then(|s| parse_f64_str(s)),
         });
     }
     Ok(out)
@@ -441,8 +421,8 @@ pub(crate) fn parse_index_zh_a_hist_min_trends(resp: &Value) -> Result<Vec<ZhAMi
         origin: SOURCE_EASTMONEY,
         message: "missing data".into(),
     })?;
-    let code = fstr(data, "code");
-    let name = fstr(data, "name");
+    let code = opt_str_or(data, "code", "");
+    let name = opt_str_or(data, "name", "");
     let trends = data
         .get("trends")
         .and_then(|t| t.as_array())
@@ -467,13 +447,13 @@ pub(crate) fn parse_index_zh_a_hist_min_trends(resp: &Value) -> Result<Vec<ZhAMi
             time: p[0].to_string(),
             code: Some(code.clone()),
             name: Some(name.clone()),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
-            avg_price: parse_f64(p[7]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
+            avg_price: parse_f64_str(p[7]),
             amplitude: None,
             pct_change: None,
             change: None,
@@ -490,8 +470,8 @@ pub(crate) fn parse_index_zh_a_hist_min_kline(resp: &Value) -> Result<Vec<ZhAMin
         origin: SOURCE_EASTMONEY,
         message: "missing data".into(),
     })?;
-    let code = fstr(data, "code");
-    let name = fstr(data, "name");
+    let code = opt_str_or(data, "code", "");
+    let name = opt_str_or(data, "name", "");
     let klines = em_klines_array(resp)?;
     let mut out = Vec::with_capacity(klines.len());
     for line in klines {
@@ -510,17 +490,17 @@ pub(crate) fn parse_index_zh_a_hist_min_kline(resp: &Value) -> Result<Vec<ZhAMin
             time: p[0].to_string(),
             code: Some(code.clone()),
             name: Some(name.clone()),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
             avg_price: None,
-            amplitude: p.get(7).and_then(|s| parse_f64(s)),
-            pct_change: p.get(8).and_then(|s| parse_f64(s)),
-            change: p.get(9).and_then(|s| parse_f64(s)),
-            turnover: p.get(10).and_then(|s| parse_f64(s)),
+            amplitude: p.get(7).and_then(|s| parse_f64_str(s)),
+            pct_change: p.get(8).and_then(|s| parse_f64_str(s)),
+            change: p.get(9).and_then(|s| parse_f64_str(s)),
+            turnover: p.get(10).and_then(|s| parse_f64_str(s)),
         });
     }
     Ok(out)
@@ -594,19 +574,19 @@ pub(crate) fn parse_index_zh_a_spot(items: &[Value]) -> Vec<ZhASpotRow> {
     for (i, item) in items.iter().enumerate() {
         out.push(ZhASpotRow {
             index: Some((i + 1) as u32),
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2"),
-            pct_change: fnum(item, "f3"),
-            change: fnum(item, "f4"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            amplitude: fnum(item, "f7"),
-            volume_ratio: fnum(item, "f10"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            open: fnum(item, "f17"),
-            pre_close: fnum(item, "f18"),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
+            price: opt_f64(item, "f2"),
+            pct_change: opt_f64(item, "f3"),
+            change: opt_f64(item, "f4"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            amplitude: opt_f64(item, "f7"),
+            volume_ratio: opt_f64(item, "f10"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            open: opt_f64(item, "f17"),
+            pre_close: opt_f64(item, "f18"),
         });
     }
     out
@@ -676,8 +656,8 @@ pub(crate) fn parse_index_global_spot_em(items: &[Value]) -> Vec<GlobalSpotEmRow
     for (i, item) in items.iter().enumerate() {
         out.push(GlobalSpotEmRow {
             index: Some((i + 1) as u32),
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
             price: fnum_div(item, "f2", 100.0),
             change: fnum_div(item, "f4", 100.0),
             pct_change: fnum_div(item, "f3", 100.0),
@@ -821,8 +801,8 @@ pub(crate) fn parse_index_global_hist_em(resp: &Value) -> Result<Vec<GlobalHistE
         origin: SOURCE_EASTMONEY,
         message: "missing data".into(),
     })?;
-    let code = fstr(data, "code");
-    let name = fstr(data, "name");
+    let code = opt_str_or(data, "code", "");
+    let name = opt_str_or(data, "name", "");
     let klines = em_klines_array(resp)?;
     let mut out = Vec::with_capacity(klines.len());
     for line in klines {
@@ -841,11 +821,11 @@ pub(crate) fn parse_index_global_hist_em(resp: &Value) -> Result<Vec<GlobalHistE
             date: p[0].to_string(),
             code: code.clone(),
             name: name.clone(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            amplitude: parse_f64(p[7]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            amplitude: parse_f64_str(p[7]),
         });
     }
     Ok(out)

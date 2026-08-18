@@ -40,6 +40,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const DATACENTER: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
@@ -48,23 +49,6 @@ const DATACENTER: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 // Helpers (copied verbatim per porting brief)
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from a datacenter-web response.
 fn result_data(resp: &Value) -> Result<&Vec<Value>> {
@@ -174,19 +158,19 @@ pub(crate) fn parse_free_holding_statistics(
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxFreeHoldingStatistics {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            statistics_times: inum(item, "STATISTICS_TIMES"),
-            d10_avg: fnum(item, "D10_AVG"),
-            d10_max: fnum(item, "D10_MAX"),
-            d10_min: fnum(item, "D10_MIN"),
-            d30_avg: fnum(item, "D30_AVG"),
-            d30_max: fnum(item, "D30_MAX"),
-            d30_min: fnum(item, "D30_MIN"),
-            d60_avg: fnum(item, "D60_AVG"),
-            d60_max: fnum(item, "D60_MAX"),
-            d60_min: fnum(item, "D60_MIN"),
-            hold_stocks: fstr(item, "HOLD_STOCKS"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            statistics_times: opt_i64(item, "STATISTICS_TIMES"),
+            d10_avg: opt_f64(item, "D10_AVG"),
+            d10_max: opt_f64(item, "D10_MAX"),
+            d10_min: opt_f64(item, "D10_MIN"),
+            d30_avg: opt_f64(item, "D30_AVG"),
+            d30_max: opt_f64(item, "D30_MAX"),
+            d30_min: opt_f64(item, "D30_MIN"),
+            d60_avg: opt_f64(item, "D60_AVG"),
+            d60_max: opt_f64(item, "D60_MAX"),
+            d60_min: opt_f64(item, "D60_MIN"),
+            hold_stocks: opt_str(item, "HOLD_STOCKS"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -264,19 +248,19 @@ pub(crate) fn parse_holding_statistics(resp: &Value) -> Result<Vec<GdfxHoldingSt
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxHoldingStatistics {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            statistics_times: inum(item, "STATISTICS_TIMES"),
-            d10_avg: fnum(item, "D10_AVG"),
-            d10_max: fnum(item, "D10_MAX"),
-            d10_min: fnum(item, "D10_MIN"),
-            d30_avg: fnum(item, "D30_AVG"),
-            d30_max: fnum(item, "D30_MAX"),
-            d30_min: fnum(item, "D30_MIN"),
-            d60_avg: fnum(item, "D60_AVG"),
-            d60_max: fnum(item, "D60_MAX"),
-            d60_min: fnum(item, "D60_MIN"),
-            hold_stocks: fstr(item, "HOLD_STOCKS"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            statistics_times: opt_i64(item, "STATISTICS_TIMES"),
+            d10_avg: opt_f64(item, "D10_AVG"),
+            d10_max: opt_f64(item, "D10_MAX"),
+            d10_min: opt_f64(item, "D10_MIN"),
+            d30_avg: opt_f64(item, "D30_AVG"),
+            d30_max: opt_f64(item, "D30_MAX"),
+            d30_min: opt_f64(item, "D30_MIN"),
+            d60_avg: opt_f64(item, "D60_AVG"),
+            d60_max: opt_f64(item, "D60_MAX"),
+            d60_min: opt_f64(item, "D60_MIN"),
+            hold_stocks: opt_str(item, "HOLD_STOCKS"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -347,15 +331,15 @@ pub(crate) fn parse_free_holding_change(resp: &Value) -> Result<Vec<GdfxFreeHold
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxFreeHoldingChange {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            hold_num_total: fnum(item, "HOLD_NUM_TOTAL"),
-            hold_num_new: fnum(item, "HOLD_NUM_NEW"),
-            hold_num_increase: fnum(item, "HOLD_NUM_INCREASE"),
-            hold_num_decrease: fnum(item, "HOLD_NUM_DECREASE"),
-            hold_num_unchanged: fnum(item, "HOLD_NUM_UNCHANGED"),
-            market_cap: fnum(item, "MARKET_CAP"),
-            hold_stocks: fstr(item, "HOLD_STOCKS"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            hold_num_total: opt_f64(item, "HOLD_NUM_TOTAL"),
+            hold_num_new: opt_f64(item, "HOLD_NUM_NEW"),
+            hold_num_increase: opt_f64(item, "HOLD_NUM_INCREASE"),
+            hold_num_decrease: opt_f64(item, "HOLD_NUM_DECREASE"),
+            hold_num_unchanged: opt_f64(item, "HOLD_NUM_UNCHANGED"),
+            market_cap: opt_f64(item, "MARKET_CAP"),
+            hold_stocks: opt_str(item, "HOLD_STOCKS"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -426,15 +410,15 @@ pub(crate) fn parse_holding_change(resp: &Value) -> Result<Vec<GdfxHoldingChange
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxHoldingChange {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            hold_num_total: fnum(item, "HOLD_NUM_TOTAL"),
-            hold_num_new: fnum(item, "HOLD_NUM_NEW"),
-            hold_num_increase: fnum(item, "HOLD_NUM_INCREASE"),
-            hold_num_decrease: fnum(item, "HOLD_NUM_DECREASE"),
-            hold_num_unchanged: fnum(item, "HOLD_NUM_UNCHANGED"),
-            market_cap: fnum(item, "MARKET_CAP"),
-            hold_stocks: fstr(item, "HOLD_STOCKS"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            hold_num_total: opt_f64(item, "HOLD_NUM_TOTAL"),
+            hold_num_new: opt_f64(item, "HOLD_NUM_NEW"),
+            hold_num_increase: opt_f64(item, "HOLD_NUM_INCREASE"),
+            hold_num_decrease: opt_f64(item, "HOLD_NUM_DECREASE"),
+            hold_num_unchanged: opt_f64(item, "HOLD_NUM_UNCHANGED"),
+            market_cap: opt_f64(item, "MARKET_CAP"),
+            hold_stocks: opt_str(item, "HOLD_STOCKS"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -496,14 +480,14 @@ pub(crate) fn parse_free_top_10(resp: &Value) -> Result<Vec<GdfxFreeTop10>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxFreeTop10 {
-            rank: inum(item, "RANK"),
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_nature: fstr(item, "HOLDER_NATURE"),
-            shares_type: fstr(item, "SHARES_TYPE"),
-            hold_num: fnum(item, "HOLD_NUM"),
-            hold_ratio: fnum(item, "HOLD_RATIO"),
-            hold_change: fnum(item, "HOLD_CHANGE"),
-            change_ratio: fnum(item, "CHANGE_RATIO"),
+            rank: opt_i64(item, "RANK"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_nature: opt_str(item, "HOLDER_NATURE"),
+            shares_type: opt_str(item, "SHARES_TYPE"),
+            hold_num: opt_f64(item, "HOLD_NUM"),
+            hold_ratio: opt_f64(item, "HOLD_RATIO"),
+            hold_change: opt_f64(item, "HOLD_CHANGE"),
+            change_ratio: opt_f64(item, "CHANGE_RATIO"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -561,13 +545,13 @@ pub(crate) fn parse_top_10(resp: &Value) -> Result<Vec<GdfxTop10>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxTop10 {
-            rank: inum(item, "RANK"),
-            holder_name: fstr(item, "HOLDER_NAME"),
-            shares_type: fstr(item, "SHARES_TYPE"),
-            hold_num: fnum(item, "HOLD_NUM"),
-            hold_ratio: fnum(item, "HOLD_RATIO"),
-            hold_change: fnum(item, "HOLD_CHANGE"),
-            change_ratio: fnum(item, "CHANGE_RATIO"),
+            rank: opt_i64(item, "RANK"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            shares_type: opt_str(item, "SHARES_TYPE"),
+            hold_num: opt_f64(item, "HOLD_NUM"),
+            hold_ratio: opt_f64(item, "HOLD_RATIO"),
+            hold_change: opt_f64(item, "HOLD_CHANGE"),
+            change_ratio: opt_f64(item, "CHANGE_RATIO"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -642,17 +626,17 @@ pub(crate) fn parse_free_holding_detail(resp: &Value) -> Result<Vec<GdfxFreeHold
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxFreeHoldingDetail {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            security_code: fstr(item, "SECURITY_CODE"),
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            end_date: fstr(item, "END_DATE"),
-            hold_num: fnum(item, "HOLD_NUM"),
-            xzchange: fnum(item, "XZCHANGE"),
-            change_ratio: fnum(item, "CHANGE_RATIO"),
-            holdnum_change_name: fstr(item, "HOLDNUM_CHANGE_NAME"),
-            holder_market_cap: fnum(item, "HOLDER_MARKET_CAP"),
-            update_date: fstr(item, "UPDATE_DATE"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            security_code: opt_str(item, "SECURITY_CODE"),
+            security_name: opt_str(item, "SECURITY_NAME_ABBR"),
+            end_date: opt_str(item, "END_DATE"),
+            hold_num: opt_f64(item, "HOLD_NUM"),
+            xzchange: opt_f64(item, "XZCHANGE"),
+            change_ratio: opt_f64(item, "CHANGE_RATIO"),
+            holdnum_change_name: opt_str(item, "HOLDNUM_CHANGE_NAME"),
+            holder_market_cap: opt_f64(item, "HOLDER_MARKET_CAP"),
+            update_date: opt_str(item, "UPDATE_DATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -736,18 +720,18 @@ pub(crate) fn parse_holding_detail(resp: &Value) -> Result<Vec<GdfxHoldingDetail
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxHoldingDetail {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_newtype: fstr(item, "HOLDER_NEWTYPE"),
-            rank: inum(item, "RANK"),
-            security_code: fstr(item, "SECURITY_CODE"),
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            end_date: fstr(item, "END_DATE"),
-            hold_num: fnum(item, "HOLD_NUM"),
-            hold_num_change: fnum(item, "HOLD_NUM_CHANGE"),
-            hold_ratio_change: fnum(item, "HOLD_RATIO_CHANGE"),
-            holdnum_change_name: fstr(item, "HOLDNUM_CHANGE_NAME"),
-            holder_market_cap: fnum(item, "HOLDER_MARKET_CAP"),
-            notice_date: fstr(item, "NOTICE_DATE"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_newtype: opt_str(item, "HOLDER_NEWTYPE"),
+            rank: opt_i64(item, "RANK"),
+            security_code: opt_str(item, "SECURITY_CODE"),
+            security_name: opt_str(item, "SECURITY_NAME_ABBR"),
+            end_date: opt_str(item, "END_DATE"),
+            hold_num: opt_f64(item, "HOLD_NUM"),
+            hold_num_change: opt_f64(item, "HOLD_NUM_CHANGE"),
+            hold_ratio_change: opt_f64(item, "HOLD_RATIO_CHANGE"),
+            holdnum_change_name: opt_str(item, "HOLDNUM_CHANGE_NAME"),
+            holder_market_cap: opt_f64(item, "HOLDER_MARKET_CAP"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -832,20 +816,20 @@ pub(crate) fn parse_free_holding_analyse(resp: &Value) -> Result<Vec<GdfxFreeHol
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxFreeHoldingAnalyse {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            security_code: fstr(item, "SECURITY_CODE"),
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            end_date: fstr(item, "END_DATE"),
-            hold_num: fnum(item, "HOLD_NUM"),
-            xzchange: fnum(item, "XZCHANGE"),
-            hold_ratio_change: fnum(item, "HOLD_RATIO_CHANGE"),
-            holdnum_change_name: fstr(item, "HOLDNUM_CHANGE_NAME"),
-            holder_market_cap: fnum(item, "HOLDER_MARKET_CAP"),
-            update_date: fstr(item, "UPDATE_DATE"),
-            d10_adjchrate: fnum(item, "D10_ADJCHRATE"),
-            d30_adjchrate: fnum(item, "D30_ADJCHRATE"),
-            d60_adjchrate: fnum(item, "D60_ADJCHRATE"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            security_code: opt_str(item, "SECURITY_CODE"),
+            security_name: opt_str(item, "SECURITY_NAME_ABBR"),
+            end_date: opt_str(item, "END_DATE"),
+            hold_num: opt_f64(item, "HOLD_NUM"),
+            xzchange: opt_f64(item, "XZCHANGE"),
+            hold_ratio_change: opt_f64(item, "HOLD_RATIO_CHANGE"),
+            holdnum_change_name: opt_str(item, "HOLDNUM_CHANGE_NAME"),
+            holder_market_cap: opt_f64(item, "HOLDER_MARKET_CAP"),
+            update_date: opt_str(item, "UPDATE_DATE"),
+            d10_adjchrate: opt_f64(item, "D10_ADJCHRATE"),
+            d30_adjchrate: opt_f64(item, "D30_ADJCHRATE"),
+            d60_adjchrate: opt_f64(item, "D60_ADJCHRATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -929,20 +913,20 @@ pub(crate) fn parse_holding_analyse(resp: &Value) -> Result<Vec<GdfxHoldingAnaly
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxHoldingAnalyse {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type_org: fstr(item, "HOLDER_TYPE_ORG"),
-            security_code: fstr(item, "SECURITY_CODE"),
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            end_date: fstr(item, "END_DATE"),
-            hold_num: fnum(item, "HOLD_NUM"),
-            hold_num_change: fnum(item, "HOLD_NUM_CHANGE"),
-            hold_ratio_change: fnum(item, "HOLD_RATIO_CHANGE"),
-            holdnum_change_name: fstr(item, "HOLDNUM_CHANGE_NAME"),
-            holder_market_cap: fnum(item, "HOLDER_MARKET_CAP"),
-            notice_date: fstr(item, "NOTICE_DATE"),
-            d10_adjchrate: fnum(item, "D10_ADJCHRATE"),
-            d30_adjchrate: fnum(item, "D30_ADJCHRATE"),
-            d60_adjchrate: fnum(item, "D60_ADJCHRATE"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type_org: opt_str(item, "HOLDER_TYPE_ORG"),
+            security_code: opt_str(item, "SECURITY_CODE"),
+            security_name: opt_str(item, "SECURITY_NAME_ABBR"),
+            end_date: opt_str(item, "END_DATE"),
+            hold_num: opt_f64(item, "HOLD_NUM"),
+            hold_num_change: opt_f64(item, "HOLD_NUM_CHANGE"),
+            hold_ratio_change: opt_f64(item, "HOLD_RATIO_CHANGE"),
+            holdnum_change_name: opt_str(item, "HOLDNUM_CHANGE_NAME"),
+            holder_market_cap: opt_f64(item, "HOLDER_MARKET_CAP"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
+            d10_adjchrate: opt_f64(item, "D10_ADJCHRATE"),
+            d30_adjchrate: opt_f64(item, "D30_ADJCHRATE"),
+            d60_adjchrate: opt_f64(item, "D60_ADJCHRATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1015,12 +999,12 @@ pub(crate) fn parse_free_holding_teamwork(resp: &Value) -> Result<Vec<GdfxFreeHo
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxFreeHoldingTeamwork {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            coop_holder_name: fstr(item, "COOP_HOLDER_NAME"),
-            coop_holder_type: fstr(item, "COOP_HOLDER_TYPE"),
-            coop_num: fnum(item, "COOP_NUM"),
-            stock_detail: fstr(item, "STOCK_DETAIL"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            coop_holder_name: opt_str(item, "COOP_HOLDER_NAME"),
+            coop_holder_type: opt_str(item, "COOP_HOLDER_TYPE"),
+            coop_num: opt_f64(item, "COOP_NUM"),
+            stock_detail: opt_str(item, "STOCK_DETAIL"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1089,12 +1073,12 @@ pub(crate) fn parse_holding_teamwork(resp: &Value) -> Result<Vec<GdfxHoldingTeam
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(GdfxHoldingTeamwork {
-            holder_name: fstr(item, "HOLDER_NAME"),
-            holder_type: fstr(item, "HOLDER_TYPE"),
-            coop_holder_name: fstr(item, "COOP_HOLDER_NAME"),
-            coop_holder_type: fstr(item, "COOP_HOLDER_TYPE"),
-            coop_num: fnum(item, "COOP_NUM"),
-            stock_detail: fstr(item, "STOCK_DETAIL"),
+            holder_name: opt_str(item, "HOLDER_NAME"),
+            holder_type: opt_str(item, "HOLDER_TYPE"),
+            coop_holder_name: opt_str(item, "COOP_HOLDER_NAME"),
+            coop_holder_type: opt_str(item, "COOP_HOLDER_TYPE"),
+            coop_num: opt_f64(item, "COOP_NUM"),
+            stock_detail: opt_str(item, "STOCK_DETAIL"),
             source: SOURCE_EASTMONEY,
         });
     }

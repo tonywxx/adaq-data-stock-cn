@@ -27,6 +27,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney source bucket, for rate limiting / error context.
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -38,28 +39,6 @@ const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 // Shared helpers (verbatim per porting brief)
 // ---------------------------------------------------------------------------
 
-/// Read a string field, returning `None` when missing/null.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
-#[allow(dead_code)]
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from a datacenter-web response.
 fn data_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -233,32 +212,32 @@ pub(crate) fn parse_stock_lhb_detail_em(resp: &Value) -> Result<Vec<StockLhbDeta
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(StockLhbDetailEmRow {
             code,
             name,
-            trade_date: fstr(item, "TRADE_DATE").unwrap_or_default(),
-            explain: fstr(item, "EXPLAIN"),
-            close_price: fnum(item, "CLOSE_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            billboard_net_amt: fnum(item, "BILLBOARD_NET_AMT"),
-            billboard_buy_amt: fnum(item, "BILLBOARD_BUY_AMT"),
-            billboard_sell_amt: fnum(item, "BILLBOARD_SELL_AMT"),
-            billboard_deal_amt: fnum(item, "BILLBOARD_DEAL_AMT"),
-            accum_amount: fnum(item, "ACCUM_AMOUNT"),
-            deal_net_ratio: fnum(item, "DEAL_NET_RATIO"),
-            deal_amount_ratio: fnum(item, "DEAL_AMOUNT_RATIO"),
-            turnover_rate: fnum(item, "TURNOVERRATE"),
-            free_market_cap: fnum(item, "FREE_MARKET_CAP"),
-            explanation: fstr(item, "EXPLANATION"),
-            d1_close_adjchrate: fnum(item, "D1_CLOSE_ADJCHRATE"),
-            d2_close_adjchrate: fnum(item, "D2_CLOSE_ADJCHRATE"),
-            d5_close_adjchrate: fnum(item, "D5_CLOSE_ADJCHRATE"),
-            d10_close_adjchrate: fnum(item, "D10_CLOSE_ADJCHRATE"),
+            trade_date: opt_str(item, "TRADE_DATE").unwrap_or_default(),
+            explain: opt_str(item, "EXPLAIN"),
+            close_price: opt_f64(item, "CLOSE_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            billboard_net_amt: opt_f64(item, "BILLBOARD_NET_AMT"),
+            billboard_buy_amt: opt_f64(item, "BILLBOARD_BUY_AMT"),
+            billboard_sell_amt: opt_f64(item, "BILLBOARD_SELL_AMT"),
+            billboard_deal_amt: opt_f64(item, "BILLBOARD_DEAL_AMT"),
+            accum_amount: opt_f64(item, "ACCUM_AMOUNT"),
+            deal_net_ratio: opt_f64(item, "DEAL_NET_RATIO"),
+            deal_amount_ratio: opt_f64(item, "DEAL_AMOUNT_RATIO"),
+            turnover_rate: opt_f64(item, "TURNOVERRATE"),
+            free_market_cap: opt_f64(item, "FREE_MARKET_CAP"),
+            explanation: opt_str(item, "EXPLANATION"),
+            d1_close_adjchrate: opt_f64(item, "D1_CLOSE_ADJCHRATE"),
+            d2_close_adjchrate: opt_f64(item, "D2_CLOSE_ADJCHRATE"),
+            d5_close_adjchrate: opt_f64(item, "D5_CLOSE_ADJCHRATE"),
+            d10_close_adjchrate: opt_f64(item, "D10_CLOSE_ADJCHRATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -355,31 +334,31 @@ pub(crate) fn parse_stock_lhb_stock_statistic_em(
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(StockLhbStockStatisticRow {
             code,
             name,
-            latest_trade_date: fstr(item, "LATEST_TDATE").unwrap_or_default(),
-            close_price: fnum(item, "CLOSE_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            billboard_times: fnum(item, "BILLBOARD_TIMES"),
-            billboard_net_amt: fnum(item, "BILLBOARD_NET_AMT"),
-            billboard_buy_amt: fnum(item, "BILLBOARD_BUY_AMT"),
-            billboard_sell_amt: fnum(item, "BILLBOARD_SELL_AMT"),
-            billboard_deal_amt: fnum(item, "BILLBOARD_DEAL_AMT"),
-            buy_org_times: fnum(item, "BUY_ORG_TIMES"),
-            sell_org_times: fnum(item, "SELL_ORG_TIMES"),
-            inst_buy_net_amt: fnum(item, "INST_BUY_NET_AMT"),
-            inst_buy_amt: fnum(item, "INST_BUY_AMT"),
-            inst_sell_amt: fnum(item, "INST_SELL_AMT"),
-            m1_close_adjchrate: fnum(item, "M1_CLOSE_ADJCHRATE"),
-            m3_close_adjchrate: fnum(item, "M3_CLOSE_ADJCHRATE"),
-            m6_close_adjchrate: fnum(item, "M6_CLOSE_ADJCHRATE"),
-            y1_close_adjchrate: fnum(item, "Y1_CLOSE_ADJCHRATE"),
+            latest_trade_date: opt_str(item, "LATEST_TDATE").unwrap_or_default(),
+            close_price: opt_f64(item, "CLOSE_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            billboard_times: opt_f64(item, "BILLBOARD_TIMES"),
+            billboard_net_amt: opt_f64(item, "BILLBOARD_NET_AMT"),
+            billboard_buy_amt: opt_f64(item, "BILLBOARD_BUY_AMT"),
+            billboard_sell_amt: opt_f64(item, "BILLBOARD_SELL_AMT"),
+            billboard_deal_amt: opt_f64(item, "BILLBOARD_DEAL_AMT"),
+            buy_org_times: opt_f64(item, "BUY_ORG_TIMES"),
+            sell_org_times: opt_f64(item, "SELL_ORG_TIMES"),
+            inst_buy_net_amt: opt_f64(item, "INST_BUY_NET_AMT"),
+            inst_buy_amt: opt_f64(item, "INST_BUY_AMT"),
+            inst_sell_amt: opt_f64(item, "INST_SELL_AMT"),
+            m1_close_adjchrate: opt_f64(item, "M1_CLOSE_ADJCHRATE"),
+            m3_close_adjchrate: opt_f64(item, "M3_CLOSE_ADJCHRATE"),
+            m6_close_adjchrate: opt_f64(item, "M6_CLOSE_ADJCHRATE"),
+            y1_close_adjchrate: opt_f64(item, "Y1_CLOSE_ADJCHRATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -460,27 +439,27 @@ pub(crate) fn parse_stock_lhb_jgmmtj_em(resp: &Value) -> Result<Vec<StockLhbJgmm
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(StockLhbJgmmtjRow {
             name,
             code,
-            trade_date: fstr(item, "TRADE_DATE").unwrap_or_default(),
-            close_price: fnum(item, "CLOSE_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            buy_org_num: fnum(item, "BUY_ORG_NUM"),
-            sell_org_num: fnum(item, "SELL_ORG_NUM"),
-            org_buy_amt: fnum(item, "ORG_BUY_AMT"),
-            org_sell_amt: fnum(item, "ORG_SELL_AMT"),
-            org_net_buy_amt: fnum(item, "ORG_NET_BUY_AMT"),
-            accum_amount: fnum(item, "ACCUM_AMOUNT"),
-            org_net_buy_ratio: fnum(item, "ORG_NET_BUY_RATIO"),
-            turnover_rate: fnum(item, "TURNOVERRATE"),
-            free_market_cap: fnum(item, "FREE_MARKET_CAP"),
-            explanation: fstr(item, "EXPLANATION"),
+            trade_date: opt_str(item, "TRADE_DATE").unwrap_or_default(),
+            close_price: opt_f64(item, "CLOSE_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            buy_org_num: opt_f64(item, "BUY_ORG_NUM"),
+            sell_org_num: opt_f64(item, "SELL_ORG_NUM"),
+            org_buy_amt: opt_f64(item, "ORG_BUY_AMT"),
+            org_sell_amt: opt_f64(item, "ORG_SELL_AMT"),
+            org_net_buy_amt: opt_f64(item, "ORG_NET_BUY_AMT"),
+            accum_amount: opt_f64(item, "ACCUM_AMOUNT"),
+            org_net_buy_ratio: opt_f64(item, "ORG_NET_BUY_RATIO"),
+            turnover_rate: opt_f64(item, "TURNOVERRATE"),
+            free_market_cap: opt_f64(item, "FREE_MARKET_CAP"),
+            explanation: opt_str(item, "EXPLANATION"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -557,27 +536,27 @@ pub(crate) fn parse_stock_lhb_jgstatistic_em(resp: &Value) -> Result<Vec<StockLh
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(StockLhbJgstatisticRow {
             code,
             name,
-            close_price: fnum(item, "CLOSE_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            amount: fnum(item, "AMOUNT"),
-            onlist_times: fnum(item, "ONLIST_TIMES"),
-            buy_amt: fnum(item, "BUY_AMT"),
-            buy_times: fnum(item, "BUY_TIMES"),
-            sell_amt: fnum(item, "SELL_AMT"),
-            sell_times: fnum(item, "SELL_TIMES"),
-            net_buy_amt: fnum(item, "NET_BUY_AMT"),
-            m1_close_adjchrate: fnum(item, "M1_CLOSE_ADJCHRATE"),
-            m3_close_adjchrate: fnum(item, "M3_CLOSE_ADJCHRATE"),
-            m6_close_adjchrate: fnum(item, "M6_CLOSE_ADJCHRATE"),
-            y1_close_adjchrate: fnum(item, "Y1_CLOSE_ADJCHRATE"),
+            close_price: opt_f64(item, "CLOSE_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            amount: opt_f64(item, "AMOUNT"),
+            onlist_times: opt_f64(item, "ONLIST_TIMES"),
+            buy_amt: opt_f64(item, "BUY_AMT"),
+            buy_times: opt_f64(item, "BUY_TIMES"),
+            sell_amt: opt_f64(item, "SELL_AMT"),
+            sell_times: opt_f64(item, "SELL_TIMES"),
+            net_buy_amt: opt_f64(item, "NET_BUY_AMT"),
+            m1_close_adjchrate: opt_f64(item, "M1_CLOSE_ADJCHRATE"),
+            m3_close_adjchrate: opt_f64(item, "M3_CLOSE_ADJCHRATE"),
+            m6_close_adjchrate: opt_f64(item, "M6_CLOSE_ADJCHRATE"),
+            y1_close_adjchrate: opt_f64(item, "Y1_CLOSE_ADJCHRATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -646,21 +625,21 @@ pub(crate) fn parse_stock_lhb_hyyyb_em(resp: &Value) -> Result<Vec<StockLhbHyyyb
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let dept_name = fstr(item, "OPERATEDEPT_NAME").unwrap_or_default();
-        let dept_code = fstr(item, "OPERATEDEPT_CODE").unwrap_or_default();
+        let dept_name = opt_str(item, "OPERATEDEPT_NAME").unwrap_or_default();
+        let dept_code = opt_str(item, "OPERATEDEPT_CODE").unwrap_or_default();
         if dept_name.is_empty() || dept_code.is_empty() {
             continue;
         }
         out.push(StockLhbHyyybRow {
             dept_name,
-            onlist_date: fstr(item, "ONLIST_DATE").unwrap_or_default(),
-            buy_stock_num: fnum(item, "BUY_STOCK_NUM"),
-            sell_stock_num: fnum(item, "SELL_STOCK_NUM"),
-            buy_total_amt: fnum(item, "BUY_TOTAL_AMT"),
-            sell_total_amt: fnum(item, "SELL_TOTAL_AMT"),
-            total_net_amt: fnum(item, "TOTAL_NETAMT"),
+            onlist_date: opt_str(item, "ONLIST_DATE").unwrap_or_default(),
+            buy_stock_num: opt_f64(item, "BUY_STOCK_NUM"),
+            sell_stock_num: opt_f64(item, "SELL_STOCK_NUM"),
+            buy_total_amt: opt_f64(item, "BUY_TOTAL_AMT"),
+            sell_total_amt: opt_f64(item, "SELL_TOTAL_AMT"),
+            total_net_amt: opt_f64(item, "TOTAL_NETAMT"),
             dept_code,
-            buy_stocks: fstr(item, "BUY_STOCKS"),
+            buy_stocks: opt_str(item, "BUY_STOCKS"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -738,27 +717,27 @@ pub(crate) fn parse_stock_lhb_yybph_em(resp: &Value) -> Result<Vec<StockLhbYybph
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let dept_name = fstr(item, "OPERATEDEPT_NAME").unwrap_or_default();
+        let dept_name = opt_str(item, "OPERATEDEPT_NAME").unwrap_or_default();
         if dept_name.is_empty() {
             continue;
         }
         out.push(StockLhbYybphRow {
             dept_name,
-            b1_times: fnum(item, "TOTAL_BUYER_SALESTIMES_1DAY"),
-            b1_avg_increase: fnum(item, "AVERAGE_INCREASE_1DAY"),
-            b1_rise_probability: fnum(item, "RISE_PROBABILITY_1DAY"),
-            b2_times: fnum(item, "TOTAL_BUYER_SALESTIMES_2DAY"),
-            b2_avg_increase: fnum(item, "AVERAGE_INCREASE_2DAY"),
-            b2_rise_probability: fnum(item, "RISE_PROBABILITY_2DAY"),
-            b3_times: fnum(item, "TOTAL_BUYER_SALESTIMES_3DAY"),
-            b3_avg_increase: fnum(item, "AVERAGE_INCREASE_3DAY"),
-            b3_rise_probability: fnum(item, "RISE_PROBABILITY_3DAY"),
-            b5_times: fnum(item, "TOTAL_BUYER_SALESTIMES_5DAY"),
-            b5_avg_increase: fnum(item, "AVERAGE_INCREASE_5DAY"),
-            b5_rise_probability: fnum(item, "RISE_PROBABILITY_5DAY"),
-            b10_times: fnum(item, "TOTAL_BUYER_SALESTIMES_10DAY"),
-            b10_avg_increase: fnum(item, "AVERAGE_INCREASE_10DAY"),
-            b10_rise_probability: fnum(item, "RISE_PROBABILITY_10DAY"),
+            b1_times: opt_f64(item, "TOTAL_BUYER_SALESTIMES_1DAY"),
+            b1_avg_increase: opt_f64(item, "AVERAGE_INCREASE_1DAY"),
+            b1_rise_probability: opt_f64(item, "RISE_PROBABILITY_1DAY"),
+            b2_times: opt_f64(item, "TOTAL_BUYER_SALESTIMES_2DAY"),
+            b2_avg_increase: opt_f64(item, "AVERAGE_INCREASE_2DAY"),
+            b2_rise_probability: opt_f64(item, "RISE_PROBABILITY_2DAY"),
+            b3_times: opt_f64(item, "TOTAL_BUYER_SALESTIMES_3DAY"),
+            b3_avg_increase: opt_f64(item, "AVERAGE_INCREASE_3DAY"),
+            b3_rise_probability: opt_f64(item, "RISE_PROBABILITY_3DAY"),
+            b5_times: opt_f64(item, "TOTAL_BUYER_SALESTIMES_5DAY"),
+            b5_avg_increase: opt_f64(item, "AVERAGE_INCREASE_5DAY"),
+            b5_rise_probability: opt_f64(item, "RISE_PROBABILITY_5DAY"),
+            b10_times: opt_f64(item, "TOTAL_BUYER_SALESTIMES_10DAY"),
+            b10_avg_increase: opt_f64(item, "AVERAGE_INCREASE_10DAY"),
+            b10_rise_probability: opt_f64(item, "RISE_PROBABILITY_10DAY"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -820,18 +799,18 @@ pub(crate) fn parse_stock_lhb_traderstatistic_em(
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let dept_name = fstr(item, "OPERATEDEPT_NAME").unwrap_or_default();
+        let dept_name = opt_str(item, "OPERATEDEPT_NAME").unwrap_or_default();
         if dept_name.is_empty() {
             continue;
         }
         out.push(StockLhbTraderstatisticRow {
             dept_name,
-            amount: fnum(item, "AMOUNT"),
-            onlist_times: fnum(item, "SALES_ONLIST_TIMES"),
-            act_buy: fnum(item, "ACT_BUY"),
-            total_buyer_times: fnum(item, "TOTAL_BUYER_SALESTIMES"),
-            act_sell: fnum(item, "ACT_SELL"),
-            total_seller_times: fnum(item, "TOTAL_SELLER_SALESTIMES"),
+            amount: opt_f64(item, "AMOUNT"),
+            onlist_times: opt_f64(item, "SALES_ONLIST_TIMES"),
+            act_buy: opt_f64(item, "ACT_BUY"),
+            total_buyer_times: opt_f64(item, "TOTAL_BUYER_SALESTIMES"),
+            act_sell: opt_f64(item, "ACT_SELL"),
+            total_seller_times: opt_f64(item, "TOTAL_SELLER_SALESTIMES"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -887,13 +866,13 @@ pub(crate) fn parse_stock_lhb_stock_detail_date_em(
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
         if code.is_empty() {
             continue;
         }
         out.push(StockLhbStockDetailDateRow {
             code,
-            trade_date: fstr(item, "TRADE_DATE").unwrap_or_default(),
+            trade_date: opt_str(item, "TRADE_DATE").unwrap_or_default(),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -970,18 +949,18 @@ pub(crate) fn parse_stock_lhb_stock_detail_em(resp: &Value) -> Result<Vec<StockL
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let dept_name = fstr(item, "OPERATEDEPT_NAME").unwrap_or_default();
+        let dept_name = opt_str(item, "OPERATEDEPT_NAME").unwrap_or_default();
         if dept_name.is_empty() {
             continue;
         }
         out.push(StockLhbStockDetailRow {
             dept_name,
-            dept_type: fstr(item, "TYPE"),
-            buy_amt: fnum(item, "BUY_AMT"),
-            buy_amt_ratio: fnum(item, "BUY_AMT_RATIO"),
-            sell_amt: fnum(item, "SELL_AMT"),
-            sell_amt_ratio: fnum(item, "SELL_AMT_RATIO"),
-            net_amt: fnum(item, "NET_AMT"),
+            dept_type: opt_str(item, "TYPE"),
+            buy_amt: opt_f64(item, "BUY_AMT"),
+            buy_amt_ratio: opt_f64(item, "BUY_AMT_RATIO"),
+            sell_amt: opt_f64(item, "SELL_AMT"),
+            sell_amt_ratio: opt_f64(item, "SELL_AMT_RATIO"),
+            net_amt: opt_f64(item, "NET_AMT"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -1062,32 +1041,32 @@ pub(crate) fn parse_stock_lhb_yyb_detail_em(resp: &Value) -> Result<Vec<StockLhb
     let data = data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let dept_code = fstr(item, "OPERATEDEPT_CODE").unwrap_or_default();
-        let dept_name = fstr(item, "OPERATEDEPT_NAME").unwrap_or_default();
-        let code = fstr(item, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(item, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let dept_code = opt_str(item, "OPERATEDEPT_CODE").unwrap_or_default();
+        let dept_name = opt_str(item, "OPERATEDEPT_NAME").unwrap_or_default();
+        let code = opt_str(item, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(item, "SECURITY_NAME_ABBR").unwrap_or_default();
         if dept_code.is_empty() || code.is_empty() {
             continue;
         }
         out.push(StockLhbYybDetailRow {
             dept_code,
             dept_name,
-            dept_abbr: fstr(item, "ORG_NAME_ABBR"),
-            trade_date: fstr(item, "TRADE_DATE").unwrap_or_default(),
+            dept_abbr: opt_str(item, "ORG_NAME_ABBR"),
+            trade_date: opt_str(item, "TRADE_DATE").unwrap_or_default(),
             code,
             name,
-            change_rate: fnum(item, "CHANGE_RATE"),
-            buy_amt: fnum(item, "ACT_BUY"),
-            sell_amt: fnum(item, "ACT_SELL"),
-            net_amt: fnum(item, "NET_AMT"),
-            explanation: fstr(item, "EXPLANATION"),
-            d1_close_adjchrate: fnum(item, "D1_CLOSE_ADJCHRATE"),
-            d2_close_adjchrate: fnum(item, "D2_CLOSE_ADJCHRATE"),
-            d3_close_adjchrate: fnum(item, "D3_CLOSE_ADJCHRATE"),
-            d5_close_adjchrate: fnum(item, "D5_CLOSE_ADJCHRATE"),
-            d10_close_adjchrate: fnum(item, "D10_CLOSE_ADJCHRATE"),
-            d20_close_adjchrate: fnum(item, "D20_CLOSE_ADJCHRATE"),
-            d30_close_adjchrate: fnum(item, "D30_CLOSE_ADJCHRATE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            buy_amt: opt_f64(item, "ACT_BUY"),
+            sell_amt: opt_f64(item, "ACT_SELL"),
+            net_amt: opt_f64(item, "NET_AMT"),
+            explanation: opt_str(item, "EXPLANATION"),
+            d1_close_adjchrate: opt_f64(item, "D1_CLOSE_ADJCHRATE"),
+            d2_close_adjchrate: opt_f64(item, "D2_CLOSE_ADJCHRATE"),
+            d3_close_adjchrate: opt_f64(item, "D3_CLOSE_ADJCHRATE"),
+            d5_close_adjchrate: opt_f64(item, "D5_CLOSE_ADJCHRATE"),
+            d10_close_adjchrate: opt_f64(item, "D10_CLOSE_ADJCHRATE"),
+            d20_close_adjchrate: opt_f64(item, "D20_CLOSE_ADJCHRATE"),
+            d30_close_adjchrate: opt_f64(item, "D30_CLOSE_ADJCHRATE"),
             source: SOURCE_EASTMONEY,
         });
     }

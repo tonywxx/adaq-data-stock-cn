@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_TENCENT};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::stock::spot::SpotQuote;
 
 const SPOT_URL: &str = "https://proxy.finance.qq.com/cgi/cgi-bin/rank/hs/getBoardRankList";
@@ -68,8 +69,8 @@ pub(crate) fn parse_rows(resp: &Value) -> Result<Vec<SpotQuote>> {
 
 fn parse_item(item: &Value) -> SpotQuote {
     SpotQuote {
-        code: norm_code(fstr(item, "code")),
-        name: fstr(item, "name"),
+        code: norm_code(opt_str_or(item, "code", "")),
+        name: opt_str_or(item, "name", ""),
         price: first_num(item, &["price", "current", "now"]),
         pct_change: first_num(item, &["zdf", "changepercent"]),
         change: first_num(item, &["zde", "pricechange"]),
@@ -98,13 +99,6 @@ fn norm_code(s: String) -> String {
         return rest.to_string();
     }
     s.to_string()
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
 }
 
 fn first_num(item: &Value, keys: &[&str]) -> Option<f64> {

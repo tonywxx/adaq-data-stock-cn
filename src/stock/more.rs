@@ -29,6 +29,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// 乐咕乐股 (legulegu) source bucket, for rate limiting / error context.
 ///
@@ -49,23 +50,6 @@ const PAGE_SIZE: u32 = 100;
 // Shared helpers (mirror src/stock/holder.rs and src/board/mod.rs)
 // ---------------------------------------------------------------------------
 
-/// Read a string field, defaulting to `""` when missing/null (matches akshare,
-/// which keeps such columns as empty strings rather than dropping the row).
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Validate an `YYYYMMDD` date string used as a request parameter.
 fn check_date8(date: &str, what: &str) -> Result<()> {
@@ -218,31 +202,31 @@ pub(crate) fn parse_st(resp: &Value) -> Result<Vec<StockZhAStEmRow>> {
         })?;
     let mut out = Vec::with_capacity(diff.len());
     for item in diff {
-        let code = fstr(item, "f12");
-        let name = fstr(item, "f14");
+        let code = opt_str_or(item, "f12", "");
+        let name = opt_str_or(item, "f14", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(StockZhAStEmRow {
             code,
-            market: fnum(item, "f13"),
+            market: opt_f64(item, "f13"),
             name,
-            price: fnum(item, "f2"),
-            pct_change: fnum(item, "f3"),
-            change: fnum(item, "f4"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            amplitude: fnum(item, "f7"),
-            turnover: fnum(item, "f8"),
-            pe_ttm: fnum(item, "f9"),
-            volume_ratio: fnum(item, "f10"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            open: fnum(item, "f17"),
-            pre_close: fnum(item, "f18"),
-            total_mktcap: fnum(item, "f20"),
-            float_mktcap: fnum(item, "f21"),
-            pb: fnum(item, "f23"),
+            price: opt_f64(item, "f2"),
+            pct_change: opt_f64(item, "f3"),
+            change: opt_f64(item, "f4"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            amplitude: opt_f64(item, "f7"),
+            turnover: opt_f64(item, "f8"),
+            pe_ttm: opt_f64(item, "f9"),
+            volume_ratio: opt_f64(item, "f10"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            open: opt_f64(item, "f17"),
+            pre_close: opt_f64(item, "f18"),
+            total_mktcap: opt_f64(item, "f20"),
+            float_mktcap: opt_f64(item, "f21"),
+            pb: opt_f64(item, "f23"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -319,14 +303,14 @@ pub(crate) fn parse_high_low(resp: &Value) -> Result<Vec<StockAHighLowRow>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(StockAHighLowRow {
-            date: fstr(item, "date"),
-            close: fnum(item, "close"),
-            high20: fnum(item, "high20"),
-            low20: fnum(item, "low20"),
-            high60: fnum(item, "high60"),
-            low60: fnum(item, "low60"),
-            high120: fnum(item, "high120"),
-            low120: fnum(item, "low120"),
+            date: opt_str_or(item, "date", ""),
+            close: opt_f64(item, "close"),
+            high20: opt_f64(item, "high20"),
+            low20: opt_f64(item, "low20"),
+            high60: opt_f64(item, "high60"),
+            low60: opt_f64(item, "low60"),
+            high120: opt_f64(item, "high120"),
+            low120: opt_f64(item, "low120"),
             source: SOURCE_LEGULEGU,
         });
     }
@@ -401,14 +385,14 @@ pub(crate) fn parse_below_net_asset(resp: &Value) -> Result<Vec<StockABelowNetAs
     })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
-        let below = fnum(item, "belowNetAsset");
-        let total = fnum(item, "totalCompany");
+        let below = opt_f64(item, "belowNetAsset");
+        let total = opt_f64(item, "totalCompany");
         let ratio = match (below, total) {
             (Some(b), Some(t)) if t != 0.0 => Some(b / t),
             _ => None,
         };
         out.push(StockABelowNetAssetRow {
-            date: fstr(item, "date"),
+            date: opt_str_or(item, "date", ""),
             below_net_asset: below,
             total_company: total,
             below_net_asset_ratio: ratio,
@@ -499,17 +483,17 @@ pub(crate) fn parse_account_statistics(resp: &Value) -> Result<Vec<StockAccountS
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(StockAccountStatisticsRow {
-            stat_date: fstr(item, "STATISTICS_DATE"),
-            new_investors: fnum(item, "NEW_NUMBER"),
-            new_investors_mom: fnum(item, "NEW_NUMBER_RATIO"),
-            new_investors_yoy: fnum(item, "NEW_NUMBER_SAME"),
-            end_total: fnum(item, "END_NUMBER"),
-            end_a_accounts: fnum(item, "END_A_NUMBER"),
-            end_b_accounts: fnum(item, "END_B_NUMBER"),
-            sh_close: fnum(item, "SH_INDEX"),
-            sh_pct: fnum(item, "SH_INDEX_PCT"),
-            total_mktcap: fnum(item, "TOTAL_MARKET_CAP"),
-            avg_mktcap: fnum(item, "AVG_MARKET_CAP"),
+            stat_date: opt_str_or(item, "STATISTICS_DATE", ""),
+            new_investors: opt_f64(item, "NEW_NUMBER"),
+            new_investors_mom: opt_f64(item, "NEW_NUMBER_RATIO"),
+            new_investors_yoy: opt_f64(item, "NEW_NUMBER_SAME"),
+            end_total: opt_f64(item, "END_NUMBER"),
+            end_a_accounts: opt_f64(item, "END_A_NUMBER"),
+            end_b_accounts: opt_f64(item, "END_B_NUMBER"),
+            sh_close: opt_f64(item, "SH_INDEX"),
+            sh_pct: opt_f64(item, "SH_INDEX_PCT"),
+            total_mktcap: opt_f64(item, "TOTAL_MARKET_CAP"),
+            avg_mktcap: opt_f64(item, "AVG_MARKET_CAP"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -606,8 +590,8 @@ pub(crate) fn parse_zt_pool(resp: &Value) -> Result<Vec<StockZtPoolRow>> {
             })?;
     let mut out = Vec::with_capacity(pool.len());
     for item in pool {
-        let code = fstr(item, "c");
-        let name = fstr(item, "n");
+        let code = opt_str_or(item, "c", "");
+        let name = opt_str_or(item, "n", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
@@ -626,18 +610,18 @@ pub(crate) fn parse_zt_pool(resp: &Value) -> Result<Vec<StockZtPoolRow>> {
         out.push(StockZtPoolRow {
             code,
             name,
-            price: fnum(item, "p").map(|x| x / 1000.0),
-            pct_change: fnum(item, "zdp"),
-            amount: fnum(item, "amount"),
-            float_mktcap: fnum(item, "ltsz"),
-            total_mktcap: fnum(item, "tshare"),
-            turnover: fnum(item, "hs"),
-            consecutive_boards: fnum(item, "lb"),
+            price: opt_f64(item, "p").map(|x| x / 1000.0),
+            pct_change: opt_f64(item, "zdp"),
+            amount: opt_f64(item, "amount"),
+            float_mktcap: opt_f64(item, "ltsz"),
+            total_mktcap: opt_f64(item, "tshare"),
+            turnover: opt_f64(item, "hs"),
+            consecutive_boards: opt_f64(item, "lb"),
             first_time: fmt_time(item.get("fbt").unwrap_or(&Value::Null)),
             last_time: fmt_time(item.get("lbt").unwrap_or(&Value::Null)),
-            seal_funds: fnum(item, "fd"),
-            explode_count: fnum(item, "zbc"),
-            industry: fstr(item, "hy"),
+            seal_funds: opt_f64(item, "fd"),
+            explode_count: opt_f64(item, "zbc"),
+            industry: opt_str_or(item, "hy", ""),
             zt_stat,
             source: SOURCE_EASTMONEY,
         });

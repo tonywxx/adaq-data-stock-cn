@@ -24,6 +24,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// SHFE daily position-rank endpoint (JSON, `o_cursor`).
 const SOURCE_SHFE: &str = "shfe";
@@ -222,24 +223,24 @@ pub(crate) fn parse_coin_shfe_rank(resp: &Value, date: &str) -> Result<Vec<CoinS
         })?;
     let mut out = Vec::with_capacity(cursor.len());
     for item in cursor {
-        let symbol = fstr(item, "INSTRUMENTID");
+        let symbol = opt_str_or(item, "INSTRUMENTID", "");
         let variety = symbol
             .chars()
             .take_while(|c| c.is_ascii_alphabetic())
             .collect::<String>();
         out.push(CoinShfeRankRow {
-            rank: inum(item, "RANK"),
-            vol_party_name: fstr(item, "PARTICIPANTABBR1"),
-            vol: fnum(item, "CJ1"),
-            vol_chg: fnum(item, "CJ1_CHG"),
-            long_party_name: fstr(item, "PARTICIPANTABBR2"),
-            long_open_interest: fnum(item, "CJ2"),
-            long_open_interest_chg: fnum(item, "CJ2_CHG"),
-            short_party_name: fstr(item, "PARTICIPANTABBR3"),
-            short_open_interest: fnum(item, "CJ3"),
-            short_open_interest_chg: fnum(item, "CJ3_CHG"),
+            rank: opt_i64(item, "RANK"),
+            vol_party_name: opt_str_or(item, "PARTICIPANTABBR1", ""),
+            vol: opt_f64(item, "CJ1"),
+            vol_chg: opt_f64(item, "CJ1_CHG"),
+            long_party_name: opt_str_or(item, "PARTICIPANTABBR2", ""),
+            long_open_interest: opt_f64(item, "CJ2"),
+            long_open_interest_chg: opt_f64(item, "CJ2_CHG"),
+            short_party_name: opt_str_or(item, "PARTICIPANTABBR3", ""),
+            short_open_interest: opt_f64(item, "CJ3"),
+            short_open_interest_chg: opt_f64(item, "CJ3_CHG"),
             symbol,
-            product: fstr(item, "PRODUCTNAME"),
+            product: opt_str_or(item, "PRODUCTNAME", ""),
             variety,
             date: date.to_string(),
         });
@@ -508,12 +509,12 @@ pub(crate) fn parse_symbol_map(resp: &Value) -> Result<Vec<CoinFuturesSymbolRow>
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(CoinFuturesSymbolRow {
-            mktid: fstr(item, "mktid"),
-            mktname: fstr(item, "mktname"),
-            name: fstr(item, "name"),
-            code: fstr(item, "code"),
-            vcode: fstr(item, "vcode"),
-            vname: fstr(item, "vname"),
+            mktid: opt_str_or(item, "mktid", ""),
+            mktname: opt_str_or(item, "mktname", ""),
+            name: opt_str_or(item, "name", ""),
+            code: opt_str_or(item, "code", ""),
+            vcode: opt_str_or(item, "vcode", ""),
+            vname: opt_str_or(item, "vname", ""),
         });
     }
     Ok(out)
@@ -523,21 +524,6 @@ pub(crate) fn parse_symbol_map(resp: &Value) -> Result<Vec<CoinFuturesSymbolRow>
 // helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> String {
-    fstr_opt(item, k).unwrap_or_default()
-}
-
-fn fstr_opt(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.replace(',', "").parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 fn fnum_str(s: &str) -> Option<f64> {
     let t = s.replace(',', "");
@@ -548,13 +534,6 @@ fn fnum_str(s: &str) -> Option<f64> {
     }
 }
 
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.replace(',', "").parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // tests (offline fixtures)

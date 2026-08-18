@@ -13,6 +13,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY, SOURCE_TENCENT};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const EM_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const EM_SPOT_URL: &str = "https://48.push2.eastmoney.com/api/qt/clist/get";
@@ -109,19 +110,19 @@ pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<IndexSpotRow>> {
     let mut out = Vec::with_capacity(diff.len());
     for item in diff {
         out.push(IndexSpotRow {
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2"),
-            change_percent: fnum(item, "f3"),
-            change: fnum(item, "f4"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            amplitude: fnum(item, "f7"),
-            volume_ratio: fnum(item, "f10"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            open: fnum(item, "f17"),
-            prev_close: fnum(item, "f18"),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
+            price: opt_f64(item, "f2"),
+            change_percent: opt_f64(item, "f3"),
+            change: opt_f64(item, "f4"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            amplitude: opt_f64(item, "f7"),
+            volume_ratio: opt_f64(item, "f10"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            open: opt_f64(item, "f17"),
+            prev_close: opt_f64(item, "f18"),
         });
     }
     Ok(out)
@@ -216,12 +217,12 @@ pub(crate) fn parse_daily(resp: &Value) -> Result<Vec<IndexDailyRow>> {
         }
         out.push(IndexDailyRow {
             date: p[0].to_string(),
-            open: parse_f64(p[1]),
-            close: parse_f64(p[2]),
-            high: parse_f64(p[3]),
-            low: parse_f64(p[4]),
-            volume: parse_f64(p[5]),
-            amount: parse_f64(p[6]),
+            open: parse_f64_str(p[1]),
+            close: parse_f64_str(p[2]),
+            high: parse_f64_str(p[3]),
+            low: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
         });
     }
     Ok(out)
@@ -353,11 +354,11 @@ pub(crate) fn parse_tx_daily(resp: &Value, symbol: &str) -> Result<Vec<IndexDail
         }
         out.push(IndexDailyTxRow {
             date: str_at(arr, 0),
-            open: num_at(arr, 1),
-            close: num_at(arr, 2),
-            high: num_at(arr, 3),
-            low: num_at(arr, 4),
-            amount: num_at(arr, 5),
+            open: f64_at(arr, 1),
+            close: f64_at(arr, 2),
+            high: f64_at(arr, 3),
+            low: f64_at(arr, 4),
+            amount: f64_at(arr, 5),
         });
     }
     Ok(out)
@@ -431,9 +432,9 @@ pub(crate) fn parse_cons(resp: &Value) -> Result<Vec<IndexConsRow>> {
     let mut out = Vec::with_capacity(diff.len());
     for item in diff {
         out.push(IndexConsRow {
-            code: fstr(item, "f12"),
+            code: opt_str_or(item, "f12", ""),
             market: item.get("f13").and_then(|v| v.as_i64()),
-            name: fstr(item, "f14"),
+            name: opt_str_or(item, "f14", ""),
         });
     }
     Ok(out)
@@ -442,53 +443,6 @@ pub(crate) fn parse_cons(resp: &Value) -> Result<Vec<IndexConsRow>> {
 // ---------------------------------------------------------------------------
 // shared helpers
 // ---------------------------------------------------------------------------
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(num)
-}
-
-/// Parse an Eastmoney field that may be a number or a numeric string (`"-"` / empty => None).
-fn num(v: &Value) -> Option<f64> {
-    match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => {
-            let t = s.trim();
-            if t.is_empty() || t == "-" {
-                None
-            } else {
-                t.parse::<f64>().ok()
-            }
-        }
-        _ => None,
-    }
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
-}
-
-fn str_at(arr: &[Value], i: usize) -> String {
-    arr.get(i)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn num_at(arr: &[Value], i: usize) -> Option<f64> {
-    arr.get(i).and_then(num)
-}
 
 // ---------------------------------------------------------------------------
 // offline parse tests

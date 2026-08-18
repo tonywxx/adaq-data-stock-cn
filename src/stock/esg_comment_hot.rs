@@ -37,6 +37,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_SINA: &str = "sina";
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -78,19 +79,6 @@ fn sina_esg_data(resp: &Value) -> Result<&Vec<Value>> {
 }
 
 /// Read a string field (null/other -> None).
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field; accepts both JSON numbers and numeric strings.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
 /// Unwrap a JSONP envelope `callback(...)` into a JSON `Value`.
 fn unwrap_jsonp(text: &str) -> Result<Value> {
     let s = text.trim();
@@ -135,22 +123,22 @@ pub struct EsgHzRow {
 pub(crate) fn parse_esg_hz(items: &[Value]) -> Result<Vec<EsgHzRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(symbol) = fstr(item, "symbol") else {
+        let Some(symbol) = opt_str(item, "symbol") else {
             continue;
         };
         out.push(EsgHzRow {
-            date: fstr(item, "date"),
+            date: opt_str(item, "date"),
             symbol,
-            market: fstr(item, "market"),
-            name: fstr(item, "name"),
-            esg_score: fnum(item, "esg_score"),
-            esg_grade: fstr(item, "esg_score_grade"),
-            env_score: fnum(item, "e_score"),
-            env_grade: fstr(item, "e_score_grade"),
-            social_score: fnum(item, "s_score"),
-            social_grade: fstr(item, "s_score_grade"),
-            gov_score: fnum(item, "g_score"),
-            gov_grade: fstr(item, "g_score_grade"),
+            market: opt_str(item, "market"),
+            name: opt_str(item, "name"),
+            esg_score: opt_f64(item, "esg_score"),
+            esg_grade: opt_str(item, "esg_score_grade"),
+            env_score: opt_f64(item, "e_score"),
+            env_grade: opt_str(item, "e_score_grade"),
+            social_score: opt_f64(item, "s_score"),
+            social_grade: opt_str(item, "s_score_grade"),
+            gov_score: opt_f64(item, "g_score"),
+            gov_grade: opt_str(item, "g_score_grade"),
         });
     }
     Ok(out)
@@ -187,17 +175,17 @@ pub struct EsgMsciRow {
 pub(crate) fn parse_esg_msci(items: &[Value]) -> Result<Vec<EsgMsciRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(symbol) = fstr(item, "symbol") else {
+        let Some(symbol) = opt_str(item, "symbol") else {
             continue;
         };
         out.push(EsgMsciRow {
             symbol,
-            esg_rating: fnum(item, "esg_rating"),
-            env_score: fnum(item, "env_score"),
-            social_score: fnum(item, "social_score"),
-            governance_score: fnum(item, "governance_score"),
-            rating_date: fstr(item, "quarter_date"),
-            market: fstr(item, "market"),
+            esg_rating: opt_f64(item, "esg_rating"),
+            env_score: opt_f64(item, "env_score"),
+            social_score: opt_f64(item, "social_score"),
+            governance_score: opt_f64(item, "governance_score"),
+            rating_date: opt_str(item, "quarter_date"),
+            market: opt_str(item, "market"),
         });
     }
     Ok(out)
@@ -233,16 +221,16 @@ pub struct EsgZdRow {
 pub(crate) fn parse_esg_zd(items: &[Value]) -> Result<Vec<EsgZdRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(symbol) = fstr(item, "ticker") else {
+        let Some(symbol) = opt_str(item, "ticker") else {
             continue;
         };
         out.push(EsgZdRow {
             symbol,
-            esg_score: fnum(item, "esg_score"),
-            env_score: fnum(item, "environmental_score"),
-            social_score: fnum(item, "social_score"),
-            governance_score: fnum(item, "governance_score"),
-            rating_date: fstr(item, "report_date"),
+            esg_score: opt_f64(item, "esg_score"),
+            env_score: opt_f64(item, "environmental_score"),
+            social_score: opt_f64(item, "social_score"),
+            governance_score: opt_f64(item, "governance_score"),
+            rating_date: opt_str(item, "report_date"),
         });
     }
     Ok(out)
@@ -285,23 +273,23 @@ pub struct EsgRftRow {
 pub(crate) fn parse_esg_rft(items: &[Value]) -> Result<Vec<EsgRftRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(symbol) = fstr(item, "symbol") else {
+        let Some(symbol) = opt_str(item, "symbol") else {
             continue;
         };
         out.push(EsgRftRow {
             symbol,
-            esg_score: fnum(item, "esg_score"),
-            esg_score_date: fstr(item, "esg_score_date"),
-            env_score: fnum(item, "env_score"),
-            env_score_date: fstr(item, "env_score_date"),
-            social_score: fnum(item, "social_score"),
-            social_score_date: fstr(item, "social_score_date"),
-            governance_score: fnum(item, "governance_score"),
-            governance_score_date: fstr(item, "governance_score_date"),
-            dispute_score: fnum(item, "zy_score"),
-            dispute_score_date: fstr(item, "zy_score_date"),
-            industry: fstr(item, "industry"),
-            exchange: fstr(item, "exchange"),
+            esg_score: opt_f64(item, "esg_score"),
+            esg_score_date: opt_str(item, "esg_score_date"),
+            env_score: opt_f64(item, "env_score"),
+            env_score_date: opt_str(item, "env_score_date"),
+            social_score: opt_f64(item, "social_score"),
+            social_score_date: opt_str(item, "social_score_date"),
+            governance_score: opt_f64(item, "governance_score"),
+            governance_score_date: opt_str(item, "governance_score_date"),
+            dispute_score: opt_f64(item, "zy_score"),
+            dispute_score_date: opt_str(item, "zy_score_date"),
+            industry: opt_str(item, "industry"),
+            exchange: opt_str(item, "exchange"),
         });
     }
     Ok(out)
@@ -366,16 +354,16 @@ pub(crate) fn expand_esg_rate(stocks: &[Value]) -> Vec<Value> {
 pub(crate) fn parse_esg_rate(items: &[Value]) -> Result<Vec<EsgRateRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(symbol) = fstr(item, "symbol") else {
+        let Some(symbol) = opt_str(item, "symbol") else {
             continue;
         };
         out.push(EsgRateRow {
             symbol,
-            market: fstr(item, "market"),
-            agency_name: fstr(item, "agency_name"),
-            rating: fstr(item, "esg_score"),
-            rating_quarter: fstr(item, "esg_dt"),
-            remark: fstr(item, "remark"),
+            market: opt_str(item, "market"),
+            agency_name: opt_str(item, "agency_name"),
+            rating: opt_str(item, "esg_score"),
+            rating_quarter: opt_str(item, "esg_dt"),
+            remark: opt_str(item, "remark"),
         });
     }
     Ok(out)
@@ -515,24 +503,24 @@ pub struct CommentRow {
 pub(crate) fn parse_comment_em(items: &[Value]) -> Result<Vec<CommentRow>> {
     let mut out = Vec::with_capacity(items.len());
     for (i, item) in items.iter().enumerate() {
-        let Some(symbol) = fstr(item, "SECURITY_CODE") else {
+        let Some(symbol) = opt_str(item, "SECURITY_CODE") else {
             continue;
         };
         out.push(CommentRow {
             index: i + 1,
             symbol,
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            close_price: fnum(item, "CLOSE_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            turnover_rate: fnum(item, "TURNOVERRATE"),
-            main_cost: fnum(item, "MAIN_COST"),
-            pe_dynamic: fnum(item, "PE_DYNAMIC"),
-            org_participate: fnum(item, "ORG_PARTICIPATE"),
-            total_score: fnum(item, "TOTAL_SCORE"),
-            rise: fnum(item, "RISE"),
-            current_rank: fnum(item, "CURRENT_RANK"),
-            attention_index: fnum(item, "ATTENTION_INDEX"),
-            trade_date: fstr(item, "TRADE_DATE"),
+            name: opt_str(item, "SECURITY_NAME_ABBR"),
+            close_price: opt_f64(item, "CLOSE_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            turnover_rate: opt_f64(item, "TURNOVERRATE"),
+            main_cost: opt_f64(item, "MAIN_COST"),
+            pe_dynamic: opt_f64(item, "PE_DYNAMIC"),
+            org_participate: opt_f64(item, "ORG_PARTICIPATE"),
+            total_score: opt_f64(item, "TOTAL_SCORE"),
+            rise: opt_f64(item, "RISE"),
+            current_rank: opt_f64(item, "CURRENT_RANK"),
+            attention_index: opt_f64(item, "ATTENTION_INDEX"),
+            trade_date: opt_str(item, "TRADE_DATE"),
         });
     }
     Ok(out)
@@ -606,8 +594,8 @@ pub(crate) fn parse_scrd_focus(items: &[Value]) -> Result<Vec<CommentFocusRow>> 
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(CommentFocusRow {
-            trade_date: fstr(item, "TRADE_DATE"),
-            market_focus: fnum(item, "MARKET_FOCUS"),
+            trade_date: opt_str(item, "TRADE_DATE"),
+            market_focus: opt_f64(item, "MARKET_FOCUS"),
         });
     }
     Ok(out)
@@ -654,8 +642,8 @@ pub(crate) fn parse_scrd_lspf(items: &[Value]) -> Result<Vec<CommentLspfRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(CommentLspfRow {
-            diagnose_date: fstr(item, "DIAGNOSE_DATE"),
-            total_score: fnum(item, "TOTAL_SCORE"),
+            diagnose_date: opt_str(item, "DIAGNOSE_DATE"),
+            total_score: opt_f64(item, "TOTAL_SCORE"),
         });
     }
     Ok(out)
@@ -706,12 +694,12 @@ pub(crate) fn parse_scrd_desire(items: &[Value]) -> Result<Vec<CommentDesireRow>
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(CommentDesireRow {
-            trade_date: fstr(item, "TRADE_DATE"),
-            symbol: fstr(item, "SECURITY_CODE"),
-            participation_wish: fnum(item, "PARTICIPATION_WISH"),
-            participation_wish_5days: fnum(item, "PARTICIPATION_WISH_5DAYS"),
-            participation_wish_change: fnum(item, "PARTICIPATION_WISH_CHANGE"),
-            participation_wish_5days_change: fnum(item, "PARTICIPATION_WISH_5DAYSCHANGE"),
+            trade_date: opt_str(item, "TRADE_DATE"),
+            symbol: opt_str(item, "SECURITY_CODE"),
+            participation_wish: opt_f64(item, "PARTICIPATION_WISH"),
+            participation_wish_5days: opt_f64(item, "PARTICIPATION_WISH_5DAYS"),
+            participation_wish_change: opt_f64(item, "PARTICIPATION_WISH_CHANGE"),
+            participation_wish_5days_change: opt_f64(item, "PARTICIPATION_WISH_5DAYSCHANGE"),
         });
     }
     Ok(out)

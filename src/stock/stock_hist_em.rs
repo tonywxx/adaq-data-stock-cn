@@ -39,6 +39,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
@@ -64,17 +65,6 @@ const FS_ZH_B: &str = "m:0 t:7,m:1 t:3";
 const FS_HK_MAIN: &str = "m:128 t:3";
 const FS_AB: &str = "m:1+b:BK0498,m:0+b:BK0498";
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract the `data.diff` array from a clist response.
 fn diff_array(resp: &Value) -> Result<Vec<Value>> {
@@ -184,29 +174,29 @@ fn parse_spot_standard(items: &[Value]) -> Result<Vec<ZhASpotEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(ZhASpotEmRow {
-            serial: fnum(item, "f1"),
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2"),
-            pct_change: fnum(item, "f3"),
-            change: fnum(item, "f4"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            amplitude: fnum(item, "f7"),
-            turnover_rate: fnum(item, "f8"),
-            pe: fnum(item, "f9"),
-            volume_ratio: fnum(item, "f10"),
-            five_min_change: fnum(item, "f11"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            open: fnum(item, "f17"),
-            pre_close: fnum(item, "f18"),
-            total_mv: fnum(item, "f20"),
-            float_mv: fnum(item, "f21"),
-            speed: fnum(item, "f22"),
-            pb: fnum(item, "f23"),
-            pct_60d: fnum(item, "f24"),
-            pct_ytd: fnum(item, "f25"),
+            serial: opt_f64(item, "f1"),
+            code: opt_str(item, "f12"),
+            name: opt_str(item, "f14"),
+            price: opt_f64(item, "f2"),
+            pct_change: opt_f64(item, "f3"),
+            change: opt_f64(item, "f4"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            amplitude: opt_f64(item, "f7"),
+            turnover_rate: opt_f64(item, "f8"),
+            pe: opt_f64(item, "f9"),
+            volume_ratio: opt_f64(item, "f10"),
+            five_min_change: opt_f64(item, "f11"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            open: opt_f64(item, "f17"),
+            pre_close: opt_f64(item, "f18"),
+            total_mv: opt_f64(item, "f20"),
+            float_mv: opt_f64(item, "f21"),
+            speed: opt_f64(item, "f22"),
+            pb: opt_f64(item, "f23"),
+            pct_60d: opt_f64(item, "f24"),
+            pct_ytd: opt_f64(item, "f25"),
         });
     }
     Ok(out)
@@ -269,30 +259,30 @@ fn parse_spot_new_a(items: &[Value]) -> Result<Vec<NewASpotEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(NewASpotEmRow {
-            serial: fnum(item, "f1"),
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2"),
-            pct_change: fnum(item, "f3"),
-            change: fnum(item, "f4"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            amplitude: fnum(item, "f7"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            open: fnum(item, "f17"),
-            pre_close: fnum(item, "f18"),
-            volume_ratio: fnum(item, "f10"),
-            turnover_rate: fnum(item, "f8"),
-            pe: fnum(item, "f9"),
-            pb: fnum(item, "f23"),
-            listing_date: fstr(item, "f26"),
-            total_mv: fnum(item, "f20"),
-            float_mv: fnum(item, "f21"),
-            speed: fnum(item, "f22"),
-            five_min_change: fnum(item, "f11"),
-            pct_60d: fnum(item, "f24"),
-            pct_ytd: fnum(item, "f25"),
+            serial: opt_f64(item, "f1"),
+            code: opt_str(item, "f12"),
+            name: opt_str(item, "f14"),
+            price: opt_f64(item, "f2"),
+            pct_change: opt_f64(item, "f3"),
+            change: opt_f64(item, "f4"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            amplitude: opt_f64(item, "f7"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            open: opt_f64(item, "f17"),
+            pre_close: opt_f64(item, "f18"),
+            volume_ratio: opt_f64(item, "f10"),
+            turnover_rate: opt_f64(item, "f8"),
+            pe: opt_f64(item, "f9"),
+            pb: opt_f64(item, "f23"),
+            listing_date: opt_str(item, "f26"),
+            total_mv: opt_f64(item, "f20"),
+            float_mv: opt_f64(item, "f21"),
+            speed: opt_f64(item, "f22"),
+            five_min_change: opt_f64(item, "f11"),
+            pct_60d: opt_f64(item, "f24"),
+            pct_ytd: opt_f64(item, "f25"),
         });
     }
     Ok(out)
@@ -331,18 +321,18 @@ fn parse_spot_hk_main(items: &[Value]) -> Result<Vec<HkMainBoardSpotEmRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(HkMainBoardSpotEmRow {
-            serial: fnum(item, "f1"),
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2"),
-            change: fnum(item, "f4"),
-            pct_change: fnum(item, "f3"),
-            open: fnum(item, "f17"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            pre_close: fnum(item, "f18"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
+            serial: opt_f64(item, "f1"),
+            code: opt_str(item, "f12"),
+            name: opt_str(item, "f14"),
+            price: opt_f64(item, "f2"),
+            change: opt_f64(item, "f4"),
+            pct_change: opt_f64(item, "f3"),
+            open: opt_f64(item, "f17"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            pre_close: opt_f64(item, "f18"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
         });
     }
     Ok(out)
@@ -380,15 +370,15 @@ fn parse_ab_comparison(items: &[Value]) -> Result<Vec<ZhAbComparisonRow>> {
     for (i, item) in items.iter().enumerate() {
         out.push(ZhAbComparisonRow {
             serial: Some(i as f64 + 1.0),
-            b_code: fstr(item, "f201"),
-            b_name: fstr(item, "f203"),
-            price_b: scale(fnum(item, "f2")),
-            pct_change_b: scale(fnum(item, "f3")),
-            a_code: fstr(item, "f12"),
-            a_name: fstr(item, "f14"),
-            price_a: scale(fnum(item, "f196")),
-            pct_change_a: scale(fnum(item, "f197")),
-            ratio: scale(fnum(item, "f199")),
+            b_code: opt_str(item, "f201"),
+            b_name: opt_str(item, "f203"),
+            price_b: scale(opt_f64(item, "f2")),
+            pct_change_b: scale(opt_f64(item, "f3")),
+            a_code: opt_str(item, "f12"),
+            a_name: opt_str(item, "f14"),
+            price_a: scale(opt_f64(item, "f196")),
+            pct_change_a: scale(opt_f64(item, "f197")),
+            ratio: scale(opt_f64(item, "f199")),
         });
     }
     Ok(out)

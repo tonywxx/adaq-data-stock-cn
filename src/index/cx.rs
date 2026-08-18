@@ -19,6 +19,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_CCXE: &str = "ccxe";
 const CCXE_TREND_URL: &str = "https://yun.ccxe.com.cn/api/index/pro/cxIndexTrendInfo";
@@ -70,8 +71,8 @@ pub(crate) fn parse_cx_trend(
                 Some(Value::String(s)) => s.trim().parse::<i64>().ok(),
                 _ => None,
             },
-            value: fnum(item, value_key),
-            change: fnum(item, change_key),
+            value: opt_f64(item, value_key),
+            change: opt_f64(item, change_key),
         });
     }
     Ok(out)
@@ -282,18 +283,6 @@ pub(crate) fn parse_index_neei_cx(resp: &Value) -> Result<Vec<CxTrendRow>> {
 // private helpers (verbatim per task instructions)
 // ---------------------------------------------------------------------------
 
-#[allow(dead_code)]
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // offline parse tests

@@ -8,6 +8,7 @@
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// CFFEX daily trading row (`futures_hist_daily_cffex`).
 ///
@@ -76,28 +77,19 @@ pub(crate) fn parse_cffex_daily(text: &str, date: &str) -> Result<Vec<FuturesHis
         out.push(FuturesHistDailyCffexRow {
             symbol,
             date: date.to_string(),
-            open: parse_f64(p[1]),
-            high: parse_f64(p[2]),
-            low: parse_f64(p[3]),
-            close: parse_f64(p[8]),
-            volume: parse_f64(p[4]),
-            open_interest: parse_f64(p[6]),
-            turnover: parse_f64(p[5]),
-            settle: parse_f64(p[9]),
-            pre_settle: parse_f64(p[10]),
+            open: parse_f64_str(p[1]),
+            high: parse_f64_str(p[2]),
+            low: parse_f64_str(p[3]),
+            close: parse_f64_str(p[8]),
+            volume: parse_f64_str(p[4]),
+            open_interest: parse_f64_str(p[6]),
+            turnover: parse_f64_str(p[5]),
+            settle: parse_f64_str(p[9]),
+            pre_settle: parse_f64_str(p[10]),
             variety,
         });
     }
     Ok(out)
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
 }
 
 #[cfg(test)]

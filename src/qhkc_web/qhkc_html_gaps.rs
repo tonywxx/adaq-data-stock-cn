@@ -57,25 +57,14 @@ pub async fn qhkc_tool_gdp(client: &Client) -> Result<Vec<QhkcGdpRow>> {
 /// Parse the qhkch GDP table (`#toolbox_gdp`). The header row is `tables[0][0]`;
 /// country rows follow. When the upstream AJAX is dead the body is empty.
 pub(crate) fn parse_qhkc_tool_gdp(html: &str, endpoint: &'static str) -> Result<Vec<QhkcGdpRow>> {
-    let doc = Html::parse_document(html);
-    let table_sel = Selector::parse("table#toolbox_gdp")
-        .map_err(|e| Error::Parse { endpoint, message: format!("table selector: {e}") })?;
-    let tr_sel = Selector::parse("tr").unwrap();
-    let cell_sel = Selector::parse("th,td").unwrap();
-    let table = doc
-        .select(&table_sel)
+    let all = crate::core::html::tables_with(html, endpoint, "table#toolbox_gdp")?;
+    let rows = all
+        .into_iter()
         .next()
-        .ok_or_else(|| Error::UpstreamChanged { origin: endpoint, message: "no toolbox_gdp table".into() })?;
-    let mut rows: Vec<Vec<String>> = Vec::new();
-    for tr in table.select(&tr_sel) {
-        let cells: Vec<String> = tr
-            .select(&cell_sel)
-            .map(|c| c.text().collect::<Vec<_>>().join(" ").trim().to_string())
-            .collect();
-        if !cells.is_empty() {
-            rows.push(cells);
-        }
-    }
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: endpoint,
+            message: "no toolbox_gdp table".into(),
+        })?;
     if rows.is_empty() {
         return Err(Error::UpstreamChanged { origin: endpoint, message: "empty GDP table".into() });
     }

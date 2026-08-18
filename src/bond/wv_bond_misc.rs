@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_CHINAMONEY: &str = "chinamoney";
 const SOURCE_THS: &str = "10jqka";
@@ -141,21 +142,21 @@ pub(crate) fn parse_bond_zh_cov_info_ths(resp: &Value) -> Result<Vec<BondZhCovIn
     let mut out = Vec::with_capacity(list.len());
     for item in list {
         out.push(BondZhCovInfoThsRow {
-            bond_code: fstr(item, "bond_code"),
-            bond_name: fstr(item, "bond_name"),
-            sub_date: fstr(item, "sub_date"),
-            sub_code: fstr(item, "sub_code"),
-            share_code: fstr(item, "share_code"),
-            stock_code: fstr(item, "code"),
-            stock_name: fstr(item, "name"),
-            sign_date: fstr(item, "sign_date"),
-            plan_total: fnum(item, "plan_total"),
-            issue_total: fnum(item, "issue_total"),
-            success_rate: fnum(item, "success_rate"),
-            listing_date: fstr(item, "listing_date"),
-            expire_date: fstr(item, "expire_date"),
-            price: fnum(item, "price"),
-            quota: fnum(item, "quota"),
+            bond_code: opt_str_or(item, "bond_code", ""),
+            bond_name: opt_str_or(item, "bond_name", ""),
+            sub_date: opt_str_or(item, "sub_date", ""),
+            sub_code: opt_str_or(item, "sub_code", ""),
+            share_code: opt_str_or(item, "share_code", ""),
+            stock_code: opt_str_or(item, "code", ""),
+            stock_name: opt_str_or(item, "name", ""),
+            sign_date: opt_str_or(item, "sign_date", ""),
+            plan_total: opt_f64(item, "plan_total"),
+            issue_total: opt_f64(item, "issue_total"),
+            success_rate: opt_f64(item, "success_rate"),
+            listing_date: opt_str_or(item, "listing_date", ""),
+            expire_date: opt_str_or(item, "expire_date", ""),
+            price: opt_f64(item, "price"),
+            quota: opt_f64(item, "quota"),
             source: SOURCE_THS,
         });
     }
@@ -207,8 +208,8 @@ pub async fn bond_info_cm_query(client: &Client, symbol: &str) -> Result<Vec<Bon
         return Ok(enty
             .iter()
             .map(|item| BondInfoCmQueryRow {
-                name: fstr(item, "name"),
-                code: fstr(item, "code"),
+                name: opt_str_or(item, "name", ""),
+                code: opt_str_or(item, "code", ""),
                 source: SOURCE_CHINAMONEY,
             })
             .collect());
@@ -242,8 +243,8 @@ pub async fn bond_info_cm_query(client: &Client, symbol: &str) -> Result<Vec<Bon
             });
         } else {
             out.push(BondInfoCmQueryRow {
-                name: fstr(item, "name"),
-                code: fstr(item, "code"),
+                name: opt_str_or(item, "name", ""),
+                code: opt_str_or(item, "code", ""),
                 source: SOURCE_CHINAMONEY,
             });
         }
@@ -345,13 +346,13 @@ pub async fn bond_info_cm(
             })?;
         for item in result_list {
             out.push(BondInfoCmRow {
-                bond_short_name: fstr(item, "bondName"),
-                bond_code: fstr(item, "bondCode"),
-                issuer: fstr(item, "entyFullName"),
-                bond_type: fstr(item, "bondType"),
-                issue_date: fstr(item, "issueStartDate"),
-                latest_rating: fstr(item, "debtRtng"),
-                query_code: fstr(item, "bondDefinedCode"),
+                bond_short_name: opt_str_or(item, "bondName", ""),
+                bond_code: opt_str_or(item, "bondCode", ""),
+                issuer: opt_str_or(item, "entyFullName", ""),
+                bond_type: opt_str_or(item, "bondType", ""),
+                issue_date: opt_str_or(item, "issueStartDate", ""),
+                latest_rating: opt_str_or(item, "debtRtng", ""),
+                query_code: opt_str_or(item, "bondDefinedCode", ""),
                 source: SOURCE_CHINAMONEY,
             });
         }
@@ -788,17 +789,7 @@ fn map_lookup(map: &[(&str, &str)], key: &str, kind: &str) -> Result<String> {
     Err(Error::InvalidParam(format!("unknown {kind}: {key}")))
 }
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(num_val)
-}
-
+#[allow(dead_code)]
 fn num_val(v: &Value) -> Option<f64> {
     match v {
         Value::Number(n) => n.as_f64(),
@@ -856,8 +847,8 @@ mod tests {
         let out: Vec<BondInfoCmQueryRow> = arr
             .iter()
             .map(|item| BondInfoCmQueryRow {
-                name: fstr(item, "name"),
-                code: fstr(item, "code"),
+                name: opt_str_or(item, "name", ""),
+                code: opt_str_or(item, "code", ""),
                 source: SOURCE_CHINAMONEY,
             })
             .collect();
@@ -877,13 +868,13 @@ mod tests {
         let out: Vec<BondInfoCmRow> = list
             .iter()
             .map(|item| BondInfoCmRow {
-                bond_short_name: fstr(item, "bondName"),
-                bond_code: fstr(item, "bondCode"),
-                issuer: fstr(item, "entyFullName"),
-                bond_type: fstr(item, "bondType"),
-                issue_date: fstr(item, "issueStartDate"),
-                latest_rating: fstr(item, "debtRtng"),
-                query_code: fstr(item, "bondDefinedCode"),
+                bond_short_name: opt_str_or(item, "bondName", ""),
+                bond_code: opt_str_or(item, "bondCode", ""),
+                issuer: opt_str_or(item, "entyFullName", ""),
+                bond_type: opt_str_or(item, "bondType", ""),
+                issue_date: opt_str_or(item, "issueStartDate", ""),
+                latest_rating: opt_str_or(item, "debtRtng", ""),
+                query_code: opt_str_or(item, "bondDefinedCode", ""),
                 source: SOURCE_CHINAMONEY,
             })
             .collect();

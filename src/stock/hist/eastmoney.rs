@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::stock::hist::HistRow;
 
 const UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
@@ -72,13 +73,13 @@ pub(crate) fn parse_klines(resp: &Value) -> Result<Vec<HistRow>> {
         out.push(HistRow {
             symbol: String::new(),
             date: parts[0].to_string(),
-            open: parse_f64(parts[1]),
-            close: parse_f64(parts[2]),
-            high: parse_f64(parts[3]),
-            low: parse_f64(parts[4]),
-            volume: parse_f64(parts[5]),
-            amount: parse_f64(parts[6]),
-            pct_change: parse_f64(parts[8]),
+            open: parse_f64_str(parts[1]),
+            close: parse_f64_str(parts[2]),
+            high: parse_f64_str(parts[3]),
+            low: parse_f64_str(parts[4]),
+            volume: parse_f64_str(parts[5]),
+            amount: parse_f64_str(parts[6]),
+            pct_change: parse_f64_str(parts[8]),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -99,15 +100,6 @@ fn adjust_map(adjust: &str) -> Result<&'static str> {
         .find(|(k, _)| *k == adjust)
         .map(|(_, v)| *v)
         .ok_or_else(|| Error::InvalidParam(format!("unknown adjust: {adjust}")))
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
 }
 
 #[cfg(test)]

@@ -33,6 +33,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_CNINDEX: &str = "cnindex";
 
@@ -46,18 +47,6 @@ const CNINDEX_HIST: &str = "http://hq.cnindex.com.cn/market/market/getIndexDaily
 // ===========================================================================
 // helpers
 // ===========================================================================
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Parse a percent string like `"1.23%"` into `0.0123`; tolerates a bare number.
 fn fpct(item: &Value, k: &str) -> Option<f64> {
@@ -123,20 +112,20 @@ pub(crate) fn parse_index_stock_cons_sina(resp: &Value) -> Result<Vec<IndexStock
     })?;
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
-        let Some(symbol) = fstr(item, "symbol") else {
+        let Some(symbol) = opt_str(item, "symbol") else {
             continue;
         };
         out.push(IndexStockConsSinaRow {
             symbol,
-            code: fstr(item, "code").unwrap_or_default(),
-            name: fstr(item, "name").unwrap_or_default(),
-            trade: fnum(item, "trade"),
-            open: fnum(item, "open"),
-            high: fnum(item, "high"),
-            low: fnum(item, "low"),
-            volume: fnum(item, "volume"),
-            amount: fnum(item, "amount"),
-            price_change: fnum(item, "pricechange"),
+            code: opt_str(item, "code").unwrap_or_default(),
+            name: opt_str(item, "name").unwrap_or_default(),
+            trade: opt_f64(item, "trade"),
+            open: opt_f64(item, "open"),
+            high: opt_f64(item, "high"),
+            low: opt_f64(item, "low"),
+            volume: opt_f64(item, "volume"),
+            amount: opt_f64(item, "amount"),
+            price_change: opt_f64(item, "pricechange"),
             change_percent: fpct(item, "changepercent"),
         });
     }
@@ -268,20 +257,20 @@ pub(crate) fn parse_index_all_cni(resp: &Value) -> Result<Vec<IndexAllCniRow>> {
         })?;
     let mut out = Vec::with_capacity(rows.len());
     for item in rows {
-        let Some(index_code) = fstr(item, "indexcode") else {
+        let Some(index_code) = opt_str(item, "indexcode") else {
             continue;
         };
         out.push(IndexAllCniRow {
             index_code,
-            index_name: fstr(item, "indexname").unwrap_or_default(),
-            sample_size: fnum(item, "samplesize"),
-            close_point: fnum(item, "closeingPoint"),
-            change_percent: fnum(item, "percent"),
-            pe_dynamic: fnum(item, "peDynamic"),
-            volume: fnum(item, "volume").map(|v| v / 100_000.0),
-            amount: fnum(item, "amount").map(|v| v / 100_000_000.0),
-            total_market_value: fnum(item, "totalMarketValue").map(|v| v / 100_000_000.0),
-            free_market_value: fnum(item, "freeMarketValue").map(|v| v / 100_000_000.0),
+            index_name: opt_str(item, "indexname").unwrap_or_default(),
+            sample_size: opt_f64(item, "samplesize"),
+            close_point: opt_f64(item, "closeingPoint"),
+            change_percent: opt_f64(item, "percent"),
+            pe_dynamic: opt_f64(item, "peDynamic"),
+            volume: opt_f64(item, "volume").map(|v| v / 100_000.0),
+            amount: opt_f64(item, "amount").map(|v| v / 100_000_000.0),
+            total_market_value: opt_f64(item, "totalMarketValue").map(|v| v / 100_000_000.0),
+            free_market_value: opt_f64(item, "freeMarketValue").map(|v| v / 100_000_000.0),
         });
     }
     Ok(out)

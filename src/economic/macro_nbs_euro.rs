@@ -53,6 +53,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_JIN10: &str = "jin10";
 const JIN10_DATES: &str = "https://datacenter-api.jin10.com/reports/dates";
@@ -68,20 +69,6 @@ const JIN10_HEADERS: &[(&str, &str)] = &[
     ("x-csrf-token", "x-csrf-token"),
     ("x-version", "1.0.0"),
 ];
-
-/// Extract a string field, if present.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Extract a numeric field, accepting either a JSON number or a numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// A single observation of a jin10 euro-area macro indicator.
 #[derive(Debug, Clone, serde::Serialize)]
@@ -204,15 +191,15 @@ pub fn parse_jin10_ec_report(resp: &Value, product: &str) -> Result<Vec<EuroRepo
             }
             m
         });
-        let Some(date) = fstr(&obj, "日期") else {
+        let Some(date) = opt_str(&obj, "日期") else {
             continue;
         };
         out.push(EuroReportRow {
             product: product.to_string(),
             date,
-            actual: fnum(&obj, "今值"),
-            forecast: fnum(&obj, "预测值"),
-            previous: fnum(&obj, "前值"),
+            actual: opt_f64(&obj, "今值"),
+            forecast: opt_f64(&obj, "预测值"),
+            previous: opt_f64(&obj, "前值"),
             source: SOURCE_JIN10,
         });
     }

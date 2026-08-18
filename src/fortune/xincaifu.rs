@@ -18,23 +18,11 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE: &str = "xincaifu";
 const URL: &str = "http://service.ikuyu.cn/XinCaiFu2/pcremoting/bdListAction.do";
 
-/// Read a string field.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field (handles JSON numbers and numeric strings).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// A single entry of the 新财富 500 人富豪榜.
 ///
@@ -94,15 +82,15 @@ pub(crate) fn parse_xincaifu_rank(resp: &Value) -> Result<Vec<XincaifuRow>> {
     let mut out = Vec::with_capacity(rows.len());
     for item in rows {
         out.push(XincaifuRow {
-            rank: fstr(item, "rank"),
-            wealth: fnum(item, "assets"),
-            name: fstr(item, "name"),
-            company: fstr(item, "company"),
-            industry: fstr(item, "industry"),
-            headquarters: fstr(item, "addr"),
-            sex: fstr(item, "sex"),
-            age: fstr(item, "age"),
-            year: fstr(item, "year"),
+            rank: opt_str(item, "rank"),
+            wealth: opt_f64(item, "assets"),
+            name: opt_str(item, "name"),
+            company: opt_str(item, "company"),
+            industry: opt_str(item, "industry"),
+            headquarters: opt_str(item, "addr"),
+            sex: opt_str(item, "sex"),
+            age: opt_str(item, "age"),
+            year: opt_str(item, "year"),
         });
     }
     Ok(out)

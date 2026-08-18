@@ -12,6 +12,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
@@ -25,18 +26,6 @@ fn emg_data_array(resp: &Value) -> Result<&Vec<Value>> {
             origin: SOURCE_EASTMONEY,
             message: "missing result.data".into(),
         })
-}
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 /// One observation of a `RPT_ECONOMICVALUE_*` indicator (akshare columns
@@ -59,14 +48,14 @@ pub(crate) fn parse_core(resp: &Value) -> Result<Vec<Row>> {
     let data = emg_data_array(resp)?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(date) = fstr(item, "REPORT_DATE_CH").or_else(|| fstr(item, "REPORT_DATE")) else {
+        let Some(date) = opt_str(item, "REPORT_DATE_CH").or_else(|| opt_str(item, "REPORT_DATE")) else {
             continue;
         };
         out.push(Row {
             date,
-            value: fnum(item, "VALUE"),
-            pre_value: fnum(item, "PRE_VALUE"),
-            publish_date: fstr(item, "PUBLISH_DATE"),
+            value: opt_f64(item, "VALUE"),
+            pre_value: opt_f64(item, "PRE_VALUE"),
+            publish_date: opt_str(item, "PUBLISH_DATE"),
             source: SOURCE_EASTMONEY,
         });
     }

@@ -27,25 +27,11 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ===========================================================================
 // Shared helpers
 // ===========================================================================
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or("")
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Format a Unix timestamp (seconds) as `YYYY-MM-DD HH:MM:SS` in
 /// `Asia/Shanghai` (UTC+8, no DST). Mirrors akshare's
@@ -158,19 +144,19 @@ pub async fn stock_ggcg_em(client: &Client, symbol: &str) -> Result<Vec<GgcgRow>
         }
         for item in &data {
             out.push(GgcgRow {
-                code: fstr(item, "SECURITY_CODE"),
-                name: fstr(item, "SECURITY_NAME_ABBR"),
-                newest_price: fnum(item, "NEWEST_PRICE"),
-                change_rate: fnum(item, "CHANGE_RATE_QUOTES"),
-                holder_name: fstr(item, "HOLDER_NAME"),
-                direction: fstr(item, "DIRECTION"),
-                change_num: fnum(item, "CHANGE_NUM"),
-                ratio_total_share: fnum(item, "RATIO_TOTAL_SHARE"),
-                ratio_float_share: fnum(item, "RATIO_FLOAT_SHARE"),
-                hold_total: fnum(item, "HOLD_TOTAL"),
-                hold_ratio_total: fnum(item, "HOLD_RATIO_TOTAL"),
-                hold_float: fnum(item, "HOLD_FLOAT"),
-                hold_ratio_float: fnum(item, "HOLD_RATIO_FLOAT"),
+                code: opt_str_or(item, "SECURITY_CODE", ""),
+                name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+                newest_price: opt_f64(item, "NEWEST_PRICE"),
+                change_rate: opt_f64(item, "CHANGE_RATE_QUOTES"),
+                holder_name: opt_str_or(item, "HOLDER_NAME", ""),
+                direction: opt_str_or(item, "DIRECTION", ""),
+                change_num: opt_f64(item, "CHANGE_NUM"),
+                ratio_total_share: opt_f64(item, "RATIO_TOTAL_SHARE"),
+                ratio_float_share: opt_f64(item, "RATIO_FLOAT_SHARE"),
+                hold_total: opt_f64(item, "HOLD_TOTAL"),
+                hold_ratio_total: opt_f64(item, "HOLD_RATIO_TOTAL"),
+                hold_float: opt_f64(item, "HOLD_FLOAT"),
+                hold_ratio_float: opt_f64(item, "HOLD_RATIO_FLOAT"),
                 start_date: opt_str(item, "START_DATE"),
                 end_date: opt_str(item, "END_DATE"),
                 notice_date: opt_str(item, "NOTICE_DATE"),
@@ -268,10 +254,10 @@ pub async fn stock_margin_ratio_pa(
     let mut out = Vec::new();
     for item in list {
         out.push(MarginRatioPaRow {
-            secu_code: fstr(item, "secuCode"),
-            secu_name: fstr(item, "secuName"),
-            fi_margin_ratio: fnum(item, "fiMarginRatio"),
-            sl_margin_ratio: fnum(item, "slMarginRatio"),
+            secu_code: opt_str_or(item, "secuCode", ""),
+            secu_name: opt_str_or(item, "secuName", ""),
+            fi_margin_ratio: opt_f64(item, "fiMarginRatio"),
+            sl_margin_ratio: opt_f64(item, "slMarginRatio"),
         });
     }
     Ok(out)
@@ -450,10 +436,10 @@ pub(crate) fn parse_cjzc(resp: &Value) -> Result<Vec<CjzcRow>> {
     let mut out = Vec::new();
     for item in list {
         out.push(CjzcRow {
-            title: fstr(item, "title"),
-            summary: fstr(item, "summary"),
-            show_time: fstr(item, "showTime"),
-            url: fstr(item, "uniqueUrl"),
+            title: opt_str_or(item, "title", ""),
+            summary: opt_str_or(item, "summary", ""),
+            show_time: opt_str_or(item, "showTime", ""),
+            url: opt_str_or(item, "uniqueUrl", ""),
         });
     }
     Ok(out)
@@ -503,11 +489,11 @@ pub(crate) fn parse_global_em(resp: &Value) -> Result<Vec<GlobalEmRow>> {
         })?;
     let mut out = Vec::new();
     for item in list {
-        let code = fstr(item, "code");
+        let code = opt_str_or(item, "code", "");
         out.push(GlobalEmRow {
-            title: fstr(item, "title"),
-            summary: fstr(item, "summary"),
-            show_time: fstr(item, "showTime"),
+            title: opt_str_or(item, "title", ""),
+            summary: opt_str_or(item, "summary", ""),
+            show_time: opt_str_or(item, "showTime", ""),
             url: format!("https://finance.eastmoney.com/a/{code}.html"),
         });
     }
@@ -559,8 +545,8 @@ pub(crate) fn parse_global_sina(resp: &Value) -> Result<Vec<GlobalSinaRow>> {
     let mut out = Vec::new();
     for item in list {
         out.push(GlobalSinaRow {
-            time: fstr(item, "create_time"),
-            content: fstr(item, "rich_text"),
+            time: opt_str_or(item, "create_time", ""),
+            content: opt_str_or(item, "rich_text", ""),
         });
     }
     Ok(out)
@@ -615,10 +601,10 @@ pub(crate) fn parse_global_futu(resp: &Value) -> Result<Vec<GlobalFutuRow>> {
     let mut out = Vec::new();
     for item in news {
         out.push(GlobalFutuRow {
-            title: fstr(item, "title"),
-            content: fstr(item, "content"),
+            title: opt_str_or(item, "title", ""),
+            content: opt_str_or(item, "content", ""),
             time: ts_shanghai_val(item.get("time")).unwrap_or_default(),
-            url: fstr(item, "detailUrl"),
+            url: opt_str_or(item, "detailUrl", ""),
         });
     }
     Ok(out)
@@ -669,10 +655,10 @@ pub(crate) fn parse_global_ths(resp: &Value) -> Result<Vec<GlobalThsRow>> {
     let mut out = Vec::new();
     for item in list {
         out.push(GlobalThsRow {
-            title: fstr(item, "title"),
-            content: fstr(item, "digest"),
+            title: opt_str_or(item, "title", ""),
+            content: opt_str_or(item, "digest", ""),
             time: ts_shanghai_val(item.get("rtime")).unwrap_or_default(),
-            url: fstr(item, "url"),
+            url: opt_str_or(item, "url", ""),
         });
     }
     Ok(out)
@@ -923,63 +909,63 @@ fn xgsg_filter(symbol: &str) -> Result<String> {
 
 fn parse_xgsg_main(item: &Value) -> XgsglbRow {
     XgsglbRow {
-        code: fstr(item, "SECURITY_CODE"),
-        name: fstr(item, "SECURITY_NAME"),
-        apply_code: fstr(item, "APPLY_CODE"),
-        exchange: fstr(item, "TRADE_MARKET"),
-        board: fstr(item, "MARKET_TYPE"),
-        issue_num: fnum(item, "ISSUE_NUM"),
-        online_issue_num: fnum(item, "ONLINE_ISSUE_NUM"),
-        top_apply_marketcap: fnum(item, "TOP_APPLY_MARKETCAP"),
-        online_apply_upper: fnum(item, "ONLINE_APPLY_UPPER"),
-        issue_price: fnum(item, "ISSUE_PRICE"),
-        lately_price: fnum(item, "LATELY_PRICE"),
-        close_price: fnum(item, "CLOSE_PRICE"),
+        code: opt_str_or(item, "SECURITY_CODE", ""),
+        name: opt_str_or(item, "SECURITY_NAME", ""),
+        apply_code: opt_str_or(item, "APPLY_CODE", ""),
+        exchange: opt_str_or(item, "TRADE_MARKET", ""),
+        board: opt_str_or(item, "MARKET_TYPE", ""),
+        issue_num: opt_f64(item, "ISSUE_NUM"),
+        online_issue_num: opt_f64(item, "ONLINE_ISSUE_NUM"),
+        top_apply_marketcap: opt_f64(item, "TOP_APPLY_MARKETCAP"),
+        online_apply_upper: opt_f64(item, "ONLINE_APPLY_UPPER"),
+        issue_price: opt_f64(item, "ISSUE_PRICE"),
+        lately_price: opt_f64(item, "LATELY_PRICE"),
+        close_price: opt_f64(item, "CLOSE_PRICE"),
         apply_date: opt_str(item, "APPLY_DATE"),
         ballot_num_date: opt_str(item, "BALLOT_NUM_DATE"),
         ballot_pay_date: opt_str(item, "BALLOT_PAY_DATE"),
         listing_date: opt_str(item, "LISTING_DATE"),
-        after_issue_pe: fnum(item, "AFTER_ISSUE_PE"),
-        industry_pe_new: fnum(item, "INDUSTRY_PE_NEW"),
-        online_issue_lwr: fnum(item, "ONLINE_ISSUE_LWR"),
-        initial_multiple: fnum(item, "INITIAL_MULTIPLE"),
-        offline_ep_object: fnum(item, "OFFLINE_EP_OBJECT"),
-        continuous_1word_num: fnum(item, "CONTINUOUS_1WORD_NUM"),
-        total_change: fnum(item, "TOTAL_CHANGE"),
-        profit: fnum(item, "PROFIT"),
+        after_issue_pe: opt_f64(item, "AFTER_ISSUE_PE"),
+        industry_pe_new: opt_f64(item, "INDUSTRY_PE_NEW"),
+        online_issue_lwr: opt_f64(item, "ONLINE_ISSUE_LWR"),
+        initial_multiple: opt_f64(item, "INITIAL_MULTIPLE"),
+        offline_ep_object: opt_f64(item, "OFFLINE_EP_OBJECT"),
+        continuous_1word_num: opt_f64(item, "CONTINUOUS_1WORD_NUM"),
+        total_change: opt_f64(item, "TOTAL_CHANGE"),
+        profit: opt_f64(item, "PROFIT"),
     }
 }
 
 fn parse_xgsg_neeq(item: &Value) -> XgsglbNeeqRow {
-    let newest = fnum(item, "NEWEST_PRICE");
-    let close = fnum(item, "CLOSE_PRICE");
+    let newest = opt_f64(item, "NEWEST_PRICE");
+    let close = opt_f64(item, "CLOSE_PRICE");
     let cum = match (close, newest) {
         (Some(c), Some(n)) if n != 0.0 => Some(c / n),
         _ => None,
     };
     XgsglbNeeqRow {
-        code: fstr(item, "SECURITY_CODE"),
-        name: fstr(item, "SECURITY_NAME_ABBR"),
-        apply_code: fstr(item, "APPLY_CODE"),
-        issue_num: fnum(item, "EXPECT_ISSUE_NUM"),
-        online_issue_num: fnum(item, "ONLINE_ISSUE_NUM"),
-        online_apply_upper: fnum(item, "APPLY_NUM_UPPER"),
-        apply_amt_upper: fnum(item, "APPLY_AMT_UPPER"),
-        issue_price: fnum(item, "ISSUE_PRICE"),
+        code: opt_str_or(item, "SECURITY_CODE", ""),
+        name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+        apply_code: opt_str_or(item, "APPLY_CODE", ""),
+        issue_num: opt_f64(item, "EXPECT_ISSUE_NUM"),
+        online_issue_num: opt_f64(item, "ONLINE_ISSUE_NUM"),
+        online_apply_upper: opt_f64(item, "APPLY_NUM_UPPER"),
+        apply_amt_upper: opt_f64(item, "APPLY_AMT_UPPER"),
+        issue_price: opt_f64(item, "ISSUE_PRICE"),
         apply_date: opt_str(item, "APPLY_DATE"),
-        online_issue_lwr: fnum(item, "ONLINE_ISSUE_LWR"),
-        apply_amt_100: fnum(item, "APPLY_AMT_100"),
+        online_issue_lwr: opt_f64(item, "ONLINE_ISSUE_LWR"),
+        apply_amt_100: opt_f64(item, "APPLY_AMT_100"),
         newest_price: newest,
         newest_cum_change: cum,
         listing_date: opt_str(item, "SELECT_LISTING_DATE"),
-        average_price: fnum(item, "AVERAGE_PRICE"),
-        ld_close_change: fnum(item, "LD_CLOSE_CHANGE"),
-        per_shares_income: fnum(item, "PER_SHARES_INCOME"),
-        capture_profit: fnum(item, "CAPTURE_PROFIT"),
-        issue_pe_ratio: fnum(item, "ISSUE_PE_RATIO"),
-        industry_pe_ratio: fnum(item, "INDUSTRY_PE_RATIO"),
-        va_amt: fnum(item, "VA_AMT"),
-        org_van: fnum(item, "ORG_VAN"),
+        average_price: opt_f64(item, "AVERAGE_PRICE"),
+        ld_close_change: opt_f64(item, "LD_CLOSE_CHANGE"),
+        per_shares_income: opt_f64(item, "PER_SHARES_INCOME"),
+        capture_profit: opt_f64(item, "CAPTURE_PROFIT"),
+        issue_pe_ratio: opt_f64(item, "ISSUE_PE_RATIO"),
+        industry_pe_ratio: opt_f64(item, "INDUSTRY_PE_RATIO"),
+        va_amt: opt_f64(item, "VA_AMT"),
+        org_van: opt_f64(item, "ORG_VAN"),
     }
 }
 
@@ -996,19 +982,19 @@ fn stock_ggcg_em_inner(resp: &Value) -> Result<Vec<GgcgRow>> {
     let mut out = Vec::new();
     for item in &data {
         out.push(GgcgRow {
-            code: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            newest_price: fnum(item, "NEWEST_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE_QUOTES"),
-            holder_name: fstr(item, "HOLDER_NAME"),
-            direction: fstr(item, "DIRECTION"),
-            change_num: fnum(item, "CHANGE_NUM"),
-            ratio_total_share: fnum(item, "RATIO_TOTAL_SHARE"),
-            ratio_float_share: fnum(item, "RATIO_FLOAT_SHARE"),
-            hold_total: fnum(item, "HOLD_TOTAL"),
-            hold_ratio_total: fnum(item, "HOLD_RATIO_TOTAL"),
-            hold_float: fnum(item, "HOLD_FLOAT"),
-            hold_ratio_float: fnum(item, "HOLD_RATIO_FLOAT"),
+            code: opt_str_or(item, "SECURITY_CODE", ""),
+            name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            newest_price: opt_f64(item, "NEWEST_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE_QUOTES"),
+            holder_name: opt_str_or(item, "HOLDER_NAME", ""),
+            direction: opt_str_or(item, "DIRECTION", ""),
+            change_num: opt_f64(item, "CHANGE_NUM"),
+            ratio_total_share: opt_f64(item, "RATIO_TOTAL_SHARE"),
+            ratio_float_share: opt_f64(item, "RATIO_FLOAT_SHARE"),
+            hold_total: opt_f64(item, "HOLD_TOTAL"),
+            hold_ratio_total: opt_f64(item, "HOLD_RATIO_TOTAL"),
+            hold_float: opt_f64(item, "HOLD_FLOAT"),
+            hold_ratio_float: opt_f64(item, "HOLD_RATIO_FLOAT"),
             start_date: opt_str(item, "START_DATE"),
             end_date: opt_str(item, "END_DATE"),
             notice_date: opt_str(item, "NOTICE_DATE"),
@@ -1030,10 +1016,10 @@ fn stock_margin_ratio_pa_inner(resp: &Value) -> Result<Vec<MarginRatioPaRow>> {
     let mut out = Vec::new();
     for item in list {
         out.push(MarginRatioPaRow {
-            secu_code: fstr(item, "secuCode"),
-            secu_name: fstr(item, "secuName"),
-            fi_margin_ratio: fnum(item, "fiMarginRatio"),
-            sl_margin_ratio: fnum(item, "slMarginRatio"),
+            secu_code: opt_str_or(item, "secuCode", ""),
+            secu_name: opt_str_or(item, "secuName", ""),
+            fi_margin_ratio: opt_f64(item, "fiMarginRatio"),
+            sl_margin_ratio: opt_f64(item, "slMarginRatio"),
         });
     }
     Ok(out)

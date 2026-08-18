@@ -40,6 +40,7 @@
 
 use crate::core::client::{Client, SOURCE_SINA};
 use crate::core::error::Result;
+use crate::core::json::*;
 
 /// `Referer` Sina expects on the realtime-quote and minute endpoints.
 const SINA_HEADERS: &[(&str, &str)] = &[("Referer", "https://vip.stock.finance.sina.com.cn/")];
@@ -144,19 +145,19 @@ pub(crate) fn parse_spot(text: &str) -> Result<Vec<FuturesSpotSinaRow>> {
         out.push(FuturesSpotSinaRow {
             symbol: f[0].to_string(),
             time: f[1].to_string(),
-            open: fnum(f[2]),
-            high: fnum(f[3]),
-            low: fnum(f[4]),
-            last_close: fnum(f[5]),
-            bid_price: fnum(f[6]),
-            ask_price: fnum(f[7]),
-            current_price: fnum(f[8]),
-            avg_price: fnum(f[9]),
-            last_settle_price: fnum(f[10]),
-            buy_vol: fnum(f[11]),
-            sell_vol: fnum(f[12]),
-            hold: fnum(f[13]),
-            volume: fnum(f[14]),
+            open: parse_f64_str(f[2]),
+            high: parse_f64_str(f[3]),
+            low: parse_f64_str(f[4]),
+            last_close: parse_f64_str(f[5]),
+            bid_price: parse_f64_str(f[6]),
+            ask_price: parse_f64_str(f[7]),
+            current_price: parse_f64_str(f[8]),
+            avg_price: parse_f64_str(f[9]),
+            last_settle_price: parse_f64_str(f[10]),
+            buy_vol: parse_f64_str(f[11]),
+            sell_vol: parse_f64_str(f[12]),
+            hold: parse_f64_str(f[13]),
+            volume: parse_f64_str(f[14]),
             source: SOURCE_SINA,
         });
     }
@@ -230,12 +231,12 @@ pub(crate) fn parse_minute(text: &str) -> Result<Vec<FuturesMinRow>> {
         }
         out.push(FuturesMinRow {
             datetime: p[0].to_string(),
-            open: fnum(p[1]),
-            high: fnum(p[2]),
-            low: fnum(p[3]),
-            close: fnum(p[4]),
-            volume: fnum(p[5]),
-            amount: fnum(p[6]),
+            open: parse_f64_str(p[1]),
+            high: parse_f64_str(p[2]),
+            low: parse_f64_str(p[3]),
+            close: parse_f64_str(p[4]),
+            volume: parse_f64_str(p[5]),
+            amount: parse_f64_str(p[6]),
             source: SOURCE_SINA,
         });
     }
@@ -258,15 +259,6 @@ fn make_rn() -> String {
     format!("{:x}", nanos % 0x8000_0000)
 }
 
-/// Parse a numeric field from a CSV token, tolerating blanks/garbage.
-fn fnum(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
-}
 
 #[cfg(test)]
 mod tests {

@@ -59,6 +59,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney source bucket, for rate limiting / error context.
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -97,11 +98,6 @@ const XJLLB_AJAX_URL: &str =
 // ---------------------------------------------------------------------------
 // Helpers (mirrors financial.rs / gdfx.rs conventions)
 // ---------------------------------------------------------------------------
-
-/// Read a string field, returning `None` when missing/null.
-fn fstr(v: &Value, k: &str) -> Option<String> {
-    v.get(k).and_then(Value::as_str).map(|s| s.to_string())
-}
 
 /// Read a numeric field that may be a JSON number or a plain numeric string.
 fn num_or_none(v: &Value) -> Option<f64> {
@@ -183,7 +179,7 @@ fn collect_delisted_dates(resp: &Value) -> Result<Vec<String>> {
 fn normalize_report_rows(items: &[Value]) -> Vec<ThreeReportRow> {
     let mut out = Vec::new();
     for item in items {
-        let name = match fstr(item, ITEM_KEY) {
+        let name = match opt_str(item, ITEM_KEY) {
             Some(n) if !n.is_empty() => n,
             _ => continue,
         };

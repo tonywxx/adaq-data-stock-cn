@@ -5,6 +5,7 @@ use calamine::{open_workbook_auto_from_rs, Reader, Sheets};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36";
 
@@ -51,15 +52,6 @@ fn read_rows(bytes: &[u8], endpoint: &'static str) -> Result<Vec<Vec<String>>> {
         .rows()
         .map(|r| r.iter().map(cell_to_string).collect())
         .collect())
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t: String = s.chars().filter(|c| *c != ',').collect();
-    let t = t.trim();
-    if t.is_empty() {
-        return None;
-    }
-    t.parse::<f64>().ok()
 }
 
 fn cell_to_string(c: &calamine::Data) -> String {
@@ -200,12 +192,12 @@ pub(crate) fn parse_stock_margin_detail_szse(bytes: &[u8]) -> Result<Vec<StockMa
         out.push(StockMarginDetailSzse {
             security_code: col(r, 0).trim().to_string(),
             security_abbr: col(r, 1).trim().to_string(),
-            margin_buy_amount: parse_f64(col(r, 2)),
-            margin_balance: parse_f64(col(r, 3)),
-            short_sell_volume: parse_f64(col(r, 4)),
-            short_balance_volume: parse_f64(col(r, 5)),
-            short_balance_amount: parse_f64(col(r, 6)),
-            margin_short_balance: parse_f64(col(r, 7)),
+            margin_buy_amount: parse_f64_str(col(r, 2)),
+            margin_balance: parse_f64_str(col(r, 3)),
+            short_sell_volume: parse_f64_str(col(r, 4)),
+            short_balance_volume: parse_f64_str(col(r, 5)),
+            short_balance_amount: parse_f64_str(col(r, 6)),
+            margin_short_balance: parse_f64_str(col(r, 7)),
         });
     }
     Ok(out)
@@ -250,8 +242,8 @@ pub(crate) fn parse_stock_sgt_reference_exchange_rate_szse(
         }
         out.push(StockSgtReferenceExchangeRateSzse {
             apply_date: col(r, 0).to_string(),
-            buy_rate: parse_f64(col(r, 1)),
-            sell_rate: parse_f64(col(r, 2)),
+            buy_rate: parse_f64_str(col(r, 1)),
+            sell_rate: parse_f64_str(col(r, 2)),
             currency: col(r, 3).to_string(),
         });
     }
@@ -297,8 +289,8 @@ pub(crate) fn parse_stock_sgt_settlement_exchange_rate_szse(
         }
         out.push(StockSgtSettlementExchangeRateSzse {
             apply_date: col(r, 0).to_string(),
-            buy_settlement_rate: parse_f64(col(r, 1)),
-            sell_settlement_rate: parse_f64(col(r, 2)),
+            buy_settlement_rate: parse_f64_str(col(r, 1)),
+            sell_settlement_rate: parse_f64_str(col(r, 2)),
             currency: col(r, 3).to_string(),
         });
     }

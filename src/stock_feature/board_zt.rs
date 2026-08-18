@@ -28,6 +28,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Static `ut` token used by the `push2ex` 涨停板 endpoints (a literal constant
 /// in akshare, not JS-signed).
@@ -39,17 +40,6 @@ const BASE: &str = "https://push2ex.eastmoney.com";
 // shared helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k).and_then(|v| v.as_str()).unwrap_or("").to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Validate an `YYYYMMDD` trading-day argument.
 fn check_date8(date: &str, what: &str) -> Result<()> {
@@ -202,27 +192,27 @@ pub async fn stock_zt_pool_previous_em(
 pub(crate) fn parse_zt_previous(resp: &Value) -> Result<Vec<ZtPreviousRow>> {
     let mut out = Vec::new();
     for item in p2ex_pool(resp)? {
-        let code = fstr(&item, "c");
-        let name = fstr(&item, "n");
+        let code = opt_str_or(&item, "c", "");
+        let name = opt_str_or(&item, "n", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(ZtPreviousRow {
             code,
             name,
-            price: fnum(&item, "p").map(|x| x / 1000.0),
-            limit_price: fnum(&item, "ztp").map(|x| x / 1000.0),
-            pct_change: fnum(&item, "zdp"),
-            amount: fnum(&item, "amount"),
-            float_mktcap: fnum(&item, "ltsz"),
-            total_mktcap: fnum(&item, "tshare"),
-            turnover: fnum(&item, "hs"),
-            amplitude: fnum(&item, "zf"),
-            rise_speed: fnum(&item, "zs"),
+            price: opt_f64(&item, "p").map(|x| x / 1000.0),
+            limit_price: opt_f64(&item, "ztp").map(|x| x / 1000.0),
+            pct_change: opt_f64(&item, "zdp"),
+            amount: opt_f64(&item, "amount"),
+            float_mktcap: opt_f64(&item, "ltsz"),
+            total_mktcap: opt_f64(&item, "tshare"),
+            turnover: opt_f64(&item, "hs"),
+            amplitude: opt_f64(&item, "zf"),
+            rise_speed: opt_f64(&item, "zs"),
             prev_seal_time: fmt_time(item.get("yfbt")),
-            prev_boards: fnum(&item, "ylbc"),
+            prev_boards: opt_f64(&item, "ylbc"),
             zt_stat: zt_stat(&item),
-            industry: fstr(&item, "hybk"),
+            industry: opt_str_or(&item, "hybk", ""),
         });
     }
     Ok(out)
@@ -286,8 +276,8 @@ pub(crate) fn parse_zt_strong(resp: &Value) -> Result<Vec<ZtStrongRow>> {
     ];
     let mut out = Vec::new();
     for item in p2ex_pool(resp)? {
-        let code = fstr(&item, "c");
-        let name = fstr(&item, "n");
+        let code = opt_str_or(&item, "c", "");
+        let name = opt_str_or(&item, "n", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
@@ -302,19 +292,19 @@ pub(crate) fn parse_zt_strong(resp: &Value) -> Result<Vec<ZtStrongRow>> {
         out.push(ZtStrongRow {
             code,
             name,
-            price: fnum(&item, "p").map(|x| x / 1000.0),
-            limit_price: fnum(&item, "ztp").map(|x| x / 1000.0),
-            pct_change: fnum(&item, "zdp"),
-            amount: fnum(&item, "amount"),
-            float_mktcap: fnum(&item, "ltsz"),
-            total_mktcap: fnum(&item, "tshare"),
-            turnover: fnum(&item, "hs"),
+            price: opt_f64(&item, "p").map(|x| x / 1000.0),
+            limit_price: opt_f64(&item, "ztp").map(|x| x / 1000.0),
+            pct_change: opt_f64(&item, "zdp"),
+            amount: opt_f64(&item, "amount"),
+            float_mktcap: opt_f64(&item, "ltsz"),
+            total_mktcap: opt_f64(&item, "tshare"),
+            turnover: opt_f64(&item, "hs"),
             is_new_high,
             reason,
-            volume_ratio: fnum(&item, "lb"),
-            rise_speed: fnum(&item, "zs"),
+            volume_ratio: opt_f64(&item, "lb"),
+            rise_speed: opt_f64(&item, "zs"),
             zt_stat: zt_stat(&item),
-            industry: fstr(&item, "hybk"),
+            industry: opt_str_or(&item, "hybk", ""),
         });
     }
     Ok(out)
@@ -376,8 +366,8 @@ pub async fn stock_zt_pool_sub_new_em(
 pub(crate) fn parse_zt_sub_new(resp: &Value) -> Result<Vec<ZtSubNewRow>> {
     let mut out = Vec::new();
     for item in p2ex_pool(resp)? {
-        let code = fstr(&item, "c");
-        let name = fstr(&item, "n");
+        let code = opt_str_or(&item, "c", "");
+        let name = opt_str_or(&item, "n", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
@@ -388,19 +378,19 @@ pub(crate) fn parse_zt_sub_new(resp: &Value) -> Result<Vec<ZtSubNewRow>> {
         out.push(ZtSubNewRow {
             code,
             name,
-            price: fnum(&item, "p").map(|x| x / 1000.0),
-            limit_price: fnum(&item, "ztp").map(|x| x / 1000.0),
-            pct_change: fnum(&item, "zdp"),
-            amount: fnum(&item, "amount"),
-            float_mktcap: fnum(&item, "ltsz"),
-            total_mktcap: fnum(&item, "tshare"),
-            turnover: fnum(&item, "hs"),
-            open_days: fnum(&item, "ods"),
+            price: opt_f64(&item, "p").map(|x| x / 1000.0),
+            limit_price: opt_f64(&item, "ztp").map(|x| x / 1000.0),
+            pct_change: opt_f64(&item, "zdp"),
+            amount: opt_f64(&item, "amount"),
+            float_mktcap: opt_f64(&item, "ltsz"),
+            total_mktcap: opt_f64(&item, "tshare"),
+            turnover: opt_f64(&item, "hs"),
+            open_days: opt_f64(&item, "ods"),
             open_date: fmt_date8(item.get("od")),
             ipo_date: fmt_date8(item.get("ipod")),
             is_new_high,
             zt_stat: zt_stat(&item),
-            industry: fstr(&item, "hybk"),
+            industry: opt_str_or(&item, "hybk", ""),
         });
     }
     Ok(out)
@@ -459,27 +449,27 @@ pub async fn stock_zt_pool_zbgc_em(client: &Client, date: &str) -> Result<Vec<Zt
 pub(crate) fn parse_zt_zbgc(resp: &Value) -> Result<Vec<ZtZbgcRow>> {
     let mut out = Vec::new();
     for item in p2ex_pool(resp)? {
-        let code = fstr(&item, "c");
-        let name = fstr(&item, "n");
+        let code = opt_str_or(&item, "c", "");
+        let name = opt_str_or(&item, "n", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(ZtZbgcRow {
             code,
             name,
-            price: fnum(&item, "p").map(|x| x / 1000.0),
-            limit_price: fnum(&item, "ztp").map(|x| x / 1000.0),
-            pct_change: fnum(&item, "zdp"),
-            amount: fnum(&item, "amount"),
-            float_mktcap: fnum(&item, "ltsz"),
-            total_mktcap: fnum(&item, "tshare"),
-            turnover: fnum(&item, "hs"),
+            price: opt_f64(&item, "p").map(|x| x / 1000.0),
+            limit_price: opt_f64(&item, "ztp").map(|x| x / 1000.0),
+            pct_change: opt_f64(&item, "zdp"),
+            amount: opt_f64(&item, "amount"),
+            float_mktcap: opt_f64(&item, "ltsz"),
+            total_mktcap: opt_f64(&item, "tshare"),
+            turnover: opt_f64(&item, "hs"),
             first_time: fmt_time(item.get("fbt")),
-            explode_count: fnum(&item, "zbc"),
-            amplitude: fnum(&item, "zf"),
-            rise_speed: fnum(&item, "zs"),
+            explode_count: opt_f64(&item, "zbc"),
+            amplitude: opt_f64(&item, "zf"),
+            rise_speed: opt_f64(&item, "zs"),
             zt_stat: zt_stat(&item),
-            industry: fstr(&item, "hybk"),
+            industry: opt_str_or(&item, "hybk", ""),
         });
     }
     Ok(out)
@@ -538,27 +528,27 @@ pub async fn stock_zt_pool_dtgc_em(client: &Client, date: &str) -> Result<Vec<Zt
 pub(crate) fn parse_zt_dtgc(resp: &Value) -> Result<Vec<ZtDtgcRow>> {
     let mut out = Vec::new();
     for item in p2ex_pool(resp)? {
-        let code = fstr(&item, "c");
-        let name = fstr(&item, "n");
+        let code = opt_str_or(&item, "c", "");
+        let name = opt_str_or(&item, "n", "");
         if code.is_empty() || name.is_empty() {
             continue;
         }
         out.push(ZtDtgcRow {
             code,
             name,
-            pct_change: fnum(&item, "zdp"),
-            price: fnum(&item, "p").map(|x| x / 1000.0),
-            amount: fnum(&item, "amount"),
-            float_mktcap: fnum(&item, "ltsz"),
-            total_mktcap: fnum(&item, "tshare"),
-            pe: fnum(&item, "pe"),
-            turnover: fnum(&item, "hs"),
-            seal_fund: fnum(&item, "fund"),
+            pct_change: opt_f64(&item, "zdp"),
+            price: opt_f64(&item, "p").map(|x| x / 1000.0),
+            amount: opt_f64(&item, "amount"),
+            float_mktcap: opt_f64(&item, "ltsz"),
+            total_mktcap: opt_f64(&item, "tshare"),
+            pe: opt_f64(&item, "pe"),
+            turnover: opt_f64(&item, "hs"),
+            seal_fund: opt_f64(&item, "fund"),
             last_time: fmt_time(item.get("lbt")),
-            on_board_amount: fnum(&item, "fba"),
-            consecutive_downs: fnum(&item, "days"),
-            open_count: fnum(&item, "oc"),
-            industry: fstr(&item, "hybk"),
+            on_board_amount: opt_f64(&item, "fba"),
+            consecutive_downs: opt_f64(&item, "days"),
+            open_count: opt_f64(&item, "oc"),
+            industry: opt_str_or(&item, "hybk", ""),
         });
     }
     Ok(out)

@@ -10,6 +10,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Static Eastmoney list token (from akshare `futures_global_spot_em`).
 const TOKEN: &str = "58b2fa8f54638b60b87d69b31969089c";
@@ -97,36 +98,21 @@ pub(crate) fn parse_spot(resp: &Value) -> Result<Vec<FuturesSpotRow>> {
 
 fn parse_item(item: &Value) -> FuturesSpotRow {
     FuturesSpotRow {
-        code: fstr(item, "dm"),
-        name: fstr(item, "name"),
-        price: fnum(item, "p"),
-        change: fnum(item, "zde"),
-        pct_change: fnum(item, "zdf"),
-        open: fnum(item, "o"),
-        high: fnum(item, "h"),
-        low: fnum(item, "l"),
-        pre_settle: fnum(item, "zjsj"),
-        volume: fnum(item, "vol"),
-        buy_vol: fnum(item, "wp"),
-        sell_vol: fnum(item, "np"),
-        open_interest: fnum(item, "ccl"),
+        code: opt_str_or(item, "dm", ""),
+        name: opt_str_or(item, "name", ""),
+        price: opt_f64(item, "p"),
+        change: opt_f64(item, "zde"),
+        pct_change: opt_f64(item, "zdf"),
+        open: opt_f64(item, "o"),
+        high: opt_f64(item, "h"),
+        low: opt_f64(item, "l"),
+        pre_settle: opt_f64(item, "zjsj"),
+        volume: opt_f64(item, "vol"),
+        buy_vol: opt_f64(item, "wp"),
+        sell_vol: opt_f64(item, "np"),
+        open_interest: opt_f64(item, "ccl"),
         source: SOURCE_EASTMONEY,
     }
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 #[cfg(test)]

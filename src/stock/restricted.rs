@@ -46,6 +46,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const DATACENTER: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
@@ -54,29 +55,6 @@ const DATACENTER: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 // Helpers (local, per porting brief)
 // ---------------------------------------------------------------------------
 
-/// Read a string field.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
-/// Read an integer field that may be a JSON number or a plain integer string.
-#[allow(dead_code)]
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from a datacenter-web response.
 fn result_data(resp: &Value) -> Result<&Vec<Value>> {
@@ -189,13 +167,13 @@ pub(crate) fn parse_release_summary(resp: &Value) -> Result<Vec<StockRestrictedR
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(StockRestrictedReleaseSummary {
-            free_date: fstr(item, "FREE_DATE"),
-            lift_stocks_num: fnum(item, "LIFT_STOCKS_NUM"),
-            lift_shares: fnum(item, "LIFT_SHARES").map(|x| x * 10000.0),
-            actual_lift_shares: fnum(item, "ACTUAL_LIFT_SHARES").map(|x| x * 10000.0),
-            actual_lift_market_cap: fnum(item, "ACTUAL_LIFT_MARKET_CAP").map(|x| x * 10000.0),
-            index_value: fnum(item, "INDEX_VALUE"),
-            index_change_pct: fnum(item, "INDEX_CHANGE_PCT"),
+            free_date: opt_str(item, "FREE_DATE"),
+            lift_stocks_num: opt_f64(item, "LIFT_STOCKS_NUM"),
+            lift_shares: opt_f64(item, "LIFT_SHARES").map(|x| x * 10000.0),
+            actual_lift_shares: opt_f64(item, "ACTUAL_LIFT_SHARES").map(|x| x * 10000.0),
+            actual_lift_market_cap: opt_f64(item, "ACTUAL_LIFT_MARKET_CAP").map(|x| x * 10000.0),
+            index_value: opt_f64(item, "INDEX_VALUE"),
+            index_change_pct: opt_f64(item, "INDEX_CHANGE_PCT"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -283,17 +261,17 @@ pub(crate) fn parse_release_detail(resp: &Value) -> Result<Vec<StockRestrictedRe
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(StockRestrictedReleaseDetail {
-            security_code: fstr(item, "SECURITY_CODE"),
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            free_date: fstr(item, "FREE_DATE"),
-            actual_lift_shares: fnum(item, "CURRENT_FREE_SHARES").map(|x| x * 10000.0),
-            lift_shares: fnum(item, "ABLE_FREE_SHARES").map(|x| x * 10000.0),
-            lift_market_cap: fnum(item, "LIFT_MARKET_CAP").map(|x| x * 10000.0),
-            free_ratio: fnum(item, "FREE_RATIO"),
-            prev_close: fnum(item, "NEW"),
-            b20_adjchrate: fnum(item, "B20_ADJCHRATE"),
-            a20_adjchrate: fnum(item, "A20_ADJCHRATE"),
-            free_shares_type: fstr(item, "FREE_SHARES_TYPE"),
+            security_code: opt_str(item, "SECURITY_CODE"),
+            security_name: opt_str(item, "SECURITY_NAME_ABBR"),
+            free_date: opt_str(item, "FREE_DATE"),
+            actual_lift_shares: opt_f64(item, "CURRENT_FREE_SHARES").map(|x| x * 10000.0),
+            lift_shares: opt_f64(item, "ABLE_FREE_SHARES").map(|x| x * 10000.0),
+            lift_market_cap: opt_f64(item, "LIFT_MARKET_CAP").map(|x| x * 10000.0),
+            free_ratio: opt_f64(item, "FREE_RATIO"),
+            prev_close: opt_f64(item, "NEW"),
+            b20_adjchrate: opt_f64(item, "B20_ADJCHRATE"),
+            a20_adjchrate: opt_f64(item, "A20_ADJCHRATE"),
+            free_shares_type: opt_str(item, "FREE_SHARES_TYPE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -380,18 +358,18 @@ pub(crate) fn parse_release_queue(resp: &Value) -> Result<Vec<StockRestrictedRel
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(StockRestrictedReleaseQueue {
-            free_date: fstr(item, "FREE_DATE"),
-            batch_holder_num: fnum(item, "BATCH_HOLDER_NUM"),
-            lift_shares: fnum(item, "ABLE_FREE_SHARES").map(|x| x * 10000.0),
-            actual_lift_shares: fnum(item, "CURRENT_FREE_SHARES").map(|x| x * 10000.0),
-            non_free_shares: fnum(item, "NON_FREE_SHARES").map(|x| x * 10000.0),
-            lift_market_cap: fnum(item, "LIFT_MARKET_CAP").map(|x| x * 10000.0),
-            total_ratio: fnum(item, "TOTAL_RATIO"),
-            free_ratio: fnum(item, "FREE_RATIO"),
-            prev_close: fnum(item, "NEW"),
-            free_shares_type: fstr(item, "FREE_SHARES_TYPE"),
-            b20_adjchrate: fnum(item, "B20_ADJCHRATE"),
-            a20_adjchrate: fnum(item, "A20_ADJCHRATE"),
+            free_date: opt_str(item, "FREE_DATE"),
+            batch_holder_num: opt_f64(item, "BATCH_HOLDER_NUM"),
+            lift_shares: opt_f64(item, "ABLE_FREE_SHARES").map(|x| x * 10000.0),
+            actual_lift_shares: opt_f64(item, "CURRENT_FREE_SHARES").map(|x| x * 10000.0),
+            non_free_shares: opt_f64(item, "NON_FREE_SHARES").map(|x| x * 10000.0),
+            lift_market_cap: opt_f64(item, "LIFT_MARKET_CAP").map(|x| x * 10000.0),
+            total_ratio: opt_f64(item, "TOTAL_RATIO"),
+            free_ratio: opt_f64(item, "FREE_RATIO"),
+            prev_close: opt_f64(item, "NEW"),
+            free_shares_type: opt_str(item, "FREE_SHARES_TYPE"),
+            b20_adjchrate: opt_f64(item, "B20_ADJCHRATE"),
+            a20_adjchrate: opt_f64(item, "A20_ADJCHRATE"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -470,14 +448,14 @@ pub(crate) fn parse_release_stockholder(
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(StockRestrictedReleaseStockholder {
-            holder_name: fstr(item, "LIMITED_HOLDER_NAME"),
-            add_listing_shares: fnum(item, "ADD_LISTING_SHARES"),
-            actual_listed_shares: fnum(item, "ACTUAL_LISTED_SHARES"),
-            add_listing_cap: fnum(item, "ADD_LISTING_CAP"),
-            lock_month: fnum(item, "LOCK_MONTH"),
-            residual_limited_shares: fnum(item, "RESIDUAL_LIMITED_SHARES"),
-            free_shares_type: fstr(item, "FREE_SHARES_TYPE"),
-            plan_feature: fstr(item, "PLAN_FEATURE"),
+            holder_name: opt_str(item, "LIMITED_HOLDER_NAME"),
+            add_listing_shares: opt_f64(item, "ADD_LISTING_SHARES"),
+            actual_listed_shares: opt_f64(item, "ACTUAL_LISTED_SHARES"),
+            add_listing_cap: opt_f64(item, "ADD_LISTING_CAP"),
+            lock_month: opt_f64(item, "LOCK_MONTH"),
+            residual_limited_shares: opt_f64(item, "RESIDUAL_LIMITED_SHARES"),
+            free_shares_type: opt_str(item, "FREE_SHARES_TYPE"),
+            plan_feature: opt_str(item, "PLAN_FEATURE"),
             source: SOURCE_EASTMONEY,
         });
     }

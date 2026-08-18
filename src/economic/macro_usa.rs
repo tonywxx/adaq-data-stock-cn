@@ -46,17 +46,6 @@ fn jin10_values(resp: &Value) -> Result<&serde_json::Map<String, Value>> {
         })
 }
 
-/// Read an integer field by object key (mirrors `macro_intl.rs`). Unused in
-/// this module (no integer columns), kept for API parity.
-#[allow(dead_code)]
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
-
 /// Parse a JSON scalar into `f64`, tolerating string-encoded numbers.
 fn as_f64(v: &Value) -> Option<f64> {
     match v {

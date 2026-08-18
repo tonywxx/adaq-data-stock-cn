@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::stock::spot::SpotQuote;
 
 /// Static, well-known Eastmoney `ut` token — no JS signing required (ADR-0005).
@@ -80,38 +81,23 @@ pub(crate) fn parse_diff(resp: &Value) -> Result<Vec<SpotQuote>> {
 
 fn parse_item(item: &Value) -> SpotQuote {
     SpotQuote {
-        code: fstr(item, "f12"),
-        name: fstr(item, "f14"),
-        price: fnum(item, "f2"),
-        pct_change: fnum(item, "f3"),
-        change: fnum(item, "f4"),
-        volume: fnum(item, "f5"),
-        amount: fnum(item, "f6"),
-        turnover_rate: fnum(item, "f8"),
-        pe: fnum(item, "f9"),
-        high: fnum(item, "f15"),
-        low: fnum(item, "f16"),
-        open: fnum(item, "f17"),
-        pre_close: fnum(item, "f18"),
-        total_mv: fnum(item, "f20"),
-        float_mv: fnum(item, "f21"),
+        code: opt_str_or(item, "f12", ""),
+        name: opt_str_or(item, "f14", ""),
+        price: opt_f64(item, "f2"),
+        pct_change: opt_f64(item, "f3"),
+        change: opt_f64(item, "f4"),
+        volume: opt_f64(item, "f5"),
+        amount: opt_f64(item, "f6"),
+        turnover_rate: opt_f64(item, "f8"),
+        pe: opt_f64(item, "f9"),
+        high: opt_f64(item, "f15"),
+        low: opt_f64(item, "f16"),
+        open: opt_f64(item, "f17"),
+        pre_close: opt_f64(item, "f18"),
+        total_mv: opt_f64(item, "f20"),
+        float_mv: opt_f64(item, "f21"),
         source: SOURCE_EASTMONEY,
     }
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 #[cfg(test)]

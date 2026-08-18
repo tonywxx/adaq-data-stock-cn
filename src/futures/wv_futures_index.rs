@@ -8,6 +8,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const BASE: &str = "http://www.ccidx.com/CCI-ZZZS/index/getDateLine";
 
@@ -60,31 +61,17 @@ pub(crate) fn parse_ccidx(resp: &Value) -> Result<Vec<FuturesIndexCcidxRow>> {
     let mut out = Vec::with_capacity(lines.len());
     for item in lines {
         out.push(FuturesIndexCcidxRow {
-            date: fstr(item, "tradeDate"),
-            index_id: fstr(item, "indexId"),
-            closing_price: fnum(item, "closingPrice"),
-            settle_price: fnum(item, "settlePrice"),
-            change: fnum(item, "dailyIncreaseAndDecrease"),
-            change_pct: fnum(item, "dailyIncreaseAndDecreasePercentage"),
+            date: opt_str_or(item, "tradeDate", ""),
+            index_id: opt_str_or(item, "indexId", ""),
+            closing_price: opt_f64(item, "closingPrice"),
+            settle_price: opt_f64(item, "settlePrice"),
+            change: opt_f64(item, "dailyIncreaseAndDecrease"),
+            change_pct: opt_f64(item, "dailyIncreaseAndDecreasePercentage"),
         });
     }
     Ok(out)
 }
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.replace(',', "").parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 #[cfg(test)]
 mod tests {

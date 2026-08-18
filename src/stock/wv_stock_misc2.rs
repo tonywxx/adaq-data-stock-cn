@@ -18,6 +18,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 // ---------------------------------------------------------------------------
 // Shared helpers
@@ -35,20 +36,6 @@ fn em_data_array(resp: &Value) -> Result<Vec<Value>> {
             }),
         },
     }
-}
-
-/// Read a string field (object value).
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field, accepting either a JSON number or a numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 /// Fetch an Eastmoney F10 securities datacenter report. Returns the `result.data`
@@ -431,8 +418,8 @@ pub(crate) fn parse_bid_ask(resp: &Value) -> Result<BidAskRow> {
             origin: SOURCE_EASTMONEY,
             message: "missing data".into(),
         })?;
-    let num = |k: &str| fnum(data, k);
-    let vol = |k: &str| fnum(data, k).map(|x| x * 100.0);
+    let num = |k: &str| opt_f64(data, k);
+    let vol = |k: &str| opt_f64(data, k).map(|x| x * 100.0);
     Ok(BidAskRow {
         sell_5: num("f31"),
         sell_5_vol: vol("f32"),
@@ -551,31 +538,31 @@ pub struct GrowthComparisonZhRow {
 pub(crate) fn parse_growth_comparison_zh(items: &[Value]) -> Vec<GrowthComparisonZhRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "CORRE_SECURITY_CODE") else {
+        let Some(code) = opt_str(item, "CORRE_SECURITY_CODE") else {
             continue;
         };
         out.push(GrowthComparisonZhRow {
             code,
-            name: fstr(item, "CORRE_SECURITY_NAME"),
-            mgsy_3y: fnum(item, "MGSY_3Y"),
-            mgsy_24a: fnum(item, "MGSYTB"),
-            mgsy_ttm: fnum(item, "MGSYTTM"),
-            mgsy_1e: fnum(item, "MGSY_1E"),
-            mgsy_2e: fnum(item, "MGSY_2E"),
-            mgsy_3e: fnum(item, "MGSY_3E"),
-            yysr_3y: fnum(item, "YYSR_3Y"),
-            yysr_24a: fnum(item, "YYSRTB"),
-            yysr_ttm: fnum(item, "YYSRTTM"),
-            yysr_1e: fnum(item, "YYSR_1E"),
-            yysr_2e: fnum(item, "YYSR_2E"),
-            yysr_3e: fnum(item, "YYSR_3E"),
-            jlr_3y: fnum(item, "JLR_3Y"),
-            jlr_24a: fnum(item, "JLRTB"),
-            jlr_ttm: fnum(item, "JLRTTM"),
-            jlr_1e: fnum(item, "JLR_1E"),
-            jlr_2e: fnum(item, "JLR_2E"),
-            jlr_3e: fnum(item, "JLR_3E"),
-            paiming: fnum(item, "PAIMING"),
+            name: opt_str(item, "CORRE_SECURITY_NAME"),
+            mgsy_3y: opt_f64(item, "MGSY_3Y"),
+            mgsy_24a: opt_f64(item, "MGSYTB"),
+            mgsy_ttm: opt_f64(item, "MGSYTTM"),
+            mgsy_1e: opt_f64(item, "MGSY_1E"),
+            mgsy_2e: opt_f64(item, "MGSY_2E"),
+            mgsy_3e: opt_f64(item, "MGSY_3E"),
+            yysr_3y: opt_f64(item, "YYSR_3Y"),
+            yysr_24a: opt_f64(item, "YYSRTB"),
+            yysr_ttm: opt_f64(item, "YYSRTTM"),
+            yysr_1e: opt_f64(item, "YYSR_1E"),
+            yysr_2e: opt_f64(item, "YYSR_2E"),
+            yysr_3e: opt_f64(item, "YYSR_3E"),
+            jlr_3y: opt_f64(item, "JLR_3Y"),
+            jlr_24a: opt_f64(item, "JLRTB"),
+            jlr_ttm: opt_f64(item, "JLRTTM"),
+            jlr_1e: opt_f64(item, "JLR_1E"),
+            jlr_2e: opt_f64(item, "JLR_2E"),
+            jlr_3e: opt_f64(item, "JLR_3E"),
+            paiming: opt_f64(item, "PAIMING"),
         });
     }
     out
@@ -656,29 +643,29 @@ pub struct DupontComparisonZhRow {
 pub(crate) fn parse_dupont_comparison_zh(items: &[Value]) -> Vec<DupontComparisonZhRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "CORRE_SECURITY_CODE") else {
+        let Some(code) = opt_str(item, "CORRE_SECURITY_CODE") else {
             continue;
         };
         out.push(DupontComparisonZhRow {
             code,
-            name: fstr(item, "CORRE_SECURITY_NAME"),
-            roe_avg: fnum(item, "ROE_AVG"),
-            roe_l3: fnum(item, "ROEPJ_L3"),
-            roe_l2: fnum(item, "ROEPJ_L2"),
-            roe_l1: fnum(item, "ROEPJ_L1"),
-            xsjll_avg: fnum(item, "XSJLL_AVG"),
-            xsjll_l3: fnum(item, "XSJLL_L3"),
-            xsjll_l2: fnum(item, "XSJLL_L2"),
-            xsjll_l1: fnum(item, "XSJLL_L1"),
-            toazzl_avg: fnum(item, "TOAZZL_AVG"),
-            toazzl_l3: fnum(item, "TOAZZL_L3"),
-            toazzl_l2: fnum(item, "TOAZZL_L2"),
-            toazzl_l1: fnum(item, "TOAZZL_L1"),
-            qycs_avg: fnum(item, "QYCS_AVG"),
-            qycs_l3: fnum(item, "QYCS_L3"),
-            qycs_l2: fnum(item, "QYCS_L2"),
-            qycs_l1: fnum(item, "QYCS_L1"),
-            paiming: fnum(item, "PAIMING"),
+            name: opt_str(item, "CORRE_SECURITY_NAME"),
+            roe_avg: opt_f64(item, "ROE_AVG"),
+            roe_l3: opt_f64(item, "ROEPJ_L3"),
+            roe_l2: opt_f64(item, "ROEPJ_L2"),
+            roe_l1: opt_f64(item, "ROEPJ_L1"),
+            xsjll_avg: opt_f64(item, "XSJLL_AVG"),
+            xsjll_l3: opt_f64(item, "XSJLL_L3"),
+            xsjll_l2: opt_f64(item, "XSJLL_L2"),
+            xsjll_l1: opt_f64(item, "XSJLL_L1"),
+            toazzl_avg: opt_f64(item, "TOAZZL_AVG"),
+            toazzl_l3: opt_f64(item, "TOAZZL_L3"),
+            toazzl_l2: opt_f64(item, "TOAZZL_L2"),
+            toazzl_l1: opt_f64(item, "TOAZZL_L1"),
+            qycs_avg: opt_f64(item, "QYCS_AVG"),
+            qycs_l3: opt_f64(item, "QYCS_L3"),
+            qycs_l2: opt_f64(item, "QYCS_L2"),
+            qycs_l1: opt_f64(item, "QYCS_L1"),
+            paiming: opt_f64(item, "PAIMING"),
         });
     }
     out

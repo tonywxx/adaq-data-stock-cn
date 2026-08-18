@@ -29,6 +29,7 @@ use csv::ReaderBuilder;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Upstream source identifier for optbbs.com.
 const SOURCE_OPTBBS: &str = "optbbs";
@@ -108,10 +109,10 @@ pub(crate) fn select_daily(row: &[String], cols: [usize; 5]) -> QvixRow {
     let get = |i: usize| row.get(i).map(|s| s.as_str()).unwrap_or("");
     QvixRow {
         date: get(cols[0]).to_string(),
-        open: parse_f64(get(cols[1])),
-        high: parse_f64(get(cols[2])),
-        low: parse_f64(get(cols[3])),
-        close: parse_f64(get(cols[4])),
+        open: parse_f64_str(get(cols[1])),
+        high: parse_f64_str(get(cols[2])),
+        low: parse_f64_str(get(cols[3])),
+        close: parse_f64_str(get(cols[4])),
         source: SOURCE_OPTBBS,
     }
 }
@@ -130,20 +131,11 @@ pub(crate) fn parse_minute(text: &str) -> Result<Vec<QvixRow>> {
             open: None,
             high: None,
             low: None,
-            close: parse_f64(rec.get(1).unwrap_or("")),
+            close: parse_f64_str(rec.get(1).unwrap_or("")),
             source: SOURCE_OPTBBS,
         });
     }
     Ok(out)
-}
-
-/// Lenient numeric parse: empty / non-numeric cells coerce to `None`.
-fn parse_f64(s: &str) -> Option<f64> {
-    let s = s.trim();
-    if s.is_empty() {
-        return None;
-    }
-    s.parse::<f64>().ok()
 }
 
 /// Generate the 18 public async functions, each delegating to [`fetch_qvix`].

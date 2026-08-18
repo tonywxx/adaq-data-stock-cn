@@ -14,6 +14,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_SWSRESEARCH: &str = "swsresearch";
 
@@ -71,11 +72,11 @@ pub(crate) fn parse_index_realtime_fund_sw(resp: &Value) -> Result<Vec<FundSwRea
     let mut out = Vec::with_capacity(list.len());
     for item in list {
         out.push(FundSwRealtimeRow {
-            index_code: fstr(item, "swIndexCode").unwrap_or_default(),
-            index_name: fstr(item, "swIndexName").unwrap_or_default(),
-            last_close: fnum(item, "lastCloseIndex"),
-            daily_change_pct: fnum(item, "lastMarkup"),
-            year_change_pct: fnum(item, "yearMarkup"),
+            index_code: opt_str(item, "swIndexCode").unwrap_or_default(),
+            index_name: opt_str(item, "swIndexName").unwrap_or_default(),
+            last_close: opt_f64(item, "lastCloseIndex"),
+            daily_change_pct: opt_f64(item, "lastMarkup"),
+            year_change_pct: opt_f64(item, "yearMarkup"),
         });
     }
     Ok(out)
@@ -93,12 +94,12 @@ pub(crate) fn parse_index_hist_fund_sw(resp: &Value) -> Result<Vec<FundSwHistRow
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(FundSwHistRow {
-            date: fstr(item, "bargaindate"),
-            close_index: fnum(item, "closeindex"),
-            open_index: fnum(item, "openindex"),
-            max_index: fnum(item, "maxindex"),
-            min_index: fnum(item, "minindex"),
-            markup: fnum(item, "markup"),
+            date: opt_str(item, "bargaindate"),
+            close_index: opt_f64(item, "closeindex"),
+            open_index: opt_f64(item, "openindex"),
+            max_index: opt_f64(item, "maxindex"),
+            min_index: opt_f64(item, "minindex"),
+            markup: opt_f64(item, "markup"),
         });
     }
     Ok(out)
@@ -172,18 +173,6 @@ pub async fn index_hist_fund_sw(
 // private helpers (verbatim per task instructions)
 // ---------------------------------------------------------------------------
 
-#[allow(dead_code)]
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // offline parse tests

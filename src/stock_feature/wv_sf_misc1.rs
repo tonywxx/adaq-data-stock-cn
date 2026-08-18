@@ -35,6 +35,7 @@ use serde_json::{Map, Value};
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_CNINFO: &str = "cninfo";
 const SOURCE_BSE: &str = "bse";
@@ -53,17 +54,6 @@ pub struct Row(pub Map<String, Value>);
 // shared helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Read a field that may be a single string or the first element of an array
 /// (cninfo irm returns `trade`/`boardType` as single-element arrays).
@@ -123,8 +113,8 @@ fn build_row(item: &Value, specs: &[(&'static str, Col)]) -> Row {
     let mut m = Map::new();
     for (cn, col) in specs {
         let val = match col {
-            Col::Num(r) => jnum(fnum(item, r)),
-            Col::Str(r) => jstr(fstr(item, r)),
+            Col::Num(r) => jnum(opt_f64(item, r)),
+            Col::Str(r) => jstr(opt_str(item, r)),
         };
         m.insert((*cn).to_string(), val);
     }
@@ -483,8 +473,8 @@ fn parse_baidu(v: &Value) -> Vec<Row> {
             .iter()
             .map(|item| {
                 let mut m = Map::new();
-                m.insert("date".into(), jstr(fstr(item, "date")));
-                m.insert("value".into(), jnum(fnum(item, "value")));
+                m.insert("date".into(), jstr(opt_str(item, "date")));
+                m.insert("value".into(), jnum(opt_f64(item, "value")));
                 Row(m)
             })
             .collect(),
@@ -573,12 +563,12 @@ fn parse_irm_rows(rows: &[Value]) -> Vec<Row> {
     rows.iter()
         .map(|item| {
             let mut m = Map::new();
-            m.insert("股票代码".into(), jstr(fstr(item, "stockCode")));
-            m.insert("公司简称".into(), jstr(fstr(item, "companyShortName")));
+            m.insert("股票代码".into(), jstr(opt_str(item, "stockCode")));
+            m.insert("公司简称".into(), jstr(opt_str(item, "companyShortName")));
             m.insert("行业".into(), jstr(fstr_first(item, "trade")));
             m.insert("行业代码".into(), jstr(fstr_first(item, "boardType")));
-            m.insert("问题".into(), jstr(fstr(item, "mainContent")));
-            m.insert("提问者".into(), jstr(fstr(item, "authorName")));
+            m.insert("问题".into(), jstr(opt_str(item, "mainContent")));
+            m.insert("提问者".into(), jstr(opt_str(item, "authorName")));
             m.insert("来源".into(), Value::String(irm_source(item)));
             m.insert(
                 "提问时间".into(),
@@ -588,11 +578,11 @@ fn parse_irm_rows(rows: &[Value]) -> Vec<Row> {
                 "更新时间".into(),
                 jstr(fmt_ms_cninfo(item.get("updateDate").unwrap_or(&Value::Null))),
             );
-            m.insert("提问者编号".into(), jstr(fstr(item, "author")));
-            m.insert("问题编号".into(), jstr(fstr(item, "indexId")));
-            m.insert("回答ID".into(), jstr(fstr(item, "attachedId")));
-            m.insert("回答内容".into(), jstr(fstr(item, "attachedContent")));
-            m.insert("回答者".into(), jstr(fstr(item, "attachedAuthor")));
+            m.insert("提问者编号".into(), jstr(opt_str(item, "author")));
+            m.insert("问题编号".into(), jstr(opt_str(item, "indexId")));
+            m.insert("回答ID".into(), jstr(opt_str(item, "attachedId")));
+            m.insert("回答内容".into(), jstr(opt_str(item, "attachedContent")));
+            m.insert("回答者".into(), jstr(opt_str(item, "attachedAuthor")));
             Row(m)
         })
         .collect()
@@ -617,11 +607,11 @@ fn parse_irm_ans(v: &Value) -> Vec<Row> {
     }
     let item = Value::Object(d.clone());
     let mut m = Map::new();
-    m.insert("股票代码".into(), jstr(fstr(&item, "stockCode")));
-    m.insert("公司简称".into(), jstr(fstr(&item, "shortName")));
-    m.insert("问题".into(), jstr(fstr(&item, "questionContent")));
-    m.insert("回答内容".into(), jstr(fstr(&item, "replyContent")));
-    m.insert("提问者".into(), jstr(fstr(&item, "questioner")));
+    m.insert("股票代码".into(), jstr(opt_str(&item, "stockCode")));
+    m.insert("公司简称".into(), jstr(opt_str(&item, "shortName")));
+    m.insert("问题".into(), jstr(opt_str(&item, "questionContent")));
+    m.insert("回答内容".into(), jstr(opt_str(&item, "replyContent")));
+    m.insert("提问者".into(), jstr(opt_str(&item, "questioner")));
     m.insert(
         "提问时间".into(),
         jstr(fmt_ms_cninfo(item.get("questionDate").unwrap_or(&Value::Null))),
@@ -695,7 +685,7 @@ async fn cninfo_stock_map(client: &Client, market: &str) -> Result<HashMap<Strin
     let mut map = HashMap::new();
     if let Some(list) = v.get("stockList").and_then(|x| x.as_array()) {
         for it in list {
-            if let (Some(c), Some(o)) = (fstr(it, "code"), fstr(it, "orgId")) {
+            if let (Some(c), Some(o)) = (opt_str(it, "code"), opt_str(it, "orgId")) {
                 map.insert(c, o);
             }
         }
@@ -774,9 +764,9 @@ async fn post_payload(client: &Client, url: &str, payload: &[(&str, String)]) ->
 fn parse_announcements(arr: &[Value]) -> Vec<Row> {
     arr.iter()
         .map(|item| {
-            let sec_code = fstr(item, "secCode");
-            let ann_id = fstr(item, "announcementId");
-            let org_id = fstr(item, "orgId");
+            let sec_code = opt_str(item, "secCode");
+            let ann_id = opt_str(item, "announcementId");
+            let org_id = opt_str(item, "orgId");
             let time = fmt_ms_cninfo(item.get("announcementTime").unwrap_or(&Value::Null));
             let link = match (&sec_code, &ann_id, &org_id, &time) {
                 (Some(c), Some(a), Some(o), Some(t)) => Some(format!(
@@ -786,8 +776,8 @@ fn parse_announcements(arr: &[Value]) -> Vec<Row> {
             };
             let mut m = Map::new();
             m.insert("代码".into(), jstr(sec_code));
-            m.insert("简称".into(), jstr(fstr(item, "secName")));
-            m.insert("公告标题".into(), jstr(fstr(item, "announcementTitle")));
+            m.insert("简称".into(), jstr(opt_str(item, "secName")));
+            m.insert("公告标题".into(), jstr(opt_str(item, "announcementTitle")));
             m.insert("公告时间".into(), jstr(time));
             m.insert("公告链接".into(), jstr(link));
             Row(m)

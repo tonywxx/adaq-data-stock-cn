@@ -5,6 +5,7 @@ use calamine::{open_workbook_auto_from_rs, Reader, Sheets};
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const UA: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36";
 
@@ -51,15 +52,6 @@ fn read_rows(bytes: &[u8], endpoint: &'static str) -> Result<Vec<Vec<String>>> {
         .rows()
         .map(|r| r.iter().map(cell_to_string).collect())
         .collect())
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t: String = s.chars().filter(|c| *c != ',').collect();
-    let t = t.trim();
-    if t.is_empty() {
-        return None;
-    }
-    t.parse::<f64>().ok()
 }
 
 fn cell_to_string(c: &calamine::Data) -> String {
@@ -127,9 +119,9 @@ pub(crate) fn parse_stock_industry_clf_hist_sw(
         }
         out.push(StockIndustryClfHistSw {
             symbol: col(r, 0).to_string(),
-            start_date: parse_f64(col(r, 1)).and_then(excel_serial_to_date),
+            start_date: parse_f64_str(col(r, 1)).and_then(excel_serial_to_date),
             industry_code: col(r, 2).to_string(),
-            update_time: parse_f64(col(r, 3)).and_then(excel_serial_to_date),
+            update_time: parse_f64_str(col(r, 3)).and_then(excel_serial_to_date),
         });
     }
     Ok(out)
@@ -233,13 +225,13 @@ pub(crate) fn parse_stock_szse_area_summary(bytes: &[u8]) -> Result<Vec<StockSzs
             continue;
         }
         out.push(StockSzseAreaSummary {
-            seq: parse_f64(col(r, 0)),
+            seq: parse_f64_str(col(r, 0)),
             region: col(r, 1).to_string(),
-            total_amount: parse_f64(col(r, 2)),
-            market_share: parse_f64(col(r, 3)),
-            stock_amount: parse_f64(col(r, 4)),
-            fund_amount: parse_f64(col(r, 5)),
-            bond_amount: parse_f64(col(r, 6)),
+            total_amount: parse_f64_str(col(r, 2)),
+            market_share: parse_f64_str(col(r, 3)),
+            stock_amount: parse_f64_str(col(r, 4)),
+            fund_amount: parse_f64_str(col(r, 5)),
+            bond_amount: parse_f64_str(col(r, 6)),
         });
     }
     Ok(out)
@@ -284,10 +276,10 @@ pub(crate) fn parse_stock_szse_summary(bytes: &[u8]) -> Result<Vec<StockSzseSumm
         }
         out.push(StockSzseSummary {
             security_category: col(r, 0).trim().to_string(),
-            count: parse_f64(col(r, 1)),
-            deal_amount: parse_f64(col(r, 2)),
-            total_market_value: parse_f64(col(r, 3)),
-            float_market_value: parse_f64(col(r, 4)),
+            count: parse_f64_str(col(r, 1)),
+            deal_amount: parse_f64_str(col(r, 2)),
+            total_market_value: parse_f64_str(col(r, 3)),
+            float_market_value: parse_f64_str(col(r, 4)),
         });
     }
     Ok(out)

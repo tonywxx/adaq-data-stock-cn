@@ -48,6 +48,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_FUTU: &str = "futu";
 
@@ -66,20 +67,6 @@ const UT: &str = "7eea3edcaed734bea9cbfc24409ed989";
 // shared helpers
 // ---------------------------------------------------------------------------
 
-/// Read a string field.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field, accepting either a JSON number or a numeric string
-/// (Eastmoney sometimes returns numbers as strings).
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from an Eastmoney datacenter / dataapi
 /// response.
@@ -202,29 +189,29 @@ pub struct AnalystRankRow {
 pub(crate) fn parse_analyst_rank(items: &[Value]) -> Result<Vec<AnalystRankRow>> {
     let mut out = Vec::with_capacity(items.len());
     for (i, item) in items.iter().enumerate() {
-        let Some(analyst_id) = fstr(item, "ANALYST_CODE") else {
+        let Some(analyst_id) = opt_str(item, "ANALYST_CODE") else {
             continue;
         };
-        let Some(analyst_name) = fstr(item, "ANALYST_NAME") else {
+        let Some(analyst_name) = opt_str(item, "ANALYST_NAME") else {
             continue;
         };
         out.push(AnalystRankRow {
             seq: i + 1,
             analyst_id,
             analyst_name,
-            org_name: fstr(item, "ORG_NAME").unwrap_or_default(),
-            year: fstr(item, "YEAR"),
-            index_value: fnum(item, "INDEX_VALUE"),
-            year_yield: fnum(item, "YEAR_YIELD"),
-            yield_3m: fnum(item, "YIELD_3"),
-            yield_6m: fnum(item, "YIELD_6"),
-            yield_12m: fnum(item, "YIELD_12"),
-            security_count: fnum(item, "SECURITY_COUNT"),
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            security_code: fstr(item, "SECURITY_CODE"),
-            industry_code: fstr(item, "INDUSTRY_CODE"),
-            industry_name: fstr(item, "INDUSTRY_NAME"),
-            update_date: fstr(item, "TRADE_DATE"),
+            org_name: opt_str(item, "ORG_NAME").unwrap_or_default(),
+            year: opt_str(item, "YEAR"),
+            index_value: opt_f64(item, "INDEX_VALUE"),
+            year_yield: opt_f64(item, "YEAR_YIELD"),
+            yield_3m: opt_f64(item, "YIELD_3"),
+            yield_6m: opt_f64(item, "YIELD_6"),
+            yield_12m: opt_f64(item, "YIELD_12"),
+            security_count: opt_f64(item, "SECURITY_COUNT"),
+            security_name: opt_str(item, "SECURITY_NAME_ABBR"),
+            security_code: opt_str(item, "SECURITY_CODE"),
+            industry_code: opt_str(item, "INDUSTRY_CODE"),
+            industry_name: opt_str(item, "INDUSTRY_NAME"),
+            update_date: opt_str(item, "TRADE_DATE"),
         });
     }
     Ok(out)
@@ -303,14 +290,14 @@ pub(crate) fn parse_analyst_detail(items: &[Value], indicator: &str) -> Result<V
             for (i, item) in items.iter().enumerate() {
                 out.push(AnalystDetailRow {
                     seq: i + 1,
-                    stock_code: fstr(item, "SECURITY_CODE"),
-                    stock_name: fstr(item, "SECURITY_NAME_ABBR"),
-                    into_date: fstr(item, "INTO_DATE"),
-                    rating_date: fstr(item, "CHANGE_DATE"),
-                    rating_name: fstr(item, "RATING_NAME"),
-                    deal_price: fnum(item, "DEAL_PRICE"),
-                    close_price: fnum(item, "CLOSE_PRICE"),
-                    change_ratio: fnum(item, "CHANGE_RATIO"),
+                    stock_code: opt_str(item, "SECURITY_CODE"),
+                    stock_name: opt_str(item, "SECURITY_NAME_ABBR"),
+                    into_date: opt_str(item, "INTO_DATE"),
+                    rating_date: opt_str(item, "CHANGE_DATE"),
+                    rating_name: opt_str(item, "RATING_NAME"),
+                    deal_price: opt_f64(item, "DEAL_PRICE"),
+                    close_price: opt_f64(item, "CLOSE_PRICE"),
+                    change_ratio: opt_f64(item, "CHANGE_RATIO"),
                     out_date: None,
                     into_rating_name: None,
                     out_reason: None,
@@ -324,18 +311,18 @@ pub(crate) fn parse_analyst_detail(items: &[Value], indicator: &str) -> Result<V
             for (i, item) in items.iter().enumerate() {
                 out.push(AnalystDetailRow {
                     seq: i + 1,
-                    stock_code: fstr(item, "SECURITY_CODE"),
-                    stock_name: fstr(item, "SECURITY_NAME_ABBR"),
-                    into_date: fstr(item, "INTO_DATE"),
+                    stock_code: opt_str(item, "SECURITY_CODE"),
+                    stock_name: opt_str(item, "SECURITY_NAME_ABBR"),
+                    into_date: opt_str(item, "INTO_DATE"),
                     rating_date: None,
                     rating_name: None,
                     deal_price: None,
                     close_price: None,
                     change_ratio: None,
-                    out_date: fstr(item, "OUT_DATE"),
-                    into_rating_name: fstr(item, "INTO_RATING_NAME"),
-                    out_reason: fstr(item, "OUT_REASON"),
-                    cumulative_change: fnum(item, "CUMULATIVE_CHANGE"),
+                    out_date: opt_str(item, "OUT_DATE"),
+                    into_rating_name: opt_str(item, "INTO_RATING_NAME"),
+                    out_reason: opt_str(item, "OUT_REASON"),
+                    cumulative_change: opt_f64(item, "CUMULATIVE_CHANGE"),
                     trade_date: None,
                     index_value: None,
                 });
@@ -357,8 +344,8 @@ pub(crate) fn parse_analyst_detail(items: &[Value], indicator: &str) -> Result<V
                     into_rating_name: None,
                     out_reason: None,
                     cumulative_change: None,
-                    trade_date: fstr(item, "TRADE_DATE"),
-                    index_value: fnum(item, "INDEX_HVALUE"),
+                    trade_date: opt_str(item, "TRADE_DATE"),
+                    index_value: opt_f64(item, "INDEX_HVALUE"),
                 });
             }
         }
@@ -421,9 +408,9 @@ pub struct CommentJgcydRow {
 pub(crate) fn parse_comment_jgcyd(items: &[Value]) -> Result<Vec<CommentJgcydRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let org = fnum(item, "ORG_PARTICIPATE").map(|x| x * 100.0);
+        let org = opt_f64(item, "ORG_PARTICIPATE").map(|x| x * 100.0);
         out.push(CommentJgcydRow {
-            trade_date: fstr(item, "TRADE_DATE"),
+            trade_date: opt_str(item, "TRADE_DATE"),
             org_participate: org,
         });
     }
@@ -481,20 +468,20 @@ pub struct ConceptConsFutuRow {
 pub(crate) fn parse_concept_cons_futu(items: &[Value]) -> Result<Vec<ConceptConsFutuRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "stockCode") else {
+        let Some(code) = opt_str(item, "stockCode") else {
             continue;
         };
-        let Some(name) = fstr(item, "name") else {
+        let Some(name) = opt_str(item, "name") else {
             continue;
         };
         out.push(ConceptConsFutuRow {
             code,
             name,
-            price: fnum(item, "price"),
-            change: fnum(item, "change"),
-            change_ratio: fstr(item, "changeRatio"),
-            volume: fstr(item, "tradeVolumn"),
-            turnover: fstr(item, "tradeTrunover"),
+            price: opt_f64(item, "price"),
+            change: opt_f64(item, "change"),
+            change_ratio: opt_str(item, "changeRatio"),
+            volume: opt_str(item, "tradeVolumn"),
+            turnover: opt_str(item, "tradeTrunover"),
         });
     }
     Ok(out)
@@ -579,26 +566,26 @@ pub struct DxsylRow {
 pub(crate) fn parse_dxsyl(items: &[Value]) -> Result<Vec<DxsylRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(security_code) = fstr(item, "SECURITY_CODE") else {
+        let Some(security_code) = opt_str(item, "SECURITY_CODE") else {
             continue;
         };
         out.push(DxsylRow {
             security_code,
-            security_name: fstr(item, "f14"),
-            issue_price: fnum(item, "ISSUE_PRICE"),
-            lately_price: fnum(item, "LATELY_PRICE"),
-            online_issue_lwr: fnum(item, "ONLINE_ISSUE_LWR"),
-            online_va_shares: fnum(item, "ONLINE_VA_SHARES"),
-            online_va_num: fnum(item, "ONLINE_VA_NUM"),
-            online_es_multiple: fnum(item, "ONLINE_ES_MULTIPLE"),
-            offline_vap_ratio: fnum(item, "OFFLINE_VAP_RATIO"),
-            offline_vats: fnum(item, "OFFLINE_VATS"),
-            offline_vap_object: fnum(item, "OFFLINE_VAP_OBJECT"),
-            offline_vas_multiple: fnum(item, "OFFLINE_VAS_MULTIPLE"),
-            issue_num: fnum(item, "ISSUE_NUM"),
-            ld_open_premium: fnum(item, "LD_OPEN_PREMIUM"),
-            ld_close_change: fnum(item, "LD_CLOSE_CHANGE"),
-            listing_date: fstr(item, "LISTING_DATE"),
+            security_name: opt_str(item, "f14"),
+            issue_price: opt_f64(item, "ISSUE_PRICE"),
+            lately_price: opt_f64(item, "LATELY_PRICE"),
+            online_issue_lwr: opt_f64(item, "ONLINE_ISSUE_LWR"),
+            online_va_shares: opt_f64(item, "ONLINE_VA_SHARES"),
+            online_va_num: opt_f64(item, "ONLINE_VA_NUM"),
+            online_es_multiple: opt_f64(item, "ONLINE_ES_MULTIPLE"),
+            offline_vap_ratio: opt_f64(item, "OFFLINE_VAP_RATIO"),
+            offline_vats: opt_f64(item, "OFFLINE_VATS"),
+            offline_vap_object: opt_f64(item, "OFFLINE_VAP_OBJECT"),
+            offline_vas_multiple: opt_f64(item, "OFFLINE_VAS_MULTIPLE"),
+            issue_num: opt_f64(item, "ISSUE_NUM"),
+            ld_open_premium: opt_f64(item, "LD_OPEN_PREMIUM"),
+            ld_close_change: opt_f64(item, "LD_CLOSE_CHANGE"),
+            listing_date: opt_str(item, "LISTING_DATE"),
         });
     }
     Ok(out)
@@ -673,28 +660,28 @@ pub struct FhpsRow {
 pub(crate) fn parse_fhps(items: &[Value]) -> Result<Vec<FhpsRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(security_code) = fstr(item, "SECURITY_CODE") else {
+        let Some(security_code) = opt_str(item, "SECURITY_CODE") else {
             continue;
         };
         out.push(FhpsRow {
             security_code,
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            bonus_it_ratio: fnum(item, "BONUS_IT_RATIO"),
-            bonus_ratio: fnum(item, "BONUS_RATIO"),
-            it_ratio: fnum(item, "IT_RATIO"),
-            pretax_bonus_rmb: fnum(item, "PRETAX_BONUS_RMB"),
-            dividend_ratio: fnum(item, "DIVIDENT_RATIO"),
-            basic_eps: fnum(item, "BASIC_EPS"),
-            bvps: fnum(item, "BVPS"),
-            per_capital_reserve: fnum(item, "PER_CAPITAL_RESERVE"),
-            per_unassign_profit: fnum(item, "PER_UNASSIGN_PROFIT"),
-            pnp_yoy_ratio: fnum(item, "PNP_YOY_RATIO"),
-            total_shares: fnum(item, "TOTAL_SHARES"),
-            plan_notice_date: fstr(item, "PLAN_NOTICE_DATE"),
-            equity_record_date: fstr(item, "EQUITY_RECORD_DATE"),
-            ex_dividend_date: fstr(item, "EX_DIVIDEND_DATE"),
-            assign_progress: fstr(item, "ASSIGN_PROGRESS"),
-            notice_date: fstr(item, "NOTICE_DATE"),
+            security_name: opt_str(item, "SECURITY_NAME_ABBR"),
+            bonus_it_ratio: opt_f64(item, "BONUS_IT_RATIO"),
+            bonus_ratio: opt_f64(item, "BONUS_RATIO"),
+            it_ratio: opt_f64(item, "IT_RATIO"),
+            pretax_bonus_rmb: opt_f64(item, "PRETAX_BONUS_RMB"),
+            dividend_ratio: opt_f64(item, "DIVIDENT_RATIO"),
+            basic_eps: opt_f64(item, "BASIC_EPS"),
+            bvps: opt_f64(item, "BVPS"),
+            per_capital_reserve: opt_f64(item, "PER_CAPITAL_RESERVE"),
+            per_unassign_profit: opt_f64(item, "PER_UNASSIGN_PROFIT"),
+            pnp_yoy_ratio: opt_f64(item, "PNP_YOY_RATIO"),
+            total_shares: opt_f64(item, "TOTAL_SHARES"),
+            plan_notice_date: opt_str(item, "PLAN_NOTICE_DATE"),
+            equity_record_date: opt_str(item, "EQUITY_RECORD_DATE"),
+            ex_dividend_date: opt_str(item, "EX_DIVIDEND_DATE"),
+            assign_progress: opt_str(item, "ASSIGN_PROGRESS"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
         });
     }
     Ok(out)
@@ -778,25 +765,25 @@ pub(crate) fn parse_fhps_detail(items: &[Value]) -> Result<Vec<FhpsDetailRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(FhpsDetailRow {
-            report_date: fstr(item, "REPORT_DATE"),
-            publish_date: fstr(item, "PUBLISH_DATE"),
-            bonus_it_ratio: fnum(item, "BONUS_IT_RATIO"),
-            bonus_ratio: fnum(item, "BONUS_RATIO"),
-            it_ratio: fnum(item, "IT_RATIO"),
-            pretax_bonus_rmb: fnum(item, "PRETAX_BONUS_RMB"),
-            impl_plan_profile: fstr(item, "IMPL_PLAN_PROFILE"),
-            dividend_ratio: fnum(item, "DIVIDENT_RATIO"),
-            basic_eps: fnum(item, "BASIC_EPS"),
-            bvps: fnum(item, "BVPS"),
-            per_capital_reserve: fnum(item, "PER_CAPITAL_RESERVE"),
-            per_unassign_profit: fnum(item, "PER_UNASSIGN_PROFIT"),
-            pnp_yoy_ratio: fnum(item, "PNP_YOY_RATIO"),
-            total_shares: fnum(item, "TOTAL_SHARES"),
-            plan_notice_date: fstr(item, "PLAN_NOTICE_DATE"),
-            equity_record_date: fstr(item, "EQUITY_RECORD_DATE"),
-            ex_dividend_date: fstr(item, "EX_DIVIDEND_DATE"),
-            assign_progress: fstr(item, "ASSIGN_PROGRESS"),
-            notice_date: fstr(item, "NOTICE_DATE"),
+            report_date: opt_str(item, "REPORT_DATE"),
+            publish_date: opt_str(item, "PUBLISH_DATE"),
+            bonus_it_ratio: opt_f64(item, "BONUS_IT_RATIO"),
+            bonus_ratio: opt_f64(item, "BONUS_RATIO"),
+            it_ratio: opt_f64(item, "IT_RATIO"),
+            pretax_bonus_rmb: opt_f64(item, "PRETAX_BONUS_RMB"),
+            impl_plan_profile: opt_str(item, "IMPL_PLAN_PROFILE"),
+            dividend_ratio: opt_f64(item, "DIVIDENT_RATIO"),
+            basic_eps: opt_f64(item, "BASIC_EPS"),
+            bvps: opt_f64(item, "BVPS"),
+            per_capital_reserve: opt_f64(item, "PER_CAPITAL_RESERVE"),
+            per_unassign_profit: opt_f64(item, "PER_UNASSIGN_PROFIT"),
+            pnp_yoy_ratio: opt_f64(item, "PNP_YOY_RATIO"),
+            total_shares: opt_f64(item, "TOTAL_SHARES"),
+            plan_notice_date: opt_str(item, "PLAN_NOTICE_DATE"),
+            equity_record_date: opt_str(item, "EQUITY_RECORD_DATE"),
+            ex_dividend_date: opt_str(item, "EX_DIVIDEND_DATE"),
+            assign_progress: opt_str(item, "ASSIGN_PROGRESS"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
         });
     }
     Ok(out)
@@ -874,10 +861,10 @@ pub struct ChangesRow {
 pub(crate) fn parse_changes(items: &[Value]) -> Result<Vec<ChangesRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "c") else {
+        let Some(code) = opt_str(item, "c") else {
             continue;
         };
-        let Some(name) = fstr(item, "n") else {
+        let Some(name) = opt_str(item, "n") else {
             continue;
         };
         let board = item
@@ -886,11 +873,11 @@ pub(crate) fn parse_changes(items: &[Value]) -> Result<Vec<ChangesRow>> {
             .and_then(changes_board_name)
             .map(str::to_string);
         out.push(ChangesRow {
-            time: fnum(item, "tm"),
+            time: opt_f64(item, "tm"),
             code,
             name,
             board,
-            info: fstr(item, "i"),
+            info: opt_str(item, "i"),
         });
     }
     Ok(out)
@@ -971,13 +958,13 @@ pub struct BoardChangeRow {
 pub(crate) fn parse_board_change(items: &[Value]) -> Result<Vec<BoardChangeRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(board_name) = fstr(item, "n") else {
+        let Some(board_name) = opt_str(item, "n") else {
             continue;
         };
         let (top_code, top_name, top_dir) = match item.get("ms") {
             Some(ms) => (
-                fstr(ms, "c"),
-                fstr(ms, "n"),
+                opt_str(ms, "c"),
+                opt_str(ms, "n"),
                 ms.get("m")
                     .and_then(|v| v.as_i64())
                     .map(|m| if m == 0 { "大笔买入" } else { "大笔卖出" }.to_string()),
@@ -986,9 +973,9 @@ pub(crate) fn parse_board_change(items: &[Value]) -> Result<Vec<BoardChangeRow>>
         };
         out.push(BoardChangeRow {
             board_name,
-            change_pct: fnum(item, "u"),
-            main_net_in: fnum(item, "zjl"),
-            change_count: fnum(item, "ct"),
+            change_pct: opt_f64(item, "u"),
+            main_net_in: opt_f64(item, "zjl"),
+            change_count: opt_f64(item, "ct"),
             top_stock_code: top_code,
             top_stock_name: top_name,
             top_stock_dir: top_dir,

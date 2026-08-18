@@ -29,6 +29,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney source bucket (matches `crate::core::client::SOURCE_EASTMONEY`).
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -39,30 +40,6 @@ const SOURCE_BAIDU: &str = "baidu";
 // Shared helpers (mirror src/stock/gdfx.rs / src/stock/more.rs)
 // ---------------------------------------------------------------------------
 
-/// Read a string field, returning `None` when missing/null.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    }
-}
-
-/// Read an integer field (`i64`). Unused in this module (kept per porting brief);
-/// prefixed to silence the dead-code lint until a caller needs it.
-#[allow(dead_code)]
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_i64(),
-        Some(Value::String(s)) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    }
-}
 
 // ===========================================================================
 // stock_zh_valuation_baidu — 百度股市通-A股-财务报表-估值数据
@@ -291,29 +268,29 @@ pub(crate) fn parse_valuation_comparison(
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(StockZhValuationComparisonRow {
-            ranking: fstr(item, "PAIMING"),
-            code: fstr(item, "CORRE_SECURITY_CODE"),
-            name: fstr(item, "CORRE_SECURITY_NAME"),
-            peg: fnum(item, "PEG"),
-            pe_ttm: fnum(item, "PE_TTM"),
-            pe_1y: fnum(item, "PE_1Y"),
-            pe_2y: fnum(item, "PE_2Y"),
-            pe_3y: fnum(item, "PE_3Y"),
-            ps: fnum(item, "PS"),
-            ps_ttm: fnum(item, "PS_TTM"),
-            ps_1y: fnum(item, "PS_1Y"),
-            ps_2y: fnum(item, "PS_2Y"),
-            ps_3y: fnum(item, "PS_3Y"),
-            pb: fnum(item, "PB"),
-            pb_mrq: fnum(item, "PB_MRQ"),
-            pce: fnum(item, "PCE"),
-            pce_ttm: fnum(item, "PCE_TTM"),
-            pcf: fnum(item, "PCF"),
-            pcf_ttm: fnum(item, "PCF_TTM"),
-            ev_ebitda: fnum(item, "QYBS"),
-            report_date: fstr(item, "REPORT_DATE"),
-            secucode: fstr(item, "SECUCODE"),
-            total_count: fnum(item, "TOTAL_COUNT"),
+            ranking: opt_str(item, "PAIMING"),
+            code: opt_str(item, "CORRE_SECURITY_CODE"),
+            name: opt_str(item, "CORRE_SECURITY_NAME"),
+            peg: opt_f64(item, "PEG"),
+            pe_ttm: opt_f64(item, "PE_TTM"),
+            pe_1y: opt_f64(item, "PE_1Y"),
+            pe_2y: opt_f64(item, "PE_2Y"),
+            pe_3y: opt_f64(item, "PE_3Y"),
+            ps: opt_f64(item, "PS"),
+            ps_ttm: opt_f64(item, "PS_TTM"),
+            ps_1y: opt_f64(item, "PS_1Y"),
+            ps_2y: opt_f64(item, "PS_2Y"),
+            ps_3y: opt_f64(item, "PS_3Y"),
+            pb: opt_f64(item, "PB"),
+            pb_mrq: opt_f64(item, "PB_MRQ"),
+            pce: opt_f64(item, "PCE"),
+            pce_ttm: opt_f64(item, "PCE_TTM"),
+            pcf: opt_f64(item, "PCF"),
+            pcf_ttm: opt_f64(item, "PCF_TTM"),
+            ev_ebitda: opt_f64(item, "QYBS"),
+            report_date: opt_str(item, "REPORT_DATE"),
+            secucode: opt_str(item, "SECUCODE"),
+            total_count: opt_f64(item, "TOTAL_COUNT"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -411,19 +388,19 @@ pub(crate) fn parse_value_em(resp: &Value) -> Result<Vec<StockValueEmRow>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(StockValueEmRow {
-            trade_date: fstr(item, "TRADE_DATE"),
-            close_price: fnum(item, "CLOSE_PRICE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            total_market_cap: fnum(item, "TOTAL_MARKET_CAP"),
-            float_market_cap: fnum(item, "NOTLIMITED_MARKETCAP_A"),
-            total_shares: fnum(item, "TOTAL_SHARES"),
-            float_shares: fnum(item, "FREE_SHARES_A"),
-            pe_ttm: fnum(item, "PE_TTM"),
-            pe_lar: fnum(item, "PE_LAR"),
-            pb_mrq: fnum(item, "PB_MRQ"),
-            peg: fnum(item, "PEG_CAR"),
-            pcf_ocf_ttm: fnum(item, "PCF_OCF_TTM"),
-            ps_ttm: fnum(item, "PS_TTM"),
+            trade_date: opt_str(item, "TRADE_DATE"),
+            close_price: opt_f64(item, "CLOSE_PRICE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            total_market_cap: opt_f64(item, "TOTAL_MARKET_CAP"),
+            float_market_cap: opt_f64(item, "NOTLIMITED_MARKETCAP_A"),
+            total_shares: opt_f64(item, "TOTAL_SHARES"),
+            float_shares: opt_f64(item, "FREE_SHARES_A"),
+            pe_ttm: opt_f64(item, "PE_TTM"),
+            pe_lar: opt_f64(item, "PE_LAR"),
+            pb_mrq: opt_f64(item, "PB_MRQ"),
+            peg: opt_f64(item, "PEG_CAR"),
+            pcf_ocf_ttm: opt_f64(item, "PCF_OCF_TTM"),
+            ps_ttm: opt_f64(item, "PS_TTM"),
             source: SOURCE_EASTMONEY,
         });
     }

@@ -26,6 +26,7 @@
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use serde_json::Value;
 
 const SOURCE_SHFE: &str = "shfe";
@@ -40,20 +41,6 @@ fn normalize_trade_date(trade_date: &str) -> Result<String> {
         )));
     }
     Ok(digits)
-}
-
-/// Get a string field, tolerating missing/null values.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Get a numeric field, tolerating comma thousands-separators and string-encoded numbers.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.replace(',', "").parse::<f64>().ok(),
-        _ => None,
-    }
 }
 
 /// DEFERRED: see module `## DEFERRED` section. DCE uses a JSON-body POST that the
@@ -113,30 +100,30 @@ pub fn parse_shfe_option_hist(json: &Value, symbol: &str) -> Vec<ShfeOptionHistR
     };
     arr.iter()
         .filter_map(|row| {
-            let id = fstr(row, "INSTRUMENTID")?;
+            let id = opt_str(row, "INSTRUMENTID")?;
             if id.is_empty() || id == "小计" || id == "合计" {
                 return None;
             }
-            let product = fstr(row, "PRODUCTNAME")?.trim().to_string();
+            let product = opt_str(row, "PRODUCTNAME")?.trim().to_string();
             if product != symbol {
                 return None;
             }
             Some(ShfeOptionHistRow {
                 instrument_id: id,
-                open_price: fnum(row, "OPENPRICE"),
-                highest_price: fnum(row, "HIGHESTPRICE"),
-                lowest_price: fnum(row, "LOWESTPRICE"),
-                close_price: fnum(row, "CLOSEPRICE"),
-                pre_settlement_price: fnum(row, "PRESETTLEMENTPRICE"),
-                settlement_price: fnum(row, "SETTLEMENTPRICE"),
-                zd1_chg: fnum(row, "ZD1_CHG"),
-                zd2_chg: fnum(row, "ZD2_CHG"),
-                volume: fnum(row, "VOLUME"),
-                open_interest: fnum(row, "OPENINTEREST"),
-                open_interest_chg: fnum(row, "OPENINTERESTCHG"),
-                turnover: fnum(row, "TURNOVER"),
-                delta: fnum(row, "DELTA"),
-                exec_volume: fnum(row, "EXECVOLUME"),
+                open_price: opt_f64(row, "OPENPRICE"),
+                highest_price: opt_f64(row, "HIGHESTPRICE"),
+                lowest_price: opt_f64(row, "LOWESTPRICE"),
+                close_price: opt_f64(row, "CLOSEPRICE"),
+                pre_settlement_price: opt_f64(row, "PRESETTLEMENTPRICE"),
+                settlement_price: opt_f64(row, "SETTLEMENTPRICE"),
+                zd1_chg: opt_f64(row, "ZD1_CHG"),
+                zd2_chg: opt_f64(row, "ZD2_CHG"),
+                volume: opt_f64(row, "VOLUME"),
+                open_interest: opt_f64(row, "OPENINTEREST"),
+                open_interest_chg: opt_f64(row, "OPENINTERESTCHG"),
+                turnover: opt_f64(row, "TURNOVER"),
+                delta: opt_f64(row, "DELTA"),
+                exec_volume: opt_f64(row, "EXECVOLUME"),
             })
         })
         .collect()
@@ -188,18 +175,18 @@ pub fn parse_shfe_option_vol(json: &Value, symbol: &str) -> Vec<ShfeOptionVolRow
     };
     arr.iter()
         .filter_map(|row| {
-            let product = fstr(row, "PRODUCTNAME")?.trim().to_string();
+            let product = opt_str(row, "PRODUCTNAME")?.trim().to_string();
             if product != symbol {
                 return None;
             }
             Some(ShfeOptionVolRow {
-                instrument_id: fstr(row, "INSTRUMENTID")?,
-                volume: fnum(row, "VOLUME"),
-                open_interest: fnum(row, "OPENINTEREST"),
-                open_interest_chg: fnum(row, "OPENINTERESTCHG"),
-                turnover: fnum(row, "TURNOVER"),
-                exec_volume: fnum(row, "EXECVOLUME"),
-                sigma: fnum(row, "SIGMA"),
+                instrument_id: opt_str(row, "INSTRUMENTID")?,
+                volume: opt_f64(row, "VOLUME"),
+                open_interest: opt_f64(row, "OPENINTEREST"),
+                open_interest_chg: opt_f64(row, "OPENINTERESTCHG"),
+                turnover: opt_f64(row, "TURNOVER"),
+                exec_volume: opt_f64(row, "EXECVOLUME"),
+                sigma: opt_f64(row, "SIGMA"),
             })
         })
         .collect()
@@ -260,28 +247,28 @@ pub fn parse_gfex_option_hist(json: &Value, symbol: &str) -> Vec<GfexOptionHistR
     };
     arr.iter()
         .filter_map(|row| {
-            let variety = fstr(row, "variety")?;
+            let variety = opt_str(row, "variety")?;
             if !variety.contains(symbol) {
                 return None;
             }
             Some(GfexOptionHistRow {
                 variety: Some(variety),
-                deliv_month: fstr(row, "delivMonth"),
-                open: fnum(row, "open"),
-                high: fnum(row, "high"),
-                low: fnum(row, "low"),
-                close: fnum(row, "close"),
-                last_clear: fnum(row, "lastClear"),
-                clear_price: fnum(row, "clearPrice"),
-                diff: fnum(row, "diff"),
-                diff1: fnum(row, "diff1"),
-                delta: fnum(row, "delta"),
-                volumn: fnum(row, "volumn"),
-                open_interest: fnum(row, "openInterest"),
-                diff_i: fnum(row, "diffI"),
-                turnover: fnum(row, "turnover"),
-                match_qty_sum: fnum(row, "matchQtySum"),
-                implied_volatility: fnum(row, "impliedVolatility"),
+                deliv_month: opt_str(row, "delivMonth"),
+                open: opt_f64(row, "open"),
+                high: opt_f64(row, "high"),
+                low: opt_f64(row, "low"),
+                close: opt_f64(row, "close"),
+                last_clear: opt_f64(row, "lastClear"),
+                clear_price: opt_f64(row, "clearPrice"),
+                diff: opt_f64(row, "diff"),
+                diff1: opt_f64(row, "diff1"),
+                delta: opt_f64(row, "delta"),
+                volumn: opt_f64(row, "volumn"),
+                open_interest: opt_f64(row, "openInterest"),
+                diff_i: opt_f64(row, "diffI"),
+                turnover: opt_f64(row, "turnover"),
+                match_qty_sum: opt_f64(row, "matchQtySum"),
+                implied_volatility: opt_f64(row, "impliedVolatility"),
             })
         })
         .collect()
@@ -339,13 +326,13 @@ pub fn parse_gfex_option_vol(json: &Value, symbol_code: &str) -> Vec<GfexOptionV
     };
     arr.iter()
         .filter_map(|row| {
-            let series = fstr(row, "seriesId")?;
+            let series = opt_str(row, "seriesId")?;
             if !series.contains(symbol_code) {
                 return None;
             }
             Some(GfexOptionVolRow {
                 series_id: Some(series),
-                his_volatility: fnum(row, "hisVolatility"),
+                his_volatility: opt_f64(row, "hisVolatility"),
             })
         })
         .collect()

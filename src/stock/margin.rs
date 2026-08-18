@@ -21,6 +21,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// SSE (Shanghai) source bucket, for rate limiting / error context.
 const SOURCE_SSE: &str = "sse";
@@ -38,23 +39,6 @@ const YJBB_URL: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 // Shared helpers
 // ---------------------------------------------------------------------------
 
-/// Read a string field, defaulting to `""` when missing/null (matches akshare,
-/// which keeps such columns as empty strings rather than dropping the row).
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Read a numeric field that is a string with thousands separators (e.g. SZSE
 /// returns `"7,077.67"`). Strips commas before parsing.
@@ -151,13 +135,13 @@ pub(crate) fn parse_margin_sh(resp: &Value) -> Result<Vec<MarginShRow>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(MarginShRow {
-            credit_trade_date: fstr(item, "opDate"),
-            financing_balance: fnum(item, "rzye"),
-            financing_buy_amount: fnum(item, "rzmre"),
-            securities_balance_volume: fnum(item, "rqyl"),
-            securities_balance_amount: fnum(item, "rqylje"),
-            securities_sell_volume: fnum(item, "rqmcl"),
-            margin_balance: fnum(item, "rzrqjyzl"),
+            credit_trade_date: opt_str_or(item, "opDate", ""),
+            financing_balance: opt_f64(item, "rzye"),
+            financing_buy_amount: opt_f64(item, "rzmre"),
+            securities_balance_volume: opt_f64(item, "rqyl"),
+            securities_balance_amount: opt_f64(item, "rqylje"),
+            securities_sell_volume: opt_f64(item, "rqmcl"),
+            margin_balance: opt_f64(item, "rzrqjyzl"),
             source: SOURCE_SSE,
         });
     }
@@ -336,24 +320,24 @@ pub(crate) fn parse_yjbb(resp: &Value) -> Result<Vec<YjbbRow>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(YjbbRow {
-            secucode: fstr(item, "SECUCODE"),
-            security_code: fstr(item, "SECURITY_CODE"),
-            security_name: fstr(item, "SECURITY_NAME_ABBR"),
-            org_code: fstr(item, "ORG_CODE"),
-            report_date: fstr(item, "REPORTDATE"),
-            notice_date: fstr(item, "NOTICE_DATE"),
-            industry: fstr(item, "PUBLISHNAME"),
-            basic_eps: fnum(item, "BASIC_EPS"),
-            total_operate_income: fnum(item, "TOTAL_OPERATE_INCOME"),
-            total_income_yoy: fnum(item, "YSTZ"),
-            total_income_qoq: fnum(item, "YSHZ"),
-            parent_netprofit: fnum(item, "PARENT_NETPROFIT"),
-            netprofit_yoy: fnum(item, "SJLTZ"),
-            netprofit_qoq: fnum(item, "SJLHZ"),
-            bps: fnum(item, "BPS"),
-            weightavg_roe: fnum(item, "WEIGHTAVG_ROE"),
-            mgjyxjje: fnum(item, "MGJYXJJE"),
-            xsmll: fnum(item, "XSMLL"),
+            secucode: opt_str_or(item, "SECUCODE", ""),
+            security_code: opt_str_or(item, "SECURITY_CODE", ""),
+            security_name: opt_str_or(item, "SECURITY_NAME_ABBR", ""),
+            org_code: opt_str_or(item, "ORG_CODE", ""),
+            report_date: opt_str_or(item, "REPORTDATE", ""),
+            notice_date: opt_str_or(item, "NOTICE_DATE", ""),
+            industry: opt_str_or(item, "PUBLISHNAME", ""),
+            basic_eps: opt_f64(item, "BASIC_EPS"),
+            total_operate_income: opt_f64(item, "TOTAL_OPERATE_INCOME"),
+            total_income_yoy: opt_f64(item, "YSTZ"),
+            total_income_qoq: opt_f64(item, "YSHZ"),
+            parent_netprofit: opt_f64(item, "PARENT_NETPROFIT"),
+            netprofit_yoy: opt_f64(item, "SJLTZ"),
+            netprofit_qoq: opt_f64(item, "SJLHZ"),
+            bps: opt_f64(item, "BPS"),
+            weightavg_roe: opt_f64(item, "WEIGHTAVG_ROE"),
+            mgjyxjje: opt_f64(item, "MGJYXJJE"),
+            xsmll: opt_f64(item, "XSMLL"),
             source: SOURCE_EASTMONEY,
         });
     }

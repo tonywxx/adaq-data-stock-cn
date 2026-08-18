@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::stock::hist::HistRow;
 use crate::stock::index::IndexSpotQuote;
 
@@ -69,17 +70,17 @@ pub(crate) fn parse_diff(resp: &Value) -> Result<Vec<IndexSpotQuote>> {
     let mut out = Vec::with_capacity(diff.len());
     for item in diff {
         out.push(IndexSpotQuote {
-            code: fstr(item, "f12"),
-            name: fstr(item, "f14"),
-            price: fnum(item, "f2"),
-            pct_change: fnum(item, "f3"),
-            change: fnum(item, "f4"),
-            volume: fnum(item, "f5"),
-            amount: fnum(item, "f6"),
-            open: fnum(item, "f17"),
-            high: fnum(item, "f15"),
-            low: fnum(item, "f16"),
-            pre_close: fnum(item, "f18"),
+            code: opt_str_or(item, "f12", ""),
+            name: opt_str_or(item, "f14", ""),
+            price: opt_f64(item, "f2"),
+            pct_change: opt_f64(item, "f3"),
+            change: opt_f64(item, "f4"),
+            volume: opt_f64(item, "f5"),
+            amount: opt_f64(item, "f6"),
+            open: opt_f64(item, "f17"),
+            high: opt_f64(item, "f15"),
+            low: opt_f64(item, "f16"),
+            pre_close: opt_f64(item, "f18"),
             source: SOURCE_EASTMONEY,
         });
     }
@@ -159,41 +160,17 @@ pub(crate) fn parse_klines(resp: &Value) -> Result<Vec<HistRow>> {
         out.push(HistRow {
             symbol: String::new(),
             date: parts[0].to_string(),
-            open: parse_f64(parts[1]),
-            close: parse_f64(parts[2]),
-            high: parse_f64(parts[3]),
-            low: parse_f64(parts[4]),
-            volume: parse_f64(parts[5]),
-            amount: parse_f64(parts[6]),
+            open: parse_f64_str(parts[1]),
+            close: parse_f64_str(parts[2]),
+            high: parse_f64_str(parts[3]),
+            low: parse_f64_str(parts[4]),
+            volume: parse_f64_str(parts[5]),
+            amount: parse_f64_str(parts[6]),
             pct_change: None,
             source: SOURCE_EASTMONEY,
         });
     }
     Ok(out)
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
-
-fn parse_f64(s: &str) -> Option<f64> {
-    let t = s.trim();
-    if t.is_empty() {
-        None
-    } else {
-        t.parse::<f64>().ok()
-    }
 }
 
 #[cfg(test)]

@@ -41,6 +41,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_SWS: &str = "swsresearch";
 
@@ -67,17 +68,6 @@ fn sw_data_array(resp: &Value) -> Result<&Vec<Value>> {
         })
 }
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Positional-array variant of [`fstr`] for endpoints that return rows as lists
 /// (not objects) — e.g. the `current/` realtime feed.
@@ -208,18 +198,18 @@ pub async fn index_hist_sw(client: &Client, symbol: &str, period: &str) -> Resul
 fn parse_hist_sw(items: &[Value]) -> Vec<HistSwRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(code) = fstr(item, "swindexcode") else {
+        let Some(code) = opt_str(item, "swindexcode") else {
             continue;
         };
         out.push(HistSwRow {
             code,
-            date: fstr(item, "bargaindate"),
-            close: fnum(item, "closeindex"),
-            open: fnum(item, "openindex"),
-            high: fnum(item, "maxindex"),
-            low: fnum(item, "minindex"),
-            volume: fnum(item, "bargainamount"),
-            amount: fnum(item, "bargainsum"),
+            date: opt_str(item, "bargaindate"),
+            close: opt_f64(item, "closeindex"),
+            open: opt_f64(item, "openindex"),
+            high: opt_f64(item, "maxindex"),
+            low: opt_f64(item, "minindex"),
+            volume: opt_f64(item, "bargainamount"),
+            amount: opt_f64(item, "bargainsum"),
         });
     }
     out
@@ -255,11 +245,11 @@ fn parse_min_sw(items: &[Value]) -> Vec<MinSwRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(MinSwRow {
-            code: fstr(item, "l1"),
-            name: fstr(item, "l2"),
-            price: fnum(item, "l8"),
-            date: fstr(item, "trading_date"),
-            time: fstr(item, "trading_time"),
+            code: opt_str(item, "l1"),
+            name: opt_str(item, "l2"),
+            price: opt_f64(item, "l8"),
+            date: opt_str(item, "trading_date"),
+            time: opt_str(item, "trading_time"),
         });
     }
     out
@@ -295,18 +285,18 @@ pub async fn index_component_sw(client: &Client, symbol: &str) -> Result<Vec<Com
 fn parse_component_sw(items: &[Value]) -> Vec<ComponentSwRow> {
     let mut out = Vec::with_capacity(items.len());
     for (i, item) in items.iter().enumerate() {
-        let Some(stock_code) = fstr(item, "stockcode") else {
+        let Some(stock_code) = opt_str(item, "stockcode") else {
             continue;
         };
-        let Some(stock_name) = fstr(item, "stockname") else {
+        let Some(stock_name) = opt_str(item, "stockname") else {
             continue;
         };
         out.push(ComponentSwRow {
             sequence: (i + 1) as u64,
             stock_code,
             stock_name,
-            weight: fnum(item, "newweight"),
-            begin_date: fstr(item, "beginningdate"),
+            weight: opt_f64(item, "newweight"),
+            begin_date: opt_str(item, "beginningdate"),
         });
     }
     out
@@ -515,27 +505,27 @@ pub async fn index_analysis_monthly_sw(
 fn parse_analysis_sw(items: &[Value]) -> Vec<AnalysisSwRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(index_code) = fstr(item, "swindexcode") else {
+        let Some(index_code) = opt_str(item, "swindexcode") else {
             continue;
         };
-        let Some(index_name) = fstr(item, "swindexname") else {
+        let Some(index_name) = opt_str(item, "swindexname") else {
             continue;
         };
         out.push(AnalysisSwRow {
             index_code,
             index_name,
-            date: fstr(item, "bargaindate"),
-            close_index: fnum(item, "closeindex"),
-            volume: fnum(item, "bargainamount"),
-            change_pct: fnum(item, "markup"),
-            turnover_rate: fnum(item, "turnoverrate"),
-            pe: fnum(item, "pe"),
-            pb: fnum(item, "pb"),
-            mean_price: fnum(item, "meanprice"),
-            amount_rate: fnum(item, "bargainsumrate"),
-            float_market_cap: fnum(item, "negotiablessharesum1"),
-            avg_float_market_cap: fnum(item, "negotiablessharesum2"),
-            dp: fnum(item, "dp"),
+            date: opt_str(item, "bargaindate"),
+            close_index: opt_f64(item, "closeindex"),
+            volume: opt_f64(item, "bargainamount"),
+            change_pct: opt_f64(item, "markup"),
+            turnover_rate: opt_f64(item, "turnoverrate"),
+            pe: opt_f64(item, "pe"),
+            pb: opt_f64(item, "pb"),
+            mean_price: opt_f64(item, "meanprice"),
+            amount_rate: opt_f64(item, "bargainsumrate"),
+            float_market_cap: opt_f64(item, "negotiablessharesum1"),
+            avg_float_market_cap: opt_f64(item, "negotiablessharesum2"),
+            dp: opt_f64(item, "dp"),
         });
     }
     out
@@ -553,7 +543,7 @@ fn parse_week_month_sw(items: &[Value]) -> Vec<WeekMonthSwRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(WeekMonthSwRow {
-            date: fstr(item, "bargaindate"),
+            date: opt_str(item, "bargaindate"),
         });
     }
     out

@@ -38,6 +38,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_ENDATA: &str = "endata";
 const YEAR_URL: &str = "https://ys.endata.cn/enlib-api/api/movie/getMovie_BoxOffice_Year_List.do";
@@ -70,20 +71,6 @@ const CINEMA_HEADERS: &[(&str, &str)] = &[
          Chrome/138.0.0.0 Safari/537.36",
     ),
 ];
-
-/// Extract a string field, if present.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Extract a numeric field, accepting either a JSON number or a numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract an integer field (some upstreams encode ints as strings).
 fn fint(item: &Value, k: &str) -> Option<i64> {
@@ -232,18 +219,18 @@ pub fn parse_movie_boxoffice_yearly_first_week(
         })?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(name) = fstr(item, "MovieName") else {
+        let Some(name) = opt_str(item, "MovieName") else {
             continue;
         };
-        let release_date = fstr(item, "ReleaseDate");
+        let release_date = opt_str(item, "ReleaseDate");
         out.push(MovieBoxofficeYearlyFirstWeek {
             rank: fint(item, "Irank"),
             movie_name: name,
-            genre: fstr(item, "GenreMain"),
-            week_box_office: fnum(item, "WeekBoxOffice").map(|x| x / 10000.0),
-            week_box_percent: fnum(item, "WeekBoxPercent"),
-            avg_show_audience_count: fnum(item, "AvgShowAudienceCount"),
-            country: fstr(item, "Country").map(|c| c.replace(' ', "")),
+            genre: opt_str(item, "GenreMain"),
+            week_box_office: opt_f64(item, "WeekBoxOffice").map(|x| x / 10000.0),
+            week_box_percent: opt_f64(item, "WeekBoxPercent"),
+            avg_show_audience_count: opt_f64(item, "AvgShowAudienceCount"),
+            country: opt_str(item, "Country").map(|c| c.replace(' ', "")),
             release_date: release_date.clone(),
             first_week_days: release_date.as_deref().and_then(first_week_days),
             source: SOURCE_ENDATA,
@@ -329,17 +316,17 @@ pub fn parse_movie_boxoffice_cinema_daily(resp: &Value) -> Result<Vec<MovieBoxof
         })?;
     let mut out = Vec::with_capacity(data.len());
     for item in data {
-        let Some(name) = fstr(item, "CinemaName") else {
+        let Some(name) = opt_str(item, "CinemaName") else {
             continue;
         };
         out.push(MovieBoxofficeCinemaDaily {
             rank: fint(item, "Irank"),
             cinema_name: name,
-            box_office: fnum(item, "BoxOffice"),
+            box_office: opt_f64(item, "BoxOffice"),
             show_count: fint(item, "ShowCount"),
-            avg_show_audience_count: fnum(item, "AvgShowAudienceCount"),
-            avg_box_office: fnum(item, "AvgBoxOffice"),
-            attendance: fnum(item, "Attendance"),
+            avg_show_audience_count: opt_f64(item, "AvgShowAudienceCount"),
+            avg_box_office: opt_f64(item, "AvgBoxOffice"),
+            attendance: opt_f64(item, "Attendance"),
             source: SOURCE_ENDATA,
         });
     }

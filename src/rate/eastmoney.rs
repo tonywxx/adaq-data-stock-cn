@@ -3,6 +3,8 @@ use serde_json::Value;
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
+use crate::core::json::*;
+
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 const REPORT: &str = "RPT_IMP_INTRESTRATEN";
 
@@ -117,9 +119,9 @@ pub async fn rate_interbank(
         }
         for item in data {
             out.push(InterbankRate {
-                date: fstr(item, "REPORT_DATE"),
-                rate: fnum(item, "IR_RATE"),
-                change: fnum(item, "CHANGE_RATE"),
+                date: opt_str_or(item, "REPORT_DATE", ""),
+                rate: opt_f64(item, "IR_RATE"),
+                change: opt_f64(item, "CHANGE_RATE"),
                 source: SOURCE_EASTMONEY,
             });
         }
@@ -140,21 +142,6 @@ fn map_lookup(map: &[(&str, &str)], key: &str, kind: &str) -> Result<String> {
         }
     }
     Err(Error::InvalidParam(format!("unknown {kind}: {key}")))
-}
-
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 #[cfg(test)]
@@ -179,9 +166,9 @@ mod tests {
         let rows: Vec<InterbankRate> = data
             .iter()
             .map(|item| InterbankRate {
-                date: fstr(item, "REPORT_DATE"),
-                rate: fnum(item, "IR_RATE"),
-                change: fnum(item, "CHANGE_RATE"),
+                date: opt_str_or(item, "REPORT_DATE", ""),
+                rate: opt_f64(item, "IR_RATE"),
+                change: opt_f64(item, "CHANGE_RATE"),
                 source: SOURCE_EASTMONEY,
             })
             .collect();

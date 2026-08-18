@@ -22,6 +22,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Local source identifiers (no shared const exists for these origins).
 const SOURCE_BAIDU: &str = "baidu";
@@ -32,18 +33,6 @@ const SOURCE_CNINFO: &str = "cninfo";
 // ===========================================================================
 
 /// Read a string field (null/other -> None).
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Read a numeric field; accepts both JSON numbers and numeric strings.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Look up `key` in a static `(label, code)` map.
 fn map_lookup(map: &[(&str, &str)], key: &str, kind: &str) -> Result<String> {
@@ -87,15 +76,15 @@ pub(crate) fn parse_yzxdr(items: &[Value]) -> Vec<YzxdrRow> {
     for (i, item) in items.iter().enumerate() {
         out.push(YzxdrRow {
             index: i + 1,
-            symbol: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            person: fstr(item, "PERSON_NAME"),
-            holder_rank: fnum(item, "HOLDER_RANK"),
-            hold_num: fnum(item, "HOLD_NUM"),
-            hold_ratio: fnum(item, "HOLD_RATIO"),
-            hold_change: fnum(item, "HOLD_CHANGE_NUM"),
-            industry: fstr(item, "INDUSTRY_NAME"),
-            notice_date: fstr(item, "NOTICE_DATE"),
+            symbol: opt_str(item, "SECURITY_CODE"),
+            name: opt_str(item, "SECURITY_NAME_ABBR"),
+            person: opt_str(item, "PERSON_NAME"),
+            holder_rank: opt_f64(item, "HOLDER_RANK"),
+            hold_num: opt_f64(item, "HOLD_NUM"),
+            hold_ratio: opt_f64(item, "HOLD_RATIO"),
+            hold_change: opt_f64(item, "HOLD_CHANGE_NUM"),
+            industry: opt_str(item, "INDUSTRY_NAME"),
+            notice_date: opt_str(item, "NOTICE_DATE"),
         });
     }
     out
@@ -192,11 +181,11 @@ pub(crate) fn parse_vote_baidu(resp: &Value) -> Result<Vec<VoteBaiduRow>> {
             continue;
         };
         out.push(VoteBaiduRow {
-            period: fstr(item, "type"),
-            bullish: fnum(item, "up"),
-            bearish: fnum(item, "down"),
-            bullish_ratio: fnum(item, "upRatio"),
-            bearish_ratio: fnum(item, "downRatio"),
+            period: opt_str(item, "type"),
+            bullish: opt_f64(item, "up"),
+            bearish: opt_f64(item, "down"),
+            bullish_ratio: opt_f64(item, "upRatio"),
+            bearish_ratio: opt_f64(item, "downRatio"),
         });
     }
     Ok(out)
@@ -277,24 +266,24 @@ pub struct ResearchReportRow {
 pub(crate) fn parse_research_report(items: &[Value]) -> Vec<ResearchReportRow> {
     let mut out = Vec::with_capacity(items.len());
     for (i, item) in items.iter().enumerate() {
-        let pdf_url = fstr(item, "infoCode")
+        let pdf_url = opt_str(item, "infoCode")
             .map(|c| format!("https://pdf.dfcfw.com/pdf/H3_{c}_1.pdf"));
         out.push(ResearchReportRow {
             index: i + 1,
-            stock_code: fstr(item, "stockCode"),
-            stock_name: fstr(item, "stockName"),
-            title: fstr(item, "title"),
-            em_rating_name: fstr(item, "emRatingName"),
-            org_name: fstr(item, "orgSName"),
-            count: fnum(item, "count"),
-            predict_this_year_eps: fnum(item, "predictThisYearEps"),
-            predict_this_year_pe: fnum(item, "predictThisYearPe"),
-            predict_next_year_eps: fnum(item, "predictNextYearEps"),
-            predict_next_year_pe: fnum(item, "predictNextYearPe"),
-            predict_next_two_year_eps: fnum(item, "predictNextTwoYearEps"),
-            predict_next_two_year_pe: fnum(item, "predictNextTwoYearPe"),
-            industry: fstr(item, "indvInduName"),
-            publish_date: fstr(item, "publishDate"),
+            stock_code: opt_str(item, "stockCode"),
+            stock_name: opt_str(item, "stockName"),
+            title: opt_str(item, "title"),
+            em_rating_name: opt_str(item, "emRatingName"),
+            org_name: opt_str(item, "orgSName"),
+            count: opt_f64(item, "count"),
+            predict_this_year_eps: opt_f64(item, "predictThisYearEps"),
+            predict_this_year_pe: opt_f64(item, "predictThisYearPe"),
+            predict_next_year_eps: opt_f64(item, "predictNextYearEps"),
+            predict_next_year_pe: opt_f64(item, "predictNextYearPe"),
+            predict_next_two_year_eps: opt_f64(item, "predictNextTwoYearEps"),
+            predict_next_two_year_pe: opt_f64(item, "predictNextTwoYearPe"),
+            industry: opt_str(item, "indvInduName"),
+            publish_date: opt_str(item, "publishDate"),
             pdf_url,
         });
     }
@@ -427,8 +416,8 @@ pub(crate) fn parse_hk_valuation(resp: &Value) -> Result<Vec<HkValuationRow>> {
     let mut out = Vec::with_capacity(body.len());
     for item in body {
         out.push(HkValuationRow {
-            date: fstr(item, "date"),
-            value: fnum(item, "value"),
+            date: opt_str(item, "date"),
+            value: opt_f64(item, "value"),
         });
     }
     Ok(out)
@@ -510,13 +499,13 @@ pub(crate) fn parse_disclosure(items: &[Value]) -> Vec<ReportDisclosureRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(ReportDisclosureRow {
-            stock_code: fstr(item, "stockCode"),
-            stock_name: fstr(item, "stockName"),
-            first_appointment: fstr(item, "firstDate"),
-            first_change: fstr(item, "firstChange"),
-            second_change: fstr(item, "secondChange"),
-            third_change: fstr(item, "thirdChange"),
-            actual_disclosure: fstr(item, "actualDate"),
+            stock_code: opt_str(item, "stockCode"),
+            stock_name: opt_str(item, "stockName"),
+            first_appointment: opt_str(item, "firstDate"),
+            first_change: opt_str(item, "firstChange"),
+            second_change: opt_str(item, "secondChange"),
+            third_change: opt_str(item, "thirdChange"),
+            actual_disclosure: opt_str(item, "actualDate"),
         });
     }
     out
@@ -608,14 +597,14 @@ pub(crate) fn parse_tfp(items: &[Value]) -> Vec<TfpRow> {
     for (i, item) in items.iter().enumerate() {
         out.push(TfpRow {
             index: i + 1,
-            symbol: fstr(item, "SECURITY_CODE"),
-            name: fstr(item, "SECURITY_NAME_ABBR"),
-            suspend_time: fstr(item, "SUSPEND_TIME"),
-            suspend_end_time: fstr(item, "SUSPEND_END_TIME"),
-            suspend_term: fstr(item, "SUSPEND_TERM"),
-            suspend_reason: fstr(item, "SUSPEND_REASON"),
-            market: fstr(item, "MARKET"),
-            expected_resume_time: fstr(item, "EXPECTED_RESUME_DATE"),
+            symbol: opt_str(item, "SECURITY_CODE"),
+            name: opt_str(item, "SECURITY_NAME_ABBR"),
+            suspend_time: opt_str(item, "SUSPEND_TIME"),
+            suspend_end_time: opt_str(item, "SUSPEND_END_TIME"),
+            suspend_term: opt_str(item, "SUSPEND_TERM"),
+            suspend_reason: opt_str(item, "SUSPEND_REASON"),
+            market: opt_str(item, "MARKET"),
+            expected_resume_time: opt_str(item, "EXPECTED_RESUME_DATE"),
         });
     }
     out

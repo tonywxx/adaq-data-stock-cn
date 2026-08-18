@@ -32,6 +32,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_SSE: &str = "sse";
 const SOURCE_SZSE: &str = "szse";
@@ -46,21 +47,6 @@ const EM_UT: &str = "b2884a393a59ad64002292a3e90d46a5";
 // Shared parse helpers
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| match v {
-        Value::String(s) => Some(s.to_string()),
-        Value::Number(n) => Some(n.to_string()),
-        _ => None,
-    })
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.replace(',', "").parse::<f64>().ok(),
-        _ => None,
-    }
-}
 
 /// Parse an Eastmoney `YYYYMMDD` (number or string) into `YYYY-MM-DD`.
 fn fdate(item: &Value, k: &str) -> Option<String> {
@@ -169,16 +155,16 @@ pub async fn option_premium_analysis_em(client: &Client) -> Result<Vec<OptionPre
 
 fn parse_premium(d: &Value) -> OptionPremiumRow {
     OptionPremiumRow {
-        code: fstr(d, "f12"),
-        name: fstr(d, "f14"),
-        price: fnum(d, "f2"),
-        change_pct: fnum(d, "f3"),
-        exercise_price: fnum(d, "f250"),
-        premium_rate: fnum(d, "f330"),
-        underlying_name: fstr(d, "f161"),
-        underlying_price: fnum(d, "f301"),
-        underlying_change_pct: fnum(d, "f152"),
-        breakeven: fnum(d, "f335"),
+        code: opt_str(d, "f12"),
+        name: opt_str(d, "f14"),
+        price: opt_f64(d, "f2"),
+        change_pct: opt_f64(d, "f3"),
+        exercise_price: opt_f64(d, "f250"),
+        premium_rate: opt_f64(d, "f330"),
+        underlying_name: opt_str(d, "f161"),
+        underlying_price: opt_f64(d, "f301"),
+        underlying_change_pct: opt_f64(d, "f152"),
+        breakeven: opt_f64(d, "f335"),
         expiry_date: fdate(d, "f333"),
     }
 }
@@ -213,17 +199,17 @@ pub async fn option_risk_analysis_em(client: &Client) -> Result<Vec<OptionRiskRo
 
 fn parse_risk(d: &Value) -> OptionRiskRow {
     OptionRiskRow {
-        code: fstr(d, "f12"),
-        name: fstr(d, "f14"),
-        price: fnum(d, "f2"),
-        change_pct: fnum(d, "f3"),
-        leverage: fnum(d, "f302"),
-        actual_leverage: fnum(d, "f303"),
-        delta: fnum(d, "f325"),
-        gamma: fnum(d, "f326"),
-        vega: fnum(d, "f327"),
-        rho: fnum(d, "f329"),
-        theta: fnum(d, "f328"),
+        code: opt_str(d, "f12"),
+        name: opt_str(d, "f14"),
+        price: opt_f64(d, "f2"),
+        change_pct: opt_f64(d, "f3"),
+        leverage: opt_f64(d, "f302"),
+        actual_leverage: opt_f64(d, "f303"),
+        delta: opt_f64(d, "f325"),
+        gamma: opt_f64(d, "f326"),
+        vega: opt_f64(d, "f327"),
+        rho: opt_f64(d, "f329"),
+        theta: opt_f64(d, "f328"),
         expiry_date: fdate(d, "f154"),
     }
 }
@@ -258,16 +244,16 @@ pub async fn option_value_analysis_em(client: &Client) -> Result<Vec<OptionValue
 
 fn parse_value(d: &Value) -> OptionValueRow {
     OptionValueRow {
-        code: fstr(d, "f12"),
-        name: fstr(d, "f14"),
-        price: fnum(d, "f2"),
-        time_value: fnum(d, "f298"),
-        intrinsic_value: fnum(d, "f299"),
-        implied_vol: fnum(d, "f249"),
-        theoretical_price: fnum(d, "f300"),
-        underlying_name: fstr(d, "f161"),
-        underlying_price: fnum(d, "f301"),
-        underlying_yr_vol: fnum(d, "f336"),
+        code: opt_str(d, "f12"),
+        name: opt_str(d, "f14"),
+        price: opt_f64(d, "f2"),
+        time_value: opt_f64(d, "f298"),
+        intrinsic_value: opt_f64(d, "f299"),
+        implied_vol: opt_f64(d, "f249"),
+        theoretical_price: opt_f64(d, "f300"),
+        underlying_name: opt_str(d, "f161"),
+        underlying_price: opt_f64(d, "f301"),
+        underlying_yr_vol: opt_f64(d, "f336"),
         expiry_date: fdate(d, "f333"),
     }
 }
@@ -329,33 +315,33 @@ pub async fn option_contract_info_ctp(client: &Client) -> Result<Vec<OptionContr
 
 fn parse_ctp(d: &Value) -> OptionContractCtpRow {
     OptionContractCtpRow {
-        exchange_id: fstr(d, "ExchangeID"),
-        instrument_id: fstr(d, "InstrumentID"),
-        instrument_name: fstr(d, "InstrumentName"),
-        product_class: fstr(d, "ProductClass"),
-        product_id: fstr(d, "ProductID"),
-        volume_multiple: fnum(d, "VolumeMultiple"),
-        price_tick: fnum(d, "PriceTick"),
-        long_margin_ratio_by_money: fnum(d, "LongMarginRatioByMoney"),
-        short_margin_ratio_by_money: fnum(d, "ShortMarginRatioByMoney"),
-        long_margin_ratio_by_volume: fnum(d, "LongMarginRatioByVolume"),
-        short_margin_ratio_by_volume: fnum(d, "ShortMarginRatioByVolume"),
-        open_ratio_by_money: fnum(d, "OpenRatioByMoney"),
-        open_ratio_by_volume: fnum(d, "OpenRatioByVolume"),
-        close_ratio_by_money: fnum(d, "CloseRatioByMoney"),
-        close_ratio_by_volume: fnum(d, "CloseRatioByVolume"),
-        close_today_ratio_by_money: fnum(d, "CloseTodayRatioByMoney"),
-        close_today_ratio_by_volume: fnum(d, "CloseTodayRatioByVolume"),
-        delivery_year: fstr(d, "DeliveryYear"),
-        delivery_month: fstr(d, "DeliveryMonth"),
-        open_date: fstr(d, "OpenDate"),
-        expire_date: fstr(d, "ExpireDate"),
-        delivery_date: fstr(d, "DeliveryDate"),
-        underlying_instr_id: fstr(d, "UnderlyingInstrID"),
-        underlying_multiple: fnum(d, "UnderlyingMultiple"),
-        options_type: fstr(d, "OptionsType"),
-        strike_price: fnum(d, "StrikePrice"),
-        inst_life_phase: fstr(d, "InstLifePhase"),
+        exchange_id: opt_str(d, "ExchangeID"),
+        instrument_id: opt_str(d, "InstrumentID"),
+        instrument_name: opt_str(d, "InstrumentName"),
+        product_class: opt_str(d, "ProductClass"),
+        product_id: opt_str(d, "ProductID"),
+        volume_multiple: opt_f64(d, "VolumeMultiple"),
+        price_tick: opt_f64(d, "PriceTick"),
+        long_margin_ratio_by_money: opt_f64(d, "LongMarginRatioByMoney"),
+        short_margin_ratio_by_money: opt_f64(d, "ShortMarginRatioByMoney"),
+        long_margin_ratio_by_volume: opt_f64(d, "LongMarginRatioByVolume"),
+        short_margin_ratio_by_volume: opt_f64(d, "ShortMarginRatioByVolume"),
+        open_ratio_by_money: opt_f64(d, "OpenRatioByMoney"),
+        open_ratio_by_volume: opt_f64(d, "OpenRatioByVolume"),
+        close_ratio_by_money: opt_f64(d, "CloseRatioByMoney"),
+        close_ratio_by_volume: opt_f64(d, "CloseRatioByVolume"),
+        close_today_ratio_by_money: opt_f64(d, "CloseTodayRatioByMoney"),
+        close_today_ratio_by_volume: opt_f64(d, "CloseTodayRatioByVolume"),
+        delivery_year: opt_str(d, "DeliveryYear"),
+        delivery_month: opt_str(d, "DeliveryMonth"),
+        open_date: opt_str(d, "OpenDate"),
+        expire_date: opt_str(d, "ExpireDate"),
+        delivery_date: opt_str(d, "DeliveryDate"),
+        underlying_instr_id: opt_str(d, "UnderlyingInstrID"),
+        underlying_multiple: opt_f64(d, "UnderlyingMultiple"),
+        options_type: opt_str(d, "OptionsType"),
+        strike_price: opt_f64(d, "StrikePrice"),
+        inst_life_phase: opt_str(d, "InstLifePhase"),
     }
 }
 
@@ -549,7 +535,7 @@ pub async fn option_lhb_em(
 
 fn parse_lhb(d: &Value, indicator: &str) -> OptionLhbRow {
     let i64f = |k: &str| d.get(k).and_then(|v| v.as_i64());
-    let f64f = |k: &str| fnum(d, k);
+    let f64f = |k: &str| opt_f64(d, k);
     let (vol_k, vol_chg_k, net_k, ratio_k, pos_k, pos_chg_k, net_pos_k, pos_ratio_k) = (
         "SELL_VOLUME",
         "SELL_VOLUME_CHANGE",
@@ -578,12 +564,12 @@ fn parse_lhb(d: &Value, indicator: &str) -> OptionLhbRow {
         _ => (None, None, None, None, None),
     };
     OptionLhbRow {
-        trade_type: fstr(d, "TRADE_TYPE"),
-        trade_date: fstr(d, "TRADE_DATE"),
-        security_code: fstr(d, "SECURITY_CODE"),
-        target_name: fstr(d, "TARGET_NAME"),
+        trade_type: opt_str(d, "TRADE_TYPE"),
+        trade_date: opt_str(d, "TRADE_DATE"),
+        security_code: opt_str(d, "SECURITY_CODE"),
+        target_name: opt_str(d, "TARGET_NAME"),
         rank: i64f("MEMBER_RANK"),
-        member: fstr(d, "MEMBER_NAME_ABBR"),
+        member: opt_str(d, "MEMBER_NAME_ABBR"),
         volume,
         position,
         change,
@@ -645,15 +631,15 @@ pub async fn option_daily_stats_szse(
         .iter()
         .map(|d| OptionDailyStatsSzseRow {
             trade_date: Some(trade_date.clone()),
-            target_code: fstr(d, "bddm"),
-            target_name: fstr(d, "bdmc"),
-            volume: fnum(d, "cjl"),
-            call_volume: fnum(d, "rccjl"),
-            put_volume: fnum(d, "rpcjl"),
-            put_call_oi_ratio: fnum(d, "rcrpccb"),
-            total_oi: fnum(d, "wpchyzs"),
-            call_oi: fnum(d, "wpcrchys"),
-            put_oi: fnum(d, "wpcrphys"),
+            target_code: opt_str(d, "bddm"),
+            target_name: opt_str(d, "bdmc"),
+            volume: opt_f64(d, "cjl"),
+            call_volume: opt_f64(d, "rccjl"),
+            put_volume: opt_f64(d, "rpcjl"),
+            put_call_oi_ratio: opt_f64(d, "rcrpccb"),
+            total_oi: opt_f64(d, "wpchyzs"),
+            call_oi: opt_f64(d, "wpcrchys"),
+            put_oi: opt_f64(d, "wpcrphys"),
         })
         .collect())
 }
@@ -799,7 +785,7 @@ async fn szse_board(
             break;
         }
         for d in data {
-            let ex = fstr(d, "xqrq");
+            let ex = opt_str(d, "xqrq");
             let month = ex.as_ref().and_then(|s| s.get(5..7).map(str::to_string));
             if month.as_deref() != Some(mm) {
                 continue;
@@ -807,20 +793,20 @@ async fn szse_board(
             out.push(OptionFinanceBoardRow {
                 symbol: Some(symbol.to_string()),
                 date: None,
-                contract_code: fstr(d, "hydm"),
-                contract_name: fstr(d, "hymc"),
-                underlying_name: fstr(d, "bdmc"),
-                option_type: fstr(d, "hylx"),
+                contract_code: opt_str(d, "hydm"),
+                contract_name: opt_str(d, "hymc"),
+                underlying_name: opt_str(d, "bdmc"),
+                option_type: opt_str(d, "hylx"),
                 last_price: None,
                 change: None,
                 pre_settle: None,
-                exercise_price: fnum(d, "xqj"),
-                unit: fnum(d, "hydw"),
+                exercise_price: opt_f64(d, "xqj"),
+                unit: opt_f64(d, "hydw"),
                 volume: None,
                 open_interest: None,
                 total: None,
                 exercise_date: ex,
-                delivery_date: fstr(d, "jsrq"),
+                delivery_date: opt_str(d, "jsrq"),
             });
         }
         let pagecount = obj
@@ -1012,15 +998,15 @@ mod tests {
             .iter()
             .map(|d| OptionDailyStatsSzseRow {
                 trade_date: Some("2024-06-26".to_string()),
-                target_code: fstr(d, "bddm"),
-                target_name: fstr(d, "bdmc"),
-                volume: fnum(d, "cjl"),
-                call_volume: fnum(d, "rccjl"),
-                put_volume: fnum(d, "rpcjl"),
-                put_call_oi_ratio: fnum(d, "rcrpccb"),
-                total_oi: fnum(d, "wpchyzs"),
-                call_oi: fnum(d, "wpcrchys"),
-                put_oi: fnum(d, "wpcrphys"),
+                target_code: opt_str(d, "bddm"),
+                target_name: opt_str(d, "bdmc"),
+                volume: opt_f64(d, "cjl"),
+                call_volume: opt_f64(d, "rccjl"),
+                put_volume: opt_f64(d, "rpcjl"),
+                put_call_oi_ratio: opt_f64(d, "rcrpccb"),
+                total_oi: opt_f64(d, "wpchyzs"),
+                call_oi: opt_f64(d, "wpcrchys"),
+                put_oi: opt_f64(d, "wpcrphys"),
             })
             .collect();
         assert_eq!(rows.len(), 1);
@@ -1050,27 +1036,27 @@ mod tests {
         let data = obj.get("data").unwrap().as_array().unwrap();
         let mut rows = Vec::new();
         for d in data {
-            let ex = fstr(d, "xqrq");
+            let ex = opt_str(d, "xqrq");
             if ex.as_deref() != Some("2026-09-25") {
                 continue;
             }
             rows.push(OptionFinanceBoardRow {
                 symbol: Some("嘉实沪深300ETF期权".to_string()),
                 date: None,
-                contract_code: fstr(d, "hydm"),
-                contract_name: fstr(d, "hymc"),
-                underlying_name: fstr(d, "bdmc"),
-                option_type: fstr(d, "hylx"),
+                contract_code: opt_str(d, "hydm"),
+                contract_name: opt_str(d, "hymc"),
+                underlying_name: opt_str(d, "bdmc"),
+                option_type: opt_str(d, "hylx"),
                 last_price: None,
                 change: None,
                 pre_settle: None,
-                exercise_price: fnum(d, "xqj"),
-                unit: fnum(d, "hydw"),
+                exercise_price: opt_f64(d, "xqj"),
+                unit: opt_f64(d, "hydw"),
                 volume: None,
                 open_interest: None,
                 total: None,
                 exercise_date: ex,
-                delivery_date: fstr(d, "jsrq"),
+                delivery_date: opt_str(d, "jsrq"),
             });
         }
         assert_eq!(rows.len(), 1);

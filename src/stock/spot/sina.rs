@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 use crate::stock::spot::SpotQuote;
 
 const COUNT_URL: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount?node=hs_a";
@@ -65,21 +66,21 @@ pub(crate) fn parse_rows(resp: &Value) -> Result<Vec<SpotQuote>> {
 
 fn parse_item(item: &Value) -> SpotQuote {
     SpotQuote {
-        code: norm_code(fstr(item, "code")),
-        name: fstr(item, "name"),
-        price: fnum(item, "trade"),
-        pct_change: fnum(item, "changepercent"),
-        change: fnum(item, "pricechange"),
-        volume: fnum(item, "volume"),
-        amount: fnum(item, "amount"),
-        turnover_rate: fnum(item, "turnoverratio"),
-        pe: fnum(item, "per"),
-        high: fnum(item, "high"),
-        low: fnum(item, "low"),
-        open: fnum(item, "open"),
-        pre_close: fnum(item, "settlement"),
-        total_mv: fnum(item, "mktcap"),
-        float_mv: fnum(item, "nmc"),
+        code: norm_code(opt_str_or(item, "code", "")),
+        name: opt_str_or(item, "name", ""),
+        price: opt_f64(item, "trade"),
+        pct_change: opt_f64(item, "changepercent"),
+        change: opt_f64(item, "pricechange"),
+        volume: opt_f64(item, "volume"),
+        amount: opt_f64(item, "amount"),
+        turnover_rate: opt_f64(item, "turnoverratio"),
+        pe: opt_f64(item, "per"),
+        high: opt_f64(item, "high"),
+        low: opt_f64(item, "low"),
+        open: opt_f64(item, "open"),
+        pre_close: opt_f64(item, "settlement"),
+        total_mv: opt_f64(item, "mktcap"),
+        float_mv: opt_f64(item, "nmc"),
         source: SOURCE_SINA,
     }
 }
@@ -99,20 +100,6 @@ fn norm_code(s: String) -> String {
     s.to_string()
 }
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Pull the first run of digits out of a response body (Sina's count endpoint
 /// returns a bare number wrapped in light JSONP-ish text).

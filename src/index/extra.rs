@@ -33,6 +33,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_MSWEET: &str = "msweet";
 const SOURCE_KQ: &str = "kqindex";
@@ -44,18 +45,6 @@ const SOURCE_SINA: &str = "sina";
 // ---------------------------------------------------------------------------
 // Shared field helpers
 // ---------------------------------------------------------------------------
-
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    }
-}
 
 /// `i`-th element of an array-valued field, parsed to `f64`.
 fn arr_num(item: &Value, _key: &str, idx: usize) -> Option<f64> {
@@ -272,18 +261,18 @@ const KQ_FZ_SYMBOLS: &[(&str, &str)] =
 pub(crate) fn parse_kq_fz(items: &[Value]) -> Vec<KqFzRow> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let period = fstr(item, "期次").unwrap_or_default();
+        let period = opt_str(item, "期次").unwrap_or_default();
         out.push(KqFzRow {
             period,
-            index_value: fnum(item, "指数"),
-            change: fnum(item, "涨跌幅"),
-            total_prosperity: fnum(item, "总景气指数"),
-            circulation_prosperity: fnum(item, "流通景气指数"),
-            production_prosperity: fnum(item, "生产景气指数"),
-            price_index: fnum(item, "价格指数"),
-            price_index_change: fnum(item, "价格指数-涨跌幅"),
-            prosperity_index: fnum(item, "景气指数"),
-            prosperity_index_change: fnum(item, "景气指数-涨跌幅"),
+            index_value: opt_f64(item, "指数"),
+            change: opt_f64(item, "涨跌幅"),
+            total_prosperity: opt_f64(item, "总景气指数"),
+            circulation_prosperity: opt_f64(item, "流通景气指数"),
+            production_prosperity: opt_f64(item, "生产景气指数"),
+            price_index: opt_f64(item, "价格指数"),
+            price_index_change: opt_f64(item, "价格指数-涨跌幅"),
+            prosperity_index: opt_f64(item, "景气指数"),
+            prosperity_index_change: opt_f64(item, "景气指数-涨跌幅"),
         });
     }
     out
@@ -390,8 +379,8 @@ pub(crate) fn parse_kq_fashion(resp: &Value) -> Vec<KqFashionRow> {
     let mut out = Vec::with_capacity(arr.len());
     for item in &arr {
         out.push(KqFashionRow {
-            date: fstr(item, "publishTime").unwrap_or_default(),
-            index_value: fnum(item, "indexValue"),
+            date: opt_str(item, "publishTime").unwrap_or_default(),
+            index_value: opt_f64(item, "indexValue"),
             change_value: None,
             change_pct: None,
         });
@@ -458,7 +447,7 @@ fn parse_eri_index(items: &[Value]) -> Vec<(String, Option<f64>)> {
                 .and_then(|v| v.as_str())
                 .unwrap_or_default()
                 .to_string();
-            (date, fnum(item, "indexValue"))
+            (date, opt_f64(item, "indexValue"))
         })
         .collect()
 }
@@ -467,7 +456,7 @@ fn parse_eri_index(items: &[Value]) -> Vec<(String, Option<f64>)> {
 fn parse_eri_stat(items: &[Value]) -> Vec<(Option<f64>, Option<f64>)> {
     items
         .iter()
-        .map(|item| (fnum(item, "totalQuantity"), fnum(item, "totalCost")))
+        .map(|item| (opt_f64(item, "totalQuantity"), opt_f64(item, "totalCost")))
         .collect()
 }
 
@@ -568,16 +557,16 @@ pub(crate) fn parse_yw(resp: &Value) -> Vec<YwRow> {
         .unwrap_or_default();
     arr.iter()
         .map(|item| YwRow {
-            period: fstr(item, "indextimeno").unwrap_or_default(),
-            prosperity_index: fnum(item, "totalindex"),
-            scale_index: fnum(item, "scopeindex"),
-            benefit_index: fnum(item, "benifitindex"),
-            confidence_index: fnum(item, "confidentindex"),
-            price_index: fnum(item, "totalpriceindex"),
-            in_park_price_index: fnum(item, "stockdealpriceindex"),
-            online_price_index: fnum(item, "netdealpriceindex"),
-            order_price_index: fnum(item, "orderdealpriceindex"),
-            export_price_index: fnum(item, "outdealpriceindex"),
+            period: opt_str(item, "indextimeno").unwrap_or_default(),
+            prosperity_index: opt_f64(item, "totalindex"),
+            scale_index: opt_f64(item, "scopeindex"),
+            benefit_index: opt_f64(item, "benifitindex"),
+            confidence_index: opt_f64(item, "confidentindex"),
+            price_index: opt_f64(item, "totalpriceindex"),
+            in_park_price_index: opt_f64(item, "stockdealpriceindex"),
+            online_price_index: opt_f64(item, "netdealpriceindex"),
+            order_price_index: opt_f64(item, "orderdealpriceindex"),
+            export_price_index: opt_f64(item, "outdealpriceindex"),
         })
         .collect()
 }
@@ -817,12 +806,12 @@ pub(crate) fn parse_global_hist_sina(resp: &Value) -> Result<Vec<GlobalHistSinaR
     Ok(arr
         .iter()
         .map(|item| GlobalHistSinaRow {
-            date: fstr(item, "d").unwrap_or_default(),
-            open: fnum(item, "o"),
-            high: fnum(item, "h"),
-            low: fnum(item, "l"),
-            close: fnum(item, "c"),
-            volume: fnum(item, "v"),
+            date: opt_str(item, "d").unwrap_or_default(),
+            open: opt_f64(item, "o"),
+            high: opt_f64(item, "h"),
+            low: opt_f64(item, "l"),
+            close: opt_f64(item, "c"),
+            volume: opt_f64(item, "v"),
         })
         .collect())
 }

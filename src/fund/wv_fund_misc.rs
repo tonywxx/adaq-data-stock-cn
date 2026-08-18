@@ -33,6 +33,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Local source identifiers.
 const SOURCE_AMAC: &str = "amac";
@@ -92,15 +93,6 @@ fn prop_str(item: &Value, k: &str) -> Option<String> {
             .and_then(|x| x.as_str())
             .map(|s| s.to_string())
             .or_else(|| a.first().and_then(|x| x.as_u64()).map(|n| n.to_string())),
-        _ => None,
-    })
-}
-
-/// Object property as `f64` (number or numeric string).
-fn prop_num(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
         _ => None,
     })
 }
@@ -340,8 +332,8 @@ fn parse_new_found(json: &Value, symbol: &str) -> Vec<FundNewFoundRow> {
             raise_end: prop_str(item, "end"),
             manager: prop_str(item, "orgname"),
             fund_manager: prop_str(item, "manager"),
-            subscribe_fee: prop_num(item, "zgrgfl"),
-            min_subscribe: prop_num(item, "zdrg"),
+            subscribe_fee: opt_f64(item, "zgrgfl"),
+            min_subscribe: opt_f64(item, "zdrg"),
             fund_type: prop_str(item, "jjlx"),
             invest_style: prop_str(item, "tzfg"),
         });

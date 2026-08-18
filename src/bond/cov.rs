@@ -29,6 +29,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_SINA: &str = "sina";
 
@@ -379,18 +380,18 @@ pub(crate) fn parse_cov_spot(resp: &Value) -> Result<Vec<BondZhHsCovSpot>> {
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(BondZhHsCovSpot {
-            symbol: norm_code(fstr(item, "code"), fstr(item, "symbol")),
-            name: fstr(item, "name"),
-            price: fnum(item, "trade"),
-            change: fnum(item, "pricechange"),
-            pct_change: fnum(item, "changepercent"),
-            open: fnum(item, "open"),
-            high: fnum(item, "high"),
-            low: fnum(item, "low"),
-            pre_close: fnum(item, "settlement"),
-            volume: fnum(item, "volume"),
-            amount: fnum(item, "amount"),
-            turnover_rate: fnum(item, "turnoverratio"),
+            symbol: norm_code(opt_str_or(item, "code", ""), opt_str_or(item, "symbol", "")),
+            name: opt_str_or(item, "name", ""),
+            price: opt_f64(item, "trade"),
+            change: opt_f64(item, "pricechange"),
+            pct_change: opt_f64(item, "changepercent"),
+            open: opt_f64(item, "open"),
+            high: opt_f64(item, "high"),
+            low: opt_f64(item, "low"),
+            pre_close: opt_f64(item, "settlement"),
+            volume: opt_f64(item, "volume"),
+            amount: opt_f64(item, "amount"),
+            turnover_rate: opt_f64(item, "turnoverratio"),
             source: SOURCE_SINA,
         });
     }
@@ -499,16 +500,16 @@ pub(crate) fn parse_cov_info(resp: &Value) -> Result<Vec<BondZhCovInfo>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(BondZhCovInfo {
-            security_code: fstr(item, "SECURITY_CODE"),
+            security_code: opt_str_or(item, "SECURITY_CODE", ""),
             security_name: fstr_opt(item, "SECURITY_NAME_ABBR"),
             convert_stock_code: fstr_opt(item, "CONVERT_STOCK_CODE"),
             convert_stock_name: fstr_opt(item, "SECURITY_SHORT_NAME"),
             rating: fstr_opt(item, "RATING"),
-            transfer_price: fnum(item, "TRANSFER_PRICE"),
-            transfer_value: fnum(item, "TRANSFER_VALUE"),
-            current_bond_price: fnum(item, "CURRENT_BOND_PRICE"),
-            transfer_premium_ratio: fnum(item, "TRANSFER_PREMIUM_RATIO"),
-            issue_scale: fnum(item, "ACTUAL_ISSUE_SCALE"),
+            transfer_price: opt_f64(item, "TRANSFER_PRICE"),
+            transfer_value: opt_f64(item, "TRANSFER_VALUE"),
+            current_bond_price: opt_f64(item, "CURRENT_BOND_PRICE"),
+            transfer_premium_ratio: opt_f64(item, "TRANSFER_PREMIUM_RATIO"),
+            issue_scale: opt_f64(item, "ACTUAL_ISSUE_SCALE"),
             public_start_date: fstr_opt(item, "PUBLIC_START_DATE"),
             listing_date: fstr_opt(item, "LISTING_DATE"),
             source: SOURCE_EASTMONEY,
@@ -589,23 +590,8 @@ fn extract_first_number(text: &str) -> Option<u32> {
     digits.parse::<u32>().ok()
 }
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
 fn fstr_opt(item: &Value, k: &str) -> Option<String> {
     item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
 }
 
 #[cfg(test)]

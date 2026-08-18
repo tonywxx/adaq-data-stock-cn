@@ -24,6 +24,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_DCE: &str = "dce";
 const SOURCE_GFEX: &str = "gfex";
@@ -100,13 +101,13 @@ pub(crate) fn parse_dce_contract_info(resp: &Value) -> Result<Vec<DceContractRow
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(DceContractRow {
-            variety: fstr(item, "variety").unwrap_or_default(),
-            symbol: fstr(item, "contractId").unwrap_or_default(),
-            unit: fnum(item, "unit"),
-            tick: fnum(item, "tick"),
-            start_trade_date: fstr(item, "startTradeDate"),
-            end_trade_date: fstr(item, "endTradeDate"),
-            end_delivery_date: fstr(item, "endDeliveryDate"),
+            variety: opt_str(item, "variety").unwrap_or_default(),
+            symbol: opt_str(item, "contractId").unwrap_or_default(),
+            unit: opt_f64(item, "unit"),
+            tick: opt_f64(item, "tick"),
+            start_trade_date: opt_str(item, "startTradeDate"),
+            end_trade_date: opt_str(item, "endTradeDate"),
+            end_delivery_date: opt_str(item, "endDeliveryDate"),
         });
     }
     Ok(out)
@@ -165,13 +166,13 @@ pub(crate) fn parse_gfex_contract_info(resp: &Value) -> Result<Vec<GfexContractR
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(GfexContractRow {
-            variety: fstr(item, "variety").unwrap_or_default(),
-            symbol: fstr(item, "contractId").unwrap_or_default(),
-            unit: fnum(item, "unit"),
-            tick: fnum(item, "tick"),
-            start_trade_date: fstr(item, "startTradeDate"),
-            end_trade_date: fstr(item, "endTradeDate"),
-            end_delivery_date: fstr(item, "endDeliveryDate0"),
+            variety: opt_str(item, "variety").unwrap_or_default(),
+            symbol: opt_str(item, "contractId").unwrap_or_default(),
+            unit: opt_f64(item, "unit"),
+            tick: opt_f64(item, "tick"),
+            start_trade_date: opt_str(item, "startTradeDate"),
+            end_trade_date: opt_str(item, "endTradeDate"),
+            end_delivery_date: opt_str(item, "endDeliveryDate0"),
         });
     }
     Ok(out)
@@ -266,13 +267,13 @@ pub(crate) fn parse_contract_base_info(
     let mut out = Vec::with_capacity(arr.len());
     for item in arr {
         out.push(ContractBaseInfoRow {
-            symbol: fstr(item, "INSTRUMENTID").unwrap_or_default(),
-            open_date: fstr(item, "OPENDATE"),
-            expire_date: fstr(item, "EXPIREDATE"),
-            start_delivery_date: fstr(item, "STARTDELIVDATE"),
-            end_delivery_date: fstr(item, "ENDDELIVDATE"),
-            basis_price: fnum(item, "BASISPRICE"),
-            trading_day: fstr(item, "TRADINGDAY"),
+            symbol: opt_str(item, "INSTRUMENTID").unwrap_or_default(),
+            open_date: opt_str(item, "OPENDATE"),
+            expire_date: opt_str(item, "EXPIREDATE"),
+            start_delivery_date: opt_str(item, "STARTDELIVDATE"),
+            end_delivery_date: opt_str(item, "ENDDELIVDATE"),
+            basis_price: opt_f64(item, "BASISPRICE"),
+            trading_day: opt_str(item, "TRADINGDAY"),
             update_date: update_date.clone(),
         });
     }
@@ -283,19 +284,6 @@ pub(crate) fn parse_contract_base_info(
 // helpers
 // ---------------------------------------------------------------------------
 
-/// Extract a string field, returning `None` when missing or not a string.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(str::to_string)
-}
-
-/// Extract a numeric field, tolerating numeric strings.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    match item.get(k) {
-        Some(Value::Number(n)) => n.as_f64(),
-        Some(Value::String(s)) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    }
-}
 
 // ---------------------------------------------------------------------------
 // tests (offline fixtures)

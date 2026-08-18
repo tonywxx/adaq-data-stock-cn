@@ -651,21 +651,9 @@ pub struct LhbJgmxRow {
 /// Parse the Sina lhb detail page: several `table.list_table`, each with an
 /// indicator row, a header row, then data rows.
 fn parse_lhb_detail_daily(html: &str, endpoint: &'static str) -> Result<Vec<LhbDailyRow>> {
-    let doc = Html::parse_document(html);
-    let tbl_sel = Selector::parse("table.list_table")
-        .map_err(|e| Error::Parse { endpoint, message: format!("list_table selector: {e}") })?;
-    let tr_sel = Selector::parse("tr").unwrap();
-    let cell_sel = Selector::parse("td,th").unwrap();
+    let all = crate::core::html::tables_with(html, endpoint, "table.list_table")?;
     let mut out = Vec::new();
-    for table in doc.select(&tbl_sel) {
-        let rows: Vec<Vec<String>> = table
-            .select(&tr_sel)
-            .map(|tr| {
-                tr.select(&cell_sel)
-                    .map(|c| c.text().collect::<Vec<_>>().join(" ").trim().to_string())
-                    .collect()
-            })
-            .collect();
+    for rows in all {
         if rows.len() < 2 {
             continue;
         }

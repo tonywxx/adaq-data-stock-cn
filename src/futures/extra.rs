@@ -38,6 +38,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY, SOURCE_SINA};
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney datacenter "get" API (used by the inventory endpoints).
 const EM_URL: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
@@ -74,20 +75,6 @@ fn strip_jsonp_array(text: &str) -> Result<&str> {
     Ok(&text[start..end])
 }
 
-fn fstr(item: &Value, k: &str) -> String {
-    item.get(k)
-        .and_then(|v| v.as_str())
-        .unwrap_or_default()
-        .to_string()
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 // ---------------------------------------------------------------------------
 // futures_zh_daily_sina — Sina domestic futures daily K-line (JSONP)
@@ -171,14 +158,14 @@ pub(crate) fn parse_zh_daily_sina(resp: &Value) -> Result<Vec<FuturesZhDailySina
 
 fn parse_zh_daily_sina_item(item: &Value) -> FuturesZhDailySinaRow {
     FuturesZhDailySinaRow {
-        date: fstr(item, "date"),
-        open: fnum(item, "open"),
-        high: fnum(item, "high"),
-        low: fnum(item, "low"),
-        close: fnum(item, "close"),
-        volume: fnum(item, "volume"),
-        hold: fnum(item, "hold"),
-        settle: fnum(item, "settle"),
+        date: opt_str_or(item, "date", ""),
+        open: opt_f64(item, "open"),
+        high: opt_f64(item, "high"),
+        low: opt_f64(item, "low"),
+        close: opt_f64(item, "close"),
+        volume: opt_f64(item, "volume"),
+        hold: opt_f64(item, "hold"),
+        settle: opt_f64(item, "settle"),
     }
 }
 
@@ -257,13 +244,13 @@ pub(crate) fn parse_foreign(resp: &Value) -> Result<Vec<FuturesForeignRow>> {
 
 fn parse_foreign_item(item: &Value) -> FuturesForeignRow {
     FuturesForeignRow {
-        date: fstr(item, "date"),
-        open: fnum(item, "open"),
-        high: fnum(item, "high"),
-        low: fnum(item, "low"),
-        close: fnum(item, "close"),
-        volume: fnum(item, "volume"),
-        open_interest: fnum(item, "position"),
+        date: opt_str_or(item, "date", ""),
+        open: opt_f64(item, "open"),
+        high: opt_f64(item, "high"),
+        low: opt_f64(item, "low"),
+        close: opt_f64(item, "close"),
+        volume: opt_f64(item, "volume"),
+        open_interest: opt_f64(item, "position"),
     }
 }
 
@@ -391,9 +378,9 @@ pub(crate) fn parse_inventory_em(resp: &Value) -> Result<Vec<FuturesInventoryEmR
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(FuturesInventoryEmRow {
-            trade_date: fstr(item, "TRADE_DATE"),
-            on_warrant_num: fnum(item, "ON_WARRANT_NUM"),
-            add_change: fnum(item, "ADDCHANGE"),
+            trade_date: opt_str_or(item, "TRADE_DATE", ""),
+            on_warrant_num: opt_f64(item, "ON_WARRANT_NUM"),
+            add_change: opt_f64(item, "ADDCHANGE"),
         });
     }
     Ok(out)
@@ -463,9 +450,9 @@ pub(crate) fn parse_comex_inventory(resp: &Value) -> Result<Vec<FuturesComexInve
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(FuturesComexInventoryRow {
-            report_date: fstr(item, "REPORT_DATE"),
-            storage_ton: fnum(item, "STORAGE_TON"),
-            storage_ounce: fnum(item, "STORAGE_OUNCE"),
+            report_date: opt_str_or(item, "REPORT_DATE", ""),
+            storage_ton: opt_f64(item, "STORAGE_TON"),
+            storage_ounce: opt_f64(item, "STORAGE_OUNCE"),
         });
     }
     Ok(out)

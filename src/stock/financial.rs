@@ -44,6 +44,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Eastmoney source bucket, for rate limiting / error context.
 const SOURCE_EASTMONEY: &str = "eastmoney";
@@ -60,19 +61,6 @@ const DEFAULT_REPORT_DATE: &str = "20240331";
 // Shared helpers (mirrors lhb.rs / gdfx.rs conventions)
 // ---------------------------------------------------------------------------
 
-/// Read a string field, returning `None` when missing/null.
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-/// Read a numeric field that may be a JSON number or a plain numeric string.
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract `result.data` (the row array) from a datacenter-web response.
 fn data_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -215,19 +203,19 @@ const XJLL_ITEMS: LineItems = &[
 fn normalize_rows(rows: &[Value], items: LineItems) -> Result<Vec<FinancialStatementRow>> {
     let mut out = Vec::new();
     for sec in rows {
-        let code = fstr(sec, "SECURITY_CODE").unwrap_or_default();
-        let name = fstr(sec, "SECURITY_NAME_ABBR").unwrap_or_default();
+        let code = opt_str(sec, "SECURITY_CODE").unwrap_or_default();
+        let name = opt_str(sec, "SECURITY_NAME_ABBR").unwrap_or_default();
         if code.is_empty() || name.is_empty() {
             continue;
         }
-        let report_date = fstr(sec, "REPORT_DATE").unwrap_or_default();
+        let report_date = opt_str(sec, "REPORT_DATE").unwrap_or_default();
         for &(key, label) in items {
             out.push(FinancialStatementRow {
                 security_code: code.clone(),
                 security_name: name.clone(),
                 item: label.to_string(),
                 report_date: report_date.clone(),
-                value: fnum(sec, key),
+                value: opt_f64(sec, key),
                 source: SOURCE_EASTMONEY,
             });
         }

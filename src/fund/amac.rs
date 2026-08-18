@@ -43,6 +43,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 /// Local source identifier for the AMAC disclosure API.
 const SOURCE_AMAC: &str = "amac";
@@ -71,24 +72,6 @@ const CANCELLED_URL: &str = "https://gs.amac.org.cn/amac-infodisc/api/cancelled/
 // helpers (defined privately; verbatim per porting spec)
 // ---------------------------------------------------------------------------
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
-#[allow(dead_code)]
-fn inum(item: &Value, k: &str) -> Option<i64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_i64(),
-        Value::String(s) => s.trim().parse::<i64>().ok(),
-        _ => None,
-    })
-}
 
 /// Extract the `content` array from an AMAC `{"content":[...], ...}` payload.
 fn content_array(resp: &Value) -> Result<&Vec<Value>> {
@@ -145,13 +128,13 @@ pub(crate) fn parse_member_info(resp: &Value) -> Result<Vec<AmacMemberInfoRow>> 
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacMemberInfoRow {
-            manager_name: fstr(item, "managerName"),
-            member_representative: fstr(item, "memberBehalf"),
-            member_type: fstr(item, "memberType"),
-            member_code: fstr(item, "memberCode"),
-            member_date: fnum(item, "memberDate"),
-            primary_invest_type: fstr(item, "primaryInvestType"),
-            mark_star: fstr(item, "markStar"),
+            manager_name: opt_str(item, "managerName"),
+            member_representative: opt_str(item, "memberBehalf"),
+            member_type: opt_str(item, "memberType"),
+            member_code: opt_str(item, "memberCode"),
+            member_date: opt_f64(item, "memberDate"),
+            primary_invest_type: opt_str(item, "primaryInvestType"),
+            mark_star: opt_str(item, "markStar"),
         });
     }
     Ok(out)
@@ -253,13 +236,13 @@ pub(crate) fn parse_person_fund_org_list(
     for item in data {
         out.push(AmacPersonFundOrgRow {
             symbol: symbol.to_string(),
-            org_name: fstr(item, "orgName"),
-            org_type: fstr(item, "orgType"),
-            worker_total_num: fnum(item, "workerTotalNum"),
-            qualification_num: fnum(item, "operNum"),
-            salesman_num: fnum(item, "salesmanNum"),
-            investment_manager_num: fnum(item, "investmentManagerNum"),
-            fund_manager_num: fnum(item, "fundManagerNum"),
+            org_name: opt_str(item, "orgName"),
+            org_type: opt_str(item, "orgType"),
+            worker_total_num: opt_f64(item, "workerTotalNum"),
+            qualification_num: opt_f64(item, "operNum"),
+            salesman_num: opt_f64(item, "salesmanNum"),
+            investment_manager_num: opt_f64(item, "investmentManagerNum"),
+            fund_manager_num: opt_f64(item, "fundManagerNum"),
         });
     }
     Ok(out)
@@ -313,13 +296,13 @@ pub(crate) fn parse_manager_info(resp: &Value) -> Result<Vec<AmacManagerInfoRow>
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacManagerInfoRow {
-            manager_name: fstr(item, "managerName"),
-            artificial_person_name: fstr(item, "artificialPersonName"),
-            primary_invest_type: fstr(item, "primaryInvestType"),
-            register_province: fstr(item, "registerProvince"),
-            register_no: fstr(item, "registerNo"),
-            establish_date: fnum(item, "establishDate"),
-            register_date: fnum(item, "registerDate"),
+            manager_name: opt_str(item, "managerName"),
+            artificial_person_name: opt_str(item, "artificialPersonName"),
+            primary_invest_type: opt_str(item, "primaryInvestType"),
+            register_province: opt_str(item, "registerProvince"),
+            register_no: opt_str(item, "registerNo"),
+            establish_date: opt_f64(item, "establishDate"),
+            register_date: opt_f64(item, "registerDate"),
         });
     }
     Ok(out)
@@ -382,16 +365,16 @@ pub(crate) fn parse_manager_classify_info(resp: &Value) -> Result<Vec<AmacManage
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacManagerClassifyRow {
-            manager_name: fstr(item, "managerName"),
-            artificial_person_name: fstr(item, "artificialPersonName"),
-            primary_invest_type: fstr(item, "primaryInvestType"),
-            register_no: fstr(item, "registerNo"),
-            register_province: fstr(item, "registerProvince"),
-            office_address: fstr(item, "officeAdrAgg"),
-            establish_date: fnum(item, "establishDate"),
-            register_date: fnum(item, "registerDate"),
-            fund_count: fnum(item, "fundCount"),
-            member_type: fstr(item, "memberType"),
+            manager_name: opt_str(item, "managerName"),
+            artificial_person_name: opt_str(item, "artificialPersonName"),
+            primary_invest_type: opt_str(item, "primaryInvestType"),
+            register_no: opt_str(item, "registerNo"),
+            register_province: opt_str(item, "registerProvince"),
+            office_address: opt_str(item, "officeAdrAgg"),
+            establish_date: opt_f64(item, "establishDate"),
+            register_date: opt_f64(item, "registerDate"),
+            fund_count: opt_f64(item, "fundCount"),
+            member_type: opt_str(item, "memberType"),
             has_special_tips: fbool(item, "hasSpecialTips"),
             has_credit_tips: fbool(item, "hasCreditTips"),
         });
@@ -444,12 +427,12 @@ pub(crate) fn parse_member_sub_info(resp: &Value) -> Result<Vec<AmacMemberSubInf
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacMemberSubInfoRow {
-            manager_name: fstr(item, "managerName"),
-            member_representative: fstr(item, "memberBehalf"),
-            member_type: fstr(item, "memberType"),
-            member_code: fstr(item, "memberCode"),
-            member_date: fnum(item, "memberDate"),
-            company_type: fstr(item, "primaryInvestType"),
+            manager_name: opt_str(item, "managerName"),
+            member_representative: opt_str(item, "memberBehalf"),
+            member_type: opt_str(item, "memberType"),
+            member_code: opt_str(item, "memberCode"),
+            member_date: opt_f64(item, "memberDate"),
+            company_type: opt_str(item, "primaryInvestType"),
         });
     }
     Ok(out)
@@ -502,13 +485,13 @@ pub(crate) fn parse_fund_info(resp: &Value) -> Result<Vec<AmacFundInfoRow>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacFundInfoRow {
-            fund_name: fstr(item, "fundName"),
-            manager_name: fstr(item, "managerName"),
-            manager_type: fstr(item, "managerType"),
-            working_state: fstr(item, "workingState"),
-            put_on_record_date: fnum(item, "putOnRecordDate"),
-            establish_date: fnum(item, "establishDate"),
-            mandator_name: fstr(item, "mandatorName"),
+            fund_name: opt_str(item, "fundName"),
+            manager_name: opt_str(item, "managerName"),
+            manager_type: opt_str(item, "managerType"),
+            working_state: opt_str(item, "workingState"),
+            put_on_record_date: opt_f64(item, "putOnRecordDate"),
+            establish_date: opt_f64(item, "establishDate"),
+            mandator_name: opt_str(item, "mandatorName"),
         });
     }
     Ok(out)
@@ -568,16 +551,16 @@ pub(crate) fn parse_securities_info(resp: &Value) -> Result<Vec<AmacSecuritiesIn
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacSecuritiesInfoRow {
-            product_name: fstr(item, "cpmc"),
-            product_code: fstr(item, "cpbm"),
-            manager_name: fstr(item, "gljg"),
-            establish_date: fnum(item, "slrq"),
-            due_date: fnum(item, "dqr"),
-            invest_type: fstr(item, "tzlx"),
-            is_graded: fstr(item, "sffj"),
-            trustee: fstr(item, "tgjg"),
-            record_date: fnum(item, "barq"),
-            working_status: fstr(item, "yzzt"),
+            product_name: opt_str(item, "cpmc"),
+            product_code: opt_str(item, "cpbm"),
+            manager_name: opt_str(item, "gljg"),
+            establish_date: opt_f64(item, "slrq"),
+            due_date: opt_f64(item, "dqr"),
+            invest_type: opt_str(item, "tzlx"),
+            is_graded: opt_str(item, "sffj"),
+            trustee: opt_str(item, "tgjg"),
+            record_date: opt_f64(item, "barq"),
+            working_status: opt_str(item, "yzzt"),
         });
     }
     Ok(out)
@@ -618,11 +601,11 @@ pub(crate) fn parse_aoin_info(resp: &Value) -> Result<Vec<AmacAoinInfoRow>> {
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacAoinInfoRow {
-            code: fstr(item, "code"),
-            name: fstr(item, "name"),
-            aoin_name: fstr(item, "aoinName"),
-            manager_name: fstr(item, "managerName"),
-            create_date: fnum(item, "createDate"),
+            code: opt_str(item, "code"),
+            name: opt_str(item, "name"),
+            aoin_name: opt_str(item, "aoinName"),
+            manager_name: opt_str(item, "managerName"),
+            create_date: opt_f64(item, "createDate"),
         });
     }
     Ok(out)
@@ -672,12 +655,12 @@ pub(crate) fn parse_fund_sub_info(resp: &Value) -> Result<Vec<AmacFundSubInfoRow
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacFundSubInfoRow {
-            product_code: fstr(item, "productCode"),
-            product_name: fstr(item, "productName"),
-            manager_name: fstr(item, "mgrName"),
-            trustee: fstr(item, "trustee"),
-            found_date: fnum(item, "foundDate"),
-            registered_date: fnum(item, "registeredDate"),
+            product_code: opt_str(item, "productCode"),
+            product_name: opt_str(item, "productName"),
+            manager_name: opt_str(item, "mgrName"),
+            trustee: opt_str(item, "trustee"),
+            found_date: opt_f64(item, "foundDate"),
+            registered_date: opt_f64(item, "registeredDate"),
         });
     }
     Ok(out)
@@ -724,10 +707,10 @@ pub(crate) fn parse_fund_account_info(resp: &Value) -> Result<Vec<AmacFundAccoun
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacFundAccountInfoRow {
-            register_date: fnum(item, "registerDate"),
-            register_code: fstr(item, "registerCode"),
-            name: fstr(item, "name"),
-            manager: fstr(item, "manager"),
+            register_date: opt_f64(item, "registerDate"),
+            register_code: opt_str(item, "registerCode"),
+            name: opt_str(item, "name"),
+            manager: opt_str(item, "manager"),
         });
     }
     Ok(out)
@@ -781,16 +764,16 @@ pub(crate) fn parse_futures_info(resp: &Value) -> Result<Vec<AmacFuturesInfoRow>
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacFuturesInfoRow {
-            product_name: fstr(item, "mpiName"),
-            product_code: fstr(item, "mpiProductCode"),
-            manager_name: fstr(item, "aoiName"),
-            trustee: fstr(item, "mpiTrustee"),
-            create_date: fnum(item, "mpiCreateDate"),
-            invest_type: fstr(item, "tzlx"),
-            is_graded: fstr(item, "sfjgh"),
-            registered_date: fnum(item, "registeredDate"),
-            due_date: fnum(item, "dueDate"),
-            fund_status: fstr(item, "fundStatus"),
+            product_name: opt_str(item, "mpiName"),
+            product_code: opt_str(item, "mpiProductCode"),
+            manager_name: opt_str(item, "aoiName"),
+            trustee: opt_str(item, "mpiTrustee"),
+            create_date: opt_f64(item, "mpiCreateDate"),
+            invest_type: opt_str(item, "tzlx"),
+            is_graded: opt_str(item, "sfjgh"),
+            registered_date: opt_f64(item, "registeredDate"),
+            due_date: opt_f64(item, "dueDate"),
+            fund_status: opt_str(item, "fundStatus"),
         });
     }
     Ok(out)
@@ -837,11 +820,11 @@ pub(crate) fn parse_manager_cancelled_info(resp: &Value) -> Result<Vec<AmacManag
     let mut out = Vec::with_capacity(data.len());
     for item in data {
         out.push(AmacManagerCancelledRow {
-            org_name: fstr(item, "orgName"),
-            org_code: fstr(item, "orgCode"),
-            sign_date: fnum(item, "orgSignDate"),
-            cancel_date: fnum(item, "cancelDate"),
-            status: fnum(item, "status"),
+            org_name: opt_str(item, "orgName"),
+            org_code: opt_str(item, "orgCode"),
+            sign_date: opt_f64(item, "orgSignDate"),
+            cancel_date: opt_f64(item, "cancelDate"),
+            status: opt_f64(item, "status"),
         });
     }
     Ok(out)

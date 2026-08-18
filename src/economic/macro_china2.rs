@@ -76,6 +76,7 @@ use serde_json::Value;
 
 use crate::core::client::Client;
 use crate::core::error::{Error, Result};
+use crate::core::json::*;
 
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
@@ -91,17 +92,6 @@ fn emg_data_array(resp: &Value) -> Result<&Vec<Value>> {
         })
 }
 
-fn fstr(item: &Value, k: &str) -> Option<String> {
-    item.get(k).and_then(|v| v.as_str()).map(|s| s.to_string())
-}
-
-fn fnum(item: &Value, k: &str) -> Option<f64> {
-    item.get(k).and_then(|v| match v {
-        Value::Number(n) => n.as_f64(),
-        Value::String(s) => s.trim().parse::<f64>().ok(),
-        _ => None,
-    })
-}
 
 /// Shared fetch for every datacenter-web indicator in this module.
 ///
@@ -174,18 +164,18 @@ pub struct IndustryIndexRow {
 pub fn parse_industry_index(items: &[Value]) -> Result<Vec<IndustryIndexRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(date) = fstr(item, "REPORT_DATE") else {
+        let Some(date) = opt_str(item, "REPORT_DATE") else {
             continue;
         };
         out.push(IndustryIndexRow {
             date,
-            latest_value: fnum(item, "INDICATOR_VALUE"),
-            change_rate: fnum(item, "CHANGE_RATE"),
-            change_3m: fnum(item, "CHANGERATE_3M"),
-            change_6m: fnum(item, "CHANGERATE_6M"),
-            change_1y: fnum(item, "CHANGERATE_1Y"),
-            change_2y: fnum(item, "CHANGERATE_2Y"),
-            change_3y: fnum(item, "CHANGERATE_3Y"),
+            latest_value: opt_f64(item, "INDICATOR_VALUE"),
+            change_rate: opt_f64(item, "CHANGE_RATE"),
+            change_3m: opt_f64(item, "CHANGERATE_3M"),
+            change_6m: opt_f64(item, "CHANGERATE_6M"),
+            change_1y: opt_f64(item, "CHANGERATE_1Y"),
+            change_2y: opt_f64(item, "CHANGERATE_2Y"),
+            change_3y: opt_f64(item, "CHANGERATE_3Y"),
         });
     }
     Ok(out)
@@ -658,16 +648,16 @@ pub async fn macro_china_reserve_requirement_ratio(
 fn parse_new_financial_credit(items: &[Value]) -> Result<Vec<NewFinancialCreditRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(month) = fstr(item, "TIME") else {
+        let Some(month) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(NewFinancialCreditRow {
             month,
-            current: fnum(item, "RMB_LOAN"),
-            current_yoy: fnum(item, "RMB_LOAN_SAME"),
-            current_mom: fnum(item, "RMB_LOAN_SEQUENTIAL"),
-            accumulate: fnum(item, "RMB_LOAN_ACCUMULATE"),
-            accumulate_yoy: fnum(item, "LOAN_ACCUMULATE_SAME"),
+            current: opt_f64(item, "RMB_LOAN"),
+            current_yoy: opt_f64(item, "RMB_LOAN_SAME"),
+            current_mom: opt_f64(item, "RMB_LOAN_SEQUENTIAL"),
+            accumulate: opt_f64(item, "RMB_LOAN_ACCUMULATE"),
+            accumulate_yoy: opt_f64(item, "LOAN_ACCUMULATE_SAME"),
         });
     }
     Ok(out)
@@ -676,17 +666,17 @@ fn parse_new_financial_credit(items: &[Value]) -> Result<Vec<NewFinancialCreditR
 fn parse_fx_gold(items: &[Value]) -> Result<Vec<FxGoldRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(month) = fstr(item, "TIME") else {
+        let Some(month) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(FxGoldRow {
             month,
-            gold_value: fnum(item, "GOLD_RESERVES"),
-            gold_yoy: fnum(item, "GOLD_RESERVES_SAME"),
-            gold_mom: fnum(item, "GOLD_RESERVES_SEQUENTIAL"),
-            forex_value: fnum(item, "FOREX"),
-            forex_yoy: fnum(item, "FOREX_SAME"),
-            forex_mom: fnum(item, "FOREX_SEQUENTIAL"),
+            gold_value: opt_f64(item, "GOLD_RESERVES"),
+            gold_yoy: opt_f64(item, "GOLD_RESERVES_SAME"),
+            gold_mom: opt_f64(item, "GOLD_RESERVES_SEQUENTIAL"),
+            forex_value: opt_f64(item, "FOREX"),
+            forex_yoy: opt_f64(item, "FOREX_SAME"),
+            forex_mom: opt_f64(item, "FOREX_SEQUENTIAL"),
         });
     }
     Ok(out)
@@ -695,23 +685,23 @@ fn parse_fx_gold(items: &[Value]) -> Result<Vec<FxGoldRow>> {
 fn parse_stock_market_cap(items: &[Value]) -> Result<Vec<StockMarketCapRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(date) = fstr(item, "TIME") else {
+        let Some(date) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(StockMarketCapRow {
             date,
-            total_shares_sh: fnum(item, "TOTAL_SHARES_SH"),
-            total_shares_sz: fnum(item, "TOTAL_SZARES_SZ"),
-            market_cap_sh: fnum(item, "TOTAL_MARKE_SH"),
-            market_cap_sz: fnum(item, "TOTAL_MARKE_SZ"),
-            deal_amount_sh: fnum(item, "DEAL_AMOUNT_SH"),
-            deal_amount_sz: fnum(item, "DEAL_AMOUNT_SZ"),
-            volume_sh: fnum(item, "VOLUME_SH"),
-            volume_sz: fnum(item, "VOLUME_SZ"),
-            high_index_sh: fnum(item, "HIGH_INDEX_SH"),
-            high_index_sz: fnum(item, "HIGH_INDEX_SZ"),
-            low_index_sh: fnum(item, "LOW_INDEX_SH"),
-            low_index_sz: fnum(item, "LOW_INDEX_SZ"),
+            total_shares_sh: opt_f64(item, "TOTAL_SHARES_SH"),
+            total_shares_sz: opt_f64(item, "TOTAL_SZARES_SZ"),
+            market_cap_sh: opt_f64(item, "TOTAL_MARKE_SH"),
+            market_cap_sz: opt_f64(item, "TOTAL_MARKE_SZ"),
+            deal_amount_sh: opt_f64(item, "DEAL_AMOUNT_SH"),
+            deal_amount_sz: opt_f64(item, "DEAL_AMOUNT_SZ"),
+            volume_sh: opt_f64(item, "VOLUME_SH"),
+            volume_sz: opt_f64(item, "VOLUME_SZ"),
+            high_index_sh: opt_f64(item, "HIGH_INDEX_SH"),
+            high_index_sz: opt_f64(item, "HIGH_INDEX_SZ"),
+            low_index_sh: opt_f64(item, "LOW_INDEX_SH"),
+            low_index_sz: opt_f64(item, "LOW_INDEX_SZ"),
         });
     }
     Ok(out)
@@ -720,21 +710,21 @@ fn parse_stock_market_cap(items: &[Value]) -> Result<Vec<StockMarketCapRow>> {
 fn parse_hgjck(items: &[Value]) -> Result<Vec<HgjckRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(month) = fstr(item, "TIME") else {
+        let Some(month) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(HgjckRow {
             month,
-            export_current: fnum(item, "EXIT_BASE"),
-            export_current_yoy: fnum(item, "EXIT_BASE_SAME"),
-            export_current_mom: fnum(item, "EXIT_BASE_SEQUENTIAL"),
-            import_current: fnum(item, "IMPORT_BASE"),
-            import_current_yoy: fnum(item, "IMPORT_BASE_SAME"),
-            import_current_mom: fnum(item, "IMPORT_BASE_SEQUENTIAL"),
-            export_accumulate: fnum(item, "EXIT_ACCUMULATE"),
-            export_accumulate_yoy: fnum(item, "EXIT_ACCUMULATE_SAME"),
-            import_accumulate: fnum(item, "IMPORT_ACCUMULATE"),
-            import_accumulate_yoy: fnum(item, "IMPORT_ACCUMULATE_SAME"),
+            export_current: opt_f64(item, "EXIT_BASE"),
+            export_current_yoy: opt_f64(item, "EXIT_BASE_SAME"),
+            export_current_mom: opt_f64(item, "EXIT_BASE_SEQUENTIAL"),
+            import_current: opt_f64(item, "IMPORT_BASE"),
+            import_current_yoy: opt_f64(item, "IMPORT_BASE_SAME"),
+            import_current_mom: opt_f64(item, "IMPORT_BASE_SEQUENTIAL"),
+            export_accumulate: opt_f64(item, "EXIT_ACCUMULATE"),
+            export_accumulate_yoy: opt_f64(item, "EXIT_ACCUMULATE_SAME"),
+            import_accumulate: opt_f64(item, "IMPORT_ACCUMULATE"),
+            import_accumulate_yoy: opt_f64(item, "IMPORT_ACCUMULATE_SAME"),
         });
     }
     Ok(out)
@@ -743,16 +733,16 @@ fn parse_hgjck(items: &[Value]) -> Result<Vec<HgjckRow>> {
 fn parse_czsr(items: &[Value]) -> Result<Vec<CzsrRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(month) = fstr(item, "TIME") else {
+        let Some(month) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(CzsrRow {
             month,
-            current: fnum(item, "BASE"),
-            current_yoy: fnum(item, "BASE_SAME"),
-            current_mom: fnum(item, "BASE_SEQUENTIAL"),
-            accumulate: fnum(item, "BASE_ACCUMULATE"),
-            accumulate_yoy: fnum(item, "ACCUMULATE_SAME"),
+            current: opt_f64(item, "BASE"),
+            current_yoy: opt_f64(item, "BASE_SAME"),
+            current_mom: opt_f64(item, "BASE_SEQUENTIAL"),
+            accumulate: opt_f64(item, "BASE_ACCUMULATE"),
+            accumulate_yoy: opt_f64(item, "ACCUMULATE_SAME"),
         });
     }
     Ok(out)
@@ -761,15 +751,15 @@ fn parse_czsr(items: &[Value]) -> Result<Vec<CzsrRow>> {
 fn parse_whxd(items: &[Value]) -> Result<Vec<WhxdRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(month) = fstr(item, "TIME") else {
+        let Some(month) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(WhxdRow {
             month,
-            current: fnum(item, "BASE"),
-            yoy: fnum(item, "BASE_SAME"),
-            mom: fnum(item, "BASE_SEQUENTIAL"),
-            accumulate: fnum(item, "BASE_ACCUMULATE"),
+            current: opt_f64(item, "BASE"),
+            yoy: opt_f64(item, "BASE_SAME"),
+            mom: opt_f64(item, "BASE_SEQUENTIAL"),
+            accumulate: opt_f64(item, "BASE_ACCUMULATE"),
         });
     }
     Ok(out)
@@ -778,15 +768,15 @@ fn parse_whxd(items: &[Value]) -> Result<Vec<WhxdRow>> {
 fn parse_wbck(items: &[Value]) -> Result<Vec<WbckRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(month) = fstr(item, "TIME") else {
+        let Some(month) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(WbckRow {
             month,
-            current: fnum(item, "BASE"),
-            yoy: fnum(item, "BASE_SAME"),
-            mom: fnum(item, "BASE_SEQUENTIAL"),
-            accumulate: fnum(item, "BASE_ACCUMULATE"),
+            current: opt_f64(item, "BASE"),
+            yoy: opt_f64(item, "BASE_SAME"),
+            mom: opt_f64(item, "BASE_SEQUENTIAL"),
+            accumulate: opt_f64(item, "BASE_ACCUMULATE"),
         });
     }
     Ok(out)
@@ -795,20 +785,20 @@ fn parse_wbck(items: &[Value]) -> Result<Vec<WbckRow>> {
 fn parse_xfzxx(items: &[Value]) -> Result<Vec<XfzxxRow>> {
     let mut out = Vec::with_capacity(items.len());
     for item in items {
-        let Some(month) = fstr(item, "TIME") else {
+        let Some(month) = opt_str(item, "TIME") else {
             continue;
         };
         out.push(XfzxxRow {
             month,
-            faith_index: fnum(item, "CONSUMERS_FAITH_INDEX"),
-            faith_yoy: fnum(item, "FAITH_INDEX_SAME"),
-            faith_mom: fnum(item, "FAITH_INDEX_SEQUENTIAL"),
-            satisfaction_index: fnum(item, "CONSUMERS_ASTIS_INDEX"),
-            satisfaction_yoy: fnum(item, "ASTIS_INDEX_SAME"),
-            satisfaction_mom: fnum(item, "ASTIS_INDEX_SEQUENTIAL"),
-            expectation_index: fnum(item, "CONSUMERS_EXPECT_INDEX"),
-            expectation_yoy: fnum(item, "EXPECT_INDEX_SAME"),
-            expectation_mom: fnum(item, "EXPECT_INDEX_SEQUENTIAL"),
+            faith_index: opt_f64(item, "CONSUMERS_FAITH_INDEX"),
+            faith_yoy: opt_f64(item, "FAITH_INDEX_SAME"),
+            faith_mom: opt_f64(item, "FAITH_INDEX_SEQUENTIAL"),
+            satisfaction_index: opt_f64(item, "CONSUMERS_ASTIS_INDEX"),
+            satisfaction_yoy: opt_f64(item, "ASTIS_INDEX_SAME"),
+            satisfaction_mom: opt_f64(item, "ASTIS_INDEX_SEQUENTIAL"),
+            expectation_index: opt_f64(item, "CONSUMERS_EXPECT_INDEX"),
+            expectation_yoy: opt_f64(item, "EXPECT_INDEX_SAME"),
+            expectation_mom: opt_f64(item, "EXPECT_INDEX_SEQUENTIAL"),
         });
     }
     Ok(out)
@@ -818,17 +808,17 @@ fn parse_reserve_requirement_ratio(items: &[Value]) -> Result<Vec<ReserveRequire
     let mut out = Vec::with_capacity(items.len());
     for item in items {
         out.push(ReserveRequirementRatioRow {
-            publish_date: fstr(item, "PUBLISH_DATE"),
-            effective_date: fstr(item, "TRADE_DATE"),
-            big_before: fnum(item, "INTEREST_RATE_BB"),
-            big_after: fnum(item, "INTEREST_RATE_BA"),
-            big_change: fnum(item, "CHANGE_RATE_B"),
-            small_before: fnum(item, "INTEREST_RATE_SB"),
-            small_after: fnum(item, "INTEREST_RATE_SA"),
-            small_change: fnum(item, "CHANGE_RATE_S"),
-            next_sh: fnum(item, "NEXT_SH_RATE"),
-            next_sz: fnum(item, "NEXT_SZ_RATE"),
-            remark: fstr(item, "REMARK"),
+            publish_date: opt_str(item, "PUBLISH_DATE"),
+            effective_date: opt_str(item, "TRADE_DATE"),
+            big_before: opt_f64(item, "INTEREST_RATE_BB"),
+            big_after: opt_f64(item, "INTEREST_RATE_BA"),
+            big_change: opt_f64(item, "CHANGE_RATE_B"),
+            small_before: opt_f64(item, "INTEREST_RATE_SB"),
+            small_after: opt_f64(item, "INTEREST_RATE_SA"),
+            small_change: opt_f64(item, "CHANGE_RATE_S"),
+            next_sh: opt_f64(item, "NEXT_SH_RATE"),
+            next_sz: opt_f64(item, "NEXT_SZ_RATE"),
+            remark: opt_str(item, "REMARK"),
         });
     }
     Ok(out)
