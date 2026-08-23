@@ -47,6 +47,13 @@ parquet = ["dep:arrow", "dep:parquet"]
 [target.'cfg(target_os = "macos")'.dependencies]
 impersonate-rs = "0.1.3"
 
+# macOS-only: this example exercises the browser-impersonation backend, which
+# is cfg-gated to macOS and absent on Windows/Linux. Cargo skips building it
+# there, so `cargo clippy --all-targets` / `cargo test --all-targets` stay green.
+[[example]]
+name = "impersonate_smoke"
+target = "cfg(target_os = \"macos\")"
+
 [dev-dependencies]
 tokio = {version = "1", features = ["full"]}
 
