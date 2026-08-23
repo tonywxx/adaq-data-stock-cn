@@ -1037,7 +1037,7 @@ pub async fn stock_hsgt_fund_min_em(client: &Client, symbol: &str) -> Result<Vec
         ("_", &ts),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_hsgt_fund_min_em", "https://push2.eastmoney.com/api/qt/kamtbs.rtmin/get", &params)
+        .get_json(SOURCE_EASTMONEY, "stock_hsgt_fund_min_em", &crate::core::eastmoney_push::push2_url("/api/qt/kamtbs.rtmin/get").await, &params)
         .await?;
     parse_hsgt_fund_min(&v, symbol)
 }

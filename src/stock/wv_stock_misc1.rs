@@ -920,8 +920,6 @@ pub async fn stock_price_js(client: &Client, symbol: &str) -> Result<Vec<PriceTa
 // stock_staq_net_stop  (stock/stock_stop.py:13) — Eastmoney push2 clist
 // ===========================================================================
 
-const STAQ_URL: &str = "https://5.push2.eastmoney.com/api/qt/clist/get";
-
 /// One two-net / delisted stock row.
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct StaqNetStopRow {
@@ -967,7 +965,7 @@ pub async fn stock_staq_net_stop(client: &Client) -> Result<Vec<StaqNetStopRow>>
         ("fields", "f12,f14"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_staq_net_stop", STAQ_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_staq_net_stop", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     let diff = v
         .get("data")

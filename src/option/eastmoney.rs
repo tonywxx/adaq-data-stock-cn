@@ -108,7 +108,7 @@ pub async fn option_minute(client: &Client, secid: &str) -> Result<Vec<OptionMin
         .get_text(
             SOURCE_EASTMONEY,
             "option_minute",
-            "https://push2.eastmoney.com/api/qt/stock/trends2/get",
+            &crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await,
             &params,
             None,
         )

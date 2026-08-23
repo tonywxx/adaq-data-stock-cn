@@ -407,8 +407,6 @@ pub struct BidAskRow {
 }
 
 /// Eastmoney push2 quote endpoint (used by `stock_bid_ask_em`).
-const PUSH2_STOCK: &str = "https://push2.eastmoney.com/api/qt/stock/get";
-
 /// Parse `stock_bid_ask_em` from a push2 `stock/get` response (`data` object).
 pub(crate) fn parse_bid_ask(resp: &Value) -> Result<BidAskRow> {
     let data = resp
@@ -479,7 +477,7 @@ pub async fn stock_bid_ask_em(client: &Client, symbol: &str) -> Result<Vec<BidAs
         ("secid", secid.as_str()),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_bid_ask_em", PUSH2_STOCK, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_bid_ask_em", &crate::core::eastmoney_push::push2_url("/api/qt/stock/get").await, &params)
         .await?;
     Ok(vec![parse_bid_ask(&v)?])
 }

@@ -47,4 +47,6 @@ pub mod pro;
 pub use core::client::Client;
 pub use core::convert;
 pub use core::error::{Error, Result};
+// macOS-only: browser-impersonation backend.
+#[cfg(target_os = "macos")]
 pub use core::impersonate;

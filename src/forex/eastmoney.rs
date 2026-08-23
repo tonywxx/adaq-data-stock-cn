@@ -7,7 +7,6 @@ use crate::forex::{ForexHistRow, ForexSpotQuote};
 
 const FS: &str = "m:119,m:120,m:133";
 const FIELDS: &str = "f12,f13,f14,f1,f2,f4,f3,f152,f17,f18,f15,f16";
-const SPOT_BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const KLINE_BASE: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 const HIST_UT: &str = "f057cbcbce2a86e2866ab8877db1d059";
 
@@ -32,7 +31,7 @@ pub async fn spot(client: &Client) -> Result<Vec<ForexSpotQuote>> {
             ("wbp2u", "|0|0|0|web"),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "forex_spot_em", SPOT_BASE, &params)
+            .get_json(SOURCE_EASTMONEY, "forex_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
             .await?;
         let diff = v
             .get("data")

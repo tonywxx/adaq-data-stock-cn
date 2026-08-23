@@ -16,13 +16,12 @@
 use std::path::Path;
 
 fn main() {
-    // The dylib is macOS-only; linking it on other targets is unsupported.
+    // The dylib is macOS-only. On other targets the `impersonate` module is
+    // cfg-gated out (see `Cargo.toml` + `src/core/mod.rs`), so there is nothing
+    // to link — bail out early and let the reqwest-only build proceed.
     let target = std::env::var("TARGET").unwrap_or_default();
     if !target.contains("apple") && !target.contains("darwin") {
-        panic!(
-            "adaq-data-stock-cn links the macOS-only `libcurl-impersonate` dylib \
-             (browser-impersonation backend). Building on non-Apple targets is not supported."
-        );
+        return;
     }
 
     let manifest_dir =

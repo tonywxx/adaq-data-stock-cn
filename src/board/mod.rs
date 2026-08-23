@@ -26,8 +26,6 @@ use crate::core::error::Result;
 pub(crate) const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 
 /// Eastmoney `clist/get` endpoint base (canonical host used by akshare variants).
-pub(crate) const CLIST_BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
-
 /// Default page size, mirroring akshare (`pz=100`).
 pub(crate) const PAGE_SIZE: u32 = 100;
 
@@ -87,8 +85,7 @@ pub(crate) async fn fetch_clist_page(
     client
         .get_json(
             crate::core::client::SOURCE_EASTMONEY,
-            endpoint,
-            CLIST_BASE,
+            endpoint, &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await

@@ -50,7 +50,6 @@ const SOURCE_SINA: &str = "sina";
 /// Eastmoney F10 securities datacenter (the `RPT_HK*` / `RPT_PCF10*` reports).
 const DC_SEC: &str = "https://datacenter.eastmoney.com/securities/api/data/v1/get";
 /// Eastmoney push2 quote-list endpoint (used by `famous_spot_em` / `ggt_components_em`).
-const PUSH2: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 /// Sina HK all-stocks realtime spot endpoint (returns a JSON array of rows).
 const SINA_HK_SPOT_URL: &str = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHKStockData";
 
@@ -144,7 +143,7 @@ async fn push2_clist(
         ("fields", fields),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, fn_name, PUSH2, &params)
+        .get_json(SOURCE_EASTMONEY, fn_name, &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     Ok(v)
 }

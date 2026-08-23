@@ -31,7 +31,6 @@ use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
 const EM_APPDATA: &str = "https://emappdata.eastmoney.com/stockrank";
-const PUSH2: &str = "https://push2.eastmoney.com/api/qt/ulist.np/get";
 const APP_ID: &str = "appId01";
 const GLOBAL_ID: &str = "786e4c21-70dc-435a-93bb-38";
 
@@ -147,8 +146,7 @@ async fn fetch_rank_prices(client: &Client, rank_arr: &[Value]) -> Result<Vec<Va
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_hot_rank_em_prices",
-            PUSH2,
+            "stock_hot_rank_em_prices", &crate::core::eastmoney_push::push2_url("/api/qt/ulist.np/get").await,
             &params,
         )
         .await?;
@@ -558,8 +556,7 @@ async fn fetch_hk_rank_prices(client: &Client, rank_arr: &[Value]) -> Result<Vec
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_hk_hot_rank_em_prices",
-            PUSH2,
+            "stock_hk_hot_rank_em_prices", &crate::core::eastmoney_push::push2_url("/api/qt/ulist.np/get").await,
             &params,
         )
         .await?;

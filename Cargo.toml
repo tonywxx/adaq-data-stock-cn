@@ -1,13 +1,15 @@
 [package]
 categories = ["finance", "api-bindings"]
 description = "Rust reimplementation of akshare for Chinese A-share market data — the data layer for the AdaQ quant platform"
+documentation = "https://docs.rs/adaq-data-stock-cn"
 edition = "2024"
+homepage = "https://github.com/tonywxx/adaq-data-stock-cn"
 keywords = ["akshare", "stock", "a-share", "quant", "china"]
 license = "Apache-2.0"
 name = "adaq-data-stock-cn"
 readme = "README.md"
 repository = "https://github.com/tonywxx/adaq-data-stock-cn"
-version = "0.1.4"
+version = "0.1.5"
 
 # The vendored `libcurl-impersonate` dylib (~14 MiB) is only needed at build/link
 # time and would exceed crates.io's 10 MiB per-crate limit, so it is excluded
@@ -33,16 +35,17 @@ zip = "8"
 arrow = {version = "59", default-features = false, features = ["json"], optional = true}
 parquet = {version = "59", default-features = false, features = ["async", "zstd", "arrow"], optional = true}
 
-# Browser-impersonation HTTP backend — the Rust analog of the Python `primp`
-# (curl_cffi) library. Wraps `curl-impersonate` to mimic Chrome/Edge/Firefox
-# TLS + HTTP/2 fingerprints, so anti-bot middleboxes that fingerprint
-# rustls/reqwest cannot block our requests. Links the vendored
-# `libcurl-impersonate` shared lib (see `.cargo/config.toml` + `native/`).
-impersonate-rs = "0.1.3"
-
 [features]
 default = []
 parquet = ["dep:arrow", "dep:parquet"]
+
+# Browser-impersonation HTTP backend — macOS only. `impersonate-rs` wraps
+# `curl-impersonate`, which links the macOS-only `libcurl-impersonate` shared
+# lib (see `build.rs` + `native/`). Declared as a target-specific dependency so
+# it is never compiled on Windows/Linux; the rest of the crate (reqwest
+# backend) builds and tests on every OS.
+[target.'cfg(target_os = "macos")'.dependencies]
+impersonate-rs = "0.1.3"
 
 [dev-dependencies]
 tokio = {version = "1", features = ["full"]}

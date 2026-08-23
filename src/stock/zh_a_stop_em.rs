@@ -18,8 +18,6 @@ use serde_json::Value;
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
-const URL: &str = "https://40.push2.eastmoney.com/api/qt/clist/get";
-
 fn str_of(v: Option<&Value>) -> String {
     match v {
         Some(Value::String(s)) => s.clone(),
@@ -132,7 +130,7 @@ pub async fn stock_zh_a_stop_em(client: &Client) -> Result<Vec<ZhAStopRow>> {
         ("fields", "f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_zh_a_stop_em", URL, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_zh_a_stop_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     let diff = v
         .get("data")

@@ -55,7 +55,6 @@ use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
 /// Eastmoney `clist/get` endpoint base (matches `src/stock/more.rs`).
-const CLIST_BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 /// Eastmoney datacenter `v1/get` endpoint base.
 const DATACENTER_BASE: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 /// Eastmoney datacenter (securities) `v1/get` endpoint base — used by the
@@ -194,7 +193,7 @@ async fn fetch_clist_pages(
             ("dect", "1"),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, endpoint, CLIST_BASE, &params)
+            .get_json(SOURCE_EASTMONEY, endpoint, &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
             .await?;
         let total = v
             .get("data")

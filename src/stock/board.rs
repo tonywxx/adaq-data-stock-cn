@@ -58,9 +58,7 @@ const PUSH2_KLINE: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get
 /// Intraday (period = "1") trends endpoint.
 const PUSH2_TRENDS: &str = "https://push2his.eastmoney.com/api/qt/stock/trends2/get";
 /// Real-time spot quote endpoint.
-const PUSH2_STOCK: &str = "https://91.push2.eastmoney.com/api/qt/stock/get";
 /// Board name→code listing endpoint (used for name resolution).
-const PUSH2_CLIST: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 /// Static Eastmoney `ut` magic token (hardcoded in akshare source; not a
 /// per-request JS signature, so name resolution stays feasible).
 const EM_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
@@ -267,7 +265,7 @@ async fn resolve_board_code(client: &Client, symbol: &str, fs: &str, fid: &str) 
         ("fields", "f12,f14"),
     ];
     let v = client
-        .get_json(SOURCE, "board_resolve", PUSH2_CLIST, &params)
+        .get_json(SOURCE, "board_resolve", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     let Some(diff) = v
         .get("data")
@@ -406,7 +404,7 @@ async fn fetch_board_spot(
         ("secid", secid),
     ];
     let v = client
-        .get_json(SOURCE, fn_name, PUSH2_STOCK, &params)
+        .get_json(SOURCE, fn_name, &crate::core::eastmoney_push::push2_url("/api/qt/stock/get").await, &params)
         .await?;
     parse_board_spot(&v)
 }

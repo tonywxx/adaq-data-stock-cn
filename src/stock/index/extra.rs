@@ -16,9 +16,7 @@ use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
 const EM_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const EM_SPOT_URL: &str = "https://48.push2.eastmoney.com/api/qt/clist/get";
 const EM_KLINE_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
-const EM_CONS_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const TX_KLINE_URL: &str = "https://proxy.finance.qq.com/ifzqgtimg/appstock/app/newfqkline/get";
 
 /// Broad A-share index filter (Shanghai + Shenzhen + CSI) for [`index_zh_a_spot`].
@@ -50,7 +48,7 @@ pub async fn index_zh_a_spot(client: &Client) -> Result<Vec<IndexSpotRow>> {
         ),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "index_zh_a_spot", EM_SPOT_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "index_zh_a_spot", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_spot(&v)
 }
@@ -392,7 +390,7 @@ pub async fn index_stock_cons(client: &Client, symbol: &str) -> Result<Vec<Index
         ("fields", "f12,f13,f14"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "index_stock_cons", EM_CONS_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "index_stock_cons", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_cons(&v)
 }

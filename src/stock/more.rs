@@ -28,6 +28,7 @@
 use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
+use crate::core::eastmoney_push::push2_url;
 use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
@@ -38,7 +39,6 @@ use crate::core::json::*;
 const SOURCE_LEGULEGU: &str = "legulegu";
 
 /// Eastmoney `clist/get` endpoint base (matches `src/board/mod.rs` `CLIST_BASE`).
-const CLIST_BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 
 /// Static Eastmoney `ut` token (no JS signing required, ADR-0005).
 const CLIST_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
@@ -186,7 +186,12 @@ async fn fetch_clist(
         ("fields", fields),
     ];
     client
-        .get_json(SOURCE_EASTMONEY, endpoint, CLIST_BASE, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            endpoint,
+            &push2_url("/api/qt/clist/get").await,
+            &params,
+        )
         .await
 }
 

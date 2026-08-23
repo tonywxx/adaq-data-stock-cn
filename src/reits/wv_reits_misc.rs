@@ -5,8 +5,6 @@ use serde_json::Value;
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
-const TRENDS_URL: &str = "https://push2.eastmoney.com/api/qt/stock/trends2/get";
-const CODE_MARKET_URL: &str = "https://95.push2.eastmoney.com/api/qt/clist/get";
 const REITS_UT: &str = "f057cbcbce2a86e2866ab8877db1d059";
 
 // ---------------------------------------------------------------------------
@@ -52,7 +50,7 @@ pub async fn reits_hist_min_em(client: &Client, symbol: &str) -> Result<Vec<Reit
         ("ndays", "5"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "reits_hist_min_em", TRENDS_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "reits_hist_min_em", &crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await, &params)
         .await?;
     parse_reits_hist_min_trends(&v, symbol)
 }
@@ -71,7 +69,7 @@ pub(crate) async fn reits_code_market_map(client: &Client) -> Result<HashMap<Str
         ("fields", "f12,f13"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "reits_hist_min_em", CODE_MARKET_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "reits_hist_min_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_reits_code_market_map(&v)
 }

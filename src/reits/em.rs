@@ -40,7 +40,6 @@ use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
 const SOURCE: &str = "eastmoney";
-const PUSH2_URL: &str = "https://95.push2.eastmoney.com/api/qt/clist/get";
 const PUSH2HIS_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 const PUSH2_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const PUSH2HIS_UT: &str = "f057cbcbce2a86e2866ab8877db1d059";
@@ -145,7 +144,7 @@ pub async fn reits_realtime_em(client: &Client) -> Result<Vec<ReitsRealtimeRow>>
         ("fields", "f2,f3,f4,f5,f6,f12,f14,f15,f16,f17,f18"),
     ];
     let v = client
-        .get_json(SOURCE, "reits_realtime_em", PUSH2_URL, params)
+        .get_json(SOURCE, "reits_realtime_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, params)
         .await?;
     let diff = push2_diff_array(&v)?;
     parse_reits_realtime(diff)
@@ -226,7 +225,7 @@ async fn reits_code_market_map(client: &Client) -> Result<HashMap<String, String
         ("fields", "f12,f13"),
     ];
     let v = client
-        .get_json(SOURCE, "reits_code_market_map", PUSH2_URL, params)
+        .get_json(SOURCE, "reits_code_market_map", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, params)
         .await?;
     let diff = push2_diff_array(&v)?;
     let mut map = HashMap::with_capacity(diff.len());

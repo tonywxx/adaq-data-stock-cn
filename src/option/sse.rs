@@ -922,7 +922,7 @@ pub struct SseMinuteEmRow {
 /// `option_current_em` / `option_current_cffex_em`; this port keeps the
 /// dependency-free `secid` parameter rather than re-implementing that lookup.
 pub async fn option_minute_em(client: &Client, secid: &str) -> Result<Vec<SseMinuteEmRow>> {
-    let url = "https://push2.eastmoney.com/api/qt/stock/trends2/get";
+    let url = crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await;
     let params = [
         ("secid", secid),
         (
@@ -937,7 +937,7 @@ pub async fn option_minute_em(client: &Client, secid: &str) -> Result<Vec<SseMin
         ("cb", "quotepushdata1"),
     ];
     let text = client
-        .get_text(SOURCE_EASTMONEY, "option_minute_em", url, &params, None)
+        .get_text(SOURCE_EASTMONEY, "option_minute_em", &url, &params, None)
         .await?;
     parse_minute_em(&text)
 }

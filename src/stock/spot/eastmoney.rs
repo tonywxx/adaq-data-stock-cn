@@ -2,6 +2,7 @@ use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
+use crate::core::eastmoney_push::push2_url;
 use crate::core::json::*;
 use crate::stock::spot::SpotQuote;
 
@@ -10,7 +11,6 @@ const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const FIELDS: &str = "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21";
 /// Exchange filter: SH/SZ main boards + select boards (mirrors akshare `stock_zh_a_spot_em`).
 const FS: &str = "m:0 t:6,m:0 t:80,m:1 t:2,m:1 t:23,m:0 t:81 s:2048";
-const BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const PAGE_SIZE: u32 = 1000;
 
 /// A-share real-time spot quotes from Eastmoney (`stock_zh_a_spot_em`).
@@ -35,7 +35,12 @@ pub async fn spot(client: &Client) -> Result<Vec<SpotQuote>> {
             ("fields", FIELDS),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "stock_zh_a_spot_em", BASE, &params)
+            .get_json(
+                SOURCE_EASTMONEY,
+                "stock_zh_a_spot_em",
+                &push2_url("/api/qt/clist/get").await,
+                &params,
+            )
             .await?;
         let diff = v
             .get("data")

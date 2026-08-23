@@ -10,7 +10,6 @@ const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const FIELDS: &str = "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f33,f11,f62,f128,f136,f115,f152";
 /// US exchanges (m:105 NYSE, m:106 NASDAQ, m:107 AMEX). NYSE/NASDAQ per spec.
 const FS: &str = "m:105,m:106,m:107";
-const BASE: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const PAGE_SIZE: u32 = 100;
 
 /// US real-time spot quote (`stock_us_spot_em`).
@@ -68,7 +67,7 @@ pub async fn stock_us_spot_em(client: &Client) -> Result<Vec<UsSpotRow>> {
             ("fields", FIELDS),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "stock_us_spot_em", BASE, &params)
+            .get_json(SOURCE_EASTMONEY, "stock_us_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
             .await?;
         let diff = v
             .get("data")

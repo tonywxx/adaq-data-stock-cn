@@ -34,8 +34,6 @@ use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
 const SOURCE: &str = "eastmoney";
-const PUSH2: &str = "https://push2.eastmoney.com/api/qt/clist/get";
-
 // Eastmoney clist board filters (from akshare's own Eastmoney usage).
 const FS_SH_MAIN: &str = "m:1 t:2"; // 沪市主板 A 股
 const FS_SZ_MAIN: &str = "m:0 t:6"; // 深市主板 A 股
@@ -73,7 +71,7 @@ async fn fetch_clist(
         ("fs", fs),
         ("fields", fields),
     ];
-    let v = client.get_json(SOURCE, fn_name, PUSH2, params).await?;
+    let v = client.get_json(SOURCE, fn_name, &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, params).await?;
     emg_clist_array(&v).cloned()
 }
 

@@ -43,8 +43,6 @@ use crate::core::json::*;
 
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const BASE_CLIST: &str = "https://push2.eastmoney.com/api/qt/clist/get";
-const BASE_TRENDS2: &str = "https://push2.eastmoney.com/api/qt/stock/trends2/get";
 const BASE_KLINE: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 
 /// Standard 29-field set used by the A-share / B-share / HK-main-board spots.
@@ -509,7 +507,7 @@ fn fqt(adjust: &str) -> &'static str {
 pub async fn stock_zh_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
     let params = clist_base(FS_ZH_A, FIELDS_STD);
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_zh_a_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_zh_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_zh_a_spot_em(&diff_array(&v)?)
 }
@@ -518,7 +516,7 @@ pub async fn stock_zh_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
 pub async fn stock_sh_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
     let params = clist_base(FS_SH, FIELDS_STD);
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_sh_a_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_sh_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_sh_a_spot_em(&diff_array(&v)?)
 }
@@ -527,7 +525,7 @@ pub async fn stock_sh_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
 pub async fn stock_sz_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
     let params = clist_base(FS_SZ, FIELDS_STD);
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_sz_a_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_sz_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_sz_a_spot_em(&diff_array(&v)?)
 }
@@ -536,7 +534,7 @@ pub async fn stock_sz_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
 pub async fn stock_bj_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
     let params = clist_base(FS_BJ, FIELDS_STD);
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_bj_a_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_bj_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_bj_a_spot_em(&diff_array(&v)?)
 }
@@ -545,7 +543,7 @@ pub async fn stock_bj_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
 pub async fn stock_cy_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
     let params = clist_base(FS_CY, FIELDS_STD);
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_cy_a_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_cy_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_cy_a_spot_em(&diff_array(&v)?)
 }
@@ -554,7 +552,7 @@ pub async fn stock_cy_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
 pub async fn stock_kc_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
     let params = clist_base(FS_KC, FIELDS_STD);
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_kc_a_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_kc_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_kc_a_spot_em(&diff_array(&v)?)
 }
@@ -563,7 +561,7 @@ pub async fn stock_kc_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
 pub async fn stock_zh_b_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
     let params = clist_base(FS_ZH_B, FIELDS_STD);
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_zh_b_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_zh_b_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_zh_b_spot_em(&diff_array(&v)?)
 }
@@ -574,7 +572,7 @@ pub async fn stock_new_a_spot_em(client: &Client) -> Result<Vec<NewASpotEmRow>> 
     params.push(("wbp2u", "|0|0|0|web"));
     params[7] = ("fid", "f26");
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_new_a_spot_em", BASE_CLIST, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_new_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_new_a_spot_em(&diff_array(&v)?)
 }
@@ -597,8 +595,7 @@ pub async fn stock_zh_ab_comparison_em(client: &Client) -> Result<Vec<ZhAbCompar
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_zh_ab_comparison_em",
-            BASE_CLIST,
+            "stock_zh_ab_comparison_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;
@@ -611,8 +608,7 @@ pub async fn stock_hk_main_board_spot_em(client: &Client) -> Result<Vec<HkMainBo
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_hk_main_board_spot_em",
-            BASE_CLIST,
+            "stock_hk_main_board_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;
@@ -638,8 +634,7 @@ pub async fn stock_zh_a_hist_pre_min_em(client: &Client, symbol: &str) -> Result
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_zh_a_hist_pre_min_em",
-            BASE_TRENDS2,
+            "stock_zh_a_hist_pre_min_em", &crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await,
             &params,
         )
         .await?;
@@ -667,8 +662,7 @@ pub async fn stock_hk_hist_min_em(
         let v = client
             .get_json(
                 SOURCE_EASTMONEY,
-                "stock_hk_hist_min_em",
-                BASE_TRENDS2,
+                "stock_hk_hist_min_em", &crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await,
                 &params,
             )
             .await?;
@@ -709,8 +703,7 @@ pub async fn stock_us_hist_min_em(client: &Client, symbol: &str) -> Result<Vec<T
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_us_hist_min_em",
-            BASE_TRENDS2,
+            "stock_us_hist_min_em", &crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await,
             &params,
         )
         .await?;

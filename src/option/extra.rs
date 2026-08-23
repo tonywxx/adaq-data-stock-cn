@@ -78,7 +78,7 @@ pub async fn option_current_em(client: &Client) -> Result<Vec<EmOptionCurrentRow
         .get_json(
             SOURCE_EASTMONEY,
             "option_current_em",
-            "https://23.push2.eastmoney.com/api/qt/clist/get",
+            &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;

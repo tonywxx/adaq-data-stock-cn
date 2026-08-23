@@ -5,7 +5,6 @@ use crate::core::error::{Error, Result};
 use crate::fund::{fnum, fstr};
 
 const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const SPOT_URL: &str = "https://88.push2.eastmoney.com/api/qt/clist/get";
 /// LOF boards: b:MK0404 (LOF-沪), b:MK0405, b:MK0406, b:MK0407.
 const SPOT_FS: &str = "b:MK0404,b:MK0405,b:MK0406,b:MK0407";
 const SPOT_FIELDS: &str = "f1,f2,f3,f4,f5,f6,f12,f13,f14,f15,f16,f17,f18";
@@ -51,7 +50,7 @@ pub async fn fund_lof_spot_em(client: &Client) -> Result<Vec<LofSpotRow>> {
             ("fields", SPOT_FIELDS),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "fund_lof_spot_em", SPOT_URL, &params)
+            .get_json(SOURCE_EASTMONEY, "fund_lof_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
             .await?;
         let diff = v
             .get("data")

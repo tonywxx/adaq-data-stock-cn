@@ -43,7 +43,6 @@ const SPOT_PAGE_SIZE: u32 = 80;
 // --- Eastmoney kline / trends / datacenter ---------------------------------
 
 const KLINE_HIS_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
-const TRENDS_URL: &str = "https://push2.eastmoney.com/api/qt/stock/trends2/get";
 const INFO_URL: &str = "https://datacenter-web.eastmoney.com/api/data/v1/get";
 const INFO_REPORT: &str = "RPT_BOND_CB_LIST";
 const INFO_QUOTE_COLUMNS: &str = "f2~01~CONVERT_STOCK_CODE~CONVERT_STOCK_PRICE,\
@@ -290,7 +289,7 @@ pub async fn bond_zh_hs_cov_min(
             ("ut", KLINE_UT),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "bond_zh_hs_cov_min", TRENDS_URL, &params)
+            .get_json(SOURCE_EASTMONEY, "bond_zh_hs_cov_min", &crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await, &params)
             .await?;
         parse_cov_trends(&v)
     } else {
@@ -336,8 +335,7 @@ pub async fn bond_zh_hs_cov_pre_min(client: &Client, symbol: &str) -> Result<Vec
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "bond_zh_hs_cov_pre_min",
-            TRENDS_URL,
+            "bond_zh_hs_cov_pre_min", &crate::core::eastmoney_push::push2_url("/api/qt/stock/trends2/get").await,
             &params,
         )
         .await?;

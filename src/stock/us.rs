@@ -32,6 +32,7 @@
 use serde_json::Value;
 
 use crate::core::client::Client;
+use crate::core::eastmoney_push::push2_url;
 use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
@@ -45,7 +46,6 @@ const FAMOUS_HEADERS: &[(&str, &str)] = &[
     ("x-version", "1.0.0"),
 ];
 
-const PINK_URL: &str = "https://23.push2.eastmoney.com/api/qt/clist/get";
 /// Hardcoded Eastmoney push2 token (akshare `stock_us_pink.py:35`). Not
 /// dynamically signed for this endpoint, so safe to reuse.
 const PINK_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
@@ -232,10 +232,11 @@ fn pink_params_raw(page: u32) -> Vec<(String, String)> {
 ///
 /// Walks every page (100 rows/page) like akshare; aggregates all pink-sheet rows.
 pub async fn stock_us_pink_spot_em(client: &Client) -> Result<Vec<UsPinkSpotRow>> {
+    let pink_url = push2_url("/api/qt/clist/get").await;
     let raw = pink_params_raw(1);
     let params: Vec<(&str, &str)> = raw.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
     let first = client
-        .get_json(SOURCE_EASTMONEY, "stock_us_pink_spot_em", PINK_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_us_pink_spot_em", &pink_url, &params)
         .await?;
     let total = first
         .get("data")
@@ -252,7 +253,7 @@ pub async fn stock_us_pink_spot_em(client: &Client) -> Result<Vec<UsPinkSpotRow>
         let raw = pink_params_raw(page as u32);
         let params: Vec<(&str, &str)> = raw.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
         let v = client
-            .get_json(SOURCE_EASTMONEY, "stock_us_pink_spot_em", PINK_URL, &params)
+            .get_json(SOURCE_EASTMONEY, "stock_us_pink_spot_em", &pink_url, &params)
             .await?;
         out.extend(parse_stock_us_pink_spot_em(&v)?);
     }

@@ -41,7 +41,6 @@ use crate::core::json::*;
 const SOURCE_TENCENT: &str = "tencent";
 
 // Eastmoney quote API base URLs (push2 = realtime clist, push2his = history kline).
-const EM_CLIST_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const EM_KLINE_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 // Static `ut` token copied verbatim from akshare (not JS-computed at runtime).
 const EM_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
@@ -224,8 +223,7 @@ pub async fn stock_hk_index_spot_em(client: &Client) -> Result<Vec<HkIndexSpotEm
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_hk_index_spot_em",
-            EM_CLIST_URL,
+            "stock_hk_index_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;

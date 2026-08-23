@@ -387,7 +387,6 @@ pub(crate) fn parse_new_shares(resp: &Value) -> Result<Vec<NewShareRow>> {
 // stock_zh_a_stop — Eastmoney 两网及退市 (delisted / STAQ-net) board
 // ===========================================================================
 
-const STOP_EM_URL: &str = "https://40.push2.eastmoney.com/api/qt/clist/get";
 const STOP_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const STOP_FIELDS: &str = "f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152";
 
@@ -444,7 +443,7 @@ pub async fn stock_zh_a_stop(client: &Client) -> Result<Vec<StopRow>> {
         ("fields", STOP_FIELDS),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_zh_a_stop", STOP_EM_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_zh_a_stop", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_stop(&v)
 }
@@ -486,7 +485,6 @@ pub(crate) fn parse_stop(resp: &Value) -> Result<Vec<StopRow>> {
 // stock_summary — Eastmoney A-share overview (all A-shares via `clist`)
 // ===========================================================================
 
-const SUMMARY_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const SUMMARY_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
 const SUMMARY_FS: &str = "m:0 t:6,m:0 t:80,m:1 t:2,m:1 t:23,m:0 t:81 s:2048";
 const SUMMARY_FIELDS: &str =
@@ -543,7 +541,7 @@ pub async fn stock_summary(client: &Client) -> Result<Vec<SummaryRow>> {
             ("fields", SUMMARY_FIELDS),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, "stock_summary", SUMMARY_URL, &params)
+            .get_json(SOURCE_EASTMONEY, "stock_summary", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
             .await?;
         let diff = v
             .get("data")

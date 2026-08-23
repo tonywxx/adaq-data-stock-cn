@@ -40,7 +40,6 @@ const SOURCE_CZCE: &str = "czce";
 const SOURCE_CFFEX: &str = "cffex";
 const SOURCE_OPENCTP: &str = "openctp";
 
-const EM_CLIST_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const EM_UT: &str = "b2884a393a59ad64002292a3e90d46a5";
 
 // ---------------------------------------------------------------------------
@@ -95,7 +94,7 @@ async fn fetch_em_clist(
             ("fs", "m:10"),
         ];
         let v = client
-            .get_json(SOURCE_EASTMONEY, endpoint, EM_CLIST_URL, &params)
+            .get_json(SOURCE_EASTMONEY, endpoint, &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
             .await?;
         let data = v.get("data").ok_or_else(|| Error::UpstreamChanged {
             origin: SOURCE_EASTMONEY,

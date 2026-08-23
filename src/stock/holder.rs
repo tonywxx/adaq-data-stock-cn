@@ -77,7 +77,7 @@ pub async fn stock_individual_info_em(
         .get_json(
             SOURCE_EASTMONEY,
             "stock_individual_info_em",
-            "https://push2.eastmoney.com/api/qt/stock/get",
+            &crate::core::eastmoney_push::push2_url("/api/qt/stock/get").await,
             &params,
         )
         .await?;

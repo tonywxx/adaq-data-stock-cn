@@ -49,7 +49,6 @@ use crate::core::json::*;
 const SOURCE_EASTMONEY: &str = "eastmoney";
 const SOURCE_SINA: &str = "sina";
 
-const PUSH2: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const PUSH2HIS: &str = "https://push2his.eastmoney.com/api/qt/stock/fflow/daykline/get";
 
 const SINA_NODE_COUNT: &str = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount";
@@ -206,8 +205,7 @@ async fn fetch_name_code_map(
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "fund_flow_name_code_map",
-            PUSH2,
+            "fund_flow_name_code_map", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &[
                 ("pn", "1"),
                 ("pz", "5000"),
@@ -386,8 +384,7 @@ pub async fn stock_main_fund_flow(client: &Client, symbol: &str) -> Result<Vec<M
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_main_fund_flow",
-            PUSH2,
+            "stock_main_fund_flow", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &[
                 ("fid", "f184"),
                 ("po", "1"),
@@ -538,8 +535,7 @@ pub async fn stock_sector_fund_flow_rank(
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_sector_fund_flow_rank",
-            PUSH2,
+            "stock_sector_fund_flow_rank", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &[
                 ("pn", "1"),
                 ("pz", "100"),
@@ -662,8 +658,7 @@ pub async fn stock_sector_fund_flow_summary(
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_sector_fund_flow_summary",
-            PUSH2,
+            "stock_sector_fund_flow_summary", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &[
                 ("fid", fid),
                 ("po", "1"),
@@ -1063,8 +1058,7 @@ pub async fn stock_individual_fund_flow_rank(
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_individual_fund_flow_rank",
-            PUSH2,
+            "stock_individual_fund_flow_rank", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &[
                 ("pn", "1"),
                 ("pz", "100"),

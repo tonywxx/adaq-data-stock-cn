@@ -6,6 +6,7 @@ use serde_json::Value;
 use tokio::sync::Semaphore;
 
 use crate::core::error::{Error, Result};
+#[cfg(target_os = "macos")]
 use crate::core::impersonate;
 use crate::core::resilience::{CacheLayer, RateLimiter, RetryPolicy};
 use crate::core::util::urlencode;
@@ -312,12 +313,15 @@ impl ReqwestBackend {
 #[derive(Clone)]
 enum Backend {
     Reqwest(ReqwestBackend),
+    // macOS-only: links the vendored `libcurl-impersonate` dylib.
+    #[cfg(target_os = "macos")]
     Impersonate(impersonate::Client),
 }
 
 
-/// Append `params` as a query string to `url` (used by the impersonate backend,
-/// which takes a full URL rather than separate params).
+/// Append `params` as a query string to `url` (used by the macOS-only
+/// impersonate backend, which takes a full URL rather than separate params).
+#[cfg(target_os = "macos")]
 fn with_query(url: &str, params: &[(&str, &str)]) -> String {
     if params.is_empty() {
         return url.to_string();
@@ -364,6 +368,9 @@ impl Client {
     /// backend's retry/backoff + per-source rate-limiting via
     /// `crate::core::resilience` (C2); only the global concurrency cap is
     /// reqwest-specific. Cache stays off unless explicitly enabled.
+    ///
+    /// Only available on macOS, which links the `libcurl-impersonate` dylib.
+    #[cfg(target_os = "macos")]
     pub fn with_impersonate() -> Self {
         Self {
             backend: Backend::Impersonate(impersonate::Client::new()),
@@ -380,6 +387,7 @@ impl Client {
     ) -> Result<Value> {
         match &self.backend {
             Backend::Reqwest(b) => b.get_json(source, endpoint, url, params).await,
+            #[cfg(target_os = "macos")]
             Backend::Impersonate(c) => {
                 let text = c.get_text(&with_query(url, params), None).await?;
                 serde_json::from_str(&text).map_err(Error::Json)
@@ -401,6 +409,7 @@ impl Client {
                 b.get_json_with_headers(source, endpoint, url, params, headers)
                     .await
             }
+            #[cfg(target_os = "macos")]
             Backend::Impersonate(c) => {
                 let text = c.get_text(&with_query(url, params), headers).await?;
                 serde_json::from_str(&text).map_err(Error::Json)
@@ -419,6 +428,7 @@ impl Client {
     ) -> Result<String> {
         match &self.backend {
             Backend::Reqwest(b) => b.get_text(source, endpoint, url, params, headers).await,
+            #[cfg(target_os = "macos")]
             Backend::Impersonate(c) => c.get_text(&with_query(url, params), headers).await,
         }
     }
@@ -436,6 +446,7 @@ impl Client {
             Backend::Reqwest(b) => {
                 b.post_form_json(source, endpoint, url, params, headers).await
             }
+            #[cfg(target_os = "macos")]
             Backend::Impersonate(c) => c.post_form_json(url, params, headers).await,
         }
     }
@@ -451,6 +462,7 @@ impl Client {
     ) -> Result<String> {
         match &self.backend {
             Backend::Reqwest(b) => b.post_form_text(source, endpoint, url, params, headers).await,
+            #[cfg(target_os = "macos")]
             Backend::Impersonate(c) => c.post_form_text(url, params, headers).await,
         }
     }
@@ -466,6 +478,7 @@ impl Client {
     ) -> Result<Value> {
         match &self.backend {
             Backend::Reqwest(b) => b.post_json(source, endpoint, url, body, headers).await,
+            #[cfg(target_os = "macos")]
             Backend::Impersonate(c) => c.post_json(url, body, headers).await,
         }
     }
@@ -496,6 +509,8 @@ mod tests {
         assert!(unreachable(&Client::new()).await);
     }
 
+    // macOS only: `with_impersonate` links the `libcurl-impersonate` dylib.
+    #[cfg(target_os = "macos")]
     #[tokio::test]
     async fn impersonate_backend_dispatches() {
         assert!(unreachable(&Client::with_impersonate()).await);

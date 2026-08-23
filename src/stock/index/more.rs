@@ -22,7 +22,6 @@ use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
 const EM_UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const EM_SPOT_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const EM_KLINE_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 const EM_TREND_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/trends2/get";
 const CSINDEX_HIST_URL: &str = "https://www.csindex.com.cn/csindex-home/perf/index-perf";
@@ -122,8 +121,7 @@ pub async fn index_global_spot_em(client: &Client) -> Result<Vec<GlobalSpotRow>>
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "index_global_spot_em",
-            EM_SPOT_URL,
+            "index_global_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;

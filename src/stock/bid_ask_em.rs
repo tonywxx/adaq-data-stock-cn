@@ -16,9 +16,8 @@
 use serde_json::Value;
 
 use crate::core::client::{Client, SOURCE_EASTMONEY};
+use crate::core::eastmoney_push::push2_url;
 use crate::core::error::{Error, Result};
-
-const URL: &str = "https://push2.eastmoney.com/api/qt/stock/get";
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct BidAskRow {
@@ -115,7 +114,12 @@ pub async fn stock_bid_ask_em(client: &Client, symbol: &str) -> Result<Vec<BidAs
         ("secid", secid.as_str()),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_bid_ask_em", URL, &params)
+        .get_json(
+            SOURCE_EASTMONEY,
+            "stock_bid_ask_em",
+            &push2_url("/api/qt/stock/get").await,
+            &params,
+        )
         .await?;
     parse_bid_ask(&v)
 }

@@ -15,16 +15,18 @@ env:
 jobs:
   release:
     name: Release & Publish
-    # macOS-only: the crate links a vendored libcurl-impersonate dylib.
+    # macOS-only: the release build links the vendored libcurl-impersonate dylib
+    # (browser-impersonation backend). The published crate excludes `native/`,
+    # so consumers on other OSes build the reqwest-only core (see CI matrix).
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
       - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@v2.9.2
 
       - name: Verify tag matches Cargo.toml version
         run: |
@@ -50,6 +52,6 @@ jobs:
 
       - name: Create GitHub Release
         if: success()
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3.0.2
         with:
           generate_release_notes: true

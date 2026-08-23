@@ -46,7 +46,6 @@ use crate::core::error::{Error, Result};
 use crate::core::json::*;
 
 // Eastmoney quote API base URLs (push2 = realtime clist, push2his = history).
-const EM_CLIST_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const EM_KLINE_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 const EM_TRENDS_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/trends2/get";
 // Static `ut` tokens copied verbatim from akshare (not JS-computed at runtime).
@@ -140,8 +139,7 @@ async fn index_code_id_map_em(client: &Client) -> Result<HashMap<String, String>
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "index_code_id_map_em",
-            EM_CLIST_URL,
+            "index_code_id_map_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;
@@ -612,7 +610,7 @@ pub async fn index_zh_a_spot(client: &Client) -> Result<Vec<ZhASpotRow>> {
         ),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "index_zh_a_spot", EM_CLIST_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "index_zh_a_spot", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     Ok(parse_index_zh_a_spot(em_diff_array(&v)?))
 }
@@ -693,8 +691,7 @@ pub async fn index_global_spot_em(client: &Client) -> Result<Vec<GlobalSpotEmRow
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "index_global_spot_em",
-            EM_CLIST_URL,
+            "index_global_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;

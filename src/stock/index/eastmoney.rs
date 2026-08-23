@@ -7,7 +7,6 @@ use crate::stock::hist::HistRow;
 use crate::stock::index::IndexSpotQuote;
 
 const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const SPOT_URL: &str = "https://48.push2.eastmoney.com/api/qt/clist/get";
 const HIST_URL: &str = "https://push2his.eastmoney.com/api/qt/stock/kline/get";
 
 /// Eastmoney category → `fs` filter (akshare `stock_zh_index_spot_em`).
@@ -50,8 +49,7 @@ pub async fn spot_category(client: &Client, category: &str) -> Result<Vec<IndexS
     let v = client
         .get_json(
             SOURCE_EASTMONEY,
-            "stock_zh_index_spot_em",
-            SPOT_URL,
+            "stock_zh_index_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
             &params,
         )
         .await?;

@@ -275,7 +275,6 @@ pub(crate) fn parse_bond_zh_cov_value_analysis(
 // https://quote.eastmoney.com/center/gridlist.html#bond_sz_buyback
 // ---------------------------------------------------------------------------
 
-const BUYBACK_URL: &str = "https://push2.eastmoney.com/api/qt/clist/get";
 const BUYBACK_FIELDS: &str = "f12,f13,f14,f1,f2,f4,f3,f152,f17,f18,f15,f16,f5,f6";
 
 /// Repo (pledged-style buy-back) quote row (`bond_sh_buy_back_em` / `bond_sz_buy_back_em`).
@@ -333,7 +332,7 @@ async fn fetch_buy_back(client: &Client, fs: &str) -> Result<Vec<BondBuyBackEm>>
         ("wbp2u", "|0|0|0|web"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "bond_buy_back_em", BUYBACK_URL, &params)
+        .get_json(SOURCE_EASTMONEY, "bond_buy_back_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_bond_buy_back_em(&v)
 }

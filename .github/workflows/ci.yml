@@ -11,12 +11,18 @@ env:
 
 jobs:
   test:
-    name: Test & Build (macOS)
-    # The crate links a macOS-only vendored dylib (native/libcurl-impersonate),
-    # so it can only build on macOS runners.
-    runs-on: macos-latest
+    name: Test & Build
+    # Cross-platform: the reqwest-based core builds and tests on every OS.
+    # The browser-impersonation backend (impersonate-rs → libcurl-impersonate)
+    # is macOS-only and cfg-gated, so it is compiled/exercised on macOS and
+    # simply absent on ubuntu/windows.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -24,7 +30,7 @@ jobs:
           components: clippy, rustfmt
 
       - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@v2.9.2
 
       # Informational only — the repo is not yet rustfmt-clean. Run
       # `cargo fmt` locally once to make this a hard gate if desired.
@@ -46,10 +52,10 @@ jobs:
     # Pure-Python parity recompute — no macOS dylib needed, so it runs on Linux.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.x"
 

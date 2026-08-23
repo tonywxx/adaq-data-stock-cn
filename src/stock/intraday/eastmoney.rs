@@ -6,8 +6,6 @@ use crate::core::json::*;
 use crate::stock::intraday::IntradayRow;
 
 const UT: &str = "bd1d9ddb04089700cf9c27f6f7426281";
-const BASE: &str = "https://70.push2.eastmoney.com/api/qt/stock/details/sse";
-
 /// Intraday tick (time & sales) data from Eastmoney (`stock_intraday_em`).
 ///
 /// Eastmoney streams `data: {...}` SSE frames, each containing `data.details` — an
@@ -27,7 +25,7 @@ pub async fn em(client: &Client, symbol: &str) -> Result<Vec<IntradayRow>> {
         ("wbp2u", "|0|0|0|web"),
     ];
     let text = client
-        .get_text(SOURCE_EASTMONEY, "stock_intraday_em", BASE, &params, None)
+        .get_text(SOURCE_EASTMONEY, "stock_intraday_em", &crate::core::eastmoney_push::push2_url("/api/qt/stock/details/sse").await, &params, None)
         .await?;
     parse_stream(&text, symbol)
 }

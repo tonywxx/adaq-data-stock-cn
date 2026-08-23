@@ -792,7 +792,7 @@ fn parse_lof_hist(klines: &[Value]) -> Vec<FundLofHistRow> {
 
 /// Resolve the Eastmoney `secid` (`{market}.{code}`) for a LOF code via `clist`.
 async fn lof_secid(client: &Client, symbol: &str) -> Result<String> {
-    let url = "https://2.push2.eastmoney.com/api/qt/clist/get";
+    let url = crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await;
     let params = [
         ("pn", "1"),
         ("pz", "10000"),
@@ -807,7 +807,7 @@ async fn lof_secid(client: &Client, symbol: &str) -> Result<String> {
         ("fields", "f3,f12,f13"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "fund_lof_hist_em", url, &params)
+        .get_json(SOURCE_EASTMONEY, "fund_lof_hist_em", &url, &params)
         .await?;
     let diff = v
         .get("data")

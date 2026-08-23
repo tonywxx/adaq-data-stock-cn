@@ -16,8 +16,6 @@ use serde_json::Value;
 use crate::core::client::{Client, SOURCE_EASTMONEY};
 use crate::core::error::{Error, Result};
 
-const URL: &str = "https://5.push2.eastmoney.com/api/qt/clist/get";
-
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct StaqNetStopRow {
     /// 序号 (1-based row ordinal).
@@ -87,7 +85,7 @@ pub async fn stock_staq_net_stop(client: &Client) -> Result<Vec<StaqNetStopRow>>
         ("fields", "f12,f14"),
     ];
     let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_staq_net_stop", URL, &params)
+        .get_json(SOURCE_EASTMONEY, "stock_staq_net_stop", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
         .await?;
     parse_staq_net_stop(&v)
 }
