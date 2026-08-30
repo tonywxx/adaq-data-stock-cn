@@ -11,6 +11,22 @@ project adheres to [Semantic Versioning](https://semver.org/). / 格式遵循
 
 ## [Unreleased] / [未发布]
 
+## [0.1.6] - 2026-08-29
+
+- **refactor**: Restructure code for improved readability and maintainability. / **重构**:调整代码结构以提升可读性与可维护性。
+
+## [0.1.5] - 2026-08-23
+
+- **feat**: Add a macOS-only example for the browser-impersonation backend. / **新增**:新增 macOS 专属的浏览器指纹模拟后端示例。
+- **fix**: Gate the `impersonate_smoke` example to macOS in source, so `cargo --all-targets` on Windows/Linux no longer fails clippy (the unsupported `[[example]]` target key is now unused). / **修复**:在源码层将 `impersonate_smoke` 示例限定为 macOS,避免 Windows/Linux 下 `--all-targets` 触发 clippy 失败(不再使用不被支持的 `[[example]]` target 键)。
+- **refactor**: Resolve Eastmoney `push2` API URLs dynamically via a new `eastmoney_push` module instead of hardcoded endpoints, improving flexibility and reliability against server availability. / **重构**:通过新增的 `eastmoney_push` 模块动态解析东方财富 `push2` 接口地址(取代硬编码),提升对服务器可用性的灵活性与可靠性。
+
+## [0.1.4] - 2026-08-18
+
+- **feat**: Add `CHANGELOG.md` and architecture decision records (ADRs) covering source-chain scope and parser scope. / **新增**:新增 `CHANGELOG.md` 及覆盖数据源链路范围与解析器范围的架构决策记录(ADR)。
+- **feat**: Introduce shared JSON value extractors in `json.rs`, HTTP resilience primitives (rate limiting, retry policies) in `resilience.rs`, and consistent percent-encoding utilities in `util.rs`. / **新增**:在 `json.rs` 中引入共享 JSON 取值器,在 `resilience.rs` 中引入 HTTP 弹性原语(限流、重试策略),并在 `util.rs` 中提供一致的百分号编码工具。
+- **fix**: Bump version to 0.1.4 to match the `v0.1.4` tag. / **修复**:将版本升至 0.1.4 以匹配 `v0.1.4` 标签。
+
 ## [0.1.3] - 2026-08-17
 
 - **chore**: Bump version to 0.1.3 and adjust the `repository` URL in `Cargo.toml`. / **杂务**:版本升至 0.1.3,并修正 `Cargo.toml` 中的 `repository` 仓库地址。
@@ -48,7 +64,10 @@ First tagged release — the initial full Rust reimplementation of akshare. / �
 
 - Reversed JS-execution endpoints to pure Rust per ADR-0005 (no JS engine embedded); deferred the remaining set gated by signing / tokens / HTML / Excel. / 依据 ADR-0005 将 JS 执行端点逆为纯 Rust(不内嵌 JS 引擎);其余受签名 / 令牌 / HTML / Excel 限制的接口按设计推迟。
 
-[Unreleased]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.4...v0.1.5
+[0.1.4]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/tonywxx/adaq-data-stock-cn/compare/v0.1.0...v0.1.1
