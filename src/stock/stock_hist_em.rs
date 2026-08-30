@@ -65,6 +65,7 @@ const FS_AB: &str = "m:1+b:BK0498,m:0+b:BK0498";
 
 
 /// Extract the `data.diff` array from a clist response.
+#[allow(dead_code)]
 fn diff_array(resp: &Value) -> Result<Vec<Value>> {
     resp.get("data")
         .and_then(|d| d.get("diff"))
@@ -100,11 +101,9 @@ fn kline_array(resp: &Value) -> Result<Vec<Value>> {
         })
 }
 
-/// Standard clist query params (single page) for the A/B/HK-main spots.
-fn clist_base<'a>(fs: &'a str, fields: &'a str) -> Vec<(&'a str, &'a str)> {
-    vec![
-        ("pn", "1"),
-        ("pz", "100"),
+/// Shared paginated clist helper (ponytail: push2 diff pagination).
+async fn clist_all(client: &Client, endpoint: &'static str, fs: &str, fields: &str) -> Result<Vec<Value>> {
+    let base = [
         ("po", "1"),
         ("np", "1"),
         ("ut", UT),
@@ -113,7 +112,8 @@ fn clist_base<'a>(fs: &'a str, fields: &'a str) -> Vec<(&'a str, &'a str)> {
         ("fid", "f12"),
         ("fs", fs),
         ("fields", fields),
-    ]
+    ];
+    crate::core::pipeline::fetch_push2_all(client, endpoint, "/api/qt/clist/get", &base, 100).await
 }
 
 /// Common A-share realtime spot row (23 output columns).
@@ -505,114 +505,83 @@ fn fqt(adjust: &str) -> &'static str {
 
 /// 东方财富网-沪深京 A 股-实时行情 (`stock_zh_a_spot_em`, stock_hist_em.py:15).
 pub async fn stock_zh_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
-    let params = clist_base(FS_ZH_A, FIELDS_STD);
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_zh_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_zh_a_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_zh_a_spot_em", FS_ZH_A, FIELDS_STD).await?;
+    parse_zh_a_spot_em(&items)
 }
 
 /// 东方财富网-沪 A 股-实时行情 (`stock_sh_a_spot_em`, stock_hist_em.py:124).
 pub async fn stock_sh_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
-    let params = clist_base(FS_SH, FIELDS_STD);
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_sh_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_sh_a_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_sh_a_spot_em", FS_SH, FIELDS_STD).await?;
+    parse_sh_a_spot_em(&items)
 }
 
 /// 东方财富网-深 A 股-实时行情 (`stock_sz_a_spot_em`, stock_hist_em.py:232).
 pub async fn stock_sz_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
-    let params = clist_base(FS_SZ, FIELDS_STD);
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_sz_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_sz_a_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_sz_a_spot_em", FS_SZ, FIELDS_STD).await?;
+    parse_sz_a_spot_em(&items)
 }
 
 /// 东方财富网-京 A 股-实时行情 (`stock_bj_a_spot_em`, stock_hist_em.py:340).
 pub async fn stock_bj_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
-    let params = clist_base(FS_BJ, FIELDS_STD);
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_bj_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_bj_a_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_bj_a_spot_em", FS_BJ, FIELDS_STD).await?;
+    parse_bj_a_spot_em(&items)
 }
 
 /// 东方财富网-创业板-实时行情 (`stock_cy_a_spot_em`, stock_hist_em.py:561).
 pub async fn stock_cy_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
-    let params = clist_base(FS_CY, FIELDS_STD);
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_cy_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_cy_a_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_cy_a_spot_em", FS_CY, FIELDS_STD).await?;
+    parse_cy_a_spot_em(&items)
 }
 
 /// 东方财富网-科创板-实时行情 (`stock_kc_a_spot_em`, stock_hist_em.py:670).
 pub async fn stock_kc_a_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
-    let params = clist_base(FS_KC, FIELDS_STD);
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_kc_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_kc_a_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_kc_a_spot_em", FS_KC, FIELDS_STD).await?;
+    parse_kc_a_spot_em(&items)
 }
 
 /// 东方财富网- B 股-实时行情 (`stock_zh_b_spot_em`, stock_hist_em.py:844).
 pub async fn stock_zh_b_spot_em(client: &Client) -> Result<Vec<ZhASpotEmRow>> {
-    let params = clist_base(FS_ZH_B, FIELDS_STD);
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_zh_b_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_zh_b_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_zh_b_spot_em", FS_ZH_B, FIELDS_STD).await?;
+    parse_zh_b_spot_em(&items)
 }
 
 /// 东方财富网-新股-实时行情 (`stock_new_a_spot_em`, stock_hist_em.py:448).
 pub async fn stock_new_a_spot_em(client: &Client) -> Result<Vec<NewASpotEmRow>> {
-    let mut params = clist_base(FS_NEW, FIELDS_NEW);
-    params.push(("wbp2u", "|0|0|0|web"));
-    params[7] = ("fid", "f26");
-    let v = client
-        .get_json(SOURCE_EASTMONEY, "stock_new_a_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-        .await?;
-    parse_new_a_spot_em(&diff_array(&v)?)
+    let base = [
+        ("po", "1"),
+        ("np", "1"),
+        ("ut", UT),
+        ("fltt", "2"),
+        ("invt", "2"),
+        ("fid", "f26"),
+        ("fs", FS_NEW),
+        ("fields", FIELDS_NEW),
+        ("wbp2u", "|0|0|0|web"),
+    ];
+    let items = crate::core::pipeline::fetch_push2_all(client, "stock_new_a_spot_em", "/api/qt/clist/get", &base, 100).await?;
+    parse_new_a_spot_em(&items)
 }
 
 /// 东方财富网-AB股比价 (`stock_zh_ab_comparison_em`, stock_hist_em.py:779).
 pub async fn stock_zh_ab_comparison_em(client: &Client) -> Result<Vec<ZhAbComparisonRow>> {
-    let params = [
+    let base = [
         ("np", "1"),
         ("fltt", "1"),
         ("invt", "2"),
         ("fs", FS_AB),
         ("fields", FIELDS_AB),
         ("fid", "f199"),
-        ("pn", "1"),
-        ("pz", "100"),
         ("po", "1"),
-        ("dect", "1"),
-        ("wbp2u", "|0|0|0|web"),
+        ("ut", UT),
     ];
-    let v = client
-        .get_json(
-            SOURCE_EASTMONEY,
-            "stock_zh_ab_comparison_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
-            &params,
-        )
-        .await?;
-    parse_zh_ab_comparison_em(&diff_array(&v)?)
+    let items = crate::core::pipeline::fetch_push2_all(client, "stock_zh_ab_comparison_em", "/api/qt/clist/get", &base, 100).await?;
+    parse_zh_ab_comparison_em(&items)
 }
 
 /// 东方财富网-港股-主板-实时行情 (`stock_hk_main_board_spot_em`, stock_hist_em.py:1310).
 pub async fn stock_hk_main_board_spot_em(client: &Client) -> Result<Vec<HkMainBoardSpotEmRow>> {
-    let params = clist_base(FS_HK_MAIN, FIELDS_STD);
-    let v = client
-        .get_json(
-            SOURCE_EASTMONEY,
-            "stock_hk_main_board_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await,
-            &params,
-        )
-        .await?;
-    parse_hk_main_board_spot_em(&diff_array(&v)?)
+    let items = clist_all(client, "stock_hk_main_board_spot_em", FS_HK_MAIN, FIELDS_STD).await?;
+    parse_hk_main_board_spot_em(&items)
 }
 
 // ===========================================================================

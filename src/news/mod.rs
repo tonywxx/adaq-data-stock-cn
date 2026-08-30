@@ -16,6 +16,8 @@
 //! has no cookie store (the upstream cookie handshake is a two-step browser session, not JS signing).
 
 pub mod baidu_calendar;
+pub mod cls;
+pub mod cninfo_irm;
 pub mod nlp_ownthink;
 pub mod stock_news;
 
@@ -23,6 +25,8 @@ pub use baidu_calendar::{
     DividendRow, EventRow, ReportRow, SuspendRow, news_economic_baidu, news_report_time_baidu,
     news_trade_notify_dividend_baidu, news_trade_notify_suspend_baidu,
 };
+pub use cls::{ClsTelegraphRow, telegraph};
+pub use cninfo_irm::{CninfoIrmRow, cninfo_irm};
 pub use nlp_ownthink::{KnowledgeRow, nlp_answer, nlp_ownthink};
 pub use stock_news::{NewsRow, stock_news_em};
 

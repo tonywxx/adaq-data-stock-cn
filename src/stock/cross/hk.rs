@@ -46,48 +46,32 @@ pub struct HkHistRow {
 ///
 /// Eastmoney paginates `clist/get`; we walk pages until `total` is covered.
 pub async fn stock_hk_spot_em(client: &Client) -> Result<Vec<HkSpotRow>> {
-    let mut out = Vec::new();
-    let mut pn: u32 = 1;
-    loop {
-        let pn_s = pn.to_string();
-        let pz_s = PAGE_SIZE.to_string();
-        let params = [
-            ("pn", pn_s.as_str()),
-            ("pz", pz_s.as_str()),
-            ("po", "1"),
-            ("np", "1"),
-            ("ut", UT),
-            ("fltt", "2"),
-            ("invt", "2"),
-            ("fid", "f12"),
-            ("fs", FS),
-            ("fields", FIELDS),
-        ];
-        let v = client
-            .get_json(SOURCE_EASTMONEY, "stock_hk_spot_em", &crate::core::eastmoney_push::push2_url("/api/qt/clist/get").await, &params)
-            .await?;
-        let diff = v
-            .get("data")
-            .and_then(|d| d.get("diff"))
-            .and_then(|d| d.as_array())
-            .ok_or_else(|| Error::UpstreamChanged {
-                origin: SOURCE_EASTMONEY,
-                message: "missing data.diff".into(),
-            })?;
-        if diff.is_empty() {
-            break;
-        }
-        out.extend(parse(&v)?);
-        let total = v
-            .get("data")
-            .and_then(|d| d.get("total"))
-            .and_then(|t| t.as_u64())
-            .unwrap_or(0);
-        if (pn as u64) * PAGE_SIZE as u64 >= total {
-            break;
-        }
-        pn += 1;
-        tokio::time::sleep(std::time::Duration::from_millis(800)).await;
+    const PATH: &str = "/api/qt/clist/get";
+    let base = [
+        ("po", "1"),
+        ("np", "1"),
+        ("ut", UT),
+        ("fltt", "2"),
+        ("invt", "2"),
+        ("fid", "f12"),
+        ("fs", FS),
+        ("fields", FIELDS),
+    ];
+    let raws = crate::core::pipeline::fetch_push2_all(client, "stock_hk_spot_em", PATH, &base, PAGE_SIZE).await?;
+    let mut out = Vec::with_capacity(raws.len());
+    for item in &raws {
+        out.push(HkSpotRow {
+            code: fstr(item, "f12"),
+            name: fstr(item, "f14"),
+            price: fnum(item, "f2"),
+            pct_change: fnum(item, "f3"),
+            open: fnum(item, "f17"),
+            high: fnum(item, "f15"),
+            low: fnum(item, "f16"),
+            pre_close: fnum(item, "f18"),
+            volume: fnum(item, "f5"),
+            amount: fnum(item, "f6"),
+        });
     }
     Ok(out)
 }
@@ -128,6 +112,7 @@ pub async fn stock_hk_hist(
     Ok(rows)
 }
 
+#[allow(dead_code)]
 pub(crate) fn parse(resp: &Value) -> Result<Vec<HkSpotRow>> {
     let diff = resp
         .get("data")

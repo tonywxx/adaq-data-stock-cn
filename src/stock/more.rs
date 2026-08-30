@@ -635,6 +635,272 @@ pub(crate) fn parse_zt_pool(resp: &Value) -> Result<Vec<StockZtPoolRow>> {
 }
 
 // ===========================================================================
+// 涨停生态股池 — 东方财富 push2ex (炸板 / 跌停 / 昨涨停)
+// ===========================================================================
+
+/// Shared fetch for the push2ex 涨停生态 pools. `endpoint` is the push2ex path
+/// (e.g. `getTopicZBPool`), `sort` the `sort` param. Returns the raw `data.pool`
+/// array; `data: null` → empty `Vec` (akshare-style "no pool that day").
+async fn fetch_zt_pool(
+    client: &Client,
+    endpoint: &str,
+    sort: &str,
+    date: &str,
+) -> Result<Vec<Value>> {
+    let params = [
+        ("ut", "7eea3edcaed734bea9cbfc24409ed989"),
+        ("dpt", "wz.ztzt"),
+        ("Pageindex", "0"),
+        ("pagesize", "10000"),
+        ("sort", sort),
+        ("date", date),
+    ];
+    let v = client
+        .get_json(
+            SOURCE_EASTMONEY,
+            "em_zt_pool",
+            &format!("https://push2ex.eastmoney.com/{endpoint}"),
+            &params,
+        )
+        .await?;
+    match v.get("data") {
+        Some(d) if !d.is_null() => Ok(d
+            .get("pool")
+            .and_then(|p| p.as_array())
+            .cloned()
+            .unwrap_or_default()),
+        _ => Ok(Vec::new()),
+    }
+}
+
+/// 炸板池 (failed limit-up) row — 东方财富 push2ex `getTopicZBPool`.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct EmZbPoolRow {
+    pub code: String,
+    pub name: String,
+    /// `p` 最新价 (÷1000)
+    pub price: Option<f64>,
+    /// `ztp` 涨停价 (÷1000)
+    pub limit_price: Option<f64>,
+    /// `zdp` 涨跌幅 (%)
+    pub pct_change: Option<f64>,
+    /// `amount` 成交额 (元)
+    pub amount: Option<f64>,
+    /// `ltsz` 流通市值
+    pub float_mktcap: Option<f64>,
+    /// `tshare` 总市值
+    pub total_mktcap: Option<f64>,
+    /// `hs` 换手率 (%)
+    pub turnover: Option<f64>,
+    /// `fbt` 首次封板时间 (HHMMSS)
+    pub first_time: Option<String>,
+    /// `zbc` 炸板次数
+    pub explode_count: Option<f64>,
+    /// `zf` 振幅 (%)
+    pub amplitude: Option<f64>,
+    /// `zs` 涨速
+    pub speed: Option<f64>,
+    /// `zttj.days` 连板天数
+    pub consecutive_days: Option<i64>,
+    /// `zttj.ct` 连板次数
+    pub consecutive_count: Option<i64>,
+    /// `hybk` 所属行业
+    pub industry: String,
+    pub source: &'static str,
+}
+
+/// Port of `em_zb_pool(date)` — 炸板池 (stocks that touched the limit but failed to hold).
+pub async fn em_zb_pool(client: &Client, date: &str) -> Result<Vec<EmZbPoolRow>> {
+    check_date8(date, "em_zb_pool date")?;
+    let pool = fetch_zt_pool(client, "getTopicZBPool", "fbt:asc", date).await?;
+    Ok(parse_zb_pool(&pool))
+}
+
+/// Parse a push2ex `data.pool` array into [`EmZbPoolRow`]s.
+pub(crate) fn parse_zb_pool(pool: &[Value]) -> Vec<EmZbPoolRow> {
+    pool.iter()
+        .filter_map(|item| {
+            let code = opt_str_or(item, "c", "");
+            let name = opt_str_or(item, "n", "");
+            if code.is_empty() || name.is_empty() {
+                return None;
+            }
+            let days = item.get("zttj").and_then(|z| z.get("days")).and_then(|v| v.as_i64());
+            let ct = item.get("zttj").and_then(|z| z.get("ct")).and_then(|v| v.as_i64());
+            Some(EmZbPoolRow {
+                code,
+                name,
+                price: opt_f64(item, "p").map(|x| x / 1000.0),
+                limit_price: opt_f64(item, "ztp").map(|x| x / 1000.0),
+                pct_change: opt_f64(item, "zdp"),
+                amount: opt_f64(item, "amount"),
+                float_mktcap: opt_f64(item, "ltsz"),
+                total_mktcap: opt_f64(item, "tshare"),
+                turnover: opt_f64(item, "hs"),
+                first_time: fmt_time(item.get("fbt").unwrap_or(&Value::Null)),
+                explode_count: opt_f64(item, "zbc"),
+                amplitude: opt_f64(item, "zf"),
+                speed: opt_f64(item, "zs"),
+                consecutive_days: days,
+                consecutive_count: ct,
+                industry: opt_str_or(item, "hybk", ""),
+                source: SOURCE_EASTMONEY,
+            })
+        })
+        .collect()
+}
+
+/// 跌停池 row — 东方财富 push2ex `getTopicDTPool`.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct EmDtPoolRow {
+    pub code: String,
+    pub name: String,
+    /// `p` 最新价 (÷1000)
+    pub price: Option<f64>,
+    /// `zdp` 涨跌幅 (%)
+    pub pct_change: Option<f64>,
+    /// `amount` 成交额 (元)
+    pub amount: Option<f64>,
+    /// `ltsz` 流通市值
+    pub float_mktcap: Option<f64>,
+    /// `tshare` 总市值
+    pub total_mktcap: Option<f64>,
+    /// `pe` 市盈率
+    pub pe: Option<f64>,
+    /// `hs` 换手率 (%)
+    pub turnover: Option<f64>,
+    /// `fund` 主力净流入 (元)
+    pub main_net: Option<f64>,
+    /// `lbt` 最后成交时间 (HHMMSS)
+    pub last_time: Option<String>,
+    /// `fba` 封板资金
+    pub seal_funds: Option<f64>,
+    /// `days` 跌停天数
+    pub days: Option<i64>,
+    /// `oc` 开板次数
+    pub open_count: Option<f64>,
+    /// `hybk` 所属行业
+    pub industry: String,
+    pub source: &'static str,
+}
+
+/// Port of `em_dt_pool(date)` — 跌停池 (limit-down stocks).
+pub async fn em_dt_pool(client: &Client, date: &str) -> Result<Vec<EmDtPoolRow>> {
+    check_date8(date, "em_dt_pool date")?;
+    let pool = fetch_zt_pool(client, "getTopicDTPool", "fund:asc", date).await?;
+    Ok(parse_dt_pool(&pool))
+}
+
+/// Parse a push2ex `data.pool` array into [`EmDtPoolRow`]s.
+pub(crate) fn parse_dt_pool(pool: &[Value]) -> Vec<EmDtPoolRow> {
+    pool.iter()
+        .filter_map(|item| {
+            let code = opt_str_or(item, "c", "");
+            let name = opt_str_or(item, "n", "");
+            if code.is_empty() || name.is_empty() {
+                return None;
+            }
+            Some(EmDtPoolRow {
+                code,
+                name,
+                price: opt_f64(item, "p").map(|x| x / 1000.0),
+                pct_change: opt_f64(item, "zdp"),
+                amount: opt_f64(item, "amount"),
+                float_mktcap: opt_f64(item, "ltsz"),
+                total_mktcap: opt_f64(item, "tshare"),
+                pe: opt_f64(item, "pe"),
+                turnover: opt_f64(item, "hs"),
+                main_net: opt_f64(item, "fund"),
+                last_time: fmt_time(item.get("lbt").unwrap_or(&Value::Null)),
+                seal_funds: opt_f64(item, "fba"),
+                days: item.get("days").and_then(|v| v.as_i64()),
+                open_count: opt_f64(item, "oc"),
+                industry: opt_str_or(item, "hybk", ""),
+                source: SOURCE_EASTMONEY,
+            })
+        })
+        .collect()
+}
+
+/// 昨涨停今表现 row — 东方财富 push2ex `getYesterdayZTPool`.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct EmYztPoolRow {
+    pub code: String,
+    pub name: String,
+    /// `p` 最新价 (÷1000)
+    pub price: Option<f64>,
+    /// `ztp` 涨停价 (÷1000)
+    pub limit_price: Option<f64>,
+    /// `zdp` 涨跌幅 (%)
+    pub pct_change: Option<f64>,
+    /// `amount` 成交额 (元)
+    pub amount: Option<f64>,
+    /// `ltsz` 流通市值
+    pub float_mktcap: Option<f64>,
+    /// `tshare` 总市值
+    pub total_mktcap: Option<f64>,
+    /// `hs` 换手率 (%)
+    pub turnover: Option<f64>,
+    /// `zf` 振幅 (%)
+    pub amplitude: Option<f64>,
+    /// `zs` 涨速
+    pub speed: Option<f64>,
+    /// `yfbt` 昨日首次封板时间 (HHMMSS)
+    pub y_first_time: Option<String>,
+    /// `ylbc` 昨日连板数
+    pub y_limit_days: Option<f64>,
+    /// `hybk` 所属行业
+    pub industry: String,
+    /// `zttj` 涨停统计 (`days/ct`)
+    pub zt_stat: Option<String>,
+    pub source: &'static str,
+}
+
+/// Port of `em_yzt_pool(date)` — 昨涨停今表现 (yesterday's limit-ups, today's performance).
+pub async fn em_yzt_pool(client: &Client, date: &str) -> Result<Vec<EmYztPoolRow>> {
+    check_date8(date, "em_yzt_pool date")?;
+    let pool = fetch_zt_pool(client, "getYesterdayZTPool", "zs:desc", date).await?;
+    Ok(parse_yzt_pool(&pool))
+}
+
+/// Parse a push2ex `data.pool` array into [`EmYztPoolRow`]s.
+pub(crate) fn parse_yzt_pool(pool: &[Value]) -> Vec<EmYztPoolRow> {
+    pool.iter()
+        .filter_map(|item| {
+            let code = opt_str_or(item, "c", "");
+            let name = opt_str_or(item, "n", "");
+            if code.is_empty() || name.is_empty() {
+                return None;
+            }
+            let zt_days = item.get("zttj").and_then(|z| z.get("days")).and_then(|v| v.as_i64());
+            let zt_ct = item.get("zttj").and_then(|z| z.get("ct")).and_then(|v| v.as_i64());
+            let zt_stat = match (zt_days, zt_ct) {
+                (Some(d), Some(c)) => Some(format!("{d}/{c}")),
+                _ => None,
+            };
+            Some(EmYztPoolRow {
+                code,
+                name,
+                price: opt_f64(item, "p").map(|x| x / 1000.0),
+                limit_price: opt_f64(item, "ztp").map(|x| x / 1000.0),
+                pct_change: opt_f64(item, "zdp"),
+                amount: opt_f64(item, "amount"),
+                float_mktcap: opt_f64(item, "ltsz"),
+                total_mktcap: opt_f64(item, "tshare"),
+                turnover: opt_f64(item, "hs"),
+                amplitude: opt_f64(item, "zf"),
+                speed: opt_f64(item, "zs"),
+                y_first_time: fmt_time(item.get("yfbt").unwrap_or(&Value::Null)),
+                y_limit_days: opt_f64(item, "ylbc"),
+                industry: opt_str_or(item, "hybk", ""),
+                zt_stat,
+                source: SOURCE_EASTMONEY,
+            })
+        })
+        .collect()
+}
+
+// ===========================================================================
 // Tests — offline, against fixtures in tests/fixtures/
 // ===========================================================================
 
@@ -773,5 +1039,49 @@ mod tests {
         let v = fixture("stock_zt_pool_em_empty.json");
         let rows = parse_zt_pool(&v).unwrap();
         assert!(rows.is_empty());
+    }
+
+    fn pool_of(name: &str) -> Vec<Value> {
+        let v = fixture(name);
+        v.get("data")
+            .and_then(|d| d.get("pool"))
+            .and_then(|p| p.as_array())
+            .cloned()
+            .unwrap()
+    }
+
+    #[test]
+    fn parses_zb_pool_fixture() {
+        let rows = parse_zb_pool(&pool_of("em_zb_pool.json"));
+        assert_eq!(rows.len(), 16);
+        assert_eq!(rows[0].code, "600103");
+        assert_eq!(rows[0].name, "青山纸业");
+        assert_eq!(rows[0].price, Some(3.85));
+        assert_eq!(rows[0].limit_price, Some(4.20));
+        assert_eq!(rows[0].industry, "造纸");
+        assert_eq!(rows[0].consecutive_days, Some(4));
+        assert_eq!(rows[0].consecutive_count, Some(3));
+    }
+
+    #[test]
+    fn parses_dt_pool_fixture() {
+        let rows = parse_dt_pool(&pool_of("em_dt_pool.json"));
+        assert_eq!(rows.len(), 1);
+        assert_eq!(rows[0].code, "002963");
+        assert_eq!(rows[0].name, "豪尔赛");
+        assert_eq!(rows[0].price, Some(19.15));
+        assert_eq!(rows[0].industry, "装修装饰");
+        assert!(rows[0].main_net.is_some());
+    }
+
+    #[test]
+    fn parses_yzt_pool_fixture() {
+        let rows = parse_yzt_pool(&pool_of("em_yzt_pool.json"));
+        assert_eq!(rows.len(), 77);
+        assert_eq!(rows[0].code, "000017");
+        assert_eq!(rows[0].name, "深中华A");
+        assert_eq!(rows[0].price, Some(11.45));
+        assert_eq!(rows[0].industry, "饰品");
+        assert_eq!(rows[0].zt_stat, Some("7/7".to_string()));
     }
 }

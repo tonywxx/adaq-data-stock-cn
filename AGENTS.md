@@ -4,7 +4,7 @@ This file provides guidance to CodeBuddy Code when working with code in this rep
 
 ## Project Overview
 
-`adaq-data-stock-cn` is a Rust **library + binary** crate (package `adaq-data-stock-cn`, version `0.1.1`, `edition = "2024"`) — a Rust reimplementation of [akshare](https://github.com/akfamily/akshare) for Chinese A-share / market-data, serving as the data layer for the AdaQ quant platform. The library exposes ~797 `pub fn` endpoints across ~40 domain modules; per `docs/MAPPING.md` ~944 of 1172 akshare top-level functions are ported (`DONE`), ~156 are `DEFERRED` by design (signing / token / JS-execution / HTML / Excel), and `UNKNOWN` is fully cleared. `cargo test` reports ~1002 passed / 19 ignored and `cargo clippy` is clean.
+`adaq-data-stock-cn` is a Rust **library + binary** crate (package `adaq-data-stock-cn`, version `0.1.6`, `edition = "2024"`) — a Rust reimplementation of [akshare](https://github.com/akfamily/akshare) for Chinese A-share / market-data, serving as the data layer for the AdaQ quant platform. The library exposes ~800 `pub fn` endpoints across ~40 domain modules; per `docs/MAPPING.md` ~944 of 1172 akshare top-level functions are ported (`DONE`), ~156 are `DEFERRED` by design (signing / token / JS-execution / HTML / Excel), and `UNKNOWN` is fully cleared. `cargo test` reports ~1066 passed / 20 ignored and `cargo clippy` is clean.
 
 > Note: `edition = "2024"` requires a recent Rust toolchain (Rust 1.85+). Use `rustup update` if `cargo` rejects the edition.
 

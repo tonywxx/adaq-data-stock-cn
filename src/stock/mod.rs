@@ -43,6 +43,12 @@ pub mod zh_a_stop_em;
 pub mod zh_b_minute;
 pub mod zh_comparison_em;
 pub mod hot_search_baidu;
+pub mod baidu_kline;
+pub mod sentiment;
+pub mod chip;
+pub mod em_signal;
+pub mod sina_adjust_factor;
+pub mod ths_hot_reason;
 pub mod news_cx;
 pub mod share_hold_exchange;
 

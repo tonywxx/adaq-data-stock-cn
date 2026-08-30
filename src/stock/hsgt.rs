@@ -76,39 +76,8 @@ fn now_ms() -> u128 {
         .unwrap_or(0)
 }
 
-/// Borrow an owned param vec as `&[(&str, &str)]` for `get_json`.
-fn as_refs(p: &[(String, String)]) -> Vec<(&str, &str)> {
-    p.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect()
-}
-
-/// Fetch every page of an Eastmoney `datacenter-web` report and return the
-/// concatenated `result.data` array. Follows the `result.pages` cursor and
-/// updates `pageNumber` per page (mirrors akshare's `fetch_paginated_data`).
 async fn em_dc_rows(client: &Client, endpoint: &'static str, base: &[(&str, &str)]) -> Result<Vec<Value>> {
-    let mut params: Vec<(String, String)> = base.iter().map(|(k, v)| ((*k).to_string(), (*v).to_string())).collect();
-    let first = client.get_json(SOURCE_EASTMONEY, endpoint, DC, &as_refs(&params)).await?;
-    let pages = first
-        .get("result")
-        .and_then(|r| r.get("pages"))
-        .and_then(|p| p.as_i64())
-        .unwrap_or(1)
-        .max(1);
-    let mut out = Vec::new();
-    if let Some(arr) = first.get("result").and_then(|r| r.get("data")).and_then(|d| d.as_array()) {
-        out.extend(arr.iter().cloned());
-    }
-    for p in 2..=pages {
-        for (k, v) in params.iter_mut() {
-            if k == "pageNumber" {
-                *v = p.to_string();
-            }
-        }
-        let resp = client.get_json(SOURCE_EASTMONEY, endpoint, DC, &as_refs(&params)).await?;
-        if let Some(arr) = resp.get("result").and_then(|r| r.get("data")).and_then(|d| d.as_array()) {
-            out.extend(arr.iter().cloned());
-        }
-    }
-    Ok(out)
+    crate::core::pipeline::fetch_dc_all(client, endpoint, base).await
 }
 
 /// Extract `result.data` from a single datacenter response as a slice.

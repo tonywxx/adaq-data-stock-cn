@@ -1080,6 +1080,116 @@ pub async fn stock_individual_fund_flow_rank(
     Ok(parse_individual_rank(diff, &net_fields, pct_field))
 }
 
+// ---------------------------------------------------------------------------
+// stock_fund_flow_120d — 个股120日资金流向 (push2his daykline)
+// ---------------------------------------------------------------------------
+
+/// Build an Eastmoney `secid` for an A-share code (`sh600519` → `1.600519`).
+fn secid(symbol: &str) -> Result<String> {
+    if symbol.len() < 3 {
+        return Err(Error::InvalidParam(format!(
+            "symbol `{symbol}` must be market-prefixed, e.g. sh600519"
+        )));
+    }
+    let (market, code) = symbol.split_at(2);
+    let m = match market {
+        "sh" => "1",
+        "sz" => "0",
+        "bj" => "0",
+        other => {
+            return Err(Error::InvalidParam(format!(
+                "unsupported market prefix `{other}` (expected sh/sz/bj)"
+            )));
+        }
+    };
+    Ok(format!("{m}.{code}"))
+}
+
+/// One day's fund-flow snapshot in the trailing-120-day window.
+#[derive(Debug, Clone, serde::Serialize)]
+pub struct StockFundFlow120dRow {
+    /// 日期 `YYYY-MM-DD`
+    pub date: String,
+    /// 主力净流入 (元)
+    pub main_net: f64,
+    /// 小单净流入 (元)
+    pub small_net: f64,
+    /// 中单净流入 (元)
+    pub mid_net: f64,
+    /// 大单净流入 (元)
+    pub large_net: f64,
+    /// 超大单净流入 (元)
+    pub super_net: f64,
+}
+
+/// Port of `stock_fund_flow_120d` — trailing-120-day daily fund flow for one stock.
+///
+/// `symbol` is market-prefixed (`sh600519`, `sz000001`, `bj8xxxxx`).
+pub async fn stock_fund_flow_120d(
+    client: &Client,
+    symbol: &str,
+) -> Result<Vec<StockFundFlow120dRow>> {
+    let sec = secid(symbol)?;
+    let params = [
+        ("secid", sec.as_str()),
+        ("fields1", "f1,f2,f3,f7"),
+        (
+            "fields2",
+            "f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61,f62,f63,f64,f65",
+        ),
+        ("lmt", "120"),
+    ];
+    let v = client
+        .get_json_with_headers(
+            SOURCE_EASTMONEY,
+            "stock_fund_flow_120d",
+            PUSH2HIS,
+            &params,
+            Some(&[
+                ("Referer", "https://quote.eastmoney.com/"),
+                ("Origin", "https://quote.eastmoney.com"),
+            ]),
+        )
+        .await?;
+    parse_fund_flow_120d(&v)
+}
+
+/// Parse a `push2his` `data.klines` CSV array into [`StockFundFlow120dRow`]s.
+pub(crate) fn parse_fund_flow_120d(resp: &Value) -> Result<Vec<StockFundFlow120dRow>> {
+    let data = match resp.get("data") {
+        Some(d) if !d.is_null() => d,
+        _ => return Ok(Vec::new()),
+    };
+    let klines = data
+        .get("klines")
+        .and_then(|k| k.as_array())
+        .ok_or_else(|| Error::UpstreamChanged {
+            origin: SOURCE_EASTMONEY,
+            message: "missing data.klines at stock_fund_flow_120d".into(),
+        })?;
+    let mut out = Vec::with_capacity(klines.len());
+    for line in klines {
+        let s = match line {
+            Value::String(s) => s,
+            _ => continue,
+        };
+        let parts: Vec<&str> = s.split(',').collect();
+        if parts.len() < 6 {
+            continue;
+        }
+        let num = |i: usize| parts.get(i).and_then(|p| p.parse::<f64>().ok()).unwrap_or(0.0);
+        out.push(StockFundFlow120dRow {
+            date: parts[0].to_string(),
+            main_net: num(1),
+            small_net: num(2),
+            mid_net: num(3),
+            large_net: num(4),
+            super_net: num(5),
+        });
+    }
+    Ok(out)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1314,5 +1424,16 @@ mod tests {
             assert!(rank_indicator_fields(ind).is_some(), "indicator {ind} should be supported");
         }
         assert!(rank_indicator_fields("bad").is_none());
+    }
+
+    #[test]
+    fn parses_fund_flow_120d_fixture() {
+        let v = fixture("stock_fund_flow_120d.json");
+        let rows = parse_fund_flow_120d(&v).unwrap();
+        assert_eq!(rows.len(), 120);
+        assert_eq!(rows[0].date, "2026-03-09");
+        assert!((rows[0].main_net - -544765424.0).abs() < 1.0);
+        assert!((rows[0].super_net - -217477360.0).abs() < 1.0);
+        assert_eq!(rows[0].large_net, -327288064.0);
     }
 }
